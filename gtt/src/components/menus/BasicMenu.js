@@ -17,36 +17,26 @@ const BasicMenu = () =>{
     function NavList(){
         return(
             <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-                <Typography as="li" className="p-1">
+                <Typography as="li" className="pr-6 text-2xl hover:text-blue-500">
                     <Link to={'/'}>Main</Link>
                 </Typography>
-                <Typography as="li" className="p-1">
+                <Typography as="li" className="pr-6 text-2xl hover:text-blue-500">
                     <Link to={'/about'}>About</Link>
                 </Typography>
-                <Typography as="li" className="p-1">
+                <Typography as="li" className="pr-6 text-2xl hover:text-blue-500">
                     <Link to={'/todo/'}>Todo</Link>
                 </Typography>
+                <Button  className="text-white text-sm m-1 rounded">Login</Button>
             </ul>
         );
     }
     
     return (
-        <Navbar className="mx-auto max-w-screen-xl px-6 py-3">
+        <Navbar className="mx-auto max-w-screen-4xl px-6 py-3">
             <div className="flex items-center justify-between text-black">
-                <div className="w-4/5 bg-gray-500">
-                    <Typography as="li" className="p-1">
-                        <Link to={'/'}>Main</Link>
-                    </Typography>
-                    <Typography as="li" className="p-1">
-                        <Link to={'/about'}>About</Link>
-                    </Typography>
-                    <Typography as="li" className="p-1">
-                        <Link to={'/todo/'}><span className="flex items-center hover:text-blue-500 transition-colors">Todo</span></Link>
-                    </Typography>
-                </div>
-                <div className="w-1/5 flex justify-end bg-orange-300 p-4 font-medium">
-                    <Button  className="text-white text-sm m-1 rounded">Login</Button>
-                </div>
+                <Typography as="div" variant="h3" >
+                    <Link to={'/'}>Main</Link>
+                </Typography>
                 <div className="hidden lg:block">
                     <NavList />
                 </div>
