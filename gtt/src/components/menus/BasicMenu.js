@@ -16,23 +16,28 @@ const BasicMenu = () =>{
 
     function NavList(){
         return(
-            <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-                <Typography as="li" className="pr-6 text-2xl hover:text-blue-500">
+            <ul className="my-2 flex flex-col lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-2">
+                <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/'}>Main</Link>
                 </Typography>
-                <Typography as="li" className="pr-6 text-2xl hover:text-blue-500">
+                <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/about'}>About</Link>
                 </Typography>
-                <Typography as="li" className="pr-6 text-2xl hover:text-blue-500">
+                <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/todo/'}>Todo</Link>
                 </Typography>
-                <Button  className="text-white text-sm m-1 rounded">Login</Button>
+                <Button variant="outlined" size="md" color="blue-gray" fullWidth>
+                    Log In
+                </Button>
+                <Button variant="gradient" size="md" className="whitespace-nowrap" fullWidth>
+                    Sign In
+                </Button>
             </ul>
         );
     }
     
     return (
-        <Navbar className="mx-auto max-w-screen-4xl px-6 py-3">
+        <Navbar className="mx-auto max-w-screen-4xl px-3 py-3">
             <div className="flex items-center justify-between text-black">
                 <Typography as="div" variant="h3" >
                     <Link to={'/'}>Main</Link>
