@@ -1,10 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Navbar, Collapse, Typography,Button, IconButton, } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const BasicMenu = () =>{
     const [openNav, setOpenNav] = React.useState(false);
+    const navigate = useNavigate();
+    // 로그인 페이지로 이동하는 메서드
+    const moveToLogin = () => {
+        navigate("/login");
+    };
+    // 회원가입 페이지로 넘어가는 메서드
+    const moveToSign = () => {
+        navigate("/signIn");
+    }
+
+
 
     React.useEffect(() => {
         window.addEventListener(
@@ -12,7 +24,6 @@ const BasicMenu = () =>{
           () => window.innerWidth >= 960 && setOpenNav(false),
         );
       }, []);
-    
 
     function NavList(){
         return(
@@ -26,10 +37,10 @@ const BasicMenu = () =>{
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/todo/'}>Todo</Link>
                 </Typography>
-                <Button variant="outlined" size="md" color="blue-gray" fullWidth>
+                <Button variant="outlined" size="md" color="blue-gray" onClick={moveToLogin} fullWidth>
                     Log In
                 </Button>
-                <Button variant="gradient" size="md" className="whitespace-nowrap" fullWidth>
+                <Button variant="gradient" size="md"  onClick={moveToSign} className="whitespace-nowrap" fullWidth>
                     Sign In
                 </Button>
             </ul>
