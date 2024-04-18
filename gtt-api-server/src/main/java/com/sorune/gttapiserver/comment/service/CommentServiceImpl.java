@@ -1,10 +1,12 @@
 package com.sorune.gttapiserver.comment.service;
 
 import com.sorune.gttapiserver.comment.DTO.CommentDTO;
-import com.sorune.gttapiserver.comment.DTO.PageRequestDTO;
-import com.sorune.gttapiserver.comment.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.comment.entity.Comment;
 import com.sorune.gttapiserver.comment.repository.CommentRepository;
+import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
+import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
+import com.sorune.gttapiserver.news.DTO.NewsDTO;
+import com.sorune.gttapiserver.news.entity.News;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,13 +72,11 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public PageResponseDTO<CommentDTO> list(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<CommentDTO> list(PageRequestDTO pageRequestDTO,Long newsNo) {
 
-        Pageable pageable =
-                PageRequest.of(pageRequestDTO.getPage() - 1,
-                        pageRequestDTO.getSize(), Sort.by("comNo").descending()
-                        );  // 1페이지가 0
-        Page<Comment> result = commentRepository.findAll(pageable); // 페이징처리를 모든 객체를 찾아와 적용
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize(), Sort.by("comNo").descending());  // 1페이지가 0
+        Page<Comment> result = commentRepository.findAllByNewsNo(newsNo,pageable); // 페이징처리를 모든 객체를 찾아와 적용
+        log.info(result);
         List<CommentDTO> dtoList = result.getContent().stream().map(comment -> modelMapper.map(comment, CommentDTO.class)).collect(Collectors.toList());
 
         long totalCount = result.getTotalElements();

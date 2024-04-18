@@ -4,8 +4,6 @@ import {Avatar, Chip, IconButton, Tooltip, Typography} from "@material-tailwind/
 const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
 const ListComponent = ({serverData}) =>{
-    console.log(serverData)
-    console.log(serverData.dtoList)
     return (
         <tbody>
             {serverData.dtoList.map( (dto,index) => {

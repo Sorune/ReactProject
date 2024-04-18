@@ -1,4 +1,4 @@
-package com.sorune.gttapiserver.news.DTO;
+package com.sorune.gttapiserver.common.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

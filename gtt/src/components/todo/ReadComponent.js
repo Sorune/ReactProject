@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getOne } from "../../api/todoApi";
+import {getComList} from "../../api/commentApi";
 
 const initState = {
     tno:0,

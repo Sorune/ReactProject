@@ -2,6 +2,8 @@ package com.sorune.gttapiserver.comment.controller;
 
 import com.sorune.gttapiserver.comment.DTO.CommentDTO;
 import com.sorune.gttapiserver.comment.service.CommentService;
+import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
+import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +28,8 @@ public class CommentController {
     }
 
     @PutMapping("/{comNo}")
-    public Map<String ,String >modify(@PathVariable(name = "comNo") Long comNo,
-                                      @RequestBody CommentDTO commentDTO){
+    public Map<String ,String >modify(@RequestBody CommentDTO commentDTO){
         log.info(commentDTO);
-        commentDTO.setComNo(comNo);
 
         service.modify(commentDTO);
 
@@ -44,5 +44,11 @@ public class CommentController {
         return Map.of("RESULT", "SUCCESS");
     }
 
+    @GetMapping("/list/{newsNo}")
+    public PageResponseDTO<CommentDTO> getList(PageRequestDTO pageRequestDTO, @PathVariable long newsNo){
+        log.info(pageRequestDTO);
+        log.info("newsNo : "+newsNo);
+        return service.list(pageRequestDTO, newsNo);
+    }
 
 }

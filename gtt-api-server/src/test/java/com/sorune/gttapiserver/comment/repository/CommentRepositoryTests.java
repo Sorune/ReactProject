@@ -29,7 +29,6 @@ public class CommentRepositoryTests {
         IntStream.rangeClosed(1,100).forEach(i->{
 
             long newsNo = (long) (Math.random()*100) + 1;
-
             News news = News.builder().newsNo(newsNo).build();
 
             Comment comment = Comment.builder()

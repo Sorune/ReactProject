@@ -3,6 +3,7 @@ import {Navigate} from "react-router-dom";
 
 const Loading = <div>Loading</div>
 const NewsList = lazy(()=>import("../pages/news/ListPage.js"))
+const ReadNews = lazy(()=>import("../pages/news/ReadPage"))
 
 const newsRouter = ()=>{
     return[
@@ -13,6 +14,10 @@ const newsRouter = ()=>{
         {
             path:"",
             element: <Navigate replace to="list" />
+        },
+        {
+            path: "read/:newsNo",
+            element: <Suspense fallback={Loading}><ReadNews /></Suspense>
         }
     ]
 }

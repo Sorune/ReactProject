@@ -1,17 +1,18 @@
 import {Button, IconButton} from "@material-tailwind/react";
 
-const PageComponet = ({serverData, movePage})=>{
+const PageComponet = ({serverData, movePage, pathName})=>{
     return (
         <div className="m-6 flex justify-center">
-            {serverData.prev?
-                <Button variant="outlined" size="sm" onClick={()=>movePage({page:serverData.prevPage})}>Previous</Button>
+            {
+                serverData.prev?
+                <Button variant="outlined" size="sm" onClick={()=>movePage({pathName:pathName},{page:serverData.prevPage})}>Previous</Button>
                 : <></>
             }
             {serverData.pageNumList.map(pageNum =>
-                <IconButton variant={`${serverData.current ===pageNum? 'outlined':'text'}`} onClick={()=>movePage({page:pageNum})} key={pageNum} size="sm">{pageNum}</IconButton>
+                <IconButton key={pageNum} variant={`${serverData.current ===pageNum? 'outlined':'text'}`} onClick={()=>movePage({pathName:pathName},{page:pageNum})} size="sm">{pageNum}</IconButton>
             )}
             {serverData.next ?
-                <Button variant="outlined" size="sm" onClick={()=>movePage({page:serverData.nextPage})}>Next</Button>
+                <Button variant="outlined" size="sm" onClick={()=>movePage({pathName:pathName},{page:serverData.nextPage})}>Next</Button>
                 :<></>
             }
         </div>

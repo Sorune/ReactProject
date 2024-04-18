@@ -1,8 +1,8 @@
 package com.sorune.gttapiserver.news.controller;
 
 import com.sorune.gttapiserver.news.DTO.NewsDTO;
-import com.sorune.gttapiserver.news.DTO.PageRequestDTO;
-import com.sorune.gttapiserver.news.DTO.PageResponseDTO;
+import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
+import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.news.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -7,6 +7,7 @@ import PageComponent from "../../components/common/PageComponent";
 import DatePicker from "../../components/common/DatePicker";
 import ListComponent from "../../components/news/NewsComponent";
 import {getList} from "../../api/newsApi";
+import {useLocation} from "react-router-dom";
 const initState = {
     dtoList:[],
     pageNumList:[],
@@ -36,6 +37,7 @@ const TABS = [
 const TABLE_HEAD = ["Teams", "Title", "Writer", "hits", "Recommend", "RegDate"];
 
 const ListPage = ()=>{
+    const pathName = useLocation().pathname
     const {page, size, refresh,moveToList,moveToRead} = useCustomMove()
     const [serverData, setServerData] = useState(initState)
 
@@ -115,7 +117,7 @@ const ListPage = ()=>{
                     Page {serverData.current} of {Math.ceil(serverData.totalCount/10)}
                 </Typography>
                 <div className="flex gap-2">
-                    <PageComponent serverData={serverData} movePage={moveToList}/>
+                    <PageComponent serverData={serverData} movePage={moveToList} pathName={`${pathName}`}/>
                 </div>
             </CardFooter>
         </Card>
