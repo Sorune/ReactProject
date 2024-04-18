@@ -8,7 +8,7 @@ const PageComponet = ({serverData, movePage})=>{
                 : <></>
             }
             {serverData.pageNumList.map(pageNum =>
-                <IconButton variant={`${serverData.current ===pageNum? 'outlined':'text'}`} onClick={()=>movePage({page:pageNum})} size="sm">1</IconButton>
+                <IconButton variant={`${serverData.current ===pageNum? 'outlined':'text'}`} onClick={()=>movePage({page:pageNum})} key={pageNum} size="sm">{pageNum}</IconButton>
             )}
             {serverData.next ?
                 <Button variant="outlined" size="sm" onClick={()=>movePage({page:serverData.nextPage})}>Next</Button>
