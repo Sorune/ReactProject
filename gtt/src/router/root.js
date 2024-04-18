@@ -7,8 +7,8 @@ const { createBrowserRouter } = require("react-router-dom");
 const Loading = <div>Loading....</div>;
 const Main = lazy(()=>import("../pages/MainPage.js"));
 const About = lazy(()=>import("../pages/AboutPage.js"));
-const Login = lazy(() => import("../pages/loginAuth/login.js"));
-const SignIn = lazy(() => import("../pages/loginAuth/signIn.js"));
+const Login = lazy(() => import("../pages/loginAuth/Login.js"));
+const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"))
 const root = createBrowserRouter([
     {

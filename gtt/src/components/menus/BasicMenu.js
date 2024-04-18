@@ -21,7 +21,7 @@ const BasicMenu = () =>{
         );
       }, []);
   
-    function NavList(){
+    function NavList(prop){
         return(
             <ul className="my-2 flex flex-col lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-2">
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
@@ -33,12 +33,10 @@ const BasicMenu = () =>{
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/news/'}>News</Link>
                 </Typography>
-                <Button variant="outlined" size="md" color="blue-gray" onClick={moveToLogin} fullWidth>
-                    Log In
-                </Button>
-                <Button variant="gradient" size="md"  onClick={moveToSign} className="whitespace-nowrap" fullWidth>
-                    Sign In
-                </Button>
+                <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
+                    <Link to={'/news/'}>News</Link>
+                </Typography>
+                {prop.children}
             </ul>
         );
     }
@@ -50,23 +48,43 @@ const BasicMenu = () =>{
                     <Link to={'/'}>GTT</Link><Typography variant="small">- 그래서 그 팀 티어가...? -</Typography>
                 </Typography>
                 <div className="hidden lg:block">
-                    <NavList />
+                    <NavList>
+                        <div className="flex items-center gap-x-1">
+                            <Button variant="outlined" size="md" color="blue-gray" onClick={moveToLogin} fullWidth>
+                                Log In
+                            </Button>
+                            <Button variant="gradient" size="md" onClick={moveToSign} className="whitespace-nowrap"
+                                    fullWidth>
+                                Sign In
+                            </Button>
+                        </div>
+                    </NavList>
                 </div>
                 <IconButton
                     variant="text"
                     className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
                     ripple={false}
                     onClick={() => setOpenNav(!openNav)}
-                    >
+                >
                     {openNav ? (
-                        <XMarkIcon className="h-6 w-6" strokeWidth={2} />
+                        <XMarkIcon className="h-6 w-6" strokeWidth={2}/>
                     ) : (
                         <Bars3Icon className="h-6 w-6" strokeWidth={2} />
                     )}
                 </IconButton>
             </div>
             <Collapse open={openNav}>
-                <NavList />
+                <NavList>
+                    <div className="flex items-center gap-x-1">
+                        <Button variant="outlined" size="md" color="blue-gray" onClick={moveToLogin} fullWidth>
+                            Log In
+                        </Button>
+                        <Button variant="gradient" size="md" onClick={moveToSign} className="whitespace-nowrap"
+                                fullWidth>
+                            Sign In
+                        </Button>
+                    </div>
+                </NavList>
             </Collapse>
         </Navbar>
     );

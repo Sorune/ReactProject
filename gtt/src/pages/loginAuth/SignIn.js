@@ -123,7 +123,7 @@ const SignIn = () => {
             // 경고창을 출력 
             alert("개인정보 취급방침에 동의해야 합니다.");
             return false;
-        } else if(checkPasswordsMatch() == false) {
+        } else if(checkPasswordsMatch() === false) {
             // 경고창을 출력
             alert("입력한 비밀번호가 일치하지 않습니다.");
             return false;
