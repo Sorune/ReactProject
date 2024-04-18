@@ -6,20 +6,21 @@ import com.sorune.gttapiserver.news.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.news.entity.News;
 import com.sorune.gttapiserver.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
-
+    private final ModelMapper modelMapper;
     private final NewsRepository newsRepository;
 
     @Override
@@ -56,16 +57,15 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public PageResponseDTO<NewsDTO> getList(PageRequestDTO pageRequestDTO) {
 
-        Function<Object[], NewsDTO> fn = (en -> entityToDTO((News) en[0]));
-
-        NewsDTO newsDTO = entityToDTO(news);
-
-//        Page<Object[]> result = repository.getBoardWithReplyCount(pageRequestDTO.getPageable(Sort.by("bno").descending()));
-        Page<Object[]> result = newsRepository.searchPage(
-                pageRequestDTO.getType(),
-                pageRequestDTO.getKeyword(),
-                pageRequestDTO.getPageable(Sort.by("bno").descending()));
-
-        return new PageResponseDTO<>(result, fn);
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(),pageRequestDTO.getSize(),Sort.by("newsNo").descending());
+        Page<News> result = newsRepository.findAll(pageable);
+        List<NewsDTO> dtoList = result.stream().map(news -> modelMapper.map(news, NewsDTO.class)).toList();
+        long totalCount = result.getTotalElements();
+        PageResponseDTO pageResponseDTO = PageResponseDTO.<NewsDTO>withAll()
+                .dtoList(dtoList)
+                .pageRequestDTO(pageRequestDTO)
+                .totalCount(totalCount)
+                .build();
+        return pageResponseDTO;
     }
 }
