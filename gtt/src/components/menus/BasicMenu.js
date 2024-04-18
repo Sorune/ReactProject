@@ -1,6 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { Navbar, Collapse, Typography,Button, IconButton, } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -15,16 +14,13 @@ const BasicMenu = () =>{
     const moveToSign = () => {
         navigate("/signIn");
     }
-
-
-
     React.useEffect(() => {
         window.addEventListener(
           "resize",
           () => window.innerWidth >= 960 && setOpenNav(false),
         );
       }, []);
-
+  
     function NavList(){
         return(
             <ul className="my-2 flex flex-col lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-2">
@@ -35,7 +31,7 @@ const BasicMenu = () =>{
                     <Link to={'/about'}>About</Link>
                 </Typography>
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
-                    <Link to={'/todo/'}>Todo</Link>
+                    <Link to={'/news/'}>News</Link>
                 </Typography>
                 <Button variant="outlined" size="md" color="blue-gray" onClick={moveToLogin} fullWidth>
                     Log In
@@ -48,10 +44,10 @@ const BasicMenu = () =>{
     }
     
     return (
-        <Navbar className="mx-auto max-w-screen-4xl px-3 py-3">
+        <Navbar className="mx-auto max-w-full px-3 py-3">
             <div className="flex items-center justify-between text-black">
                 <Typography as="div" variant="h3" >
-                    <Link to={'/'}>Main</Link>
+                    <Link to={'/'}>GTT</Link><Typography variant="small">- 그래서 그 팀 티어가...? -</Typography>
                 </Typography>
                 <div className="hidden lg:block">
                     <NavList />

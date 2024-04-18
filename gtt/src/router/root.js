@@ -11,11 +11,15 @@ const TodoIndex = lazy(()=>import("../pages/todo/IndexPage.js"));
 const TodoList = lazy(()=>import("../pages/todo/ListPage.js"));
 const Login = lazy(() => import("../pages/loginAuth/login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/signIn.js"));
-
+const NewsIndex=lazy(()=>import("../pages/news/IndexPage"))
 const root = createBrowserRouter([
     {
         path:"",
         element:<Suspense fallback={Loading}><Main/></Suspense>
+    },
+    {
+      path:"login",
+      element:<Suspense fallback={Loading}><Login/></Suspense>
     },
     {
         path: "about",
@@ -35,6 +39,11 @@ const root = createBrowserRouter([
         path : "signIn",
         element : <Suspense fallback = {Loading}><SignIn/></Suspense>,
         children : authRouter()
+    },
+    {
+        path:"news",
+        element:<Suspense fallback={Loading}><NewsIndex /></Suspense>,
+        children:newsRouter()
     }
 ])
 
