@@ -6,8 +6,6 @@ import DatePicker from "../../components/common/DatePicker";
 const IndexPage=()=>{
     return (
         <BasicLayout>
-            <DatePicker />
-            <div>News</div>
             <div>
                 <Outlet />
             </div>
