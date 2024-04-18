@@ -5,16 +5,22 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const BasicMenu = () =>{
     const [openNav, setOpenNav] = React.useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    // 로그인 페이지로 이동하는 메서드
+    const moveToLogin = () => {
+        navigate("/login");
+    };
+    // 회원가입 페이지로 넘어가는 메서드
+    const moveToSign = () => {
+        navigate("/signIn");
+    }
     React.useEffect(() => {
         window.addEventListener(
           "resize",
           () => window.innerWidth >= 960 && setOpenNav(false),
         );
       }, []);
-    const MoveToLogin = ()=>{
-        navigate("/login")
-    }
+  
     function NavList(){
         return(
             <ul className="my-2 flex flex-col lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-2">
@@ -27,10 +33,10 @@ const BasicMenu = () =>{
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/news/'}>News</Link>
                 </Typography>
-                <Button variant="outlined" size="md" color="blue-gray" onClick={MoveToLogin} fullWidth>
+                <Button variant="outlined" size="md" color="blue-gray" onClick={moveToLogin} fullWidth>
                     Log In
                 </Button>
-                <Button variant="gradient" size="md" className="whitespace-nowrap" fullWidth>
+                <Button variant="gradient" size="md"  onClick={moveToSign} className="whitespace-nowrap" fullWidth>
                     Sign In
                 </Button>
             </ul>
