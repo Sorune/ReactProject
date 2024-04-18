@@ -33,9 +33,6 @@ const BasicMenu = () =>{
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/news/'}>News</Link>
                 </Typography>
-                <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
-                    <Link to={'/news/'}>News</Link>
-                </Typography>
                 {prop.children}
             </ul>
         );

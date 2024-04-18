@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {Button, Card, CardBody, CardFooter, CardHeader, Typography} from "@material-tailwind/react";
+import {Button, Card, CardBody, CardFooter, Typography} from "@material-tailwind/react";
 import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
