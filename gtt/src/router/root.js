@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import todoRouter from "./todoRouter.js";
 import authRouter from "./authRouter.js";
+import newsRouter from "./newsRouter";
 
 const { createBrowserRouter } = require("react-router-dom");
 
