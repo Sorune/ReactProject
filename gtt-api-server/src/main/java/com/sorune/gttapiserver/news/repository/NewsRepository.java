@@ -17,7 +17,8 @@ public interface NewsRepository extends JpaRepository<News, Long>, SearchBoardRe
     @Query("SELECT n FROM News n WHERE n.newsNo=:newsNo")
     NewsDTO findByNewsNo(@Param("newsNo") Long newsNo);
 
-    Long countByNewsNo(Long newsNo);
+    @Query("SELECT count(newsNo) FROM News WHERE newsNo > 0 ")
+    Long countByNewsNo();
 
 
 

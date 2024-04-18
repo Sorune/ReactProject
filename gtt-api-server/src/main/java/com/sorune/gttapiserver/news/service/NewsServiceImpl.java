@@ -7,6 +7,7 @@ import com.sorune.gttapiserver.news.entity.News;
 import com.sorune.gttapiserver.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -56,16 +57,15 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public PageResponseDTO<NewsDTO> getList(PageRequestDTO pageRequestDTO) {
 
-        Function<Object[], NewsDTO> fn = (en -> entityToDTO((News) en[0]));
+        Sort sort = Sort.by("newsNo").descending();
+
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+
+        Page<News> news = newsRepository.findAll(pageable);
 
         NewsDTO newsDTO = entityToDTO(news);
 
-//        Page<Object[]> result = repository.getBoardWithReplyCount(pageRequestDTO.getPageable(Sort.by("bno").descending()));
-        Page<Object[]> result = newsRepository.searchPage(
-                pageRequestDTO.getType(),
-                pageRequestDTO.getKeyword(),
-                pageRequestDTO.getPageable(Sort.by("bno").descending()));
 
-        return new PageResponseDTO<>(result, fn);
+        return new PageResponseDTO<>(newsDTO, pageRequestDTO, newsRepository.countByNewsNo());
     }
 }

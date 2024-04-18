@@ -20,6 +20,4 @@ public class NewsImage {
 
     private String path;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private News news;
 }
