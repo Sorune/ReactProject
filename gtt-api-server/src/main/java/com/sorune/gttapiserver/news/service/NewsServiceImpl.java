@@ -35,12 +35,12 @@ public class NewsServiceImpl implements NewsService {
 
         newsRepository.save(news);
 
-        return news.getNews_No();
+        return news.getNewsNo();
     }
 
     @Override
     public void modifyNews(NewsDTO newsDTO) {
-        News news = newsRepository.getReferenceById(newsDTO.getNews_No());
+        News news = newsRepository.getReferenceById(newsDTO.getNewsNo());
 
         news.changeTitle(newsDTO.getTitle());
         news.changeContent(newsDTO.getContent());
@@ -55,7 +55,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsDTO getById(Long no) {
-        NewsDTO newsDTO = newsRepository.findByNewsNo(no);
+        News news = newsRepository.findByNewsNo(no);
+
+        NewsDTO newsDTO = modelMapper.map(news, NewsDTO.class);
 
         return newsDTO;
     }

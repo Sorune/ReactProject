@@ -9,10 +9,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface NewsRepository extends JpaRepository<News, Long>{
 
-    @Query(value = "SELECT news_No, title, content, writer, reg_Date, hits FROM News  WHERE news_No=:newsNo", nativeQuery = true)
-    NewsDTO findByNewsNo(@Param("newsNo") Long newsNo);
+    @Query("SELECT n FROM News n  WHERE n.newsNo=:newsNo")
+    News findByNewsNo(@Param("newsNo") Long newsNo);
 
-    @Query("SELECT count(news_No) FROM News WHERE news_No > 0 ")
+    @Query("SELECT count(newsNo) FROM News WHERE newsNo > 0 ")
     Long countByNewsNo();
 
 }
