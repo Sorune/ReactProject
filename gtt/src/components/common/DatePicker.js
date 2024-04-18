@@ -10,7 +10,7 @@ const DatePicker = (keys)=> {
     console.log(keys)
     const name = keys.name
     return (
-        <div>
+        <div className="px-2 py-2">
             <Popover placement="bottom">
                 <PopoverHandler>
                     <Input
