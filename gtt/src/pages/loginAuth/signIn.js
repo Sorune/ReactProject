@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddrPopup from './addrPopup';
 import AddrWithDaum from './addrWithDaum';
+import DatePicker from "../../components/common/DatePicker";
 
 
 const SignIn = () => {
@@ -182,11 +183,12 @@ const SignIn = () => {
                                 {isCollapsed && (
                                     <div>
                                         <div>
-                                            <label for="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</label>
-                                            <input type="date" name="birth" id="birth" className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+                                            <label htmlFor="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</label>
+                                            <DatePicker name=""/>
                                         </div>
                                         <div>
-                                            <label for="addrNum" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</label>
+                                            <label for="addrNum"
+                                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</label>
                                             <div class="grid grid-cols-12 gap-5">
                                                 <div className='col-span-9'>
                                                 <input type="text" name="addrNum" id="addrNum" value={zoneCode || ''} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readOnly />
