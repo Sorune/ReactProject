@@ -7,7 +7,7 @@ import PageComponent from "../../components/common/PageComponent";
 import DatePicker from "../../components/common/DatePicker";
 import ListComponent from "../../components/news/NewsComponent";
 import {getList} from "../../api/newsApi";
-import {useLocation} from "react-router-dom";
+import {useLocation, useSearchParams} from "react-router-dom";
 const initState = {
     dtoList:[],
     pageNumList:[],

@@ -45,7 +45,7 @@ public class CommentController {
     }
 
     @GetMapping("/list/{newsNo}")
-    public PageResponseDTO<CommentDTO> getList(PageRequestDTO pageRequestDTO, @PathVariable long newsNo){
+    public PageResponseDTO<CommentDTO> getList(PageRequestDTO pageRequestDTO, @PathVariable(name = "newsNo") long newsNo){
         log.info(pageRequestDTO);
         log.info("newsNo : "+newsNo);
         return service.list(pageRequestDTO, newsNo);

@@ -1,6 +1,5 @@
-import {useMemo, useState} from "react";
+import { useState} from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
-import {useMenu} from "@material-tailwind/react";
 
 const getNum = (param,defaultValue) => {
     if(!param){
@@ -19,7 +18,6 @@ const useCustomMove = () => {
 
     const moveToList = ({ pathName, pageParam = {} }) => {
         let queryStr = "";
-        let updatedRefresh = !refresh;  // refresh 상태를 토글
 
         if (pageParam) {
             const pageNum = getNum(parseInt(pageParam.page), 1);
@@ -47,9 +45,20 @@ const useCustomMove = () => {
         });
     };
 
-    console.log("page : "+page)
-    console.log("size : "+size)
-    return { moveToList, moveToModify, moveToRead, page, size, refresh };
+    const loadToList =({pageParam :pageParam, pathName:pathName})=>{
+        let queryStr = "";
+
+        if (pageParam) {
+            const pageNum = getNum(parseInt(pageParam.page), 1);
+            const sizeNum = getNum(pageParam.size, 10);
+            queryStr = createSearchParams({ page: pageNum, size: sizeNum }).toString();
+        } else {
+            queryStr = queryDefault;
+        }
+        navigate({ pathname: `.`, search: queryStr });
+        return {pageParam,pathName}
+    }
+    return { moveToList, moveToModify, moveToRead, loadToList, getNum, page, size, refresh };
 };
 
 export default useCustomMove;

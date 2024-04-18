@@ -26,9 +26,9 @@ public class CommentRepositoryTests {
     @Test
     public void insertComment(){
 
-        IntStream.rangeClosed(1,100).forEach(i->{
+        IntStream.rangeClosed(1,30).forEach(i->{
 
-            long newsNo = (long) (Math.random()*100) + 1;
+            long newsNo = 35;
             News news = News.builder().newsNo(newsNo).build();
 
             Comment comment = Comment.builder()
