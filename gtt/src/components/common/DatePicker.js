@@ -6,8 +6,6 @@ import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 const DatePicker = (keys)=> {
     const [date, setDate] = React.useState(Date);
-    console.log(date)
-    console.log(keys)
     const name = keys.name
     return (
         <div className="px-2 py-2">

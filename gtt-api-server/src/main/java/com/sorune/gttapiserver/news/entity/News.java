@@ -3,6 +3,8 @@ package com.sorune.gttapiserver.news.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Builder
@@ -10,6 +12,8 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Getter
 @ToString
+@DynamicInsert
+@DynamicUpdate
 public class News extends BaseEntity {
 
     @Id

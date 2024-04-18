@@ -1,13 +1,14 @@
 import {useEffect,useState} from "react";
-import {useSearchParams} from "react-router-dom";
 import {MagnifyingGlassIcon,ChevronUpDownIcon} from "@heroicons/react/24/outline";
-import {PencilIcon,UserPlusIcon} from "@heroicons/react/24/solid";
+import {UserPlusIcon} from "@heroicons/react/24/solid";
 import {Card,CardHeader,Input,Typography,Button,CardBody,Chip,CardFooter,Tabs,TabsHeader,Tab,Avatar,IconButton,Tooltip} from "@material-tailwind/react";
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../../components/common/PageComponent";
 import DatePicker from "../../components/common/DatePicker";
+import ListComponent from "../../components/news/NewsComponent";
+import {getList} from "../../api/newsApi";
 const initState = {
-    newsList:[],
+    dtoList:[],
     pageNumList:[],
     pageRequestDTO: null,
     prev:false,
@@ -32,29 +33,17 @@ const TABS = [
         value: "unmonitored",
     },
 ];
+const TABLE_HEAD = ["Teams", "Title", "Writer", "hits", "Recommend", "RegDate"];
 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
-
-const TABLE_ROWS = [
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-        name: "John Michael",
-        email: "john@creative-tim.com",
-        job: "Manager",
-        org: "Organization",
-        online: true,
-        date: "23/04/18",
-    },
-];
 const ListPage = ()=>{
-    const [queryParams] = useSearchParams();
-    const {page, size,moveToList,refresh,moveToRead} = useCustomMove()
+    const {page, size, refresh,moveToList,moveToRead} = useCustomMove()
     const [serverData, setServerData] = useState(initState)
 
-
-    useEffect(()=>{
-
-    },[])
+    useEffect(() => {
+        getList({page,size}).then(data=>{
+            setServerData(data)
+        })
+    }, [page, size, refresh]);
 
     return(
         <Card className="h-full w-full">
@@ -112,86 +101,7 @@ const ListPage = ()=>{
                         ))}
                     </tr>
                     </thead>
-                    <tbody>
-                    {TABLE_ROWS.map(
-                        ({ img, name, email, job, org, online, date }, index) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
-                            const classes = isLast
-                                ? "p-4"
-                                : "p-4 border-b border-blue-gray-50";
-
-                            return (
-                                <tr key={name}>
-                                    <td className={classes}>
-                                        <div className="flex items-center gap-3">
-                                            <Avatar src={img} alt={name} size="sm" />
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal"
-                                                >
-                                                    {name}
-                                                </Typography>
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal opacity-70"
-                                                >
-                                                    {email}
-                                                </Typography>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <div className="flex flex-col">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {job}
-                                            </Typography>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal opacity-70"
-                                            >
-                                                {org}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <div className="w-max">
-                                            <Chip
-                                                variant="ghost"
-                                                size="sm"
-                                                value={online ? "online" : "offline"}
-                                                color={online ? "green" : "blue-gray"}
-                                            />
-                                        </div>
-                                    </td>
-                                    <td className={classes}>
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
-                                        >
-                                            {date}
-                                        </Typography>
-                                    </td>
-                                    <td className={classes}>
-                                        <Tooltip content="Edit User">
-                                            <IconButton variant="text">
-                                                <PencilIcon className="h-4 w-4" />
-                                            </IconButton>
-                                        </Tooltip>
-                                    </td>
-                                </tr>
-                            );
-                        },
-                    )}
-                    </tbody>
+                    <ListComponent serverData={serverData}/>
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
@@ -202,7 +112,7 @@ const ListPage = ()=>{
                     />
                 </div>
                 <Typography variant="small" color="blue-gray" className="font-normal">
-                    Page {1} of 10
+                    Page {serverData.current} of {Math.ceil(serverData.totalCount/10)}
                 </Typography>
                 <div className="flex gap-2">
                     <PageComponent serverData={serverData} movePage={moveToList}/>
