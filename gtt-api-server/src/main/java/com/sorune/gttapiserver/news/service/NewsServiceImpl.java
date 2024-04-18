@@ -6,11 +6,13 @@ import com.sorune.gttapiserver.news.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.news.entity.News;
 import com.sorune.gttapiserver.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,23 +20,25 @@ import java.util.List;
 import java.util.function.Function;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
+    private final ModelMapper modelMapper;
     private final NewsRepository newsRepository;
 
     @Override
     public Long registerNews(NewsDTO newsDTO) {
-        News news = dtoToEntity(newsDTO);
+        News news = modelMapper.map(newsDTO, News.class);
 
         newsRepository.save(news);
 
-        return news.getNewsNo();
+        return news.getNews_No();
     }
 
     @Override
     public void modifyNews(NewsDTO newsDTO) {
-        News news = newsRepository.getReferenceById(newsDTO.getNewsNo());
+        News news = newsRepository.getReferenceById(newsDTO.getNews_No());
 
         news.changeTitle(newsDTO.getTitle());
         news.changeContent(newsDTO.getContent());
@@ -57,15 +61,17 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public PageResponseDTO<NewsDTO> getList(PageRequestDTO pageRequestDTO) {
 
-        Sort sort = Sort.by("newsNo").descending();
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("newsNo").descending());
+        Page<News> result = newsRepository.findAll(pageable);
+        List<NewsDTO> dtoList = result.stream().map(news -> modelMapper.map(news, NewsDTO.class)).toList();
+        long totalCount = result.getTotalElements();
 
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        PageResponseDTO pageResponseDTO = PageResponseDTO.<NewsDTO>withAll()
+                .dtoList(dtoList)
+                .pageRequestDTO(pageRequestDTO)
+                .totalCount(totalCount)
+                .build();
 
-        Page<News> news = newsRepository.findAll(pageable);
-
-        NewsDTO newsDTO = entityToDTO(news);
-
-
-        return new PageResponseDTO<>(newsDTO, pageRequestDTO, newsRepository.countByNewsNo());
+        return pageResponseDTO;
     }
 }

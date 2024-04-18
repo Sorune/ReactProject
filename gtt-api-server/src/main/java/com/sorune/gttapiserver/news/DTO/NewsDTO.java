@@ -1,5 +1,6 @@
 package com.sorune.gttapiserver.news.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,6 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class NewsDTO {
 
     private Long newsNo;
@@ -19,7 +19,11 @@ public class NewsDTO {
     private String theTeam;
     private Long hits;
     private Long recomNo;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone= "Asia/Seoul")
     private LocalDateTime regDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone= "Asia/Seoul")
     private LocalDateTime modDate;
+
+
 
 }

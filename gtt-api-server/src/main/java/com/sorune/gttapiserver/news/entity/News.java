@@ -26,7 +26,7 @@ public class News extends BaseEntity {
     private String writer;  // 작성자
 
     @Column(nullable = false)
-    private String theTeam;  // 기사를 작성하는 팀
+    private String theTeam;  // 기사 작성 대상 팀
 
     @ColumnDefault("0")
     private Long hits;      // 조회수
