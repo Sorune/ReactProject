@@ -4,6 +4,7 @@ import com.sorune.gttapiserver.news.DTO.NewsDTO;
 import com.sorune.gttapiserver.news.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.news.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.news.service.NewsService;
+<<<<<<< HEAD
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +13,26 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+=======
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+>>>>>>> 4cffade56b28abf4de855b4381b9dc696e9b7623
 @RequestMapping("/api/news")
+@RequiredArgsConstructor
+@Log4j2
 public class NewsController {
+    private final NewsService newsService;
+
+    @GetMapping("/list")
+    public PageResponseDTO<NewsDTO> list(PageRequestDTO pageRequestDTO) {
+       log.info(pageRequestDTO);
+        return newsService.getList(pageRequestDTO);
+    }
 
     private final NewsService newsService;
 

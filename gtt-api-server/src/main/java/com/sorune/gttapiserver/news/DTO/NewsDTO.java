@@ -19,9 +19,15 @@ public class NewsDTO {
     private String theTeam;
     private Long hits;
     private Long recomNo;
+<<<<<<< HEAD
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone= "Asia/Seoul")
     private LocalDateTime regDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone= "Asia/Seoul")
+=======
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private LocalDateTime regDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+>>>>>>> 4cffade56b28abf4de855b4381b9dc696e9b7623
     private LocalDateTime modDate;
 
 
