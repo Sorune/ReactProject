@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddrWithDaum from './AddrWithDaum';
 import DatePicker from "../../components/common/DatePicker";
 import { Collapse, Button, IconButton, Card, Typography, CardBody } from '@material-tailwind/react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
-import * as validation from "../../components/func/validation.js";
-// import { checkID, checkPasswords, checkNickname } from '../../components/func/validation';
+import validation from "../../hooks/validation";
+import userEvent from "@testing-library/user-event";
+
+const initStatus = {
+    id : '',
+}
 
 const SignIn = () => {
+    const {checkID,checkPasswords,checkNickname} = validation();
     const navigate = useNavigate();
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
@@ -41,12 +46,15 @@ const SignIn = () => {
             alert("개인정보 취급방침에 동의해야 합니다.");
             return;
         }
-        if (validation.checkID() && validation.checkPasswords()) {
+        if (checkID(id) && checkPasswords(password,confirmPassword)) {
             alert("회원 가입이 완료되었습니다! 메인화면으로 이동합니다.");
             //navigate("/home");
         }
     };
 
+    useEffect(() => {
+
+    }, [password, confirmPassword]);
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
@@ -62,19 +70,19 @@ const SignIn = () => {
                             <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleFormSubmit}>
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</label>
-                                    <input value={id} onChange={(e) => setId(e.target.value)} onBlur={validation.checkID} type="text" name="id" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
+                                    <input value={id} onChange={(e) => setId(e.target.value)} onBlur={()=>{checkID({id:id})}} type="text" name="id" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
                                 </div>
                                 <div>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
-                                    <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                    <input value={password} onChange={(e) => {setPassword(e.target.value)}} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                 </div>
                                 <div>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력 확인</label>
-                                    <input  value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                    <input  value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); checkPasswords(e.target,{password:password,confirmPassword:confirmPassword})}} type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                 </div>
                                 <div>
                                     <label htmlFor="nick" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임</label>
-                                    <input  value={nickname} onChange={(e) => setNickname(e.target.value)} onBlur={validation.checkNickname} type="text" name="nick" id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
+                                    <input  value={nickname} onChange={(e) => setNickname(e.target.value)} onBlur={()=>{checkNickname({nickname: nickname})}} type="text" name="nick" id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
                                 </div>
 
                                 <div>
