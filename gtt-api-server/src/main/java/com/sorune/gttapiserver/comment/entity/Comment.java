@@ -3,6 +3,8 @@ package com.sorune.gttapiserver.comment.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Builder
@@ -10,6 +12,8 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Getter
 @ToString//(exclude = {"news"})
+@DynamicInsert
+@DynamicUpdate
 public class Comment extends BaseEntity {
 
     @Id
