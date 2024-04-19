@@ -10,7 +10,7 @@ const About = lazy(()=>import("../pages/AboutPage.js"));
 const Login = lazy(() => import("../pages/loginAuth/Login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"))
-const Test = lazy(()=>import("../pages/TestPage"))
+const Test = lazy(()=>import("../test/pages/TestPage"))
 const root = createBrowserRouter([
     {
       path:"test",

@@ -1,12 +1,12 @@
-import BasicLayout from "../layouts/BasicLayout";
-import CommentCell from "../components/common/CommentCell";
-import CommentInputCell from "../components/common/CommentInputCell";
-import ContentHeader from "../components/common/ContentHeader";
-import ContentBody from "../components/common/ContentBody";
-import UplodComponent from "../components/common/UplodComponent";
-import LexicalEditor from "../components/common/LexicalEditor";
-import DropFiles from "../components/common/DropFiles";
-import CustomCarousel from "../components/common/CustomCarousel/CustomCarousel";
+import BasicLayout from "../../layouts/BasicLayout";
+import CommentCell from "../../components/common/CommentCell";
+import CommentInputCell from "../../components/common/CommentInputCell";
+import ContentHeader from "../../components/common/ContentHeader";
+import ContentBody from "../../components/common/ContentBody";
+import UplodComponent from "../../components/common/UplodComponent";
+import LexicalEditor from "../../components/common/LexicalEditor";
+import DropFiles from "../../components/common/DropFiles";
+import CustomCarousel from "../../components/common/CustomCarousel/CustomCarousel";
 
 const TestPage = ()=>{
     return (
