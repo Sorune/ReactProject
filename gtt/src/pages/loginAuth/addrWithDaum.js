@@ -26,29 +26,13 @@ const AddrWithDaum = (props) => {
     }
     const postCodeStyle = {
         display: "block",
-        width: "600px",
+        width: "100%",
         height: "500px",
         padding: "7px",
     };
-    
-    const popupLayout = {
-        width: "650px",
-        height: "550px",
-        // border: "1px solid red",
-        position: "absolute",
-        top: "25%",
-        left: "25%",
-        backgroundColor: "#ddd",
-        fontSize: "20px",
-        color: "red"
-    }
 
     return(
-        <div className="thisPostDiv" style={popupLayout}>
-            {/* 닫기 버튼 생성 */}
-            <button type='button' onClick={() => {props.onClose()}} className='postCode_btn'>닫기</button>
-            <DaumPostcodeEmbed style={postCodeStyle} onComplete={handlePostCode}/>
-        </div>
+        <DaumPostcodeEmbed style={postCodeStyle} onComplete={handlePostCode}/>
     );
 }
 
