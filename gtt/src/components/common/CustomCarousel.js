@@ -1,31 +1,43 @@
-import React from 'react';
-import { Carousel } from '@material-tailwind/react/components/Carousel';
-import { IconButton } from '@material-tailwind/react';
+import React, { useState, useEffect } from 'react'
+import {ArrowLeftCircleIcon, ArrowRightCircleIcon} from "@heroicons/react/24/outline";
 
-const CustomCarousel = ({
-                            onDelete,
-                            onAdd,
-                            ...carouselProps
-                        }) => {
+const CustomCarousel = ({ children: slides, autoSlide = false, autoSlideInterval = 3000 }) => {
+    const [curr, setCurr] = useState(0)
+
+    const prev = () => setCurr((curr) => (curr === 0 ? slides.length - 1 : curr - 1))
+
+    const next = () => setCurr((curr) => (curr === slides.length - 1 ? 0 : curr + 1))
+
+    useEffect(() => {
+        if (!autoSlide) return
+        const slideInterval = setInterval(next, autoSlideInterval)
+        return () => clearInterval(slideInterval)
+    }, [])
+
+
     return (
-        <Carousel {...carouselProps}>
-            {/* 기존 Carousel의 children */}
-            {carouselProps.children}
-            {/* 새로운 버튼 추가 */}
-            {onDelete && (
-                <IconButton onClick={onDelete}>
-                    {/* 삭제 버튼 아이콘 */}
-                    Delete
-                </IconButton>
-            )}
-            {onAdd && (
-                <IconButton onClick={onAdd}>
-                    {/* 추가 버튼 아이콘 */}
-                    Add
-                </IconButton>
-            )}
-        </Carousel>
-    );
-};
+        <div className='overflow-hidden relative'>
+            <div className='flex transition-transform ease-out duration-500' style={{ transform: `translateX(-${curr * 100}%)` }}>
+                {slides}
+            </div>
+            <div className="absolute inset-0 flex items-center justify-between p-4">
+                <button onClick={prev} className='p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white'>
+                    <ArrowLeftCircleIcon />
+                </button>
+                <button onClick={next} className='p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white'>
+                    <ArrowRightCircleIcon />
+                </button>
+            </div>
+            <div className='absolute bottom-4 right-0 left-0'>
+                <div className='flex items-center justify-center gap-2'>
+                    {slides.map((s, i) => (
+                        <div key={i} className={`transition-all w-1.5 h-1.5 bg-white rounded-full  ${curr === i ? "p-0.5" : "bg-opacity-50"}`} />
+                    ))}
+                </div>
+            </div>
+        </div>
 
-export default CustomCarousel;
+    )
+}
+
+export default CustomCarousel
