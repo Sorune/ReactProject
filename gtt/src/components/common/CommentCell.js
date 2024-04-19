@@ -4,28 +4,35 @@ import {Avatar, Button, Card, Chip, Typography} from "@material-tailwind/react";
 const CommentCell = ()=>{
     return (
         <Card className="p-2">
-            <div className="flex flex-box justify-between">
-                <div>
-                    <Chip icon={
-                        <Avatar
-                            size="xs"
-                            variant="circular"
-                            className="h-full w-full -translate-x-0.5"
-                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" />
-                    }
-                          value={<Typography variant="small">Writer</Typography>}
-                    />
-                    <Typography variant="h5">
-                        test Comment
+            <div className="grid col-auto gap-5">
+                <div className="col-start-1 col-end-2">
+                    <div className="flex items-center gap-2">
+                        <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
+                        <div>
+                            <Typography variant="h6">양지웅</Typography>
+                            <Typography variant="small" color="gray" className="font-normal">
+                                 Developer
+                            </Typography>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-start-3 col-end-4 flex items-center">
+                    <Typography color="black" variant="h6">
+                        테스트로 만든 댓글내용 입니다.
                     </Typography>
                 </div>
-                <div>
-                    <div className="gap-2">
-                        <Button className="w-full">modify</Button>
-                    </div>
-                    <div className="gap-2">
-                        <Button className="w-full">delete</Button>
-                    </div>
+                <div className="col-start-5 col-end-6 flex justify-end">
+                    {/* 본인이 아닐경우 보이는 추천버튼 */}
+                    <Button size="sm" color="green" variant="text" className="rounded-md">
+                        like
+                    </Button>
+                    {/* 본인일 경우 보이는 수정, 삭제 버튼 */}
+                    <Button size="sm" color="blue" variant="text" className="rounded-md">
+                        modify
+                    </Button>
+                    <Button size="sm" color="red" variant="text" className="rounded-md">
+                        delete
+                    </Button>
                 </div>
             </div>
         </Card>
