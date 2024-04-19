@@ -5,6 +5,10 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -30,13 +34,15 @@ public class News extends BaseEntity {
     private String writer;  // 작성자
 
     @Column(nullable = false)
-    private String theTeam;  // 기사를 작성하는 팀
+    private String theTeam;  // 기사 작성 대상 팀
 
     @ColumnDefault("0")
     private Long hits;      // 조회수
 
     @ColumnDefault("0")
     private Long recomNo;   // 추천수
+
+
 
 
     public void changeTitle(String title){
