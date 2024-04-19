@@ -15,19 +15,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 @Log4j2
 public class NewsServiceImpl implements NewsService {
+
     private final ModelMapper modelMapper;
     private final NewsRepository newsRepository;
 
     @Override
     public Long registerNews(NewsDTO newsDTO) {
-        News news = dtoToEntity(newsDTO);
+        News news = modelMapper.map(newsDTO, News.class);
 
         newsRepository.save(news);
 
@@ -51,7 +55,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsDTO getById(Long no) {
-        NewsDTO newsDTO = newsRepository.findByNewsNo(no);
+        News news = newsRepository.findByNewsNo(no);
+
+        NewsDTO newsDTO = modelMapper.map(news, NewsDTO.class);
 
         return newsDTO;
     }
@@ -59,16 +65,18 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public PageResponseDTO<NewsDTO> getList(PageRequestDTO pageRequestDTO) {
 
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(),pageRequestDTO.getSize(),Sort.by("newsNo").descending());
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("newsNo").descending());
         Page<News> result = newsRepository.findAll(pageable);
         List<NewsDTO> dtoList = result.stream().map(news -> modelMapper.map(news, NewsDTO.class)).toList();
         dtoList.forEach(dto -> log.info(dto));
         long totalCount = result.getTotalElements();
+
         PageResponseDTO pageResponseDTO = PageResponseDTO.<NewsDTO>withAll()
                 .dtoList(dtoList)
                 .pageRequestDTO(pageRequestDTO)
                 .totalCount(totalCount)
                 .build();
+
         return pageResponseDTO;
     }
 }
