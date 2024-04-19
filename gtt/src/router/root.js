@@ -29,12 +29,12 @@ const root = createBrowserRouter([
         element: <Suspense fallback={Loading}><About/></Suspense>
     },
     {
-        path : "login",
+        path : "Login",
         element : <Suspense fallback = {Loading}><Login/></Suspense>,
         children : authRouter()
     },
     {
-        path : "signIn",
+        path : "SignIn",
         element : <Suspense fallback = {Loading}><SignIn/></Suspense>,
         children : authRouter()
     },
