@@ -35,13 +35,13 @@ const ReadPage = ()=>{
     const [comServerData, setComServerData] = useState(initState)
     const newsNo = useLocation().pathname.split("/")[3]
     const pathName = `${newsNo+"?"+queryParams}`
-    /*useEffect(() => {
+    useEffect(() => {
         let pathName = `${newsNo+"?"+createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}`
         getComList({pathName}).then(data => {
             setComServerData(data)
             setRefresh(true)
         })
-    }, [refresh,queryParams]);*/
+    }, [refresh,queryParams]);
 
     console.log(queryParams.get('page'),queryParams.get('size'))
     console.log(comServerData)
