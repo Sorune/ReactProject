@@ -23,7 +23,7 @@ const ContentHeader = ()=>{
                 <a href="#">Breadcrumbs</a>
             </Breadcrumbs>
             <div className="flex p-2">
-                <Button className="rounded-full">List</Button>
+                <Button className="rounded-full mr-3">List</Button>
                 <Button className="rounded-full">Modify</Button>
             </div>
         </div>

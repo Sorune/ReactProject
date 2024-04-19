@@ -14,7 +14,7 @@ const Test = lazy(()=>import("../pages/TestPage"))
 const root = createBrowserRouter([
     {
       path:"test",
-      element:<Suspense fallback={Loading}><Test />></Suspense>
+      element:<Suspense fallback={Loading}><Test /></Suspense>
     },
     {
         path:"",
