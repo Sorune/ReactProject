@@ -26,7 +26,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomFileUtil {
 
-    @Value("${com.sorune.upload.path}")
+    @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
 
     @PostConstruct
