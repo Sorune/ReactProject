@@ -5,6 +5,10 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -37,6 +41,8 @@ public class News extends BaseEntity {
 
     @ColumnDefault("0")
     private Long recomNo;   // 추천수
+
+
 
 
     public void changeTitle(String title){
