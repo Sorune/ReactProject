@@ -38,7 +38,7 @@ public class PageResponseDTO<E> {
         this.prev = start > 1; //처음으로 페이지 표시
 
 
-        this.next =  totalCount > end * pageRequestDTO.getSize(); // 다음 페이지 표시
+        this.next =  totalCount > (long) end * pageRequestDTO.getSize(); // 다음 페이지 표시
 
         this.pageNumList = IntStream.rangeClosed(start,end).boxed().collect(Collectors.toList());
 
