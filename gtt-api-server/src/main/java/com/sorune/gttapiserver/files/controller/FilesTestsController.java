@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/view")
+@RequestMapping("/api/files")
 public class FilesTestsController {
 
     private final CustomFileUtil fileUtil;
