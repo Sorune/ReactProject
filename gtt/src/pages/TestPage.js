@@ -3,6 +3,7 @@ import CommentCell from "../components/common/CommentCell";
 import CommentInputCell from "../components/common/CommentInputCell";
 import ContentHeader from "../components/common/ContentHeader";
 import ContentBody from "../components/common/ContentBody";
+import UplodComponent from "../components/common/UplodComponent";
 
 const TestPage = ()=>{
     return (
@@ -15,6 +16,9 @@ const TestPage = ()=>{
             <CommentInputCell />
             <p>댓글 보기</p>
             <CommentCell />
+            <p>파일 입력</p>
+            <UplodComponent />
+
         </BasicLayout>
     )
 }
