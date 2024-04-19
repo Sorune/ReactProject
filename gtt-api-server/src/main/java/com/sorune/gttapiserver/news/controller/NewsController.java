@@ -1,6 +1,7 @@
 package com.sorune.gttapiserver.news.controller;
 
 import com.sorune.gttapiserver.common.util.CustomFileUtil;
+import com.sorune.gttapiserver.files.DTO.FilesDTO;
 import com.sorune.gttapiserver.news.DTO.NewsDTO;
 import com.sorune.gttapiserver.news.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.news.DTO.PageResponseDTO;
@@ -10,9 +11,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 @RestController
 @RequestMapping("/api/news")
@@ -36,6 +38,11 @@ public class NewsController {
 
     @PostMapping("/")
     public Map<String, Long> register(@RequestBody NewsDTO newsDTO) {
+
+        List<MultipartFile> files = newsDTO.getFiles();             // NewsDTO에 있는 파일의 내용을 받아옴
+        List<String> uploadFileNames = fileUtil.saveFiles(files);   // 파일의 내용 중 파일의 이름을 통해 저장한 파일의 이름을 받음
+        newsDTO.setFileDTOList(uploadFileNames);                    // 파일의 이름을 다시 NewsDTO에 넣음
+
         Long newsNo = newsService.registerNews(newsDTO);
 
         return Map.of("newsNo", newsNo);
@@ -59,10 +66,5 @@ public class NewsController {
         return Map.of("result", "SUCCESS");
     }
 
-    // 첨부파일 불러와지는지 확인하는 컨트롤러
-    @GetMapping("/view/{fileName}")
-    public ResponseEntity<Resource> viewFileGet(@PathVariable String fileName) {
-        return fileUtil.getFile(fileName);
-    }
 
 }

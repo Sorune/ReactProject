@@ -1,7 +1,6 @@
 package com.sorune.gttapiserver.news.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sorune.gttapiserver.upload.DTO.FileDTO;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +31,8 @@ public class NewsDTO {
 
     @Builder.Default
     private List<String> fileDTOList = new ArrayList<>();   // 업로드가 완료된 파일의 이름
+
+
 
 
 }
