@@ -18,22 +18,18 @@ const TestPage = () => {
         "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
     ];
 
-    const [quillData, setQuillData] = useState([]);
     const quillEditorRef = useRef();
-
-    const handleOnChange = (deltaOps) => {
-        console.log(JSON.stringify(deltaOps)); // 에디터의 변경사항 로그 출력
-    };
 
     const handleSave = () => {
         if (quillEditorRef.current) {
             const quillInstance = quillEditorRef.current.getEditor();
             const content = quillInstance.getContents();
-            setQuillData(content);
-            quillInstance.setContents(content);
-            console.log(JSON.stringify(content)); // 에디터의 전체 내용 로그 출력
+            console.log(content); // 에디터의 전체 텍스트 내용 로그 출력
+
+            // 여기에 axios를 사용하여 서버와 통신하는 로직을 추가할 수 있습니다.
         }
     };
+
     return (
 
         <BasicLayout>
@@ -48,7 +44,7 @@ const TestPage = () => {
             <p>파일 입력</p>
             <UploadComponent/>
             <p>Editor</p>
-            <QuilEditor ref={quillEditorRef} value={quillData} onChange={handleOnChange}/>
+            <QuilEditor ref={quillEditorRef} />
             <Button onClick={handleSave}>save</Button>
             <p>Drop Down</p>
             <DropFiles/>

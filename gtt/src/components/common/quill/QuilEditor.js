@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState, useMemo } from "react";
 import { Card } from "@material-tailwind/react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -39,8 +39,11 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
     const [localValue, setLocalValue] = useState(value || "");
 
     const handleChange = (content, delta, source, editor) => {
+        const deltaString = JSON.stringify(delta.ops);
+        console.log(deltaString); // 에디터의 변경사항 로그 출력
+
         if (onChange) {
-            onChange(delta.ops);
+            onChange(content.ops);
         }
     };
 
@@ -51,8 +54,8 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
         }
     }, [localValue, ref]);
 
-    return (
-        <Card>
+    const quill = useMemo(() => {
+        return (
             <ReactQuill
                 ref={ref}
                 modules={modules}
@@ -61,8 +64,10 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
                 value={localValue}
                 onChange={handleChange}
             />
-        </Card>
-    );
+        );
+    }, [localValue, handleChange]);
+
+    return <Card>{quill}</Card>;
 });
 
 export default QuilEditor;
