@@ -9,3 +9,9 @@ export const getComList = async({pathName})=>{
     const res = await axios.get(`${prefix}/list/${pathName}`)
     return res.data
 }
+
+export const insertComment = async ({pathName,comObj})=>{
+    console.log(pathName,comObj)
+    // const res = await axios.get(`${prefix}/${pathName}`)
+    // return res.data
+}

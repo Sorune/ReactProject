@@ -16,44 +16,20 @@ const ListComponent = ({serverData}) =>{
                                 <div className="flex items-center gap-3">
                                     <Avatar src={img} alt={dto.theTeam} size="sm"/>
                                     <div className="flex flex-col">
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
-                                        >
-                                            {dto.theTeam}
-                                        </Typography>
+                                        <Typography variant="small" color="blue-gray" className="font-normal">{dto.theTeam}</Typography>
                                     </div>
                                 </div>
                         </td>
                         <td>
                             <div className="flex flex-col">
-                                <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-normal"
-                                >
-                                    {dto.title}
-                                </Typography>
+                                <Typography variant="small" color="blue-gray" className="font-normal">{dto.title}</Typography>
                             </div>
                         </td>
                         <td className={classes}>
-                            <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal"
-                            >
-                                {dto.writer}
-                            </Typography>
+                            <Typography variant="small" color="blue-gray"className="font-normal">{dto.writer}</Typography>
                         </td>
                         <td className={classes}>
-                            <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal"
-                            >
-                                {dto.hits}
-                            </Typography>
+                            <Typography variant="small" color="blue-gray" className="font-normal">{dto.hits}</Typography>
                         </td>
                         <td className={classes}>
                             <Typography
