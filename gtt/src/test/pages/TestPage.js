@@ -25,6 +25,7 @@ const TestPage = () => {
             const quillInstance = quillEditorRef.current.getEditor();
             const content = quillInstance.getContents();
             console.log(content); // 에디터의 전체 텍스트 내용 로그 출력
+            console.log(JSON.stringify(content.ops))
 
             // 여기에 axios를 사용하여 서버와 통신하는 로직을 추가할 수 있습니다.
         }

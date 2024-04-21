@@ -1,7 +1,13 @@
 import React, { forwardRef, useEffect, useState, useMemo } from "react";
 import { Card } from "@material-tailwind/react";
-import ReactQuill from "react-quill";
+import ReactQuill, {Quill} from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import {imageHandler} from "./handler/imageHandler";
+import ImageResize from "quill-image-resize-module-react/src/ImageResize";
+import {ImageDrop} from "quill-image-drop-module";
+
+Quill.register('modules/imageResize', ImageResize);
+Quill.register('modules/imageDrop',ImageDrop)
 
 const formats = [
     'font',
@@ -21,6 +27,8 @@ const formats = [
     'align',
     'size',
     'code-block',
+    'height',
+    'width'
 ];
 
 const modules = {
@@ -28,11 +36,16 @@ const modules = {
         container: [
             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'},{'align':[]}],
             ['link', 'image', 'video'],
             ['clean'],
         ],
     },
+    imageResize:{
+        parchment: Quill.import('parchment'),
+        modules: [ 'Resize', 'DisplaySize']
+    },
+    imageDrop:true,
 };
 
 const QuilEditor = forwardRef(({ value, onChange }, ref) => {
