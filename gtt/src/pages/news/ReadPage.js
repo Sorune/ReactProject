@@ -1,4 +1,4 @@
-import {createSearchParams, Link, useLocation, useParams, useSearchParams} from "react-router-dom";
+import {createSearchParams, Link, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {
     Avatar,
     Breadcrumbs,
@@ -14,6 +14,7 @@ import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import {useEffect, useState} from "react";
+import CommentCell from "../../components/common/CommentCell";
 
 const initState = {
     dtoList:[],
@@ -35,6 +36,7 @@ const ReadPage = ()=>{
     const [comServerData, setComServerData] = useState(initState)
     const newsNo = useLocation().pathname.split("/")[3]
     const pathName = `${newsNo+"?"+queryParams}`
+    const navigate = useNavigate()
     useEffect(() => {
         let pathName = `${newsNo+"?"+createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}`
         getComList({pathName}).then(data => {
@@ -67,7 +69,7 @@ const ReadPage = ()=>{
                     <a href="#">Breadcrumbs</a>
                 </Breadcrumbs>
                 <div className="flex p-2">
-                    <Button className="rounded-full">List</Button>
+                    <Button className="rounded-full" onClick={() => navigate(`/news/list?page=${page}&size=${size}`)}>List</Button>
                     <Button className="rounded-full">Modify</Button>
                 </div>
             </div>
@@ -110,33 +112,11 @@ const ReadPage = ()=>{
                 </CardBody>
                 <CardFooter>
                     <Card className="p-2">
-                        <Card className="p-2">
-                            <div className="flex flex-box justify-between">
-                                <div>
-                                    <Chip icon={
-                                        <Avatar
-                                            size="xs"
-                                            variant="circular"
-                                            className="h-full w-full -translate-x-0.5"
-                                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" />
-                                    }
-                                          value={<Typography variant="small">Writer</Typography>}
-                                    />
-                                    <Typography variant="h5">
-                                        test Comment
-                                    </Typography>
-                                </div>
-                                <div>
-                                    <div className="gap-2">
-                                        <Button className="w-full">modify</Button>
-                                    </div>
-                                    <div className="gap-2">
-                                        <Button className="w-full">delete</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </Card>
-
+                        {comServerData.dtoList.map((dto)=>{
+                            return(
+                                <CommentCell key={dto.comNo} writer={dto.writer} content={dto.content}/>
+                            )
+                        })}
                         <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>
                     </Card>
                 </CardFooter>

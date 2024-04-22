@@ -1,24 +1,24 @@
 import {Avatar, Button, Card, Chip, Typography} from "@material-tailwind/react";
 
 
-const CommentCell = ()=>{
+const CommentCell = ({key,writer, position, content})=>{
     return (
-        <Card className="p-2">
+        <Card key={key} className="p-2 m-2">
             <div className="grid col-auto gap-5">
                 <div className="col-start-1 col-end-2">
                     <div className="flex items-center gap-2">
                         <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
                         <div>
-                            <Typography variant="h6">양지웅</Typography>
+                            <Typography variant="h6">{writer}</Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                Developer
+                                {position
                             </Typography>
                         </div>
                     </div>
                 </div>
                 <div className="col-start-3 col-end-4 flex items-center">
                     <Typography color="black" variant="h6">
-                        테스트로 만든 댓글내용 입니다.
+                        {content}
                     </Typography>
                 </div>
                 <div className="col-start-5 col-end-6 flex justify-end">
