@@ -103,7 +103,7 @@ const ListPage = ()=>{
                         ))}
                     </tr>
                     </thead>
-                    <ListComponent serverData={serverData}/>
+                    <ListComponent serverData={serverData} page={page} size={size}/>
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">

@@ -11,7 +11,7 @@ const CommentCell = ({key,writer, position, content})=>{
                         <div>
                             <Typography variant="h6">{writer}</Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                {position
+                                {position}
                             </Typography>
                         </div>
                     </div>
