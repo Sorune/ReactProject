@@ -28,7 +28,7 @@ const CommentCell = ({key,writer, position, content})=>{
                     </Button>
                     {/* 본인일 경우 보이는 수정, 삭제 버튼 */}
                     <Button size="sm" color="blue" variant="text" className="rounded-md">
-               np         modify
+                        modify
                     </Button>
                     <Button size="sm" color="red" variant="text" className="rounded-md">
                         delete
