@@ -7,7 +7,6 @@ import ContentBody from "../../components/common/ContentBody";
 import UploadComponent from "../../components/common/UploadComponent";
 import DropFiles from "../../components/common/DropFiles";
 import CustomCarousel from "../../components/common/CustomCarousel";
-import {useState} from "react";
 import {Button} from "@material-tailwind/react";
 import QuilEditor from "../../components/common/quill/QuilEditor";
 

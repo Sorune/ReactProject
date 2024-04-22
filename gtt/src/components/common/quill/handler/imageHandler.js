@@ -1,7 +1,7 @@
 import {insertFiles} from "../../../../api/filesApi";
 import {useState} from "react";
 
-export const ImageHandler =  (ref)=>{
+export function ImageHandler   (ref){
 
     const input = document.createElement('input');
     let URL = '';
