@@ -4,6 +4,7 @@ import ReactQuill, {Quill} from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-image-resize-module-react/src/ImageResize";
 import {ImageDrop} from "quill-image-drop-module";
+import {insertFiles} from "../../../api/filesApi";
 
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDrop',ImageDrop)
@@ -30,11 +31,27 @@ const formats = [
     'width'
 ];
 
-
-
 const QuilEditor = forwardRef(({ value, onChange }, ref) => {
     const [localValue, setLocalValue] = useState(value || "");
+    const prefix = 'api/files'
+    const ImageHandler = ()=>{
+        const input = document.createElement('input');
+        input.setAttribute('type','file');
+        input.setAttribute('accept','image/*');
+        input.click();
 
+        input.addEventListener('change',()=>{
+            const file = input.files[0];
+            if (!file) return;
+            insertFiles(file).then(files => {
+                const imageUrl = "http://localhost:8080/api/files/" + files.at(0)
+                console.log(files.at(0),imageUrl)
+                const range = ref.current.getEditorSelection();
+                ref.current.getEditor().insertEmbed(range.index, 'image', imageUrl)
+                ref.current.getEditor().setSelection(range.index + 1);
+            })
+        })
+    }
     const handleChange = (content, delta, source, editor) => {
         const deltaString = JSON.stringify(delta.ops);
         console.log(deltaString); // 에디터의 변경사항 로그 출력
@@ -53,13 +70,20 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
                 ['link', 'image', 'video'],
                 ['clean'],
             ],
-            handlers:{image:ImageHandler}
+            handlers:{
+                image:ImageHandler
+            }
         },
         imageResize:{
             parchment: Quill.import('parchment'),
             modules: [ 'Resize', 'DisplaySize']
         },
-        imageDrop:true,
+        imageDrop:{
+            drop:true,
+            handlers:{
+                image:ImageHandler
+            }
+        }
     };
     
     useEffect(() => {
