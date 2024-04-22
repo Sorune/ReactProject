@@ -90,13 +90,7 @@ const ReadPage = ()=>{
                     </div>
                 </div>
                 <CardBody>
-                    <Card>
-                        <Textarea label="comment" className="outline-none">
-                            <Button>Add</Button>
-                        </Textarea>
-                        <Button>Add</Button>
-                    </Card>
-                    <Card className="p-2">
+                    <Card className="p-2 m-2">
                         <div className="flex flex-box">
                             ReadNews {newsNo}&nbsp;
                         </div>
@@ -104,7 +98,7 @@ const ReadPage = ()=>{
                             content....
                         </Typography>
                     </Card>
-                    <Card>
+                    <Card className="m-2">
                         <Textarea label="comment"></Textarea>
                         <div className="grid grid-cols-8 gap-3 p-2 items-center">
                             <Button>Add</Button>
