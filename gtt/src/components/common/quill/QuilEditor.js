@@ -7,7 +7,7 @@ import {ImageDrop} from "quill-image-drop-module";
 import {insertFiles} from "../../../api/filesApi";
 
 Quill.register('modules/imageResize', ImageResize);
-Quill.register('modules/imageDrop',ImageDrop)
+Quill.register('modules/imageDrop',ImageDrop);
 
 const formats = [
     'font',
