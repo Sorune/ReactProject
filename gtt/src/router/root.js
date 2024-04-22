@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import authRouter from "./authRouter.js";
 import newsRouter from "./newsRouter";
+import ticketingRouter from "./ticketingRouter.js";
 
 const { createBrowserRouter } = require("react-router-dom");
 
@@ -9,20 +10,21 @@ const Main = lazy(()=>import("../pages/MainPage.js"));
 const About = lazy(()=>import("../pages/AboutPage.js"));
 const Login = lazy(() => import("../pages/loginAuth/Login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
-const NewsIndex=lazy(()=>import("../pages/news/IndexPage"))
-const Test = lazy(()=>import("../test/pages/TestPage"))
+const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
+const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
+const Test = lazy(()=>import("../test/pages/TestPage.js"));
 const root = createBrowserRouter([
     {
-      path:"test",
-      element:<Suspense fallback={Loading}><Test /></Suspense>
+        path:"test",
+        element:<Suspense fallback={Loading}><Test /></Suspense>
     },
     {
         path:"",
         element:<Suspense fallback={Loading}><Main/></Suspense>
     },
     {
-      path:"login",
-      element:<Suspense fallback={Loading}><Login/></Suspense>
+        path:"login",
+        element:<Suspense fallback={Loading}><Login/></Suspense>
     },
     {
         path: "about",
@@ -42,6 +44,11 @@ const root = createBrowserRouter([
         path:"news",
         element:<Suspense fallback={Loading}><NewsIndex /></Suspense>,
         children:newsRouter()
+    },
+    {
+        path:"Ticketing",
+        element:<Suspense fallback={Loading}><Ticketing /></Suspense>,
+        children:ticketingRouter()
     }
 ])
 

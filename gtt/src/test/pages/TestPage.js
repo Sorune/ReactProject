@@ -6,7 +6,6 @@ import ContentBody from "../../components/common/ContentBody";
 import UplodComponent from "../../components/common/UplodComponent";
 import LexicalEditor from "../../components/common/LexicalEditor";
 import DropFiles from "../../components/common/DropFiles";
-import CustomCarousel from "../../components/common/CustomCarousel/CustomCarousel";
 
 const TestPage = ()=>{
     return (
@@ -25,8 +24,8 @@ const TestPage = ()=>{
             <LexicalEditor />
             <p>Drop Down</p>
             <DropFiles />
-                <p>Custom Carousel</p>
-                <CustomCarousel />
+            <p>유저정보 보기모달 레이아웃</p>
+            
         </BasicLayout>
     )
 }
