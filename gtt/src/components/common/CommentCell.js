@@ -11,7 +11,7 @@ const CommentCell = ()=>{
                         <div>
                             <Typography variant="h6">양지웅</Typography>
                             <Typography variant="small" color="gray" className="font-normal">
-                                 Developer
+                                Developer
                             </Typography>
                         </div>
                     </div>
@@ -28,7 +28,7 @@ const CommentCell = ()=>{
                     </Button>
                     {/* 본인일 경우 보이는 수정, 삭제 버튼 */}
                     <Button size="sm" color="blue" variant="text" className="rounded-md">
-               np         modify
+                        modify
                     </Button>
                     <Button size="sm" color="red" variant="text" className="rounded-md">
                         delete
