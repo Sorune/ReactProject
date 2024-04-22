@@ -15,3 +15,10 @@ export const getOne = async(pageParam)=>{
     const res = await axios.get(`${prefix}/${newsNo}`,{params:{page:page,size:size}})
     return res.data
 }
+
+export const insertNews = async ({pageParam,pathName,newsObj})=>{
+    console.log(pathName,newsObj)
+    // const {newsNo} =pageParam
+    // const res = await axios.get(`${prefix}/${newsNo}`)
+    // return res.data
+}
