@@ -8,7 +8,6 @@ import userEvent from "@testing-library/user-event";
 // validation.js 제외 / 리액트 훅 규칙에 따라서 사용할 훅의 네임을 useInput으로 새로운 훅을 생성
 import { useConfirmID, useConfirmNick, usePasswordMatch, useCheckedTerms } from '../../hooks/useInput';
 
-
 const SignIn = () => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
