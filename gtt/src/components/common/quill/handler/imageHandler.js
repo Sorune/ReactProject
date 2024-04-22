@@ -1,7 +1,7 @@
 import {insertFiles} from "../../../../api/filesApi";
 import {useState} from "react";
 
-export const imageHandler =  ()=>{
+export const ImageHandler =  (ref)=>{
 
     const input = document.createElement('input');
     let URL = '';
@@ -12,8 +12,9 @@ export const imageHandler =  ()=>{
     input.addEventListener('change',()=>{
         const file = input.files[0];
         if (!file) return;
-        URL = insertFiles(file).toString()
-        console.log(URL)
+        // URL = insertFiles(file).toString()
+        // console.log(URL)
+        console.log(ref)
     })
 
     return URL;
