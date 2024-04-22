@@ -11,10 +11,16 @@ const Login = lazy(() => import("../pages/loginAuth/Login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"))
 const Test = lazy(()=>import("../test/pages/TestPage"))
+const GridTest = lazy(()=>import("../test/pages/GridTest"))
+
 const root = createBrowserRouter([
     {
       path:"test",
       element:<Suspense fallback={Loading}><Test /></Suspense>
+    },
+    {
+        path:"grid",
+        element:<Suspense fallback={Loading}><GridTest/></Suspense>
     },
     {
         path:"",

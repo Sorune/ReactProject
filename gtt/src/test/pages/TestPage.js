@@ -25,8 +25,8 @@ const TestPage = ()=>{
             <LexicalEditor />
             <p>Drop Down</p>
             <DropFiles />
-                <p>Custom Carousel</p>
-                <CustomCarousel />
+
+
         </BasicLayout>
     )
 }
