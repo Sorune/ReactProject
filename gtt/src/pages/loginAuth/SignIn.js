@@ -1,29 +1,48 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddrWithDaum from './AddrWithDaum';
 import DatePicker from "../../components/common/DatePicker";
 import { Collapse, Button, IconButton, Card, Typography, CardBody } from '@material-tailwind/react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
-import validation from "../../hooks/validation";
 import userEvent from "@testing-library/user-event";
+// validation.js 제외 / 리액트 훅 규칙에 따라서 사용할 훅의 네임을 useInput으로 새로운 훅을 생성
+import { useConfirmID, useConfirmNick, usePasswordMatch, useCheckedTerms } from '../../hooks/useInput';
 
-const initStatus = {
-    id : '',
-}
 
 const SignIn = () => {
-    const {checkID,checkPasswords,checkNickname} = validation();
     const navigate = useNavigate();
-    const [id, setId] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [nickname, setNickname] = useState('');
-    const [termsChecked, setTermsChecked] = useState(false);
     const [open, setOpen] = useState(false);
     const [address, setAddress] = useState('');
     const [zoneCode, setZoneCode] = useState('');
     const [modalOpen, modalSetOpen]  = React.useState(false);
+    const [termsChecked, setTermsChecked] = useState(false);
+    // useInput에서 리턴한 값
+    const [inputID, inputIdChange, idMatch, clearInput] = useConfirmID('');
+    const [inputNick, inputNickChange, nickMatch, clearNick] = useConfirmNick('');
+    const [inputPass, inputPassChange, inputConfirmPass, inputConfirmPassChange, passMatch, clearPassword] = usePasswordMatch("", "");
+    // const [termsChecked, checkeChange] = useCheckedTerms(false);
 
+    // useInput에서 리턴한 값을 기준으로 메서드 실행 - id검증
+    const idCompareResult = () => {
+        if(idMatch) {
+            alert("이미 사용중인 아이디 입니다.");
+            clearInput();
+        }
+    }
+    // 리턴한 값을 기준으로 메서드 실행 - 닉네임검증
+    const nickCompareResult = () => {
+        if(nickMatch) {
+            alert("이미 사용중인 닉네임 입니다.");
+            clearNick();
+        }
+    }
+    // 리턴한 값을 기준으로 메서드 실행 - 비밀번호검증
+    const passCompareResult = () => {
+        if(!passMatch) {
+            alert("PW 입력 과 PW 입력확인이 일치하지 않습니다.");
+            clearPassword();
+        }
+    }
     // 머트리얼 콜랩스 동작메서드 - toggle 
     const toggleOpen = () => setOpen((cur) => !cur);
     // 머트리얼 모달 동작 메서드
@@ -34,10 +53,17 @@ const SignIn = () => {
         setAddress(fullAddress);
         setZoneCode(zoneCode);
     };
-    // 로그인 페이지로 이동하는 메서드 - 버튼 이벤트
-    const moveToLogin = () => {
-        // 로그인 페이지로 이동하기위한 링크 적용
-        navigate("/login");
+    // 로그인 페이지로 가는 메서드 - 버튼 이벤트 처리용
+    const moveToLink = (e) => {
+        // 클릭한 요소에서 'data-value' 속성 값을 가져와서 목적지 변수에 저장
+        const destination = e.target.dataset.value;
+        // 목적지 값에 따라 다르게 처리 "login"이면 로그인 페이지로 이동하고
+        if (destination === "login") {
+            navigate("/login");
+        // "home"이면 홈페이지(보통 "/"로 표시됨)로 이동
+        } else if (destination === "home") {
+            navigate("/");
+        }
     };
     // 폼 제출 메서드
     const handleFormSubmit = (event) => {
@@ -45,16 +71,12 @@ const SignIn = () => {
         if (!termsChecked) {
             alert("개인정보 취급방침에 동의해야 합니다.");
             return;
-        }
-        if (checkID(id) && checkPasswords(password,confirmPassword)) {
+        } else {
             alert("회원 가입이 완료되었습니다! 메인화면으로 이동합니다.");
             //navigate("/home");
         }
     };
 
-    useEffect(() => {
-
-    }, [password, confirmPassword]);
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
@@ -69,20 +91,20 @@ const SignIn = () => {
                             </h1>
                             <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleFormSubmit}>
                                 <div>
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</label>
-                                    <input value={id} onChange={(e) => setId(e.target.value)} onBlur={()=>{checkID({id:id})}} type="text" name="id" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
+                                    <label htmlFor="id" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</label>
+                                    <input name="id" value={inputID} onChange={inputIdChange} onBlur={idCompareResult} type="text" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
                                 </div>
                                 <div>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
-                                    <input value={password} onChange={(e) => {setPassword(e.target.value)}} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                    <input name="password" value={inputPass} onChange={inputPassChange} type="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                 </div>
                                 <div>
-                                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력 확인</label>
-                                    <input  value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); checkPasswords(e.target,{password:password,confirmPassword:confirmPassword})}} type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                    <label htmlFor="password2" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력 확인</label>
+                                    <input name="password2" value={inputConfirmPass} onChange={inputConfirmPassChange} onBlur={passCompareResult} type="password" id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                 </div>
                                 <div>
-                                    <label htmlFor="nick" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임</label>
-                                    <input  value={nickname} onChange={(e) => setNickname(e.target.value)} onBlur={()=>{checkNickname({nickname: nickname})}} type="text" name="nick" id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
+                                    <label htmlFor="nickname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임</label>
+                                    <input name="nickname" value={inputNick} onChange={inputNickChange} onBlur={nickCompareResult} type="text" id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
                                 </div>
 
                                 <div>
@@ -94,7 +116,7 @@ const SignIn = () => {
                                             <CardBody>
                                                 <div>
                                                     <Typography as="label" htmlFor="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</Typography>
-                                                    <DatePicker name=""/>
+                                                    <DatePicker name="birth"/>
                                                 </div>
                                                 <div>
                                                     <label htmlFor="addrNum" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</label>
@@ -152,7 +174,13 @@ const SignIn = () => {
                                 <button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                     회원가입
                                 </button>
-                                <p className="text-sm font-light text-gray-500 dark:text-gray-400">이미 계정이 있으신가요?&nbsp;<a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={moveToLogin}>로그인</a></p>
+                                <p className='ml-3 text-sm font-light text-gray-500 dark:text-gray-300'>
+                                    이미 계정이 있으신가요? &nbsp;
+                                    <a href="#none" className="text-primary" data-value="login" onClick={moveToLink}>로그인</a>
+                                    <br />
+                                    메인화면으로 돌아갈까요? &nbsp;
+                                    <a href="#none" className="text-primary" data-value="home" onClick={moveToLink}>홈으로</a>
+                                </p>
                             </form>
                         </div>
                     </div>

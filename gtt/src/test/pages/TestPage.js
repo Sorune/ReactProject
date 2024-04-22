@@ -36,6 +36,8 @@ const TestPage = ()=>{
                     <img key={s} src={s} />
                 ))]}
             </CustomCarousel>
+            <p>유저정보 보기모달 레이아웃</p>
+
         </BasicLayout>
     )
 }
