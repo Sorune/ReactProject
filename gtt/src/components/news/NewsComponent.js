@@ -1,9 +1,12 @@
 import {Avatar, Typography} from "@material-tailwind/react";
+import useCustomMove from "../../hooks/useCustomMove";
+import {useNavigate} from "react-router-dom";
 
 
 const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
-const ListComponent = ({serverData}) =>{
+const ListComponent = ({serverData,page,size}) =>{
+    const navigate = useNavigate()
     return (
         <tbody>
             {serverData.dtoList.map( (dto,index) => {
@@ -11,7 +14,7 @@ const ListComponent = ({serverData}) =>{
                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                 return (
-                    <tr key={dto.newsNo}>
+                    <tr key={dto.newsNo} onClick={()=> navigate(`/news/read/${dto.newsNo}?page=${page}&size=${size}`)}>
                         <td className={classes}>
                                 <div className="flex items-center gap-3">
                                     <Avatar src={img} alt={dto.theTeam} size="sm"/>
