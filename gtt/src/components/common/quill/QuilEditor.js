@@ -98,10 +98,9 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
                 formats={formats}
                 theme="snow"
                 value={localValue}
-                onChange={handleChange}
             />
         );
-    }, [localValue, handleChange]);
+    }, [localValue]);
 
     return <Card>{quill}</Card>;
 });
