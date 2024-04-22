@@ -22,7 +22,7 @@ const ContentBody = ()=>{
                 본문내용 &nbsp;
             </div>
             <Typography as="div" className="row-end-6 w-full h-48">
-                
+                df
             </Typography>
         </Card>
     )

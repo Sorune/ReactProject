@@ -1,7 +1,7 @@
 import {Card} from "@material-tailwind/react";
 
 
-const UplodComponent = ()=>{
+const UploadComponent = ()=>{
 
 
     return (
@@ -13,4 +13,4 @@ const UplodComponent = ()=>{
     )
 }
 
-export default UplodComponent
+export default UploadComponent
