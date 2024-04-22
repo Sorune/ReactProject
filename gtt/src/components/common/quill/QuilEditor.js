@@ -3,11 +3,11 @@ import { Card } from "@material-tailwind/react";
 import ReactQuill, {Quill} from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-image-resize-module-react/src/ImageResize";
-import {ImageDrop} from "quill-image-drop-module";
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import {insertFiles} from "../../../api/filesApi";
 
 Quill.register('modules/imageResize', ImageResize);
-Quill.register('modules/imageDrop',ImageDrop)
+Quill.register('modules/imageDropAndPaste',QuillImageDropAndPaste)
 
 const formats = [
     'font',
@@ -78,11 +78,8 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
             parchment: Quill.import('parchment'),
             modules: [ 'Resize', 'DisplaySize']
         },
-        imageDrop:{
-            drop:true,
-            handlers:{
-                image:ImageHandler
-            }
+        imageDropAndPaste:{
+            handler:ImageHandler
         }
     };
     
