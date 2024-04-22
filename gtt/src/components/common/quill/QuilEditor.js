@@ -2,11 +2,11 @@ import React, { forwardRef, useEffect, useState, useMemo } from "react";
 import { Card } from "@material-tailwind/react";
 import ReactQuill, {Quill} from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import ImageDrop from "quill-image-drop-module";
 import ImageResize from "quill-image-resize-module-react/src/ImageResize";
-import {ImageDrop} from "quill-image-drop-module";
 
 Quill.register('modules/imageResize', ImageResize);
-Quill.register('modules/imageDrop',ImageDrop)
+Quill.register('modules/imageDrop',ImageDrop);
 
 const formats = [
     'font',

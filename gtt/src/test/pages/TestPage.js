@@ -45,7 +45,7 @@ const TestPage = () => {
             <p>파일 입력</p>
             <UploadComponent/>
             <p>Editor</p>
-            <QuilEditor ref={quillEditorRef} />
+            {/* <QuilEditor ref={quillEditorRef} /> */}
             <Button onClick={handleSave}>save</Button>
             <p>Drop Down</p>
             <DropFiles/>
