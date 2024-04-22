@@ -8,6 +8,7 @@ import {insertFiles} from "../../../api/filesApi";
 
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDropAndPaste',QuillImageDropAndPaste)
+Quill.register('modules/imageDrop',ImageDrop);
 
 const formats = [
     'font',
