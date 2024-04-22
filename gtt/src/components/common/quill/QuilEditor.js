@@ -8,8 +8,6 @@ import {insertFiles} from "../../../api/filesApi";
 
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDropAndPaste',QuillImageDropAndPaste)
-Quill.register('modules/imageDrop',ImageDrop);
-
 const formats = [
     'font',
     'header',
@@ -99,9 +97,10 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
                 formats={formats}
                 theme="snow"
                 value={localValue}
+                onChange={handleChange}
             />
         );
-    }, [localValue]);
+    }, [localValue,handleChange]);
 
     return <Card>{quill}</Card>;
 });
