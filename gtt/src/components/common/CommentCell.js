@@ -39,4 +39,4 @@ const CommentCell = ({key,writer, position, content})=>{
     )
 }
 
-export default CommentCell
+export default CommentCell;
