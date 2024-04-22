@@ -43,7 +43,7 @@ const TestPage = () => {
             <p>댓글 작성</p>
             <CommentInputCell/>
             <p>댓글 보기</p>
-            <CommentCell/>
+            <CommentCell writer={"양지웅"} position={"Developer"} content={"테스트 내용입니다"}/>
             <p>파일 입력</p>
             <UploadComponent/>
             <p>Editor</p>
