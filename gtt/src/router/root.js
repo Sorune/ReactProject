@@ -16,6 +16,7 @@ const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
 const Test = lazy(()=>import("../test/pages/TestPage.js"));
 const GridTest = lazy(()=>import("../test/pages/GridTest"))
 const NotFound = lazy(()=>import("../pages/error/404NotFound"))
+const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
 const root = createBrowserRouter([
     {
         path:"spin",
@@ -76,6 +77,14 @@ const root = createBrowserRouter([
         element:NotFound,
         errorElement:NotFound,
     },
+    {
+        path:"sidebar",
+        element:<Suspense fallback={Loading}><SidebarLayout/></Suspense>
+    },
+    {
+        path:"grid",
+        element:<Suspense fallback={Loading}><GridTest/></Suspense>
+    }
 ])
 
 export default root;
