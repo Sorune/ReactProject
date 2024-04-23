@@ -7,7 +7,7 @@ import ReadPage from "../../pages/news/ReadPage";
 import SidebarLayout from "../../layouts/SidebarLayout";
 const GridTest = () => {
     return (
-        <BasicLayout>
+
             <SidebarLayout>
             <div className="grid grid-rows-3 grid-cols-9 gap-4">
                 <div className="col-start-1 col-end-8 row-span-4">
@@ -38,7 +38,7 @@ const GridTest = () => {
                 </div>
             </div>
             </SidebarLayout>
-        </BasicLayout>
+
     );
 };
 
