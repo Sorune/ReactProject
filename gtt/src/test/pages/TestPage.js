@@ -10,6 +10,7 @@ import CustomCarousel from "../../components/common/CustomCarousel";
 import {Button} from "@material-tailwind/react";
 import QuilEditor from "../../components/common/quill/QuilEditor";
 import QuilEditorReadOnly from "../../components/common/quill/QuillEditorReadOnly";
+import SidebarLayout from "../../layouts/SidebarLayout";
 
 
 const TestPage = () => {
@@ -36,6 +37,7 @@ const TestPage = () => {
     return (
 
         <BasicLayout>
+            <SidebarLayout>
             <p>컨텐츠 헤더</p>
             <ContentHeader/>
             <p>컨텐츠 바디</p>
@@ -60,7 +62,7 @@ const TestPage = () => {
                 ))]}
             </CustomCarousel>
             <p>유저정보 보기모달 레이아웃</p>
-
+            </SidebarLayout>
         </BasicLayout>
     )
 }

@@ -13,7 +13,8 @@ const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
 const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
 const Test = lazy(()=>import("../test/pages/TestPage.js"));
-const GridTest = lazy(()=>import("../test/pages/GridTest.js"));
+const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
+const GridTest = lazy(()=> import("../test/pages/GridTest"))
 const root = createBrowserRouter([
     {
         path:"test",
@@ -50,6 +51,10 @@ const root = createBrowserRouter([
         path:"Ticketing",
         element:<Suspense fallback={Loading}><Ticketing /></Suspense>,
         children:ticketingRouter()
+    },
+    {
+        path:"sidebar",
+        element:<Suspense fallback={Loading}><SidebarLayout/></Suspense>
     },
     {
         path:"grid",
