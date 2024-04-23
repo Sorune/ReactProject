@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const ContentHeader = ()=>{
     return (
-        <div className="flex flex-box justify-between items-center">
+        <div className="flex flex-box justify-between align-middle items-center">
             <Breadcrumbs fullWidth className="bg-white -z-10">
                 <Link to={'/'} className="opacity-60">
                     <svg

@@ -1,9 +1,12 @@
 import {Avatar, Button, Card, Chip, Typography} from "@material-tailwind/react";
+import {removeComment} from "../../api/commentApi";
+import useCustomMove from "../../hooks/useCustomMove";
 
 
-const CommentCell = ({key,writer, position, content})=>{
+const CommentCell = ({comNo,writer, position, content})=>{
+    const {refresh,setRefresh} = useCustomMove()
     return (
-        <Card key={key} className="p-2 m-2">
+        <Card comNo={comNo} className="p-2 m-2">
             <div className="grid col-auto gap-5">
                 <div className="col-start-1 col-end-2">
                     <div className="flex items-center gap-2">
@@ -30,7 +33,12 @@ const CommentCell = ({key,writer, position, content})=>{
                     <Button size="sm" color="blue" variant="text" className="rounded-md">
                         modify
                     </Button>
-                    <Button size="sm" color="red" variant="text" className="rounded-md">
+                    <Button size="sm" color="red" variant="text" className="rounded-md" onClick={()=> {
+                            const result = removeComment(comNo).RESULT;
+                            console.log(result)
+                            alert(result);
+                            setRefresh(!refresh);
+                    }}>
                         delete
                     </Button>
                 </div>
