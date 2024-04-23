@@ -1,20 +1,11 @@
-import {createSearchParams, Link, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
-import {
-    Avatar,
-    Breadcrumbs,
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    Chip,
-    Textarea,
-    Typography
-} from "@material-tailwind/react";
+import {createSearchParams, Link, useLocation, useSearchParams} from "react-router-dom";
+import {Avatar, Breadcrumbs, Button, Card, CardBody, CardFooter, Chip, Textarea,Typography} from "@material-tailwind/react";
 import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import CommentCell from "../../components/common/CommentCell";
+import QuilEditorReadOnly from "../../components/common/quill/QuillEditorReadOnly";
 
 const initState = {
     dtoList:[],
@@ -29,28 +20,31 @@ const initState = {
     current:0
 }
 
-const ReadPage = ()=>{
-    const {page, size,moveToList,moveToRead,loadToList,getNum} = useCustomMove()
+
+const BasicReadPage = ()=>{
+    const {page, size,currentPage,totalPage,moveToList,loadToList} = useCustomMove()
     const [queryParams] = useSearchParams();
     const [refresh, setRefresh] = useState(false);
     const [comServerData, setComServerData] = useState(initState)
     const newsNo = useLocation().pathname.split("/")[3]
     const [isFirst,setIsFirst] =useState(false)
     const pathName = `${newsNo+"?"+queryParams}`
-    const navigate = useNavigate()
-
+    const ReadQuillRef = useRef(null);
+    const content = ""
     useEffect(() => {
         let pathName = isFirst===true?`${newsNo+"?" + createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}` : `${newsNo}?page=1&size=10`; setIsFirst(true);
         getComList({pathName}).then(data => {
             setComServerData(data)
         })
-    }, [queryParams]);
 
-    console.log(queryParams.get('page'),queryParams.get('size'))
-    console.log(comServerData)
-    console.log(page,size)
+        if(ReadQuillRef.current){
+            const ReadQuillInstance = ReadQuillRef.current.getEditor();
+            ReadQuillInstance.setContents(content)
+        }
+    }, [queryParams]);
     return(
         <section className="bg-white w-full h-full p-2 py-2">
+            <p>{currentPage}:{totalPage}</p>
             <div className="flex flex-box justify-between items-center">
                 <Breadcrumbs fullWidth className="bg-white -z-10">
                     <Link to={'/'} className="opacity-60">
@@ -70,7 +64,10 @@ const ReadPage = ()=>{
                     <a href="#">Breadcrumbs</a>
                 </Breadcrumbs>
                 <div className="flex p-2">
-                    <Button className="rounded-full" onClick={() => navigate(`/news/list?page=${page}&size=${size}`)}>List</Button>
+                    <Button className="rounded-full" onClick={() => moveToList({
+                        pathName: '/news/list',
+                        pageParam: {page: `${page}`, size: `${size}`}
+                    })}>List</Button>
                     <Button className="rounded-full">Modify</Button>
                 </div>
             </div>
@@ -81,7 +78,7 @@ const ReadPage = ()=>{
                             size="xs"
                             variant="circular"
                             className="h-full w-full -translate-x-0.5"
-                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" />
+                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"/>
                     }
                           value={<Typography variant="small">Team Name</Typography>}
                     />
@@ -90,15 +87,11 @@ const ReadPage = ()=>{
                     </div>
                 </div>
                 <CardBody>
-                    <Card className="p-2 m-2">
-                        <div className="flex flex-box">
-                            ReadNews {newsNo}&nbsp;
-                        </div>
-                        <Typography as="div" className="row-end-6 w-full h-48">
-                            content....
-                        </Typography>
+                    <Card className="p-2 m-2 w-full h-48">
+                        <QuilEditorReadOnly ref={ReadQuillRef}/>
                     </Card>
                     <Card className="m-2">
+
                         <Textarea label="comment"></Textarea>
                         <div className="grid grid-cols-8 gap-3 p-2 items-center">
                             <Button>Add</Button>
@@ -107,8 +100,8 @@ const ReadPage = ()=>{
                 </CardBody>
                 <CardFooter>
                     <Card className="p-2">
-                        {comServerData.dtoList.map((dto)=>{
-                            return(
+                        {comServerData.dtoList.map((dto) => {
+                            return (
                                 <CommentCell key={dto.comNo} writer={dto.writer} content={dto.content}/>
                             )
                         })}
@@ -120,4 +113,4 @@ const ReadPage = ()=>{
     );
 }
 
-export default ReadPage;
+export default BasicReadPage;

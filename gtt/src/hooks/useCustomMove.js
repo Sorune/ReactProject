@@ -14,6 +14,8 @@ const useCustomMove = () => {
     const [refresh, setRefresh] = useState(false);
     const [page, setPage] = useState(getNum(queryParams.get('page'), 1));
     const [size, setSize] = useState(getNum(queryParams.get('size'), 10));
+    const [currentPage, setCurrentPage] = useState()
+    const [totalPage, setTotalPage] = useState()
     const queryDefault = createSearchParams({ page, size }).toString();
 
     const moveToList = ({ pathName, pageParam = {} }) => {
@@ -38,7 +40,11 @@ const useCustomMove = () => {
         });
     };
 
-    const moveToRead = ({ pathName, num }) => {
+    const moveToRead = ({ pathName, num, totalPage }) => {
+        console.log(totalPage)
+        setCurrentPage(num)
+        setTotalPage(parseInt(totalPage))
+        console.log(num,currentPage,totalPage)
         navigate({
             pathname: `${pathName}/${num}`,
             search: queryDefault,
@@ -58,7 +64,7 @@ const useCustomMove = () => {
         navigate({ pathname: `.`, search: queryStr });
         return {pageParam,pathName}
     }
-    return { moveToList, moveToModify, moveToRead, loadToList, getNum, page, size, refresh };
+    return { moveToList, moveToModify, moveToRead, loadToList, getNum, page, size, refresh,currentPage,totalPage,setTotalPage,setCurrentPage };
 };
 
 export default useCustomMove;

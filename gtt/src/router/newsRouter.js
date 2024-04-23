@@ -3,7 +3,7 @@ import {Navigate} from "react-router-dom";
 
 const Loading = <div>Loading</div>
 const NewsList = lazy(()=>import("../pages/news/ListPage.js"))
-const ReadNews = lazy(()=>import("../pages/news/ReadPage"))
+const ReadNews = lazy(()=>import("../pages/news/BasicReadPage"))
 
 const newsRouter = ()=>{
     return[

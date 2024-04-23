@@ -38,17 +38,19 @@ const TABLE_HEAD = ["Teams", "Title", "Writer", "hits", "Recommend", "RegDate"];
 
 const ListPage = ()=>{
     const pathName = useLocation().pathname
-    const {page, size, refresh,moveToList,moveToRead} = useCustomMove()
+    const {page, size, refresh,moveToList,moveToRead,setTotalPage,currentPage,totalPage} = useCustomMove()
     const [serverData, setServerData] = useState(initState)
 
     useEffect(() => {
         getList({page,size}).then(data=>{
             setServerData(data)
+            setTotalPage(data.totalCount)
         })
     }, [page, size, refresh]);
 
     return(
         <Card className="h-full w-full">
+            <p>{currentPage}:{totalPage}</p>
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
@@ -103,7 +105,9 @@ const ListPage = ()=>{
                         ))}
                     </tr>
                     </thead>
-                    <ListComponent serverData={serverData} page={page} size={size}/>
+                    {serverData.dtoList.length >0 && (
+                        <ListComponent serverData={serverData} page={page} size={size}/>)
+                    }
                 </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
