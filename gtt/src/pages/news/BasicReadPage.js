@@ -6,6 +6,8 @@ import useCustomMove from "../../hooks/useCustomMove";
 import React, {useEffect, useRef, useState} from "react";
 import CommentCell from "../../components/common/CommentCell";
 import QuilEditorReadOnly from "../../components/common/quill/QuillEditorReadOnly";
+import {useRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
 
 const initState = {
     dtoList:[],
@@ -22,7 +24,8 @@ const initState = {
 
 
 const BasicReadPage = ()=>{
-    const {page, size,currentPage,totalPage,moveToList,loadToList} = useCustomMove()
+    const {moveToList,loadToList} = useCustomMove()
+    const [page,setPage] = useRecoilState(pageState)
     const [queryParams] = useSearchParams();
     const [refresh, setRefresh] = useState(false);
     const [comServerData, setComServerData] = useState(initState)
@@ -31,6 +34,9 @@ const BasicReadPage = ()=>{
     const pathName = `${newsNo+"?"+queryParams}`
     const ReadQuillRef = useRef(null);
     const content = ""
+
+
+
     useEffect(() => {
         let pathName = isFirst===true?`${newsNo+"?" + createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}` : `${newsNo}?page=1&size=10`; setIsFirst(true);
         getComList({pathName}).then(data => {
@@ -44,7 +50,7 @@ const BasicReadPage = ()=>{
     }, [queryParams]);
     return(
         <section className="bg-white w-full h-full p-2 py-2">
-            <p>{currentPage}:{totalPage}</p>
+            <p>{page.currentPage}:{page.totalPage}:{page.page}:{page.size}</p>
             <div className="flex flex-box justify-between items-center">
                 <Breadcrumbs fullWidth className="bg-white -z-10">
                     <Link to={'/'} className="opacity-60">
@@ -66,7 +72,7 @@ const BasicReadPage = ()=>{
                 <div className="flex p-2">
                     <Button className="rounded-full" onClick={() => moveToList({
                         pathName: '/news/list',
-                        pageParam: {page: `${page}`, size: `${size}`}
+                        pageParam: {page: `${page.page}`, size: `${page.size}`}
                     })}>List</Button>
                     <Button className="rounded-full">Modify</Button>
                 </div>

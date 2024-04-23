@@ -8,6 +8,8 @@ import DatePicker from "../../components/common/DatePicker";
 import ListComponent from "../../components/news/NewsComponent";
 import {getList} from "../../api/newsApi";
 import {useLocation, useSearchParams} from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
 const initState = {
     dtoList:[],
     pageNumList:[],
@@ -38,19 +40,20 @@ const TABLE_HEAD = ["Teams", "Title", "Writer", "hits", "Recommend", "RegDate"];
 
 const ListPage = ()=>{
     const pathName = useLocation().pathname
-    const {page, size, refresh,moveToList,moveToRead,setTotalPage,currentPage,totalPage} = useCustomMove()
+    const [page,setPage] = useRecoilState(pageState)
+    const {refresh,moveToList,moveToRead} = useCustomMove()
     const [serverData, setServerData] = useState(initState)
 
     useEffect(() => {
-        getList({page,size}).then(data=>{
+        getList({page:page.page,size:page.size}).then(data=>{
             setServerData(data)
-            setTotalPage(data.totalCount)
+            setPage((page)=>({...page,totalPage:data.totalCount}))
         })
-    }, [page, size, refresh]);
+    }, [refresh]);
 
     return(
         <Card className="h-full w-full">
-            <p>{currentPage}:{totalPage}</p>
+            <p>{page.currentPage}:{page.totalPage}</p>
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
@@ -106,7 +109,7 @@ const ListPage = ()=>{
                     </tr>
                     </thead>
                     {serverData.dtoList.length >0 && (
-                        <ListComponent serverData={serverData} page={page} size={size}/>)
+                        <ListComponent serverData={serverData} page={page.page} size={page.size}/>)
                     }
                 </table>
             </CardBody>
