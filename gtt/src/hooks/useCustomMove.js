@@ -27,7 +27,7 @@ const useCustomMove = () => {
         if (pageParam) {
             const pageNum = getNum(parseInt(pageParam.page), 1);
             const sizeNum = getNum(parseInt(pageParam.size), 10);
-            setPage({...page,page:pageNum,size:sizeNum})
+            setPage((page)=>({...page, page: pageNum, size: sizeNum}))
             setRefresh(!refresh)
             queryStr = createSearchParams({ page: pageNum, size: sizeNum }).toString();
         } else {
@@ -45,7 +45,7 @@ const useCustomMove = () => {
 
     const moveToRead = ({ pathName, num, totalPage }) => {
         console.log(page.page,page.size)
-        setPage({...page,currentPage:parseInt(num),totalPage:parseInt(totalPage)})
+        setPage((page)=>({...page,currentPage:parseInt(num),totalPage:parseInt(totalPage)}))
         navigate({
             pathname: `${pathName}/${num}`,
             search: queryDefault,
