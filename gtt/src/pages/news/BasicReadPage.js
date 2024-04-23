@@ -50,7 +50,6 @@ const BasicReadPage = ()=>{
     }, [queryParams]);
     return(
         <section className="bg-white w-full h-full p-2 py-2">
-            <p>{page.currentPage}:{page.totalPage}:{page.page}:{page.size}</p>
             <div className="flex flex-box justify-between items-center">
                 <Breadcrumbs fullWidth className="bg-white -z-10">
                     <Link to={'/'} className="opacity-60">

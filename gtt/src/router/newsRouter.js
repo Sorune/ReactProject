@@ -1,7 +1,8 @@
 import {Suspense, lazy} from "react";
 import {Navigate} from "react-router-dom";
+import Spin from "../test/pages/Spin";
 
-const Loading = <div>Loading</div>
+const Loading = Spin;
 const NewsList = lazy(()=>import("../pages/news/ListPage.js"))
 const ReadNews = lazy(()=>import("../pages/news/BasicReadPage"))
 

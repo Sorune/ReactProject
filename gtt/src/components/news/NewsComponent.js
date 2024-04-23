@@ -17,7 +17,7 @@ const ListComponent = ({serverData,page,size}) =>{
                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                 return (
-                    <tr key={dto.newsNo} onClick={()=> moveToRead({pathName:'/news/read',num:`${dto.newsNo}`,totalPage:`${serverData.totalCount}`})}>
+                    <tr key={dto.newsNo} onClick={()=> moveToRead({pathName:'/news/read',num:dto.newsNo,totalPage:serverData.totalCount})}>
                         <td className={classes}>
                                 <div className="flex items-center gap-3">
                                     <Avatar src={img} alt={dto.theTeam} size="sm"/>
