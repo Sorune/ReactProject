@@ -8,7 +8,7 @@ const ContentBody = ()=>{
                     <div className="flex justify-start items-center">
                             <Avatar src="/img/geng.png" alt="avatar"/>
                             <div className="ml-5">
-                                <Typography variant="h6">GEN.G</Typography>
+                                <Typography variant="h6" className="flex">GEN.G</Typography>
                             </div>
                         </div>
                     </div>
