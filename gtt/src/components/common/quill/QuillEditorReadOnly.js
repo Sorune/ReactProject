@@ -35,6 +35,7 @@ const QuilEditorReadOnly = forwardRef(({ value, onChange }, ref) => {
 const quill = useMemo(() => {
     return (
         <ReactQuill
+            className="w-full h-[100%]"
             ref={ref}
             modules={modules}
             formats={formats}

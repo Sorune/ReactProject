@@ -47,7 +47,7 @@ const BasicReadPage = ()=>{
             const ReadQuillInstance = ReadQuillRef.current.getEditor();
             ReadQuillInstance.setContents(content)
         }
-    }, [queryParams]);
+    }, [queryParams,refresh]);
     return(
         <section className="bg-white w-full h-full p-2 py-2">
             <div className="flex flex-box justify-between items-center">
@@ -107,7 +107,7 @@ const BasicReadPage = ()=>{
                     <Card className="p-2">
                         {comServerData.dtoList.map((dto) => {
                             return (
-                                <CommentCell key={dto.comNo} writer={dto.writer} content={dto.content}/>
+                                <CommentCell comNo={dto.comNo} writer={dto.writer} content={dto.content}/>
                             )
                         })}
                         <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>

@@ -65,7 +65,7 @@ const useCustomMove = () => {
         navigate({ pathname: `.`, search: queryStr });
         return {pageParam,pathName}
     }
-    return { moveToList, moveToModify, moveToRead, loadToList, getNum ,refresh};
+    return { moveToList, moveToModify, moveToRead, loadToList, getNum ,refresh,setRefresh};
 };
 
 export default useCustomMove;
