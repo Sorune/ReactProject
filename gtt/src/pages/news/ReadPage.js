@@ -96,6 +96,7 @@ const ReadPage = () => {
                         content={serverData.content}
                         date={serverData.regDate}
                         viewCount={serverData.hits}
+                        writer={serverData.writer}
                     />
                     <Card className="m-2 row-start-3 mt-10">
                         <CommentInputCell/>
