@@ -5,7 +5,9 @@ export const API_SERVER_HOST = 'http://localhost:8080'
 const prefix = `${API_SERVER_HOST}/api/files`
 
 export const insertFiles = async(file)=>{
-    const {page,size,newsNo} =pageParam
-    const res = await axios.get(`${prefix}/${newsNo}`,{params:{page:page,size:size}})
+    const formData = new FormData();
+    formData.append('file',file);
+    const res = await axios.post(`${prefix}/`,formData)
+    console.log(res, res.data)
     return res.data
 }

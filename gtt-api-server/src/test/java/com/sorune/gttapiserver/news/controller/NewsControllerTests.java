@@ -18,7 +18,7 @@ public class NewsControllerTests {
 
     @Test
     public void testGetNews(){
-        NewsDTO newsDTO = controller.getNews(100l);
+        NewsDTO newsDTO = controller.getNews(100L);
 
         System.out.println(newsDTO.getNewsNo() + newsDTO.getTitle() +  newsDTO.getContent() + newsDTO.getHits() + newsDTO.getRegDate());
     }

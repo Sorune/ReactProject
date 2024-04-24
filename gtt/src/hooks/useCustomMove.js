@@ -1,5 +1,7 @@
 import { useState} from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {pageState} from "../atoms/pageState";
 
 const getNum = (param,defaultValue) => {
     if(!param){
@@ -12,18 +14,20 @@ const useCustomMove = () => {
     const navigate = useNavigate();
     const [queryParams] = useSearchParams();
     const [refresh, setRefresh] = useState(false);
-    const [page, setPage] = useState(getNum(queryParams.get('page'), 1));
-    const [size, setSize] = useState(getNum(queryParams.get('size'), 10));
-    const queryDefault = createSearchParams({ page, size }).toString();
+    const [page, setPage] = useRecoilState(pageState)
+    const queryDefault = createSearchParams( {page:page.page, size:page.size }).toString();
+    if(!page){
+        return{moveToList: null, loadToList: null};
+    }
 
     const moveToList = ({ pathName, pageParam = {} }) => {
         let queryStr = "";
-
+        console.log(page)
         if (pageParam) {
             const pageNum = getNum(parseInt(pageParam.page), 1);
-            const sizeNum = getNum(pageParam.size, 10);
-            setPage(pageNum)
-            setSize(sizeNum)
+            const sizeNum = getNum(parseInt(pageParam.size), 10);
+            setPage((page)=>({...page, page: pageNum, size: sizeNum}))
+            setRefresh(!refresh)
             queryStr = createSearchParams({ page: pageNum, size: sizeNum }).toString();
         } else {
             queryStr = queryDefault;
@@ -38,7 +42,9 @@ const useCustomMove = () => {
         });
     };
 
-    const moveToRead = ({ pathName, num }) => {
+    const moveToRead = ({ pathName, num, totalPage }) => {
+        console.log(page.page,page.size)
+        setPage((page)=>({...page,currentPage:parseInt(num),totalPage:parseInt(totalPage)}))
         navigate({
             pathname: `${pathName}/${num}`,
             search: queryDefault,
@@ -58,7 +64,7 @@ const useCustomMove = () => {
         navigate({ pathname: `.`, search: queryStr });
         return {pageParam,pathName}
     }
-    return { moveToList, moveToModify, moveToRead, loadToList, getNum, page, size, refresh };
+    return { moveToList, moveToModify, moveToRead, loadToList, getNum ,refresh,setRefresh};
 };
 
 export default useCustomMove;

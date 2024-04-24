@@ -2,9 +2,12 @@ import React from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { Navbar, Collapse, Typography,Button, IconButton, } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {useResetRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
 
 const BasicMenu = () =>{
     const [openNav, setOpenNav] = React.useState(false);
+    const pageReset = useResetRecoilState(pageState)
     const navigate = useNavigate();
     // 로그인 페이지로 이동하는 메서드
     const moveToLogin = () => {
@@ -25,13 +28,16 @@ const BasicMenu = () =>{
         return(
             <ul className="my-2 flex flex-col lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-2">
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
-                    <Link to={'/'}>Main</Link>
+                    <Link to={'/'} onClick={pageReset}>Main</Link>
                 </Typography>
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
-                    <Link to={'/about'}>About</Link>
+                    <Link to={'/about'} onClick={pageReset}>About</Link>
                 </Typography>
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
-                    <Link to={'/news/'}>News</Link>
+                    <Link to={'/news/'} onClick={pageReset}>News</Link>
+                </Typography>
+                <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
+                    <Link to={'/ticketing/'} onClick={pageReset}>Ticketing</Link>
                 </Typography>
                 {prop.children}
             </ul>

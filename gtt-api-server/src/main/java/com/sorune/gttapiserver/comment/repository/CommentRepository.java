@@ -13,5 +13,5 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    public Page<Comment> findAllByNewsNo(Long newsNo, Pageable pageable);
+    Page<Comment> findAllByNewsNo(Long newsNo, Pageable pageable);
 }

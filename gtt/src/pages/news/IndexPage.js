@@ -1,15 +1,14 @@
 import {useCallback} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
-import BasicLayout from "../../layouts/BasicLayout";
-import DatePicker from "../../components/common/DatePicker";
+import SidebarLayout from "../../layouts/SidebarLayout";
 
 const IndexPage=()=>{
     return (
-        <BasicLayout>
+        <SidebarLayout>
             <div>
                 <Outlet />
             </div>
-        </BasicLayout>
+        </SidebarLayout>
     )
 }
 
