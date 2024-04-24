@@ -2,7 +2,7 @@ import {Avatar, Card, Chip, Typography} from "@material-tailwind/react";
 import QuilEditorReadOnly from "./quill/QuillEditorReadOnly";
 import React from "react";
 
-const ContentBody = ({ref:ReadQuillRef,title:title,content:content,teamImg:teamImg,teamName:teamName,date:date,viewCount:viewCount})=>{
+const ContentBody = ({ref,title,content,teamImg,teamName,date,viewCount})=>{
     return (
         <Card className="p-2 m-2">
             <div className="grid grid-cols-9 gap-2 flex items-stretch flex flex-box mt-2 mb-2 ml-2">
@@ -35,7 +35,7 @@ const ContentBody = ({ref:ReadQuillRef,title:title,content:content,teamImg:teamI
                 </div>
             </div>
             <hr/>
-            <QuilEditorReadOnly ref={ReadQuillRef} value={content}/>
+            <QuilEditorReadOnly ref={ref} value={content}/>
         </Card>
     )
 }

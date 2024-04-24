@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import React from "react";
 
 
-const ContentHeader = ({moveTo:moveToList,pathName:pathName,page:page})=>{
+const ContentHeader = ({moveTo,pathName,page})=>{
     return (
         <div className="flex flex-box justify-between items-center">
             <Breadcrumbs fullWidth className="bg-white -z-10">
@@ -24,8 +24,8 @@ const ContentHeader = ({moveTo:moveToList,pathName:pathName,page:page})=>{
                 <a href="#">Breadcrumbs</a>
             </Breadcrumbs>
             <div className="flex p-2">
-                <Button className="rounded-full" onClick={() => moveToList({
-                    pathName: {pathName},
+                <Button className="rounded-full" onClick={() => moveTo({
+                    pathName,
                     pageParam: {page: `${page.page}`, size: `${page.size}`}
                 })}>List</Button>
                 <Button className="rounded-full">Modify</Button>
