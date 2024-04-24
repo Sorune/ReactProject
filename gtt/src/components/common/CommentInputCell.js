@@ -1,12 +1,18 @@
 import {Button, Card, IconButton, Textarea} from "@material-tailwind/react";
+import {useEffect, useRef, useState} from "react";
 
 
 const CommentInputCell = ()=>{
+    const commnetInput = useRef()
+    const [comment,setComment] = useState()
+    useEffect(() => {
+        console.log(comment,commnetInput)
+    }, [comment]);
     return(
         <Card>
             <div className="relative flex justify-center">
                 <div className="w-[95%]">
-                    <Textarea variant="static" placeholder="Your Comment" rows={8}/>
+                    <Textarea ref={commnetInput} variant="static" placeholder="Your Comment" rows={8} onChange={()=>setComment(this.value)}/>
                     <div className="flex w-full justify-between py-1.5">
                         <IconButton variant="text" color="blue-gray" size="sm">
                             <svg

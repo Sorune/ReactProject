@@ -1,7 +1,7 @@
 import {Avatar, Button, Card, Chip, Typography} from "@material-tailwind/react";
 import {removeComment} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
-
+import {useEffect, useState} from "react";
 
 const CommentCell = ({comNo,writer, position, content})=>{
     const {refresh,setRefresh} = useCustomMove()
@@ -34,10 +34,10 @@ const CommentCell = ({comNo,writer, position, content})=>{
                         modify
                     </Button>
                     <Button size="sm" color="red" variant="text" className="rounded-md" onClick={()=> {
-                            const result = removeComment(comNo).RESULT;
-                            console.log(result)
-                            alert(result);
-                            setRefresh(!refresh);
+                            removeComment(comNo).then(result=> {
+                                alert(result.result)
+                                setRefresh(!refresh)
+                            })
                     }}>
                         delete
                     </Button>

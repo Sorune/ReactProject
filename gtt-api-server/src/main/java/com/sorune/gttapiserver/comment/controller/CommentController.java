@@ -33,7 +33,7 @@ public class CommentController {
 
         service.modify(commentDTO);
 
-        return Map.of("RESULT", "SUCCESS");
+        return Map.of("result", "SUCCESS");
     }
 
     @DeleteMapping("{comNo}")
@@ -41,7 +41,7 @@ public class CommentController {
 
         service.remove(comNo);
 
-        return Map.of("RESULT", "SUCCESS");
+        return Map.of("result", "SUCCESS");
     }
 
     @GetMapping("/list/{newsNo}")

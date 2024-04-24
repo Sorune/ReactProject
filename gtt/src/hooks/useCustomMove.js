@@ -16,7 +16,6 @@ const useCustomMove = () => {
     const [refresh, setRefresh] = useState(false);
     const [page, setPage] = useRecoilState(pageState)
     const queryDefault = createSearchParams( {page:page.page, size:page.size }).toString();
-    console.log(page)
     if(!page){
         return{moveToList: null, loadToList: null};
     }
