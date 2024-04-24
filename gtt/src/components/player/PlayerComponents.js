@@ -14,13 +14,6 @@ const initState = {
 const ReadComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
 
-    useEffect(() => {
-        getOnePlayer(pno).then(data => {
-            console.log(data)
-            setPlayer(data)
-        })
-    }, [pno]);
-
     return (
         <div>
 

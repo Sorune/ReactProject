@@ -1,10 +1,11 @@
 import {Avatar, Button, CardHeader, Tab, Tabs, TabsHeader, Typography} from "@material-tailwind/react";
 import {UserPlusIcon} from "@heroicons/react/24/solid";
 import DatePicker from "../../common/DatePicker";
+import {useNavigate} from "react-router-dom";
 
 const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
-const ListHeader = ({TABS})=>{
+const ListHeader = ({TABS,moveTo,pathName})=>{
     return(
         <CardHeader floated={false} shadow={false} className="rounded-none">
             <div className="mb-8 flex items-center justify-between gap-8">
@@ -17,8 +18,8 @@ const ListHeader = ({TABS})=>{
                     <Button variant="outlined" size="sm">
                         view all
                     </Button>
-                    <Button className="flex items-center gap-3" size="sm">
-                        <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Nesw
+                    <Button className="flex items-center gap-3" size="sm" onClick={()=>{moveTo({pathName:pathName})}}>
+                        <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add News
                     </Button>
                 </div>
             </div>

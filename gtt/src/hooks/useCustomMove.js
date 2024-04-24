@@ -35,6 +35,11 @@ const useCustomMove = () => {
         navigate({ pathname: pathName, search: queryStr });
 
     };
+
+    const moveToAdd = ({pathName}) => {
+        navigate({pathname:pathName})
+    }
+
     const moveToModify = ({ pathName, num }) => {
         navigate({
             pathname: `${pathName}/${num}`,
@@ -64,7 +69,7 @@ const useCustomMove = () => {
         navigate({ pathname: `.`, search: queryStr });
         return {pageParam,pathName}
     }
-    return { moveToList, moveToModify, moveToRead, loadToList, getNum ,refresh,setRefresh};
+    return { moveToList, moveToModify, moveToRead, loadToList,moveToAdd, getNum ,refresh,setRefresh};
 };
 
 export default useCustomMove;
