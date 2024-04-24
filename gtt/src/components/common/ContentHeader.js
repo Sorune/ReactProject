@@ -25,7 +25,7 @@ const ContentHeader = ({moveTo,pathName,page})=>{
             </Breadcrumbs>
             <div className="flex p-2">
                 <Button className="rounded-full" onClick={() => moveTo({
-                    pathName,
+                    pathName:pathName,
                     pageParam: {page: `${page.page}`, size: `${page.size}`}
                 })}>List</Button>
                 <Button className="rounded-full">Modify</Button>

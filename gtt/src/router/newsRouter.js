@@ -5,6 +5,7 @@ import Spin from "../test/pages/Spin";
 const Loading = Spin;
 const NewsList = lazy(()=>import("../pages/news/ListPage.js"))
 const ReadNews = lazy(()=>import("../pages/news/ReadPage"))
+const WriteNews = lazy(()=>import("../pages/news/WritePage"))
 
 const newsRouter = ()=>{
     return[
@@ -19,6 +20,10 @@ const newsRouter = ()=>{
         {
             path: "read/:newsNo",
             element: <Suspense fallback={Loading}><ReadNews /></Suspense>
+        },
+        {
+            path:"write/",
+            element: <Suspense fallback={Loading}><WriteNews /></Suspense>,
         }
     ]
 }

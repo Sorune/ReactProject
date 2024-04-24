@@ -40,7 +40,7 @@ const TABLE_HEAD = ["Teams", "Title", "Writer", "hits", "Recommend", "RegDate"];
 const ListPage = ()=>{
     const pathName = useLocation().pathname
     const [page,setPage] = useRecoilState(pageState)
-    const {refresh,moveToList,moveToRead} = useCustomMove()
+    const {refresh,moveToList,moveToRead, moveToAdd} = useCustomMove()
     const [serverData, setServerData] = useState(initState)
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const ListPage = ()=>{
 
     return(
         <Card className="h-full w-full">
-            <ListHeader TABS={TABS} />
+            <ListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/news/write'} />
             <CardBody className="overflow-scroll px-0">
                 <ListTable TABLE_HEAD={TABLE_HEAD} serverData={serverData} page={page.page} size={page.size} />
             </CardBody>
