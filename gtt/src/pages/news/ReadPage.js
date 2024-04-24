@@ -79,42 +79,52 @@ const ReadPage = () => {
                 </div>
             </div>
             <Card className="flex flex-auto p-1">
-                <div className="grid gap-2 grid-cols-6 flex flex-col justify-between">
-                    <Chip icon={
-                        <Avatar
-                            size="xs"
-                            variant="circular"
-                            className="h-full w-full -translate-x-0.5"
-                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" />
-                    }
-                          value={<Typography variant="small">Team Name</Typography>}
-                    />
-                    <div className="flex-box">
-                        Title
-                    </div>
-                </div>
                 <CardBody>
                     <Card className="p-2 m-2">
-                        <div className="flex flex-box">
-                            ReadNews {newsNo}&nbsp;
+                        <div className="grid grid-cols-9 gap-2 flex items-stretch flex flex-box mt-2 mb-2 ml-2">
+                            <div className="col-start-1 col-end-3 p-1">
+                                    <Chip icon={
+                                        <Avatar
+                                            size="xs"
+                                            variant="circular"
+                                            className="h-full w-full -translate-x-0.5"
+                                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" />
+                                    }
+                                          value={<Typography variant="small">Team Name</Typography>}
+                                    />
+                            </div>
+                            <div className="col-start-3 col-end-7 self-center p-1">
+                                ReadNews {newsNo}&nbsp;
+                            </div>
+                            <div className="col-start-7 self-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                     className="w-5 h-5">
+                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                                    <path fill-rule="evenodd"
+                                          d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div className="col-start-8 self-center p-1">
+                                <small>date</small>
+                            </div>
                         </div>
-                        <Typography as="div" className="row-end-6 w-full h-48">
+                        <hr/>
+                        <Typography as="div" className="row-end-6 w-full h-48  p-2">
                             content....
                         </Typography>
                     </Card>
-                    <Card className="m-2 row-start-3">
+                    <Card className="m-2 row-start-3 mt-10">
                         <CommentInputCell/>
                     </Card>
                 </CardBody>
                 <CardFooter>
-                    <Card className="p-2">
                         {comServerData.dtoList.map((dto) => {
                             return (
                                 <CommentCell key={dto.comNo} writer={dto.writer} content={dto.content}/>
                             )
                         })}
                         <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>
-                    </Card>
                 </CardFooter>
             </Card>
         </section>
