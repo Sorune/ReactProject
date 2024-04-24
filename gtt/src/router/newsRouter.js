@@ -4,7 +4,7 @@ import Spin from "../test/pages/Spin";
 
 const Loading = Spin;
 const NewsList = lazy(()=>import("../pages/news/ListPage.js"))
-const ReadNews = lazy(()=>import("../pages/news/BasicReadPage"))
+const ReadNews = lazy(()=>import("../pages/news/ReadPage"))
 
 const newsRouter = ()=>{
     return[
