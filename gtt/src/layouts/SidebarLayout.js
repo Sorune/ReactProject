@@ -29,7 +29,7 @@ const SidebarLayout = ({ children }) => {
                 </div>
                 {/* 두 번째와 네 번째 열은 isMobile이 true일 때 hidden 클래스 추가 */}
                 <main className="bg-sky-300 w-full px-5 py-5 md:col-span-2 m-0">
-                    <ReadPage/>
+                    {children}
                 </main>
                 {/* 세 번째와 여섯 번째 열은 isMobile이 true일 때 hidden 클래스 추가 */}
                 <div className={`col-span-1 p-2 ${isMobile ? "hidden" : ""}`}>
