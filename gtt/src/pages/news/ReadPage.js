@@ -13,11 +13,14 @@ import {
 import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import CommentCell from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 
 import ContentBody from "../../components/common/ContentBody";
+import {useRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
+import {getOne} from "../../api/newsApi";
 
 const initState = {
     dtoList: [],
@@ -32,26 +35,52 @@ const initState = {
     current: 0
 }
 
+const newsDTO = {
+    content:"",
+    fileDTOList:[],
+    files:[],
+    hits:0,
+    modDate:"",
+    newsNo:35,
+    recomNo:0,
+    regDate:"",
+    theTeam:"",
+    title:"",
+    writer:"",
+}
+
+const testTeam ={
+    teamName:"Gen.G",
+    teamImg:"/img/team/geng.png"
+}
+
 const ReadPage = () => {
-    const {page, size, moveToList, moveToRead, loadToList, getNum} = useCustomMove()
+    const {moveToList,loadToList} = useCustomMove()
+    const [page,setPage] = useRecoilState(pageState)
     const [queryParams] = useSearchParams();
     const [refresh, setRefresh] = useState(false);
+    const [serverData, setServerData] = useState(newsDTO)
     const [comServerData, setComServerData] = useState(initState)
     const newsNo = useLocation().pathname.split("/")[3]
-    const [isFirst, setIsFirst] = useState(false)
-    const pathName = `${newsNo + "?" + queryParams}`
-    const navigate = useNavigate()
-
+    const [isFirst,setIsFirst] =useState(false)
+    const pathName = `${newsNo+"?"+queryParams}`
+    const ReadQuillRef = useRef(null);
+    const content = ""
     useEffect(() => {
-        let pathName = isFirst === true ? `${newsNo + "?" + createSearchParams({
-            page: queryParams.get('page'),
-            size: queryParams.get('size')
-        }).toString()}` : `${newsNo}?page=1&size=10`;
-        setIsFirst(true);
+        getOne(newsNo).then(data=>{
+            setServerData(data)
+            console.log(data)
+        })
+        console.log(serverData)
+        let pathName = isFirst===true?`${newsNo+"?" + createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}` : `${newsNo}?page=1&size=10`; setIsFirst(true);
         getComList({pathName}).then(data => {
             setComServerData(data)
         })
-    }, [queryParams]);
+        if(ReadQuillRef.current){
+            const ReadQuillInstance = ReadQuillRef.current.getEditor();
+            ReadQuillInstance.setContents(content)
+        }
+    }, [queryParams,refresh]);
 
     return (
         <section className="bg-white w-full h-full p-2 py-2">
@@ -74,57 +103,29 @@ const ReadPage = () => {
                     <a href="#">Breadcrumbs</a>
                 </Breadcrumbs>
                 <div className="flex p-2">
-                    <Button className="rounded-full" onClick={() => navigate(`/news/list?page=${page}&size=${size}`)}>List</Button>
+                    <Button className="rounded-full" onClick={() => moveToList({
+                        pathName: '/news/list',
+                        pageParam: {page: `${page.page}`, size: `${page.size}`}
+                    })}>List</Button>
                     <Button className="rounded-full">Modify</Button>
                 </div>
             </div>
             <Card className="flex flex-auto p-1">
                 <CardBody>
-                    <Card className="p-2 m-2">
-                        <div className="grid grid-cols-9 gap-2 flex items-stretch flex flex-box mt-2 mb-2 ml-2">
-                            <div className="col-start-1 col-end-3 p-1">
-                                    <Chip icon={
-                                        <Avatar
-                                            size="xs"
-                                            variant="circular"
-                                            className="h-full w-full -translate-x-0.5"
-                                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" />
-                                    }
-                                          value={<Typography variant="small">Team Name</Typography>}
-                                    />
-                            </div>
-                            <div className="col-start-3 col-end-7 self-center p-1">
-                                ReadNews {newsNo}&nbsp;
-                            </div>
-                            <div className="col-start-7 self-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                     className="w-5 h-5">
-                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
-                                    <path fill-rule="evenodd"
-                                          d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                                          clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                            <div className="col-start-8 self-center p-1">
-                                <small>date</small>
-                            </div>
-                        </div>
-                        <hr/>
-                        <Typography as="div" className="row-end-6 w-full h-48  p-2">
-                            content....
-                        </Typography>
-                    </Card>
+                    <ContentBody ref={ReadQuillRef} teamName={testTeam.teamName} teamImg={testTeam.teamImg} title={serverData.title} content={serverData.content}/>
                     <Card className="m-2 row-start-3 mt-10">
                         <CommentInputCell/>
                     </Card>
                 </CardBody>
                 <CardFooter>
+                    <Card className="p-2">
                         {comServerData.dtoList.map((dto) => {
                             return (
-                                <CommentCell key={dto.comNo} writer={dto.writer} content={dto.content}/>
+                                <CommentCell comNo={dto.comNo} writer={dto.writer} content={dto.content}/>
                             )
                         })}
                         <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>
+                    </Card>
                 </CardFooter>
             </Card>
         </section>
