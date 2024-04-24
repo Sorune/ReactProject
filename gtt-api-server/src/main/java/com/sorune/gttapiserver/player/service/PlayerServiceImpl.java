@@ -39,6 +39,7 @@ public class PlayerServiceImpl implements PlayerService{
     public void modifyPlayer(PlayerDTO playerDTO) {
         Player player = playerRepository.getReferenceById(playerDTO.getPno());
 
+        player.changeAge(playerDTO.getAge());
         player.changeNickName(playerDTO.getNickName());
         player.changeRealName(playerDTO.getRealName());
         player.changePosition(playerDTO.getPosition());

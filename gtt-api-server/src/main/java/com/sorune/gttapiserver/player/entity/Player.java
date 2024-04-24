@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -20,12 +21,15 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pno;
     private int age;
-    private String nickName, realName, TeamName, position;
-    private LocalDateTime birthDate;
+    private String nickName, realName, teamName, position;
+    private Date birthDate;
 
 
-    public void changeBirthDate(LocalDateTime birthDate){
+    public void changeBirthDate(Date birthDate){
         this.birthDate = birthDate;
+    }
+    public void changeAge(int age){
+        this.age = age;
     }
     public void changeRealName(String realName){
         this.realName = realName;
@@ -34,7 +38,7 @@ public class Player {
         this.nickName = nickName;
     }
     public void changeTeam(String teamName){
-        this.TeamName = teamName;
+        this.teamName = teamName;
     }
     public void changePosition(String position){
         this.position = position;
