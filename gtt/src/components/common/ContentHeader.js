@@ -1,10 +1,11 @@
 import {Breadcrumbs, Button} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
+import React from "react";
 
 
-const ContentHeader = ()=>{
+const ContentHeader = ({moveTo:moveToList,pathName:pathName,page:page})=>{
     return (
-        <div className="flex flex-box justify-between align-middle items-center">
+        <div className="flex flex-box justify-between items-center">
             <Breadcrumbs fullWidth className="bg-white -z-10">
                 <Link to={'/'} className="opacity-60">
                     <svg
@@ -23,7 +24,10 @@ const ContentHeader = ()=>{
                 <a href="#">Breadcrumbs</a>
             </Breadcrumbs>
             <div className="flex p-2">
-                <Button className="rounded-full mr-3">List</Button>
+                <Button className="rounded-full" onClick={() => moveToList({
+                    pathName: {pathName},
+                    pageParam: {page: `${page.page}`, size: `${page.size}`}
+                })}>List</Button>
                 <Button className="rounded-full">Modify</Button>
             </div>
         </div>
