@@ -70,4 +70,21 @@ public class MemberCotroller {
 
         return Map.of("result", "SUCCESS");
     }
+
+    // 회원 로그인
+    @PostMapping("/login")
+    public Map<String, Object> login(@RequestBody MemberDTO memberDTO) {
+        log.info("Login attempt for ID: " + memberDTO.getId());
+
+
+
+        if ("user1".equals(memberDTO.getId()) && "1234".equals(memberDTO.getPw())) {
+            return Map.of("result", "SUCCESS", "message", "Login successful");
+        } else {
+            return Map.of("result", "FAILURE", "message", "Invalid credentials");
+        }
+    }
+
+
+
 }

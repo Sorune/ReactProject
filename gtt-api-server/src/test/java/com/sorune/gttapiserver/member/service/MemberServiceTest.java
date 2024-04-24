@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -24,9 +25,10 @@ public class MemberServiceTest {
                 .num(101L)
                 .id("user1")
                 .pw("1234")
+                .nick("user1")
                 .addNum("1234-1")
                 .addr("경기도 오산시 00동")
-                .birth(LocalDateTime.of(1990, 5, 16, 0, 0))
+                .birth(LocalDate.of(1990, 5, 16))
                 .build();
 
         Long memNum = memberService.joinMember(memberDTO);
@@ -42,7 +44,7 @@ public class MemberServiceTest {
                 .addNum("123456")
                 .addr("mem12345")
                 .nick("user1Nick")
-                .birth(LocalDateTime.of(1881,9,9,0,0))
+                .birth(LocalDate.of(1881,9,9))
                 .build();
         Long memNum = memberService.editMember(memberDTO);
         System.out.println(memNum);

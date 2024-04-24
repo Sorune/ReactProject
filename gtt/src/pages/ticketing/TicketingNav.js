@@ -22,7 +22,7 @@ const TicketingNav = () => {
                 <div className="flex justify-center">
                     <div>
                         <div className="flex items-center gap-4">
-                            <Avatar src="/img/team.geng.png" alt="avatar" />
+                            <Avatar src="/img/team/geng.png" alt="avatar" />
                             <div>
                                 <Typography variant="h6">Gen.G</Typography>
                             </div>
