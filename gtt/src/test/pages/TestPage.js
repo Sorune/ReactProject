@@ -41,7 +41,7 @@ const TestPage = () => {
             <p>컨텐츠 헤더</p>
             <ContentHeader/>
             <p>컨텐츠 바디</p>
-            <ContentBody/>
+            <ContentBody teamName={"T1"}/>
             <p>댓글 작성</p>
             <CommentInputCell/>
             <p>댓글 보기</p>

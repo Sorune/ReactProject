@@ -2,7 +2,9 @@ import { Suspense, lazy } from "react";
 import authRouter from "./authRouter.js";
 import newsRouter from "./newsRouter";
 import ticketingRouter from "./ticketingRouter.js";
+import playerRouter from "./playerRouter.js";
 import Spin from "../test/pages/Spin";
+
 
 const { createBrowserRouter } = require("react-router-dom");
 
@@ -13,6 +15,7 @@ const Login = lazy(() => import("../pages/loginAuth/Login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
 const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
+const PlayerIndex = lazy(() => import("../pages/player/PlayerIndexPage"));
 const Test = lazy(()=>import("../test/pages/TestPage.js"));
 const GridTest = lazy(()=>import("../test/pages/GridTest"))
 const NotFound = lazy(()=>import("../pages/error/404NotFound"))
@@ -70,6 +73,12 @@ const root = createBrowserRouter([
         path:"Ticketing",
         element:<Suspense fallback={Loading}><Ticketing /></Suspense>,
         children:ticketingRouter(),
+        errorElement:NotFound,
+    },
+    {
+        path:"player",
+        element:<Suspense fallback={Loading}><PlayerIndex/></Suspense>,
+        children: playerRouter(),
         errorElement:NotFound,
     },
     {
