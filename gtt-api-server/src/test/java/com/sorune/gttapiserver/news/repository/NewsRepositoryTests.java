@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -15,15 +16,17 @@ public class NewsRepositoryTests {
     private NewsRepository newsRepository;
 
     @Test
-    public void insertTest() {
-        IntStream.rangeClosed(1, 100).forEach(i -> {
-            News news = News.builder()
-                    .title("기사 제목 ... " + i).content("기사 내용 ... " + i).writer("작성자 ... " + i).theTeam("T1")
-                    .build();
+    public void newsSelectTests(){
+        News news = newsRepository.findByNewsNo(201l);
 
-            newsRepository.save(news);
-        });
+        System.out.println(news);
     }
+
+    @Test
+    public void newsInsertTests(){
+        News news = News.builder().title("testTest").content("testTest").theTeam("T1").writer("Test").build();
+
+        newsRepository.save(news);
 
     @Test
     public void getTest(){
