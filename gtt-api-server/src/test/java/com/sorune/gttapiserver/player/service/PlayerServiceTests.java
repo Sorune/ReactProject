@@ -20,7 +20,7 @@ public class PlayerServiceTests {
                 .age(27)
                 .birthDate(LocalDateTime.of(2024, 4, 25, 0, 0))
                 .nickName("dummies")
-                .TeamName("T1")
+                .teamName("T1")
                 .position("MID")
                 .realName("DUMMIES")
                 .build();
