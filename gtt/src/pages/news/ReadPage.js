@@ -53,9 +53,6 @@ const ReadPage = () => {
         })
     }, [queryParams]);
 
-    console.log(queryParams.get('page'), queryParams.get('size'))
-    console.log(comServerData)
-    console.log(page, size)
     return (
         <section className="bg-white w-full h-full p-2 py-2">
             <div className="flex flex-box justify-between items-center">

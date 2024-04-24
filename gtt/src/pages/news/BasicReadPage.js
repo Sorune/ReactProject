@@ -42,7 +42,6 @@ const BasicReadPage = ()=>{
         getComList({pathName}).then(data => {
             setComServerData(data)
         })
-
         if(ReadQuillRef.current){
             const ReadQuillInstance = ReadQuillRef.current.getEditor();
             ReadQuillInstance.setContents(content)
