@@ -16,3 +16,10 @@ export const getPlayerList = async (pageParam) => {
 
     return res.data
 }
+
+export const postAdd = async (player) => {
+    const header =     {headers: {'Content-Type': 'application/json'}}
+    const res = await axios.post(`${prefix}/`, player, header)
+
+    return res.data
+}
