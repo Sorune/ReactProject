@@ -9,7 +9,7 @@ import {
     Button,
 } from "@material-tailwind/react";
 
-export const DropDownInput = forwardRef(({ onChange,title }, ref) => {
+export const DropDownInput = forwardRef(({ onChange,title , buttonRef, inputRef}) => {
     const { countries } = useCountries();
     const [country, setCountry] = React.useState(0);
     const { name, flags, countryCallingCode } = countries[country];
@@ -18,10 +18,9 @@ export const DropDownInput = forwardRef(({ onChange,title }, ref) => {
     };
     return (
         <div className="relative flex w-full max-w-[24rem]">
-            <Menu placement="bottom-start">
+            <Menu placement="bottom-start" ref={buttonRef}>
                 <MenuHandler>
                     <Button
-                        ref={ref}
                         ripple={false}
                         variant="text"
                         color="blue-gray"
@@ -59,6 +58,7 @@ export const DropDownInput = forwardRef(({ onChange,title }, ref) => {
                 type="text"
                 placeholder="title"
                 value={title}
+                ref={inputRef}
                 className="rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                     className: "before:content-none after:content-none",
