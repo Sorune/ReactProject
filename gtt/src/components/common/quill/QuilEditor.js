@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState, useMemo } from "react";
+import React, {forwardRef, useEffect, useState, useMemo, memo} from "react";
 import { Card } from "@material-tailwind/react";
 import ReactQuill, {Quill} from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -31,7 +31,7 @@ const formats = [
     'width'
 ];
 
-const QuilEditor = forwardRef(({ value, onChange }, ref) => {
+const QuilEditor = memo(forwardRef(({ value, onChange }, ref) => {
     const [localValue, setLocalValue] = useState(value || "");
     const ImageHandler = ()=>{
         const input = document.createElement('input');
@@ -100,9 +100,9 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
                 onChange={handleChange}
             />
         );
-    }, [localValue,handleChange]);
+    }, [localValue]);
 
     return <Card>{quill}</Card>;
-});
+}));
 
 export default QuilEditor;
