@@ -48,15 +48,17 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = memberRepository.getReferenceById(memberDTO.getNum());
         // 회원 아이디 수정
-        member.editMemId(memberDTO.getId());
+        member.editMemId(memberDTO.getUserId());
         // 회원 비밀번호 수정
         member.editMemPw(memberDTO.getPw());
         // 회원 닉네임 수정
         member.editMemNick(memberDTO.getNick());
         // 회원 우편번호 수정
-        member.editMemAddrNum(memberDTO.getAddNum());
+        member.editMemAddrNum(memberDTO.getZoneCode());
         // 회원 주소 수정
-        member.editMemAddr(memberDTO.getAddr());
+        member.editMemAddr(memberDTO.getAddress());
+        // 회원 나머지 주소 수정
+        member.editMemAddr2(memberDTO.getAddrSub());
         // 회원 생일 수정
         member.editMemBirth(memberDTO.getBirth());
         // 수정된 회원 정보를 데이터베이스에 저장함.
@@ -99,5 +101,12 @@ public class MemberServiceImpl implements MemberService {
                 .build(); // 조회 결과를 PageResponseDTO 객체로 빌드
         // 빌드된 객체를 반환
         return pageResponseDTO;
+    }
+
+    @Override
+    public boolean checkId(String id) {
+        Member member =memberRepository.findByUserId(id) ;
+        log.info(member);
+        return member==null;
     }
 }

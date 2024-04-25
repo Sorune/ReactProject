@@ -17,4 +17,5 @@ public interface MemberService {
     // 회원 전체 조회
     PageResponseDTO<MemberDTO> memberList(PageRequestDTO pageRequestDTO);
 
+    boolean checkId(String id);
 }

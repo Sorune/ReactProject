@@ -1,5 +1,7 @@
 import axios from 'axios';
-import {API_SERVER_HOST} from "./filesApi";
+//import {API_SERVER_HOST} from "./filesApi";
+
+export const API_SERVER_HOST = 'http://localhost:8001';
 
 // 로그인 API 호출 함수
 export const login = async (id, password) => {

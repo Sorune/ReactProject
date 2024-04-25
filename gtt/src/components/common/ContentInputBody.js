@@ -86,7 +86,7 @@ const ContentInputBody =memo(({serverData})=>{
                 </div>
                 <hr/>
                 <div className="p-3">
-                    <QuilEditor ref={quillEditorRef} onChange={handleQuillChange} value={content} />
+                    <QuilEditor ref={quillEditorRef} onChange={handleQuillChange}/>
                 </div>
                 <div className="p-3 justify-self-end flex justify-center">
                     <Button onClick={handleSave}>save</Button>

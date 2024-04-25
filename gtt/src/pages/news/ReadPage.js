@@ -108,13 +108,13 @@ const ReadPage = () => {
                         writer={serverData.writer}
                     />
                     <Card className="m-2 row-start-3 mt-10">
-                        <CommentInputCell/>
+                        <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
                     </Card>
                 </CardBody>
                 <CardFooter>
                     {comServerData.dtoList.map((dto) => {
                         return (
-                            <CommentCell comNo={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo}/>
+                            <CommentCell newsNo={newsNo} comNo={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
                         )
                     })}
                     <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>
