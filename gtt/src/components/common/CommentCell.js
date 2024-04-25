@@ -57,17 +57,17 @@ export function CommentCell({comNo,writer, position, content, modDate, recomNo})
                             </Typography>
                         </div>
                     </div>
-                    <Typography color="blue-gray">{position}</Typography>
+                    <Typography color="blue-gray"><small>{position}position</small></Typography>
                 </div>
             </CardHeader>
             <CardBody className="mb-2 pt-4">
                 <Typography>
-                    &quot;{content}&quot;
+                    {content}
                 </Typography>
             </CardBody>
-            <CardFooter className="p-1">
-                <div className="justify-items-end">
-                    {modDate}
+            <CardFooter className="p-1 flex justify-end">
+                <div className="pr-6 pb-3">
+                    <small>작성일 : {modDate}</small>
                 </div>
             </CardFooter>
         </Card>
