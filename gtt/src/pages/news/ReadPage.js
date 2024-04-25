@@ -84,6 +84,14 @@ const ReadPage = () => {
         }
     }, [queryParams,refresh]);
 
+    function parseDeltaOrString(data) {
+        if (typeof data === 'string' && data.includes('"ops"')) {
+            return JSON.parse(data);
+        } else {
+            return data; // 그냥 문자열로 반환
+        }
+    }
+
     return (
         <section className="bg-white w-full h-full p-2 py-2">
             <ContentHeader page={page} pathName={'/news/list'} moveTo={moveToList} />
@@ -94,7 +102,7 @@ const ReadPage = () => {
                         teamName={testTeam.teamName}
                         teamImg={testTeam.teamImg}
                         title={serverData.title}
-                        content={serverData.content}
+                        content={parseDeltaOrString(serverData.content)}
                         date={serverData.regDate}
                         viewCount={serverData.hits}
                         writer={serverData.writer}
