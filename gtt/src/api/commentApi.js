@@ -10,9 +10,14 @@ export const getComList = async({pathName})=>{
     return res.data
 }
 
-export const insertComment = async (comObj)=>{
-    console.log(comObj)
-    const res = await axios.post(`${prefix}/`)
+export const insertComment = async (writer,content,newsNo)=>{
+    const res = await axios.post(`${prefix}/`,
+        {
+            writer: writer,
+            content: content,
+            newsNo: newsNo,
+        }
+    )
     return res.data
 }
 

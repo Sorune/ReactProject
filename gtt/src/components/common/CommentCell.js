@@ -9,11 +9,16 @@ import {removeComment} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
 
 
-export function CommentCell({comNo,writer, position, content, modDate, recomNo}) {
-    const {refresh,setRefresh} = useCustomMove()
+export const CommentCell=({comNo,writer, position, content, modDate, recomNo,refresh,setRefresh}) => {
     const toggleRecommend = () => {
 
     };
+    const handleDelete=()=>{
+        removeComment(comNo).then(result=> {
+            alert(result.result)
+            setRefresh(!refresh)
+        })
+    }
     return (
         <Card comNo={comNo} color="transparent" shadow={true} className="w-full mb-3">
             <CardHeader
@@ -38,12 +43,7 @@ export function CommentCell({comNo,writer, position, content, modDate, recomNo})
                             <Button size="sm" color="blue" variant="text" className="rounded-md">
                                 modify
                             </Button>
-                            <Button size="sm" color="red" variant="text" className="rounded-md" onClick={()=> {
-                                removeComment(comNo).then(result=> {
-                                    alert(result.result)
-                                    setRefresh(!refresh)
-                                })
-                            }}>
+                            <Button size="sm" color="red" variant="text" className="rounded-md" onClick={handleDelete}>
                                 delete
                             </Button>
                             <Button size="sm" color="red" variant="text" className="rounded-md">
