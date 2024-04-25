@@ -1,8 +1,10 @@
 import {Breadcrumbs, Button} from "@material-tailwind/react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import React from "react";
 
-const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData})=>{
+const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData,newsNo})=>{
+    const path = useLocation().pathname.split("/")[2];
+    const pathNum = useLocation().pathname.split("/")[3];
     return (
         <div className="flex flex-box justify-between items-center">
             <Breadcrumbs fullWidth className="bg-white -z-10">
@@ -24,11 +26,12 @@ const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData})=>{
             </Breadcrumbs>
             <div className="flex p-2">
                 <Button className="rounded-full" onClick={() => moveTo({
-                    pathName:pathName,
+                    pathName:pathName+'list',
                     pageParam: {page: `${page.page}`, size: `${page.size}`}
                 })}>List</Button>
-                <Button className="rounded-full"  onClick={() => moveToModify({ pathName: pathName, num: serverData?.newsNo })}>
-                    Modify</Button>
+                {path==="read"?
+                    <Button className="rounded-full"
+                         onClick={() => moveToModify({pathName: pathName+"modify", num: newsNo})}>Modify</Button>:<></>}
             </div>
         </div>
     )
