@@ -38,6 +38,7 @@ public class NewsController {
 
     @PostMapping("/")
     public Map<String, Long> register(@RequestBody NewsDTO newsDTO) {
+        log.info(newsDTO);
 
         List<MultipartFile> files = newsDTO.getFiles();             // NewsDTO에 있는 파일의 내용을 받아옴
         List<String> uploadFileNames = fileUtil.saveFiles(files);   // 파일의 내용 중 파일의 이름을 통해 저장한 파일의 이름을 받음

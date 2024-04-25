@@ -1,34 +1,38 @@
 import {Button, Card,  Input} from "@material-tailwind/react";
-import React, {useRef, useState} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import QuilEditor from "./quill/QuilEditor";
 import {DropDownInput} from "./DropDownInput";
 import {Delta} from "quill/core";
+import {memo} from "react";
+import {insertNews} from "../../api/newsApi";
 
-const ContentInputBody =()=>{
+const ContentInputBody =memo(()=>{
+
     const quillEditorRef = useRef()
     const buttonRef = useRef()
     const inputRef = useRef()
+
     const [title,setTitle] = useState("");
     const [selectedTeam, setSelectedTeam] = useState('');
     const [content,setContent] = useState(new Delta());
+    const [stringContent,setStringContent] = useState({})
 
     const handleSave = () => {
-        if (quillEditorRef.current) {
+        /*if (quillEditorRef.current) {
             const quillInstance = quillEditorRef.current.getEditor();
             const value = quillInstance.getContents();
             console.log(value); // 에디터의 전체 텍스트 내용 로그 출력
             setContent(value)
             console.log(JSON.stringify(value.ops))
+            console.log(stringContent)
             // 여기에 axios를 사용하여 서버와 통신하는 로직을 추가할 수 있습니다.
-        }
+        }*/
         if(buttonRef.current){
             const buttonInstance = buttonRef.current
-            console.log(buttonInstance.innerText)
-            Array.from(buttonInstance.children).map((child,i)=>{
-                console.log(child)
-            })
+            setSelectedTeam(buttonInstance.innerText)
+            console.log(selectedTeam)
         }
-        if (inputRef.current){
+        /*if (inputRef.current){
             const inputInstance = inputRef.current
             Array.from(inputInstance.children).map((child,i)=> {
                 if (i === 0) {
@@ -36,11 +40,26 @@ const ContentInputBody =()=>{
                     console.log(title)
                 }
             })
-        }
+        }*/
+        console.log(title,selectedTeam,content,stringContent)
+        insertNews(title,stringContent,selectedTeam,"user").then(message => alert(message.newsNo+"번 등록 완료"))
     };
     const handleDropDownChange = (e) => {
-        setTitle(e.target.value);
+        if(buttonRef.current){
+            const buttonInstance = buttonRef.current
+            setSelectedTeam(buttonInstance.innerText)
+            console.log(selectedTeam)
+        }
+        console.log(e.target.value)
+        setTitle(e.target.value)
     };
+    const handleQuillChange = (e)=>{
+        const QuillInstance = quillEditorRef.current.getEditor();
+        const val = QuillInstance.getContents();
+        console.log(val)
+        setContent(val)
+        setStringContent(JSON.stringify(val))
+    }
 
     return (
 
@@ -53,12 +72,12 @@ const ContentInputBody =()=>{
                 </div>
                 <hr/>
                 <div className="p-3">
-                    <QuilEditor ref={quillEditorRef} value={content}/>
+                    <QuilEditor ref={quillEditorRef} onChange={handleQuillChange} />
                     <Button onClick={handleSave}>save</Button>
                 </div>
             </form>
         </Card>
     )
-}
+})
 
 export default ContentInputBody;

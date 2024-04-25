@@ -15,9 +15,12 @@ export const getOne = async(newsNo)=>{
     return res.data
 }
 
-export const insertNews = async ({pageParam,pathName,newsObj})=>{
-    console.log(pathName,newsObj)
-    // const {newsNo} =pageParam
-    // const res = await axios.get(`${prefix}/${newsNo}`)
-    // return res.data
+export const insertNews = async (title,content,theTeam,writer)=>{
+    const res = await axios.post(`${prefix}/`,{
+        title:title,
+        content:content,
+        theTeam:theTeam,
+        writer:writer
+    })
+    return res.data
 }
