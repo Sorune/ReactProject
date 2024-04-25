@@ -1,12 +1,17 @@
 import {Button, Card,  Input} from "@material-tailwind/react";
-import React, {useMemo, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import QuilEditor from "./quill/QuilEditor";
 import {DropDownInput} from "./DropDownInput";
 import {Delta} from "quill/core";
 import {memo} from "react";
 import {insertNews} from "../../api/newsApi";
+import useCustomMove from "../../hooks/useCustomMove";
+import {useRecoilValue} from "recoil";
+import {pageState} from "../../atoms/pageState";
 
 const ContentInputBody =memo(()=>{
+    const {moveToList} = useCustomMove()
+    const page = useRecoilValue(pageState)
 
     const quillEditorRef = useRef()
     const buttonRef = useRef()
@@ -43,7 +48,10 @@ const ContentInputBody =memo(()=>{
             })
         }*/
         console.log(title,selectedTeam,content,stringContent)
-        insertNews(title,stringContent,selectedTeam,"user").then(message => alert(message.newsNo+"번 등록 완료"))
+        insertNews(title,stringContent,selectedTeam,"user").then(message => {
+            alert(message.newsNo + "번 등록 완료")
+            moveToList({pathName: '/news/list',pageState:{ page:page.page, size : page.size}})
+        })
     };
     const handleDropDownChange = (e) => {
         if(buttonRef.current){

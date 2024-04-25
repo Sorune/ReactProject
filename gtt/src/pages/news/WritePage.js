@@ -1,11 +1,10 @@
 import ContentHeader from "../../components/common/ContentHeader";
-import {Button, Card, CardBody, CardFooter} from "@material-tailwind/react";
-import React, {forwardRef, useRef, useState} from "react";
+import {Card, CardBody} from "@material-tailwind/react";
+import React, {forwardRef} from "react";
 import ContentInputBody from "../../components/common/ContentInputBody";
 import {useRecoilValue} from "recoil";
 import useCustomMove from "../../hooks/useCustomMove";
 import {pageState} from "../../atoms/pageState";
-import {DropDownInput} from "../../components/common/DropDownInput";
 
 
 
