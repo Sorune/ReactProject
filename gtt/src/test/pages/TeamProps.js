@@ -6,13 +6,7 @@ import {
     Typography,
 } from "@material-tailwind/react";
 
-interface TeamCardPropsType {
-    img: string;
-    name: string;
-    title: string;
-}
-
-function TeamCard({ img, name, title }: TeamCardPropsType) {
+export const TeamCard =({ img, name, title }) => {
     return (
         <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
             <CardBody className="text-center">
