@@ -13,6 +13,7 @@ const ContentInputBody =memo(()=>{
     const inputRef = useRef()
 
     const [title,setTitle] = useState("");
+    const [writer, setWriter]=useState("");
     const [selectedTeam, setSelectedTeam] = useState('');
     const [content,setContent] = useState(new Delta());
     const [stringContent,setStringContent] = useState({})
@@ -66,13 +67,20 @@ const ContentInputBody =memo(()=>{
         <Card className="p-2 m-2 min-h-[10rem]">
             <form>
                 <div className="grid grid-cols-auto gap-4 grid-rows-auto flex items-stretch flex items-center flex flex-box mt-2 mb-2 ml-2 ">
-                    <div className="col-start-1 col-end-2 p-1">
+                    <div className="col-start-1 col-end-3 p-1">
                         <DropDownInput buttonRef={buttonRef} inputRef={inputRef} onChange={handleDropDownChange} title={title}/>
+                    </div>
+                    <div className="col-start-3 p-1">
+                        <div className="w-full">
+                            <Input label="Username" readOnly={true}  />
+                        </div>
                     </div>
                 </div>
                 <hr/>
                 <div className="p-3">
                     <QuilEditor ref={quillEditorRef} onChange={handleQuillChange} />
+                </div>
+                <div className="p-3 justify-self-end flex justify-center">
                     <Button onClick={handleSave}>save</Button>
                 </div>
             </form>

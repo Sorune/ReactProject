@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import BasicLayout from "../../layouts/BasicLayout";
-import CommentCell from "../../components/common/CommentCell";
+import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import ContentHeader from "../../components/common/ContentHeader";
 import ContentBody from "../../components/common/ContentBody";
