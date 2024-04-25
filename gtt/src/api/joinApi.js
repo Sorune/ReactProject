@@ -2,6 +2,7 @@ import axios from "axios";
 import {API_SERVER_HOST} from "./filesApi";
 // 요청을 완료하기 위한 서버 경로;
 
+
 // 회원가입 메서드
 export const join = async (id, password, nick, birth, zoneCode, address, addrSub) => {
     const prefix = `${API_SERVER_HOST}/api/member/`;
