@@ -5,6 +5,9 @@ import FetchingModal from "../common/FetchingModal"
 import host from "../../api/playerApi"
 import PageComponent from "../common/PageComponent";
 import {Avatar, Card, CardBody, IconButton, Typography} from "@material-tailwind/react";
+import {useLocation} from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
 
 const initState = {
     dtoList:[],
@@ -20,19 +23,21 @@ const initState = {
 }
 
 const ListComponent = () => {
-    const {page, size, refresh, moveToList,moveToRead} = useCustomMove()
+    const pathName = useLocation().pathname
+    const {refresh, moveToList,moveToRead,setRefresh} = useCustomMove()
+    const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
     const [fetching, setFetching] = useState(false)
 
     useEffect(() => {
         setFetching(true)
 
-        getPlayerList({page, size}).then(data => {
+        getPlayerList({page:page.page, size:page.size}).then(data => {
             console.log(data)
             setServerData(data)
             setFetching(false)
         })
-    }, [page, size, refresh])
+    }, [refresh])
 
     return (
         <section className="min-h-screen py-8 px-8 lg:py-28">
@@ -77,7 +82,7 @@ const ListComponent = () => {
             </div>
 
             {/* 페이지 넘기기 안됌 */}
-            <PageComponent serverData={serverData} movePage={moveToList}/>
+            <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName}/>
 
         </section>
     )
