@@ -14,7 +14,7 @@ import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import React, {useEffect, useRef, useState} from "react";
-import CommentCell from "../../components/common/CommentCell";
+import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 
 import ContentBody from "../../components/common/ContentBody";
@@ -22,6 +22,7 @@ import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {getOne} from "../../api/newsApi";
 import ContentHeader from "../../components/common/ContentHeader";
+
 
 const initState = {
     dtoList: [],
@@ -105,7 +106,7 @@ const ReadPage = () => {
                 <CardFooter>
                     {comServerData.dtoList.map((dto) => {
                         return (
-                            <CommentCell comNo={dto.comNo} writer={dto.writer} content={dto.content}/>
+                            <CommentCell comNo={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo}/>
                         )
                     })}
                     <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>
