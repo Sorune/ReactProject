@@ -34,6 +34,9 @@ const BasicMenu = () =>{
                     <Link to={'/about'} onClick={pageReset}>About</Link>
                 </Typography>
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
+                    <Link to={'/player/'} onClick={pageReset}>Player</Link>
+                </Typography>
+                <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
                     <Link to={'/news/'} onClick={pageReset}>News</Link>
                 </Typography>
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
