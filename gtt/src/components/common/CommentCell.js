@@ -10,7 +10,7 @@ import {useState} from "react";
 import {useLocation} from "react-router-dom";
 
 
-export const CommentCell=({comNo,writer, position, content, newsNo,modDate, recomNo,refresh,setRefresh}) => {
+export const CommentCell=({comno,writer, position, content, newsNo,modDate, recomNo,refresh,setRefresh}) => {
     const [isModify,setIsModify] =useState(true)
     const [comment,setComment] = useState(content)
     const toggleRecommend = () => {
@@ -24,17 +24,17 @@ export const CommentCell=({comNo,writer, position, content, newsNo,modDate, reco
     }
     const handleDelete=()=>{
         if(window.confirm("삭제하시겠습니까?")) {
-            removeComment(comNo).then(result => {
+            removeComment(comno).then(result => {
                 alert(result.result)
                 setRefresh(!refresh)
             })
         }
     }
     const handleConfirm =()=>{
-        modifyComment({comNo:comNo,content:comment,writer:writer, newsNo:newsNo, recomNo:recomNo}).then((message)=>{alert(message.result); setIsModify(!isModify)})
+        modifyComment({comNo:comno,content:comment,writer:writer, newsNo:newsNo, recomNo:recomNo}).then((message)=>{alert(message.result); setIsModify(!isModify)})
     }
     return (
-        <Card comNo={comNo} color="transparent" shadow={true} className="w-full mb-3">
+        <Card comNo={comno} color="transparent" shadow={true} className="w-full mb-3">
             <CardHeader
                 color="transparent"
                 floated={false}

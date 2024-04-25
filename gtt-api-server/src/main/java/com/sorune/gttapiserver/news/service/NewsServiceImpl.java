@@ -58,6 +58,8 @@ public class NewsServiceImpl implements NewsService {
         News news = newsRepository.findByNewsNo(no);
 
         NewsDTO newsDTO = modelMapper.map(news, NewsDTO.class);
+        newsDTO.setHits(news.getHits()+1);
+        newsRepository.save(modelMapper.map(newsDTO, News.class));
 
         return newsDTO;
     }

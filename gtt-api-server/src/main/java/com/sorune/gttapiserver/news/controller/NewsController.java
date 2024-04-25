@@ -32,6 +32,7 @@ public class NewsController {
 
     @GetMapping("/{newsno}")
     public NewsDTO getNews(@PathVariable("newsno") Long newsNo) { // 한 개의 게시물을 조화
+
         return newsService.getById(newsNo);
     }
 
