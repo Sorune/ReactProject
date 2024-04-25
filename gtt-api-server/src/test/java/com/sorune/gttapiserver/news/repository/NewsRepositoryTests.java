@@ -23,10 +23,11 @@ public class NewsRepositoryTests {
     }
 
     @Test
-    public void newsInsertTests(){
+    public void newsInsertTests() {
         News news = News.builder().title("testTest").content("testTest").theTeam("T1").writer("Test").build();
 
         newsRepository.save(news);
+    }
 
     @Test
     public void getTest(){
