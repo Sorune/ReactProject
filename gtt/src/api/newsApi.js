@@ -1,6 +1,5 @@
 import axios from "axios";
-
-export const API_SERVER_HOST = 'http://localhost:8080'
+import {API_SERVER_HOST} from "./filesApi";
 
 const prefix = `${API_SERVER_HOST}/api/news`
 
@@ -16,9 +15,12 @@ export const getOne = async(newsNo)=>{
     return res.data
 }
 
-export const insertNews = async ({pageParam,pathName,newsObj})=>{
-    console.log(pathName,newsObj)
-    // const {newsNo} =pageParam
-    // const res = await axios.get(`${prefix}/${newsNo}`)
-    // return res.data
+export const insertNews = async (title,content,theTeam,writer)=>{
+    const res = await axios.post(`${prefix}/`,{
+        title:title,
+        content:content,
+        theTeam:theTeam,
+        writer:writer
+    })
+    return res.data
 }

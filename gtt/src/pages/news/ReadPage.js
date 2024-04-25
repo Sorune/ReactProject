@@ -14,7 +14,7 @@ import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import React, {useEffect, useRef, useState} from "react";
-import CommentCell from "../../components/common/CommentCell";
+import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 
 import ContentBody from "../../components/common/ContentBody";
@@ -22,6 +22,7 @@ import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {getOne} from "../../api/newsApi";
 import ContentHeader from "../../components/common/ContentHeader";
+
 
 const initState = {
     dtoList: [],
@@ -83,6 +84,14 @@ const ReadPage = () => {
         }
     }, [queryParams,refresh]);
 
+    function parseDeltaOrString(data) {
+        if (typeof data === 'string' && data.includes('"ops"')) {
+            return JSON.parse(data);
+        } else {
+            return data; // 그냥 문자열로 반환
+        }
+    }
+
     return (
         <section className="bg-white w-full h-full p-2 py-2">
             <ContentHeader page={page} pathName={'/news/list'} moveTo={moveToList} />
@@ -93,19 +102,19 @@ const ReadPage = () => {
                         teamName={testTeam.teamName}
                         teamImg={testTeam.teamImg}
                         title={serverData.title}
-                        content={serverData.content}
+                        content={parseDeltaOrString(serverData.content)}
                         date={serverData.regDate}
                         viewCount={serverData.hits}
                         writer={serverData.writer}
                     />
                     <Card className="m-2 row-start-3 mt-10">
-                        <CommentInputCell/>
+                        <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
                     </Card>
                 </CardBody>
                 <CardFooter>
                     {comServerData.dtoList.map((dto) => {
                         return (
-                            <CommentCell comNo={dto.comNo} writer={dto.writer} content={dto.content}/>
+                            <CommentCell newsNo={newsNo} comNo={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
                         )
                     })}
                     <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>

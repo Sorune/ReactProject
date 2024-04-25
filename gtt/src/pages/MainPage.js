@@ -2,19 +2,19 @@ import BasicLayout from "../layouts/BasicLayout";
 import {Card, CardBody, CardHeader, Typography} from "@material-tailwind/react";
 import React from "react";
 
-interface TestimonialCardPropsType {
-    img: string;
-    client: string;
-    title: string;
-    clientInfo: string;
+const TestimonialCardPropsType ={
+    img:"",
+    client: "",
+    title: "",
+    clientInfo: "",
 }
 
-function TestimonialCard({
+export const TestimonialCard =({
                              img,
                              client,
                              title,
                              clientInfo,
-                         }: TestimonialCardPropsType) {
+                         }) =>{
     return (
         <Card shadow={false} className="bg-gray-100/50 rounded-2xl p-6">
             <CardHeader color="transparent" floated={false} shadow={false}>

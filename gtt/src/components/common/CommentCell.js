@@ -1,50 +1,88 @@
-import {Avatar, Button, Card, Chip, Typography} from "@material-tailwind/react";
-import {removeComment} from "../../api/commentApi";
-import useCustomMove from "../../hooks/useCustomMove";
-import {useEffect, useState} from "react";
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    Typography,
+    Avatar, CardFooter, Button, Textarea,
+} from "@material-tailwind/react";
+import {modifyComment, removeComment} from "../../api/commentApi";
+import {useState} from "react";
+import {useLocation} from "react-router-dom";
 
-const CommentCell = ({comNo,writer, position, content})=>{
-    const {refresh,setRefresh} = useCustomMove()
+
+export const CommentCell=({comNo,writer, position, content, newsNo,modDate, recomNo,refresh,setRefresh}) => {
+    const [isModify,setIsModify] =useState(true)
+    const [comment,setComment] = useState(content)
+    const toggleRecommend = () => {
+
+    };
+    const handleChange=(e)=>{
+        setComment(e.target.value)
+    }
+    const handleModify=()=>{
+        setIsModify(!isModify)
+    }
+    const handleDelete=()=>{
+        if(window.confirm("삭제하시겠습니까?")) {
+            removeComment(comNo).then(result => {
+                alert(result.result)
+                setRefresh(!refresh)
+            })
+        }
+    }
+    const handleConfirm =()=>{
+        modifyComment({comNo:comNo,content:comment,writer:writer, newsNo:newsNo, recomNo:recomNo}).then((message)=>{alert(message.result); setIsModify(!isModify)})
+    }
     return (
-        <Card comNo={comNo} className="p-2 m-2">
-            <div className="grid col-auto gap-5">
-                <div className="col-start-1 col-end-2">
-                    <div className="flex items-center gap-2">
-                        <Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" />
-                        <div>
-                            <Typography variant="h6">{writer}</Typography>
-                            <Typography variant="small" color="gray" className="font-normal">
-                                {position}
+        <Card comNo={comNo} color="transparent" shadow={true} className="w-full mb-3">
+            <CardHeader
+                color="transparent"
+                floated={false}
+                shadow={false}
+                className="mx-0 flex items-center gap-4 pt-3 pb-0 pl-4 pr-4 "
+            >
+                <Avatar
+                    size="md"
+                    variant="circular"
+                    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                    alt="tania andrew"
+                />
+                <div className="flex w-full flex-col gap-0.5">
+                    <div className="flex items-center justify-between">
+                        <Typography variant="h5" color="blue-gray">
+                            {writer}
+                        </Typography>
+                        <div className="5 flex items-center gap-0 mr-3">
+                            {/* 본인일 경우 보이는 수정, 삭제 버튼 */}
+                            <Button size="sm" color="blue" variant="text" className="rounded-md" onClick={handleModify} disabled={!isModify}>
+                                modify
+                            </Button>
+                            {isModify?<Button size="sm" color="red" variant="text" className="rounded-md"
+                                     onClick={handleDelete}>delete</Button>:<Button size="sm" color="red" variant="text" className="rounded-md"
+                                                                                    onClick={handleConfirm}>Confirm</Button>
+                            }
+                            <Button size="sm" color="red" variant="text" className="rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 recommend">
+                                    <path
+                                        d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"/>
+                                </svg>
+                            </Button>
+                            <Typography color="blue-gray">
+                                {recomNo}
                             </Typography>
                         </div>
                     </div>
+                    <Typography color="blue-gray"><small>{position}position</small></Typography>
                 </div>
-                <div className="col-start-3 col-end-4 flex items-center">
-                    <Typography color="black" variant="h6">
-                        {content}
-                    </Typography>
+            </CardHeader>
+            <CardBody className="mb-2 pt-4">
+                {isModify?<Typography>{comment}</Typography>:<Textarea value={comment} placeholder={"comment"} label={"comment"} onChange={handleChange}/>}
+            </CardBody>
+            <CardFooter className="p-1 flex justify-end">
+                <div className="pr-6 pb-3">
+                    <small>작성일 : {modDate}</small>
                 </div>
-                <div className="col-start-5 col-end-6 flex justify-end">
-                    {/* 본인이 아닐경우 보이는 추천버튼 */}
-                    <Button size="sm" color="green" variant="text" className="rounded-md">
-                        like
-                    </Button>
-                    {/* 본인일 경우 보이는 수정, 삭제 버튼 */}
-                    <Button size="sm" color="blue" variant="text" className="rounded-md">
-                        modify
-                    </Button>
-                    <Button size="sm" color="red" variant="text" className="rounded-md" onClick={()=> {
-                            removeComment(comNo).then(result=> {
-                                alert(result.result)
-                                setRefresh(!refresh)
-                            })
-                    }}>
-                        delete
-                    </Button>
-                </div>
-            </div>
+            </CardFooter>
         </Card>
-    )
+    );
 }
-
-export default CommentCell;

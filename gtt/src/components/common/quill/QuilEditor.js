@@ -1,10 +1,11 @@
-import React, { forwardRef, useEffect, useState, useMemo } from "react";
+import React, {forwardRef, useEffect, useState, useMemo, memo} from "react";
 import { Card } from "@material-tailwind/react";
 import ReactQuill, {Quill} from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-image-resize-module-react/src/ImageResize";
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import {insertFiles} from "../../../api/filesApi";
+import {API_SERVER_HOST} from "../../../api/filesApi";
 
 Quill.register('modules/imageResize', ImageResize);
 Quill.register('modules/imageDropAndPaste',QuillImageDropAndPaste)
@@ -30,9 +31,8 @@ const formats = [
     'width'
 ];
 
-const QuilEditor = forwardRef(({ value, onChange }, ref) => {
+const QuilEditor = memo(forwardRef(({ value, onChange }, ref) => {
     const [localValue, setLocalValue] = useState(value || "");
-    const prefix = 'api/files'
     const ImageHandler = ()=>{
         const input = document.createElement('input');
         input.setAttribute('type','file');
@@ -43,7 +43,7 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
             const file = input.files[0];
             if (!file) return;
             insertFiles(file).then(files => {
-                const imageUrl = "http://localhost:8080/api/files/" + files.at(0)
+                const imageUrl = API_SERVER_HOST+"/api/files/" + files.at(0)
                 console.log(files.at(0),imageUrl)
                 const range = ref.current.getEditorSelection();
                 ref.current.getEditor().insertEmbed(range.index, 'image', imageUrl)
@@ -60,7 +60,7 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
         }
     };
 
-    const modules = {
+    const modules = useMemo(()=>({
         toolbar: {
             container: [
                 [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
@@ -80,8 +80,8 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
         imageDropAndPaste:{
             handler:ImageHandler
         }
-    };
-    
+    }),[]);
+
     useEffect(() => {
         if (ref && ref.current) {
             const editor = ref.current.getEditor();
@@ -100,9 +100,9 @@ const QuilEditor = forwardRef(({ value, onChange }, ref) => {
                 onChange={handleChange}
             />
         );
-    }, [localValue,handleChange]);
+    }, [localValue]);
 
     return <Card>{quill}</Card>;
-});
+}));
 
 export default QuilEditor;
