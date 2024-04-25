@@ -35,10 +35,13 @@ public class Member extends BaseEntity {
     private LocalDate birth;    // 맴버 생일 자동생성 nn
 
     @Column(nullable = false)
-    private String addNum;   // 맴버 우편 자동생성 nn
+    private String zoneCode;   // 맴버 우편 자동생성 nn
 
     @Column(nullable = false)
-    private String addr;     // 맴버 주소 자동생성 nn
+    private String address;     // 맴버 주소 자동생성 nn
+
+    @Column(nullable = false)
+    private String addrSub;     // 맴버 나머지 주소 자동생성 nn
 
     // 회원 닉네임 수정용
     public void editMemNick(String nick) {
@@ -61,12 +64,15 @@ public class Member extends BaseEntity {
     }
 
     // 회원 우편번호 수정용
-    public void editMemAddrNum(String addNum) {
-        this.addNum = addNum;
+    public void editMemAddrNum(String zoneCode) {
+        this.zoneCode = zoneCode;
     }
 
     // 회원 주소 수정용
-    public void editMemAddr(String addr) {
-        this.addr = addr;
+    public void editMemAddr(String address) {
+        this.address = address;
     }
+
+    // 회원 나머지 주소 수정용
+    public void editMemAddr2(String addrSub) { this.addrSub = addrSub; }
 }

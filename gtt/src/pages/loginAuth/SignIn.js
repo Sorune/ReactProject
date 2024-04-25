@@ -4,9 +4,16 @@ import AddrWithDaum from './AddrWithDaum';
 import DatePicker from "../../components/common/DatePicker";
 import { Collapse, Button, IconButton, Card, Typography, CardBody } from '@material-tailwind/react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
-import userEvent from "@testing-library/user-event";
+
 // validation.js 제외 / 리액트 훅 규칙에 따라서 사용할 훅의 네임을 useInput으로 새로운 훅을 생성
-import { useConfirmID, useConfirmNick, usePasswordMatch, useCheckedTerms } from '../../hooks/useInput';
+import {
+    useConfirmID,
+    useConfirmNick,
+    usePasswordMatch,
+    useBirth,
+    useAddrSub
+} from '../../hooks/useInput';
+import {join} from "../../api/joinApi";
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -16,18 +23,25 @@ const SignIn = () => {
     const [modalOpen, modalSetOpen]  = React.useState(false);
     const [termsChecked, setTermsChecked] = useState(false);
     // useInput에서 리턴한 값
-    const [inputID, inputIdChange, idMatch, clearInput] = useConfirmID('');
+    const [inputID, inputIdChange, idValid, checkID, clearInput] = useConfirmID('');
     const [inputNick, inputNickChange, nickMatch, clearNick] = useConfirmNick('');
     const [inputPass, inputPassChange, inputConfirmPass, inputConfirmPassChange, passMatch, clearPassword] = usePasswordMatch("", "");
-    // const [termsChecked, checkeChange] = useCheckedTerms(false);
+    const [birth, insertBirthChange] = useBirth('');
+    const [addrSub, insertAddrSubChange] = useAddrSub('');
 
     // useInput에서 리턴한 값을 기준으로 메서드 실행 - id검증
+    /*
+    *
+    * */
     const idCompareResult = () => {
-        if(idMatch) {
+        if(idValid === false) {
             alert("이미 사용중인 아이디 입니다.");
             clearInput();
+        }else {
+            alert("사용 가능한 아이디 입니다.");
         }
-    }
+    };
+
     // 리턴한 값을 기준으로 메서드 실행 - 닉네임검증
     const nickCompareResult = () => {
         if(nickMatch) {
@@ -42,7 +56,7 @@ const SignIn = () => {
             clearPassword();
         }
     }
-    // 머트리얼 콜랩스 동작메서드 - toggle 
+    // 머트리얼 콜랩스 동작메서드 - toggle
     const toggleOpen = () => setOpen((cur) => !cur);
     // 머트리얼 모달 동작 메서드
     const modalHandleOpen = () => modalSetOpen(true);
@@ -59,22 +73,27 @@ const SignIn = () => {
         // 목적지 값에 따라 다르게 처리 "login"이면 로그인 페이지로 이동하고
         if (destination === "login") {
             navigate("/login");
-        // "home"이면 홈페이지(보통 "/"로 표시됨)로 이동
+            // "home"이면 홈페이지(보통 "/"로 표시됨)로 이동
         } else if (destination === "home") {
             navigate("/");
         }
     };
+
     // 폼 제출 메서드
-    const handleFormSubmit = (event) => {
-        event.preventDefault();
+    const joinMember = async (e) => {
+        // 제출 동작 막기
+        e.preventDefault();
         if (!termsChecked) {
             alert("개인정보 취급방침에 동의해야 합니다.");
             return;
         } else {
-            alert("회원 가입이 완료되었습니다! 메인화면으로 이동합니다.");
-            //navigate("/home");
+            // 로그인 api 메서드 호출
+            const data = await join(inputID, inputPass, inputNick, birth, zoneCode, address, addrSub);
+            alert("가입여부 : " + data);
+            // 경고창 출력 후 홈으로 이동
+            // navigate("/login");
         }
-    };
+    }
 
     return (
         <div>
@@ -88,21 +107,24 @@ const SignIn = () => {
                             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 JOIN
                             </h1>
-                            <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleFormSubmit}>
+                            <form className="space-y-4 md:space-y-6" action="#" onSubmit={joinMember}>
                                 <div>
                                     <label htmlFor="id" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</label>
-                                    <input name="id" value={inputID} onChange={inputIdChange} onBlur={idCompareResult} type="text" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
+                                    <input name="id" value={inputID} onChange={inputIdChange} onBlur={checkID} type="text" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
                                 </div>
                                 <div>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
+                                    {/* PW */}
                                     <input name="password" value={inputPass} onChange={inputPassChange} type="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                 </div>
                                 <div>
                                     <label htmlFor="password2" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력 확인</label>
+                                    {/* confirmPW */}
                                     <input name="password2" value={inputConfirmPass} onChange={inputConfirmPassChange} onBlur={passCompareResult} type="password" id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                 </div>
                                 <div>
                                     <label htmlFor="nickname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임</label>
+                                    {/* nick */}
                                     <input name="nickname" value={inputNick} onChange={inputNickChange} onBlur={nickCompareResult} type="text" id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
                                 </div>
 
@@ -115,13 +137,18 @@ const SignIn = () => {
                                             <CardBody>
                                                 <div>
                                                     <Typography as="label" htmlFor="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</Typography>
-                                                    <DatePicker name="birth"/>
+                                                    {/*<input type="date" value={birth} onChange={insertBirthChange} name="birth" required/>*/}
+                                                    {/*<DatePicker value={birth} onChange={insertBirthChange} name="birth"/>*/}
+
+                                                    {/* birth */}
+                                                    <input type={"date"} value={birth} onChange={insertBirthChange} name="birth"/>
                                                 </div>
                                                 <div>
-                                                    <label htmlFor="addrNum" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</label>
+                                                    <label htmlFor="zoneCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</label>
                                                     <div className="grid grid-cols-12 gap-5">
                                                         <div className='col-span-10'>
-                                                            <input type="text" name="addrNum" id="addrNum" value={zoneCode || ''} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readOnly />
+                                                            {/* zoneCode */}
+                                                            <input type="text" value={zoneCode || ''} name="zoneCode" onChange={setZoneCode} id="zoneCode" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readOnly />
                                                         </div>
                                                         <div className='col-span-2'>
                                                             <IconButton onClick = {modalHandleOpen} variant="gradient" title='주소검색'>
@@ -150,12 +177,14 @@ const SignIn = () => {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label htmlFor="addr" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소</label>
-                                                    <input type="text" name="addr" id="addr" value={address || ''} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="주소입력" readOnly />
+                                                    <label htmlFor="adress" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소</label>
+                                                    {/* address */}
+                                                    <input type="text" name="address" id="address" onChange={setAddress} value={address || ''} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="주소입력" readOnly />
                                                 </div>
                                                 <div>
-                                                    <label htmlFor="addr2" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">나머지 주소</label>
-                                                    <input type="text" name="addr2" id="addr2" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="나머지 주소입력"/>
+                                                    <label htmlFor="addrSub" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">나머지 주소</label>
+                                                    {/* addrSub */}
+                                                    <input type="text" name="addrSub" id="addrSub" onChange={insertAddrSubChange} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="나머지 주소입력"/>
                                                 </div>
                                             </CardBody>
                                         </Card>
