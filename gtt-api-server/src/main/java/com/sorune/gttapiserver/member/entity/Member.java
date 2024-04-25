@@ -29,7 +29,7 @@ public class Member extends BaseEntity {
     private String nick;     // 맴버 별명 자동생성 nn
 
     @Column(nullable = false)
-    private String id;       // 맴버 아이디 자동생성 nn
+    private String userId;       // 맴버 아이디 자동생성 nn
 
     @Column(nullable = false)
     private LocalDate birth;    // 맴버 생일 자동생성 nn
@@ -49,9 +49,7 @@ public class Member extends BaseEntity {
     }
 
     // 회원 아이디 수정용
-    public void editMemId(String id) {
-        this.id = id;
-    }
+    public void editMemId(String userId) {this.userId = userId;}
 
     // 회원 비밀번호 수정용
     public void editMemPw(String pw) {

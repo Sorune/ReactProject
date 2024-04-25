@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = memberRepository.getReferenceById(memberDTO.getNum());
         // 회원 아이디 수정
-        member.editMemId(memberDTO.getId());
+        member.editMemId(memberDTO.getUserId());
         // 회원 비밀번호 수정
         member.editMemPw(memberDTO.getPw());
         // 회원 닉네임 수정
@@ -101,5 +101,12 @@ public class MemberServiceImpl implements MemberService {
                 .build(); // 조회 결과를 PageResponseDTO 객체로 빌드
         // 빌드된 객체를 반환
         return pageResponseDTO;
+    }
+
+    @Override
+    public boolean checkId(String id) {
+        Member member =memberRepository.findByUserId(id) ;
+        log.info(member);
+        return member==null;
     }
 }

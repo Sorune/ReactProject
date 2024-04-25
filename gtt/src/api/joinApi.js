@@ -1,7 +1,7 @@
 import axios from "axios";
+import {API_SERVER_HOST} from "./filesApi";
+// 요청을 완료하기 위한 서버 경로;
 
-// 요청을 완료하기 위한 서버 경로
-export const API_SERVER_HOST = 'http://localhost:8001';
 
 // 회원가입 메서드
 export const join = async (id, password, nick, birth, zoneCode, address, addrSub) => {
@@ -33,12 +33,12 @@ export const join = async (id, password, nick, birth, zoneCode, address, addrSub
 // 회원 아이디 검증 메서드
 export const validateID = async (id) => {
     try {
-        const prefix = `${API_SERVER_HOST}/api/member/checkId/{id}/exists`;
-        const response = await axios.post(prefix, { params: { id: id } })
+        console.log(id)
+        const prefix = `${API_SERVER_HOST}/api/member/checkId/${id}`;
+        const response = await axios.get(prefix)
 
-        console.log(response.data.id);
         console.log(response.data.message);
-        if (response.data === true) {
+        if (response.data.message  === true) {
             alert("사용 가능한 id입니다!");
         } else {
             alert("이미 사용중인 id입니다!");
