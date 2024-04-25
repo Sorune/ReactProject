@@ -18,12 +18,13 @@ import java.util.List;
 @NoArgsConstructor
 public class MemberDTO {
 
-    private Long num;        // 회원번호 nn
-    private String pw;       // 회원 비밀번호 nn
-    private String nick;     // 회원 닉네임 nn
-    private String id;       // 회원 아이디 nn
-    private String addNum;   // 회원 주소(우편번호) nn
-    private String addr;    // 회원 주소(검색주소) nn
+    private Long num;           // 회원번호 nn
+    private String pw;          // 회원 비밀번호 nn
+    private String nick;        // 회원 닉네임 nn
+    private String id;          // 회원 아이디 nn
+    private String zoneCode;    // 회원 주소(우편번호) nn
+    private String address;     // 회원 주소(검색주소) nn
+    private String addrSub;     // 회원 주소(나머지 동/호/수 등)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate birth;    // 회원 생년월일 nn
 

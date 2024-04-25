@@ -54,9 +54,11 @@ public class MemberServiceImpl implements MemberService {
         // 회원 닉네임 수정
         member.editMemNick(memberDTO.getNick());
         // 회원 우편번호 수정
-        member.editMemAddrNum(memberDTO.getAddNum());
+        member.editMemAddrNum(memberDTO.getZoneCode());
         // 회원 주소 수정
-        member.editMemAddr(memberDTO.getAddr());
+        member.editMemAddr(memberDTO.getAddress());
+        // 회원 나머지 주소 수정
+        member.editMemAddr2(memberDTO.getAddrSub());
         // 회원 생일 수정
         member.editMemBirth(memberDTO.getBirth());
         // 수정된 회원 정보를 데이터베이스에 저장함.

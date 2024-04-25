@@ -1,24 +1,34 @@
-import { useState } from "react";
+import {useCallback, useState} from "react";
+import {validateID} from "../api/joinApi";
 
-// 중복 아이디 확인하는 훅
+// 아이디 중복 확인 훅
 export const useConfirmID = (initialID) => {
     const [inputID, setID] = useState(initialID);
-    // inputID = input의 value값(input의 value안의 변수명과 일치해야함)
-    // setID() = input의 내용(값)이 입력되면 동작하는 onChange에 거는 메서드
-    // useState에 값을 넣어줘야한다.
-    const compareID = ["user", "user1234", "user1", "test", "1111"];
-    // compareID - 입력된값과 중복된 문자가 있는지 확인하기위한 임시 배열
-    // 추후 db의 정보를 가져다가 매칭을 시켜야 하지만 프론트 검증용으로 만들어둠
+    const [idValid, setIdValid] = useState(null);  // 검증 결과를 저장할 상태
+
     const inputIdChange = (e) => {
-        setID(e.target.value);
-        // setID : 입력되면 실행되는 메서드의 값을 가져온다
+        setID(e.target.value);  // 입력 값으로 상태 업데이트
     };
-    // inputID가 compareID 배열에 있는지 확인
-    const idMatch = compareID.includes(inputID);
-    // 중복이 된다면 state를 비워주는 함수
-    const clearInput = () =>  setID("");
-    // 배열로 반환
-    return [inputID, inputIdChange, idMatch, clearInput];
+
+    // 아이디 검증 함수, 특정 이벤트(예: onBlur, 버튼 클릭)에서 호출될 수 있음
+    const checkID = useCallback(async () => {
+        try {
+            const isValid = await validateID(inputID);
+            setIdValid(isValid);  // validateID가 true 또는 false 반환을 가정함
+        } catch (error) {
+            console.error('아이디 검증 중 에러 발생:', error);
+            setIdValid(false);  // 에러 처리를 위해 유효하지 않음으로 설정
+        }
+    }, [inputID]);
+
+    // 입력 필드 클리어 함수
+    const clearInput = () => {
+        setID("");
+        setIdValid(null);  // 선택적으로 검증 상태를 리셋
+    };
+
+    // 훅에서 반환할 값들과 함수
+    return [inputID, inputIdChange, idValid, checkID, clearInput];
 };
 
 
@@ -62,3 +72,39 @@ export const usePasswordMatch = (initialPass, initialConfirmPass) => {
     // 훅에서 사용할 값들을 배열로 반환
     return [inputPass, inputPassChange, inputConfirmPass, inputConfirmPassChange, passMatch, clearPassword];
 }
+
+// 생년월일
+export const useBirth = (initBirth) => {
+    const [birth, setBirth] = useState(initBirth);
+    const insertBirthChange = (e) => {
+        setBirth(e.target.value);
+    };
+    return [birth, insertBirthChange];
+}
+
+// 우편번호
+export const useZoneCode = (initZoneCode) => {
+    const [zoneCode, setZoneCode] = useState(initZoneCode);
+    const changeZoneCode = (e) => {
+        setZoneCode((e.target.value));
+    }
+    return [zoneCode, changeZoneCode];
+};
+
+// 주소
+export const useAddress = (initAddress) => {
+    const [address, setAddress] = useState(initAddress);
+    const changeAdress = (e) => {
+        setAddress((e.target.value));
+    }
+    return [address, changeAdress];
+};
+
+// 나머지 주소
+export const useAddrSub = (initAddrSub) => {
+    const [addrSub, setAddrSub] = useState(initAddrSub);
+    const insertAddrSubChange = (e) => {
+        setAddrSub((e.target.value));
+    }
+    return [addrSub, insertAddrSubChange];
+};
