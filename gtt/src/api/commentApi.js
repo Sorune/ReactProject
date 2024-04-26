@@ -25,3 +25,14 @@ export const removeComment = async (comNo)=>{
     const res = await axios.delete(`${prefix}/${comNo}`)
     return res.data
 }
+
+export const modifyComment = async ({comNo, content,writer,newsNo,recomNo})=>{
+    const res = await axios.put(`${prefix}/${comNo}`,{
+        comNo:comNo,
+        content:content,
+        writer:writer,
+        newsNo:newsNo,
+        recomNo:recomNo,
+    })
+    return res.data
+}

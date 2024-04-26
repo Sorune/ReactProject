@@ -3,21 +3,35 @@ import {
     CardHeader,
     CardBody,
     Typography,
-    Avatar, CardFooter, Button,
+    Avatar, CardFooter, Button, Textarea,
 } from "@material-tailwind/react";
-import {removeComment} from "../../api/commentApi";
-import useCustomMove from "../../hooks/useCustomMove";
+import {modifyComment, removeComment} from "../../api/commentApi";
+import {useState} from "react";
+import {useLocation} from "react-router-dom";
 
 
-export const CommentCell=({comNo,writer, position, content, modDate, recomNo,refresh,setRefresh}) => {
+export const CommentCell=({comNo,writer, position, content, newsNo,modDate, recomNo,refresh,setRefresh}) => {
+    const [isModify,setIsModify] =useState(true)
+    const [comment,setComment] = useState(content)
     const toggleRecommend = () => {
 
     };
+    const handleChange=(e)=>{
+        setComment(e.target.value)
+    }
+    const handleModify=()=>{
+        setIsModify(!isModify)
+    }
     const handleDelete=()=>{
-        removeComment(comNo).then(result=> {
-            alert(result.result)
-            setRefresh(!refresh)
-        })
+        if(window.confirm("삭제하시겠습니까?")) {
+            removeComment(comNo).then(result => {
+                alert(result.result)
+                setRefresh(!refresh)
+            })
+        }
+    }
+    const handleConfirm =()=>{
+        modifyComment({comNo:comNo,content:comment,writer:writer, newsNo:newsNo, recomNo:recomNo}).then((message)=>{alert(message.result); setIsModify(!isModify)})
     }
     return (
         <Card comNo={comNo} color="transparent" shadow={true} className="w-full mb-3">
@@ -40,12 +54,12 @@ export const CommentCell=({comNo,writer, position, content, modDate, recomNo,ref
                         </Typography>
                         <div className="5 flex items-center gap-0 mr-3">
                             {/* 본인일 경우 보이는 수정, 삭제 버튼 */}
-                            <Button size="sm" color="blue" variant="text" className="rounded-md">
+                            <Button size="sm" color="blue" variant="text" className="rounded-md" onClick={handleModify} disabled={!isModify}>
                                 modify
                             </Button>
-                            <Button size="sm" color="red" variant="text" className="rounded-md" onClick={handleDelete}>
-                                delete
-                            </Button>
+                            {isModify?<Button size="sm" color="red" variant="text" className="rounded-md"
+                            onClick={handleDelete}>delete</Button>:<Button size="sm" color="red" variant="text" className="rounded-md" onClick={handleConfirm}>Confirm</Button>
+                            }
                             <Button size="sm" color="red" variant="text" className="rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 recommend">
                                     <path
@@ -64,6 +78,7 @@ export const CommentCell=({comNo,writer, position, content, modDate, recomNo,ref
                 <Typography>
                     {content}
                 </Typography>
+                {isModify?<Typography>{comment}</Typography>:<Textarea value={comment} placeholder={"comment"} label={"comment"} onChange={handleChange}/>}
             </CardBody>
             <CardFooter className="p-1 flex justify-end">
                 <div className="pr-6 pb-3">
