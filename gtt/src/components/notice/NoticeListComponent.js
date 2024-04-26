@@ -4,6 +4,9 @@ import useCustomMove from "../../hooks/useCustomMove";
 import {useEffect, useState} from "react";
 import {getList} from "../../api/noticeApi";
 import PageComponent from "../common/PageComponent";
+import {useRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
+import {useLocation} from "react-router-dom";
 
 const initState = {
     dtoList:[],
@@ -19,19 +22,20 @@ const initState = {
 }
 
 const ListComponent = () => {
-    const {page, size, moveToList, refresh, moveToRead} = useCustomMove()
-
+    const { moveToList, refresh, moveToRead} = useCustomMove()
+    const pathName = useLocation().pathname
+    const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
 
     useEffect(() => {
-        getList({page, size}).then(data =>{
+        getList({page:page.page, size:page.size}).then(data =>{
             console.log(data)
             setServerData(data)
         })
-    }, [page,size, refresh]
+    }, [refresh]
     )
 
-    return(
+    return (
         <div className="border-2 border-blue-100 mt-10 mr-2 ml-2}">
             <div className="flex flex-wrap mx-auto justify-center p-6">
                 {serverData.dtoList.map(notice =>
@@ -53,11 +57,7 @@ const ListComponent = () => {
                 </div>
                 )}
             </div>
-{/*             <PageComponent serverData={serverData} movePage={moveToList({
-                pathName: "list",
-                pageParam:page
-            })}>
-            </PageComponent>*/}
+              <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName}/>
         </div>
     )
 }
