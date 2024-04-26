@@ -52,11 +52,11 @@ public class MemberRepositoryTest {
         IntStream.rangeClosed(1, 100).forEach(i -> {
 
             Member member = Member.builder()
-                    .id("test" + i)
+                    .userId("test" + i)
                     .pw("pass" + i)
                     .nick("seojun" + i)
-                    .addr("오산시(" + i + ")동")
-                    .addNum("123-" + i)
+                    .address("오산시(" + i + ")동")
+                    .zoneCode("123-" + i)
                     .birth(LocalDate.of(2021,11,18))
                     .build();
 

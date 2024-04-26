@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
 import { useId, usePw } from "../../hooks/useLogin";
+// import {handleLogin} from "../../api/loginApi";
 import {login} from "../../api/loginApi";
 
 const Login = () => {
@@ -25,15 +26,31 @@ const Login = () => {
     };
 
     const goLogin = async (e) => {
-        // 제출 동작 막기
         e.preventDefault();
-        // 로그인 api 메서드 호출
-        const data = await login(loginID, loginPW);
-        // 로그인 성공 경고창 출력
-        alert("로그인에 성공했습니다! : " + data);
-        // 경고창 출력 후 홈으로 이동
-        navigate("/");
+        try {
+            // const data = await handleLogin(loginID, loginPW);
+            const data = await login(loginID, loginPW);
+            console.log(data);
+            if(data === true) {
+                alert('로그인 성공 : ' + data.message);
+                navigate('/');  // 성공 후 메인으로 이동
+            }else if(data === false) {
+                alert('로그인 실패 : ' + data.message);
+            }
+            // switch (data) {
+            //     case "SUCCESS" :
+            //         alert('로그인 성공 : ' + data.message);
+            //         return navigate('/');  // 성공 후 메인으로 이동
+            //     case "FAILURE" :
+            //         alert('로그인 실패 : ' + data.message);
+            //         break;
+            // }
+
+        } catch (error) {
+            alert(error.message);  // API의 오류 메시지 또는 처리된 오류 표시
+        }
     }
+
 
 
     return (

@@ -4,6 +4,8 @@ import newsRouter from "./newsRouter";
 import ticketingRouter from "./ticketingRouter.js";
 import playerRouter from "./playerRouter.js";
 import Spin from "../test/pages/Spin";
+import noticeRouter from "./noticeRouter";
+import lolRouter from "./lolRouter";
 
 
 const { createBrowserRouter } = require("react-router-dom");
@@ -16,10 +18,12 @@ const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
 const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
 const PlayerIndex = lazy(() => import("../pages/player/PlayerIndexPage"));
+const LOLIndex = lazy(()=>import("../pages/leagueoflegend/LoLIndexPage"))
 const Test = lazy(()=>import("../test/pages/TestPage.js"));
 const GridTest = lazy(()=>import("../test/pages/GridTest"))
 const NotFound = lazy(()=>import("../pages/error/404NotFound"))
 const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
+const NoticeIndex = lazy(()=> import("../pages/notice/NoticeIndexPage"))
 const root = createBrowserRouter([
     {
         path:"spin",
@@ -82,6 +86,12 @@ const root = createBrowserRouter([
         errorElement:NotFound,
     },
     {
+        path:"lol",
+        element:<Suspense fallback={Loading}><LOLIndex /></Suspense>,
+        children:lolRouter(),
+        errorElement:NotFound,
+    },
+    {
         path: "*",
         element:NotFound,
         errorElement:NotFound,
@@ -93,6 +103,12 @@ const root = createBrowserRouter([
     {
         path:"grid",
         element:<Suspense fallback={Loading}><GridTest/></Suspense>
+    },
+    {
+        path:"notice",
+        children: noticeRouter(),
+        element:<Suspense fallback={Loading}><NoticeIndex/></Suspense>,
+        errorElement:NotFound,
     }
 ])
 

@@ -16,6 +16,8 @@ public interface MemberService {
     MemberDTO searchMember(Long memBno);
     // 회원 전체 조회
     PageResponseDTO<MemberDTO> memberList(PageRequestDTO pageRequestDTO);
-
+    // 회원 가입시 중복 id 체크
     boolean checkId(String id);
+    // 회원 로그인시 id 일치여부 체크
+    boolean isLogin(String id, String pw);
 }
