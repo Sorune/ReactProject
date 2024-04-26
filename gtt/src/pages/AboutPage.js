@@ -7,21 +7,25 @@ const members = [
         img: `/img/bongo-cat.gif`,
         name: "남태욱",
         title: "Team Leader",
+        git:"https://github.com/Sorune",
     },
     {
         img: `/img/bonobono.gif`,
         name: "이서준",
         title: "Team Sub Leader",
+        git:"https://github.com/lsj0317",
     },
     {
         img: `/img/뽀빠이.gif`,
         name: "양지웅",
         title: "Team Member",
+        git:"https://github.com/Yangjiwung",
     },
     {
         img: `/img/jerry.gif`,
         name: "전필우",
         title: "Team Member",
+        git:"https://github.com/5516146",
     },
 ];
 
