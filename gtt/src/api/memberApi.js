@@ -11,8 +11,9 @@ export const memberList = async () => {
 };
 
 // 회원 한명 조회
-export const getMember = async () => {
-    const res = '';
+export const getMember = async (num) => {
+    const res = await axios.get(`${API_SERVER_HOST}/${num}`);
+    return res.data
 }
 
 // 회원 삭제
@@ -22,7 +23,7 @@ export const removeMember = async (num) => {
 }
 
 // 회원수정
-export const updateMember = async (userId, pw, nick, birth, zoneCode, adress, addrSub) => {
+export const updateMember = async (userId, pw, nick, birth, zoneCode, address, addrSub) => {
     const res = await axios.put(`${API_SERVER_HOST}/${num}`,
         {
             "userId":userId,
@@ -30,11 +31,18 @@ export const updateMember = async (userId, pw, nick, birth, zoneCode, adress, ad
             "nick":nick,
             "birth":birth,
             "zoneCode":zoneCode,
-            "adress":adress,
+            "address":address,
             "addrSub":addrSub
         })
         .then(function (res)  {
-
+            console.log(res.data.result);
+            if (res.data.result === "SUCCESS") {
+                alert("회원정보 수정 성공 : " + res.data.message);
+                return true;
+            } else if(res.data.result === "FAILURE") {
+                alert("회원정보 수정 실패 : " + res.data.message);
+                return false;
+            }
         })
         .catch();
 }
