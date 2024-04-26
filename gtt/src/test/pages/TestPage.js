@@ -11,7 +11,8 @@ import {Button} from "@material-tailwind/react";
 import QuilEditor from "../../components/common/quill/QuilEditor";
 import QuilEditorReadOnly from "../../components/common/quill/QuillEditorReadOnly";
 import SidebarLayout from "../../layouts/SidebarLayout";
-
+// 회원정보 U,D(CRUD중) TEST
+import MemberList from "./MemberList";
 
 const TestPage = () => {
     const slides = [
@@ -62,6 +63,10 @@ const TestPage = () => {
                 ))]}
             </CustomCarousel>
             <p>유저정보 보기모달 레이아웃</p>
+            {/*  ---- 회원 ----  */}
+                <hr className="my-5" />
+            <p>회원 정보 리스트 출력 및 수정/삭제</p>
+            <MemberList/>
             </SidebarLayout>
         </BasicLayout>
     )

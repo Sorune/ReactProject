@@ -109,4 +109,10 @@ public class MemberServiceImpl implements MemberService {
         log.info(member);
         return member==null;
     }
+
+    @Override
+    public boolean isLogin(String id, String pw) {
+        Member members = memberRepository.findByUserIdAndPw(id, pw);
+        return members == null;
+    }
 }
