@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {getOnePlayer, putOnePlayer, deleteOnePlayer} from "../../api/playerApi";
 import FetchingModal from "../common/FetchingModal";
-import {API_SERVER_HOST} from "../../api/playerApi";
+import {API_SERVER_HOST} from "../../api/filesApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import ResultModal from "../common/ResultModal";
 import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";

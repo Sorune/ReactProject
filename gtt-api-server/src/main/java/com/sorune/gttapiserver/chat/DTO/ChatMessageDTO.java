@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ChatMessageDTO {
 
     public enum MessageType{
@@ -16,6 +17,6 @@ public class ChatMessageDTO {
 
     private MessageType messageType;
     private String message;
-    private Long chatRoomId;
-    private Long senderId;
+    private String chatRoomId;
+    private String senderId;
 }

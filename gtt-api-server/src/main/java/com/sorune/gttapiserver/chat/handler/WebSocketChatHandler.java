@@ -2,6 +2,8 @@ package com.sorune.gttapiserver.chat.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sorune.gttapiserver.chat.DTO.ChatMessageDTO;
+import com.sorune.gttapiserver.chat.DTO.ChatRoomDTO;
+import com.sorune.gttapiserver.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -20,10 +22,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class WebSocketChatHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
-
+    private final ChatService chatService;
     private final Set<WebSocketSession> sessions = new HashSet<>();
-
-    private final Map<Long,Set<WebSocketSession>> chatRoomSessionMap = new HashMap<>();
+    private final Map<String,Set<WebSocketSession>> chatRoomSessionMap = new HashMap<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -38,38 +39,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
         ChatMessageDTO chatMessageDTO = objectMapper.readValue(payload, ChatMessageDTO.class);
         log.info("chatMessageDTO {}", chatMessageDTO);
-
-        Long chatRoomId = chatMessageDTO.getChatRoomId();
-
-        if (!chatRoomSessionMap.containsKey(chatRoomId)) {
-            chatRoomSessionMap.put(chatRoomId, new HashSet<>());
-        }
-        Set<WebSocketSession> sessionSet = chatRoomSessionMap.get(chatRoomId);
-
-        if(chatMessageDTO.getMessageType().equals(ChatMessageDTO.MessageType.ENTER)){
-            sessionSet.add(session);
-        }
-        if(sessionSet.size()>=3){
-            removeClosedSession(sessionSet);
-        }
-        sendMessageToChatRoom(chatMessageDTO,sessionSet);
-    }
-
-    // ====== 채팅 관련 메소드 ======
-    private void removeClosedSession(Set<WebSocketSession> chatRoomSession) {
-        chatRoomSession.removeIf(sess -> !sessions.contains(sess));
-    }
-
-    private void sendMessageToChatRoom(ChatMessageDTO chatMessageDto, Set<WebSocketSession> chatRoomSession) {
-        chatRoomSession.parallelStream().forEach(sess -> sendMessage(sess, chatMessageDto));//2
-    }
-
-
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try{
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
+        ChatRoomDTO room = chatService.findRoomById(chatMessageDTO.getChatRoomId());
+        room.handleActions(session,chatMessageDTO,chatService);
     }
 }

@@ -1,7 +1,6 @@
 import axios from "axios";
-//import {API_SERVER_HOST} from "./filesApi";
+import {API_SERVER_HOST} from "./filesApi";
 // 요청을 완료하기 위한 서버 경로;
-export const API_SERVER_HOST = 'http://localhost:8001';
 
 
 // 회원가입 메서드
