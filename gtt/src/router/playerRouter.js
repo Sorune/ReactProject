@@ -7,6 +7,7 @@ const Loading = Spin
 const PlayerList = lazy(() => import("../pages/player/PlayerListPage"))
 const PlayerRead = lazy(() => import("../pages/player/PlayerReadPage"))
 const PlayerAdd = lazy(() => import("../pages/player/PlayerAddPage"))
+const PlayerModify = lazy(() => import("../pages/player/PlayerModifyPage"))
 
 const playerRouter = () => {
     return [
@@ -22,6 +23,9 @@ const playerRouter = () => {
         },{
             path: "add",
             element: <Suspense fallback={Loading}><PlayerAdd/></Suspense>
+        },{
+            path: "modify/:pno",
+            element: <Suspense fallback={Loading}><PlayerModify/></Suspense>
         }
     ]
 }

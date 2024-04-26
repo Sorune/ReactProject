@@ -1,7 +1,9 @@
-import {useRef, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 import {postAdd} from "../../api/playerApi"
 import FetchingModal from "../common/FetchingModal"
 import ResultModal from "../common/ResultModal"
+import useCustomMove from "../../hooks/useCustomMove";
+import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
 
 const initState = {
     age : 0,
@@ -14,9 +16,19 @@ const initState = {
 
 const PlayerAddComponent = () => {
     const [player, setPlayer] = useState({...initState})
-    const uploadRef = useRef()
     const [fetching, setFetching] = useState(false)
     const [result, setResult] = useState(null)
+
+    const navigate = useNavigate()
+    const [queryParams] = useSearchParams()
+    const page = queryParams.get("page") ? parseInt(queryParams.get("page")) : 1
+    const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
+    const queryStr = createSearchParams({page, size}).toString()
+
+    const moveToList = useCallback(() => {
+        navigate({pathname:'/player/list', search:queryStr})
+    },[page, size])
+
     const handleChangePlayer = (e) => {
         player[e.target.name] = e.target.value
         setPlayer({...player})
@@ -37,12 +49,14 @@ const PlayerAddComponent = () => {
 
         postAdd(formData).then(data => {
             setFetching(false)
+            moveToList()
             setResult(data.result)
         })
     }
 
     const closeModal = () => {
         setResult(null)
+        moveToList({page:1})
     }
 
     return (
