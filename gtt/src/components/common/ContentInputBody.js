@@ -1,28 +1,39 @@
 import {Button, Card,  Input} from "@material-tailwind/react";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import QuilEditor from "./quill/QuilEditor";
 import {DropDownInput} from "./DropDownInput";
 import {Delta} from "quill/core";
 import {memo} from "react";
-import {insertNews} from "../../api/newsApi";
+import {insertNews, modifyNews} from "../../api/newsApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
+import {useLocation, useNavigate} from "react-router-dom";
 
-const ContentInputBody =memo(({serverData})=>{
-    const {moveToList} = useCustomMove()
+const ContentInputBody = memo(({serverData})=>{
+    const navigate = useNavigate();
+    const path = useLocation().pathname.split("/")[2];
+    const {moveToList,moveToRead} = useCustomMove()
     const page = useRecoilValue(pageState)
-
     const quillEditorRef = useRef()
     const buttonRef = useRef()
     const inputRef = useRef()
-
     const [title,setTitle] = useState("");
     const [writer, setWriter]=useState("");
     const [selectedTeam, setSelectedTeam] = useState('');
-    const [content,setContent] = useState(new Delta());
+    const [content,setContent] = useState("");
     const [stringContent,setStringContent] = useState({})
-
+    useEffect(() => {
+        if(serverData!==undefined&&serverData.content!==""){
+            console.log(serverData);
+            setContent(serverData.content);
+            setTitle(serverData.title);
+            setWriter(serverData.writer);
+            console.log(content,title,writer);
+            const QuillInstance = quillEditorRef.current.getEditor();
+            QuillInstance.setContents(serverData.content!==""?JSON.parse(serverData.content,new Delta()):new Delta());
+        }
+    }, [serverData]);
     const handleSave = () => {
         /*if (quillEditorRef.current) {
             const quillInstance = quillEditorRef.current.getEditor();
@@ -53,6 +64,18 @@ const ContentInputBody =memo(({serverData})=>{
             moveToList({pathName: '/news/list',pageState:{ page:page.page, size : page.size}})
         })
     };
+    const handleModify=()=>{
+        if(buttonRef.current){
+            const buttonInstance = buttonRef.current
+            setSelectedTeam(buttonInstance.innerText)
+            console.log(selectedTeam)
+        }
+        console.log(title,selectedTeam,content,stringContent)
+        modifyNews(title,stringContent,selectedTeam,"user",serverData.newsNo).then(message => {
+            alert(message.result)
+            navigate(-1)
+        })
+    }
     const handleDropDownChange = (e) => {
         if(buttonRef.current){
             const buttonInstance = buttonRef.current
@@ -80,16 +103,18 @@ const ContentInputBody =memo(({serverData})=>{
                     </div>
                     <div className="col-start-3 p-1">
                         <div className="w-full">
-                            <Input label="Username" readOnly={true}  />
+                            <Input label="Username" readOnly={true} value={writer} />
                         </div>
                     </div>
                 </div>
                 <hr/>
                 <div className="p-3">
-                    <QuilEditor ref={quillEditorRef} onChange={handleQuillChange} value={content} />
+                    <QuilEditor ref={quillEditorRef} onChange={handleQuillChange} value={content}/>
                 </div>
                 <div className="p-3 justify-self-end flex justify-center">
-                    <Button onClick={handleSave}>save</Button>
+                    {path==="write"?<Button onClick={handleSave}>Save</Button>:
+                        <Button onClick={handleModify}>Modify</Button>
+                }
                 </div>
             </form>
         </Card>

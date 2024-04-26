@@ -25,12 +25,12 @@ export const insertNews = async (title,content,theTeam,writer)=>{
     return res.data
 }
 
-/*export const modifyNews = async (newsNo)=>{
-    const news= await axios.get(`${prefix}/${newsNo}`)
-    const res =await  axios.put(`${prefix}/${newsNo}`, {
-        title:news.title,
-        content:news.content,
-        theTeam:news.theTeam
+export const modifyNews = async (title,content,theTeam,writer,newsNo)=>{
+    const res = await axios.put(`${prefix}/${newsNo}`,{
+        title:title,
+        content:content,
+        theTeam:theTeam,
+        writer:writer
     })
     return res.data
-}*/
+}

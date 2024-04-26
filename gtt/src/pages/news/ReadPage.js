@@ -1,28 +1,17 @@
 import {createSearchParams, Link, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
-import {
-    Avatar,
-    Breadcrumbs,
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    Chip,
-    Textarea,
-    Typography
-} from "@material-tailwind/react";
+import { Card, CardBody, CardFooter,} from "@material-tailwind/react";
 import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
-
 import ContentBody from "../../components/common/ContentBody";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {getOne} from "../../api/newsApi";
 import ContentHeader from "../../components/common/ContentHeader";
-
+import useUtils from "../../hooks/utils";
 
 const initState = {
     dtoList: [],
@@ -60,20 +49,19 @@ const ReadPage = () => {
     const {moveToList,loadToList,moveToModify} = useCustomMove()
     const [page,setPage] = useRecoilState(pageState)
     const [queryParams] = useSearchParams();
-    const [refresh, setRefresh] = useState(false);
+    const [refresh, setRefresh] = useState(false)
     const [serverData, setServerData] = useState(newsDTO)
     const [comServerData, setComServerData] = useState(initState)
     const newsNo = useLocation().pathname.split("/")[3]
     const [isFirst,setIsFirst] =useState(false)
     const pathName = `${newsNo+"?"+queryParams}`
     const ReadQuillRef = useRef(null);
+    const {parseDeltaOrString} = useUtils();
     const content = ""
     useEffect(() => {
         getOne(newsNo).then(data=>{
             setServerData(data)
-            console.log(data)
         })
-        console.log(serverData)
         let pathName = isFirst===true?`${newsNo+"?" + createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}` : `${newsNo}?page=1&size=10`; setIsFirst(true);
         getComList({pathName}).then(data => {
             setComServerData(data)
@@ -84,17 +72,9 @@ const ReadPage = () => {
         }
     }, [queryParams,refresh]);
 
-    function parseDeltaOrString(data) {
-        if (typeof data === 'string' && data.includes('"ops"')) {
-            return JSON.parse(data);
-        } else {
-            return data; // 그냥 문자열로 반환
-        }
-    }
-
     return (
         <section className="bg-white w-full h-full p-2 py-2">
-            <ContentHeader page={page} pathName={'/news/list'} moveTo={moveToList} newsNo={newsNo} moveToModify={ moveToModify } />
+            <ContentHeader page={page} pathName={'/news/'} moveTo={moveToList} newsNo={newsNo} moveToModify={ moveToModify } />
             <Card className="flex flex-auto p-1">
                 <CardBody>
                     <ContentBody
@@ -113,8 +93,9 @@ const ReadPage = () => {
                 </CardBody>
                 <CardFooter>
                     {comServerData.dtoList.map((dto) => {
+                        console.log(dto)
                         return (
-                            <CommentCell newsNo={newsNo} comNo={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                            <CommentCell key={dto.comNo} newsNo={newsNo} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
                         )
                     })}
                     <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>
