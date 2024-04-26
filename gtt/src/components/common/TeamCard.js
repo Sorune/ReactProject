@@ -5,7 +5,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faDribbble, faGithub, faLinkedin, faTwitter} from "@fortawesome/free-brands-svg-icons";
 
 
-export const TeamCard =({ img, name, title }) => {
+export const TeamCard =({ img, name, title, git }) => {
+
     return (
         <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
             <CardBody className="text-center">
@@ -26,7 +27,7 @@ export const TeamCard =({ img, name, title }) => {
                     {title}
                 </Typography>
                 <div className="flex items-center justify-center gap-1.5">
-                    <IconButton variant="text" color="gray">
+                    <IconButton variant="text" color="gray" onClick={()=>window.open(git)}>
                         <FontAwesomeIcon icon={faGithub} className={"text-lg"}/>
                     </IconButton>
                     <IconButton variant="text" color="gray">
