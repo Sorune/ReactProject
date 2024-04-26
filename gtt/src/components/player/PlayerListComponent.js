@@ -1,11 +1,11 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {getPlayerList} from "../../api/playerApi"
 import useCustomMove from "../../hooks/useCustomMove";
 import FetchingModal from "../common/FetchingModal"
 import host from "../../api/playerApi"
 import PageComponent from "../common/PageComponent";
 import {Avatar, Card, CardBody, IconButton, Typography} from "@material-tailwind/react";
-import {useLocation} from "react-router-dom";
+import {createSearchParams, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 
@@ -24,10 +24,19 @@ const initState = {
 
 const ListComponent = () => {
     const pathName = useLocation().pathname
-    const {refresh, moveToList,moveToRead,setRefresh} = useCustomMove()
+    const {refresh,moveToList, setRefresh} = useCustomMove()
     const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
     const [fetching, setFetching] = useState(false)
+
+    const navigate = useNavigate()
+    const [queryParams] = useSearchParams()
+    const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
+    const queryStr = createSearchParams({page, size}).toString()
+
+    const moveToRead = useCallback(() => {
+        navigate({pathname:`/player/read/`, search:queryStr})
+    },[page, size])
 
     useEffect(() => {
         setFetching(true)
@@ -63,17 +72,10 @@ const ListComponent = () => {
                                     {player.realName}
                                 </Typography>
 
-                                {/* moveToRead 사용시 오류가 있어 하이퍼링크로 대체 */}
-                                <div className="flex items-center justify-center gap-1.5"
-                                     onClick={() => moveToRead(player.pno)}>
-                                    <IconButton variant="text" color="gray">
-                                        <i className="fa-brands fa-twitter text-lg"/>
-                                    </IconButton>
-                                    <div>
-                                        <a href={`/player/read/${player.pno}`}>
-                                            <button>List</button>
-                                        </a>
-                                    </div>
+                                <div>
+                                    <a href={`/player/read/${player.pno}`}>
+                                        <button>Read</button>
+                                    </a>
                                 </div>
                             </CardBody>
                         </Card>
@@ -81,12 +83,10 @@ const ListComponent = () => {
                 </div>
             </div>
 
-            {/* 페이지 넘기기 안됌 */}
             <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName}/>
 
         </section>
     )
 }
-
 
 export default ListComponent
