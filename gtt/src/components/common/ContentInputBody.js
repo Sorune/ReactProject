@@ -9,7 +9,7 @@ import useCustomMove from "../../hooks/useCustomMove";
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 
-const ContentInputBody =memo(()=>{
+const ContentInputBody =memo(({serverData})=>{
     const {moveToList} = useCustomMove()
     const page = useRecoilValue(pageState)
 
@@ -86,7 +86,7 @@ const ContentInputBody =memo(()=>{
                 </div>
                 <hr/>
                 <div className="p-3">
-                    <QuilEditor ref={quillEditorRef} onChange={handleQuillChange}/>
+                    <QuilEditor ref={quillEditorRef} onChange={handleQuillChange} value={content} />
                 </div>
                 <div className="p-3 justify-self-end flex justify-center">
                     <Button onClick={handleSave}>save</Button>

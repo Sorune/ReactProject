@@ -13,7 +13,7 @@ import {
 import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 
@@ -57,7 +57,7 @@ const testTeam ={
 }
 
 const ReadPage = () => {
-    const {moveToList,loadToList} = useCustomMove()
+    const {moveToList,loadToList,moveToModify} = useCustomMove()
     const [page,setPage] = useRecoilState(pageState)
     const [queryParams] = useSearchParams();
     const [refresh, setRefresh] = useState(false);
@@ -94,7 +94,7 @@ const ReadPage = () => {
 
     return (
         <section className="bg-white w-full h-full p-2 py-2">
-            <ContentHeader page={page} pathName={'/news/list'} moveTo={moveToList} />
+            <ContentHeader page={page} pathName={'/news/list'} moveTo={moveToList} newsNo={newsNo} moveToModify={ moveToModify } />
             <Card className="flex flex-auto p-1">
                 <CardBody>
                     <ContentBody
