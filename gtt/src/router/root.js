@@ -4,7 +4,6 @@ import newsRouter from "./newsRouter";
 import ticketingRouter from "./ticketingRouter.js";
 import playerRouter from "./playerRouter.js";
 import Spin from "../test/pages/Spin";
-import noticeRouter from "./noticeRouter";
 
 
 const { createBrowserRouter } = require("react-router-dom");
@@ -21,7 +20,6 @@ const Test = lazy(()=>import("../test/pages/TestPage.js"));
 const GridTest = lazy(()=>import("../test/pages/GridTest"))
 const NotFound = lazy(()=>import("../pages/error/404NotFound"))
 const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
-const NoticeIndex = lazy(()=> import("../pages/notice/NoticeIndexPage"))
 const root = createBrowserRouter([
     {
         path:"spin",
@@ -95,12 +93,6 @@ const root = createBrowserRouter([
     {
         path:"grid",
         element:<Suspense fallback={Loading}><GridTest/></Suspense>
-    },
-    {
-        path:"notice",
-        children: noticeRouter(),
-        element:<Suspense fallback={Loading}><NoticeIndex/></Suspense>,
-        errorElement:NotFound,
     }
 ])
 
