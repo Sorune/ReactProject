@@ -21,11 +21,7 @@ const PlayerReadPage = () => {
     return (
         <div className="font-extrabold w-full bg-white mt-6">
             <div className="text-2xl">
-            Player Read Pages Component
-                <div>
-                    <button onClick={() => moveToList()}>List</button>
-                    <button onClick={() => moveToModify()}>Modify</button>
-                </div>
+            Player Read Page
             </div>
 
             <ReadComponent pno={pno}></ReadComponent>
