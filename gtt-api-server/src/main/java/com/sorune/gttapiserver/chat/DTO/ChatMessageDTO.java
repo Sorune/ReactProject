@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class ChatMessageDTO {
 
     public enum MessageType{
-        ENTER,TALK
+        ENTER,TALK,JOIN
     }
 
     private MessageType messageType;
