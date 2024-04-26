@@ -18,7 +18,7 @@ public class PlayerServiceTests {
     public void playerInsertTest(){
         PlayerDTO dto = PlayerDTO.builder()
                 .age(27)
-                .birthDate(LocalDateTime.of(2024, 4, 25, 0, 0))
+                //.birthDate(LocalDateTime.of(2024, 4, 25, 0, 0))
                 .nickName("dummies")
                 .teamName("T1")
                 .position("MID")
