@@ -2,6 +2,7 @@ import {Avatar, Card, CardBody, IconButton, Typography} from "@material-tailwind
 
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faDribbble, faGithub, faLinkedin, faTwitter} from "@fortawesome/free-brands-svg-icons";
 
 
 export const TeamCard =({ img, name, title }) => {
@@ -26,13 +27,13 @@ export const TeamCard =({ img, name, title }) => {
                 </Typography>
                 <div className="flex items-center justify-center gap-1.5">
                     <IconButton variant="text" color="gray">
-                        <FontAwesomeIcon icon="fa-brands fa-twitter text-lg" />
+                        <FontAwesomeIcon icon={faGithub} className={"text-lg"}/>
                     </IconButton>
                     <IconButton variant="text" color="gray">
-                        <FontAwesomeIcon icon="fa-brands fa-linkedin text-lg" />
+                        <FontAwesomeIcon icon={faLinkedin} className={"text-lg"}/>
                     </IconButton>
                     <IconButton variant="text" color="gray">
-                        <FontAwesomeIcon icon="fa-brands fa-dribbble text-lg" />
+                        <FontAwesomeIcon icon={faDribbble} className={"text-lg"}/>
                     </IconButton>
                 </div>
             </CardBody>

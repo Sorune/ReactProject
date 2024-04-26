@@ -23,11 +23,11 @@ public class MemberServiceTest {
     public void testMemberInsert(){
         MemberDTO memberDTO = MemberDTO.builder()
                 .num(101L)
-                .id("user1")
+                .userId("user1")
                 .pw("1234")
                 .nick("user1")
-                .addNum("1234-1")
-                .addr("경기도 오산시 00동")
+                .zoneCode("1234-1")
+                .address("경기도 오산시 00동")
                 .birth(LocalDate.of(1990, 5, 16))
                 .build();
 
@@ -39,10 +39,10 @@ public class MemberServiceTest {
     public void testMemberModify() {
         MemberDTO memberDTO = MemberDTO.builder()
                 .num(1L)
-                .id("dddd")
+                .userId("dddd")
                 .pw("dddd")
-                .addNum("123456")
-                .addr("mem12345")
+                .zoneCode("123456")
+                .address("mem12345")
                 .nick("user1Nick")
                 .birth(LocalDate.of(1881,9,9))
                 .build();

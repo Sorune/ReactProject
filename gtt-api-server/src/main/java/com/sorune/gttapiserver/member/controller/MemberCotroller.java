@@ -7,6 +7,7 @@ import com.sorune.gttapiserver.member.DTO.MemberDTO;
 import com.sorune.gttapiserver.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,17 +75,19 @@ public class MemberCotroller {
 
     // 회원 로그인
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody MemberDTO memberDTO) {
-        log.info("Login attempt for ID: " + memberDTO.getUserId());
+    public ResponseEntity<Map<String, String>> login(@RequestBody MemberDTO memberDTO) {
+        log.info("Login attempt for ID: {}", memberDTO.getUserId());
+        // Removed logging of password for security reasons
 
+        boolean loginSuccess = memberService.isLogin(memberDTO.getUserId(), memberDTO.getPw());
 
-
-        if ("user1".equals(memberDTO.getUserId()) && "1234".equals(memberDTO.getPw())) {
-            return Map.of("result", "SUCCESS", "message", "Login successful");
+        if (loginSuccess) {
+            return ResponseEntity.ok(Map.of("result", "SUCCESS", "message", "Login successful"));
         } else {
-            return Map.of("result", "FAILURE", "message", "Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("result", "FAILURE", "message", "Invalid credentials"));
         }
     }
+
 
     @GetMapping("/checkId/{userId}")
     public Map<String,Object> checkId(@PathVariable String userId) {
