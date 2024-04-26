@@ -17,7 +17,7 @@ public class NewsRepositoryTests {
 
     @Test
     public void newsSelectTests(){
-        News news = newsRepository.findByNewsNo(201l);
+        News news = newsRepository.findByNewsNo(201L);
 
         System.out.println(news);
     }

@@ -13,6 +13,7 @@ import QuilEditorReadOnly from "../../components/common/quill/QuillEditorReadOnl
 import SidebarLayout from "../../layouts/SidebarLayout";
 // 회원정보 U,D(CRUD중) TEST
 import MemberList from "./MemberList";
+import ChatComponent from "../../components/common/chat/ChatComponent";
 
 const TestPage = () => {
     const slides = [
@@ -36,9 +37,7 @@ const TestPage = () => {
     };
 
     return (
-
-        <BasicLayout>
-            <SidebarLayout>
+        <SidebarLayout>
             <p>컨텐츠 헤더</p>
             <ContentHeader/>
             <p>컨텐츠 바디</p>
@@ -62,13 +61,11 @@ const TestPage = () => {
                     <img key={s} src={s}/>
                 ))]}
             </CustomCarousel>
-            <p>유저정보 보기모달 레이아웃</p>
-            {/*  ---- 회원 ----  */}
-                <hr className="my-5" />
             <p>회원 정보 리스트 출력 및 수정/삭제</p>
             <MemberList/>
-            </SidebarLayout>
-        </BasicLayout>
+            <p>채팅 메뉴</p>
+            <ChatComponent/>
+        </SidebarLayout>
     )
 }
 
