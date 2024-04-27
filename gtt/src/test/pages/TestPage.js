@@ -63,9 +63,16 @@ const TestPage = () => {
             </CustomCarousel>
             <p>회원 정보 리스트 출력 및 수정/삭제</p>
             <MemberList/>
+<<<<<<< HEAD
             <p>채팅 메뉴</p>
             <ChatComponent/>
         </SidebarLayout>
+=======
+                <p>채팅 팝업</p>
+                <Chat
+            </SidebarLayout>
+        </BasicLayout>
+>>>>>>> 6900ec90691837e003a8caad0ca5ca7615fe8549
     )
 }
 

@@ -14,11 +14,13 @@ export const join = async (id, password, nick, birth, zoneCode, address, addrSub
         "zoneCode" : zoneCode,
         "address" : address,
         "addrSub" : addrSub
-    }).then(response => {
-        const result = response.data.json();
+    }).then((response) => {
+        console.log(response,response.data)
+        const result = response.data.memBno;
         console.log("결과는 : " + result);
-        if(result === true) {
+        if(result) {
             alert("회원가입을 성공했습니다 로그인 화면으로 이동합니다.: " + response.data.message);
+            window.location("/login")
         }else {
             alert("회원가입을 실패했습니다.");
         }
