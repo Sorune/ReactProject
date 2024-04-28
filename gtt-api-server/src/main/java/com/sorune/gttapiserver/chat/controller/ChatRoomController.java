@@ -38,16 +38,24 @@ public class ChatRoomController {
     }
 
     @PostMapping("/room")
-    public Map<String,ChatRoomDTO> createRoom(@RequestBody String name){
-        ChatRoomDTO chatRoomDTO = chatRoomRepository.createRoom(name);
+    public Map<String,ChatRoomDTO> createRoom(@RequestBody String name,@RequestBody String manager){
+        ChatRoomDTO chatRoomDTO = chatRoomRepository.createRoom(name,manager);
         log.info(chatRoomDTO);
         return Map.of("room", chatRoomDTO);
     }
 
-    @GetMapping("/room/enter/{roomId}")
+    @PostMapping("/room/enter/{roomId}")
     public Map<String,ChatRoomDTO> enterRoom(@PathVariable String roomId){
         ChatRoomDTO chatRoomDTO =  chatRoomRepository.findRoomById(roomId);
         log.info(chatRoomDTO);
+
+        ChatMessageDTO chatMessageDTO = ChatMessageDTO.builder()
+                .messageType(ChatMessageDTO.MessageType.JOIN)
+                .message("입장을 환영합니다.")
+                .chatRoomId(roomId)
+                .build();
+
+        simpMessageSendingOperations.convertAndSend("/sub/api/chat/message"+roomId, chatMessageDTO);
         return Map.of("room", chatRoomDTO);
     }
 }
