@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
-import { useId, usePw } from "../../hooks/useLogin";
-// import {handleLogin} from "../../api/loginApi";
+import { useId, usePw } from "../../hooks/useUserAuth";
 import {login} from "../../api/loginApi";
+
+
+
+
 
 const Login = () => {
     // useLogin에서 리턴한 값/메서드
@@ -25,7 +28,7 @@ const Login = () => {
         }
     };
 
-    const goLogin = async (e) => {
+    const goLogin = async ({userId}) => {
         e.preventDefault();
         try {
             // const data = await handleLogin(loginID, loginPW);
