@@ -41,12 +41,12 @@ public class SecurityConfig {
                 .formLogin(config-> {
                             config.loginPage("/api/member/login");
                         })
-                .rememberMe(httpSecurityRememberMeConfigurer ->
+                /*.rememberMe(httpSecurityRememberMeConfigurer ->
                         httpSecurityRememberMeConfigurer
                                 .tokenRepository(persistentTokenRepository())
                                 .userDetailsService(userDetailsService)
                                 .tokenValiditySeconds(60*60*24*30)
-                )
+                )*/
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer.logoutUrl("/api/member/logout"))
                 .authorizeHttpRequests(authorizeHttpRequests->
