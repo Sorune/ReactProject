@@ -8,13 +8,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +27,8 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final DataSource dataSource;
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,9 +41,18 @@ public class SecurityConfig {
                 .formLogin(config-> {
                             config.loginPage("/api/member/login");
                         })
+                .rememberMe(httpSecurityRememberMeConfigurer ->
+                        httpSecurityRememberMeConfigurer
+                                .tokenRepository(persistentTokenRepository())
+                                .userDetailsService(userDetailsService)
+                                .tokenValiditySeconds(60*60*24*30)
+                )
+                .logout(httpSecurityLogoutConfigurer ->
+                        httpSecurityLogoutConfigurer.logoutUrl("/api/member/logout"))
                 .authorizeHttpRequests(authorizeHttpRequests->
                     authorizeHttpRequests
                             .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                            .requestMatchers("/api/news/**","/api/comment/**","/api/player/**","/api/notice/**").permitAll()
                             .requestMatchers("/api/chat/**","/chat/**").permitAll()// "/api/chat/**" 패턴을 허용
                             .anyRequest().authenticated()
                     );
@@ -54,6 +69,11 @@ public class SecurityConfig {
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 
+        //setAllowedOrigins : 교차 출처 요청이 허용되는 출처 목록입니다.
+        //setAllowedMethods : 허용할 HTTP 메소드 설정
+        //setAllowedHeaders : 실제 요청 중에 사용이 허용되도록 사전 요청이 나열할 수 있는 헤더 목록을 설정.
+        //setAllowedCredentials : 사용자 자격 증명이 지원되는지 여부
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -61,5 +81,12 @@ public class SecurityConfig {
     @Bean // 패스워드 암호화용 코드 객체로 생성
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        return tokenRepository;
     }
 }
