@@ -34,9 +34,9 @@ public class MemberCotroller {
 
     // 한명의 회원 조회 ㅇ
     @GetMapping("/{num}")
-    public MemberDTO search(@PathVariable("num") Long memBno) {
+    public MemberDTO search(@PathVariable("num") Long num) {
 
-        return memberService.searchMember(memBno);
+        return memberService.searchMember(num);
     }
 
     // 회원 가입 ㅇ
@@ -49,16 +49,16 @@ public class MemberCotroller {
 
         log.info("member : " + memberDTO);
 
-        Long memBno = memberService.joinMember(memberDTO);
+        Long num = memberService.joinMember(memberDTO);
 
-        return Map.of("memBno", memBno);
+        return Map.of("memBno", num);
     }
 
     // 회원 수정 ㅇ
     @PutMapping("/{num}")
-    public Map<String, String> edit(@PathVariable("num") Long memBno, @RequestBody MemberDTO memberDTO) {
+    public Map<String, String> edit(@PathVariable("num") Long num, @RequestBody MemberDTO memberDTO) {
 
-        memberDTO.setNum(memBno);
+        memberDTO.setNum(num);
         memberService.editMember(memberDTO);
 
         return Map.of("result", "SUCCESS");
@@ -66,9 +66,9 @@ public class MemberCotroller {
 
     // 회원 삭제
     @DeleteMapping("/{memBno}")
-    public Map<String, String > remove(@PathVariable("memBno") Long memBno) {
+    public Map<String, String > remove(@PathVariable("memBno") Long num) {
 
-        memberService.cencelMember(memBno);
+        memberService.cencelMember(num);
 
         return Map.of("result", "SUCCESS");
     }

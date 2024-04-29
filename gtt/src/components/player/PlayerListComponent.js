@@ -28,7 +28,6 @@ const ListComponent = () => {
     const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
     const [fetching, setFetching] = useState(false)
-
     const navigate = useNavigate()
     const [queryParams] = useSearchParams()
     const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
@@ -82,7 +81,6 @@ const ListComponent = () => {
                     ))}
                 </div>
             </div>
-
             <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName}/>
 
         </section>
