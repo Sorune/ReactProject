@@ -20,4 +20,5 @@ public interface MemberService {
     boolean checkId(String id);
     // 회원 로그인시 id 일치여부 체크
     boolean isLogin(String id, String pw);
+
 }

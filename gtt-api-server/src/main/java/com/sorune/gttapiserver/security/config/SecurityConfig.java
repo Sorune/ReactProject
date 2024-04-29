@@ -45,7 +45,9 @@ public class SecurityConfig {
                         httpSecurityRememberMeConfigurer
                                 .tokenRepository(persistentTokenRepository())
                                 .userDetailsService(userDetailsService)
-                                .tokenValiditySeconds(60*60*24*30)
+                                .tokenValiditySec
+                                ...
+                                0onds(60*60*24*30)
                 )*/
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer.logoutUrl("/api/member/logout"))
