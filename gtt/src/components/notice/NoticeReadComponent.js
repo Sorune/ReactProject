@@ -19,8 +19,8 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
 
     const [notice, setNotice] = useState(initStaste)
     //const queryStr = createSearchParams({page, size}).toString()
-   // console.log(queryStr)
-    console.log(page, size)
+    //console.log(queryStr)
+    //console.log(page, size)
     // 이동 관련 기능은 모두 useCustomMove() 사용
     const {moveToList, moveToModify} =useCustomMove()
 

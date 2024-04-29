@@ -43,6 +43,8 @@ public class NoticeController {
 
     @PutMapping("/{notiNo}")
     public Map<String ,String > modify(@PathVariable(name="notiNo") Long notiNo, @RequestBody NoticeDTO noticeDTO){
+
+        log.info(noticeDTO);
         noticeDTO.setNotiNo(notiNo); // 수정할 번호 세팅
 
         noticeService.modify(noticeDTO);

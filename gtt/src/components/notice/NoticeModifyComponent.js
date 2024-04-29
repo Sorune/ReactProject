@@ -1,8 +1,10 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button} from "@material-tailwind/react";
-import {deleteOne, getOne, putOne, putOneNotice} from "../../api/noticeApi";
+import {deleteOne, getOne, putOne} from "../../api/noticeApi";
 import ResultModal from "../common/ResultModal";
 import useCustomMove from "../../hooks/useCustomMove";
+import {useRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
 const intiState = {
     notiNo: 0,
     title:'',
@@ -10,12 +12,26 @@ const intiState = {
     writer:''
 }
 
+const initState = {
+    dtoList:[],
+    pageNumList:[],
+    pageRequestDTO: null,
+    prev: false,
+    next: false,
+    totalCount: 0,
+    prevPage: 0,
+    nextPage: 0,
+    totalPage: 0,
+    current: 0
+}
+
 const NoticeModifyComponent = ({notiNo}) => {
     console.log(notiNo + "번 게시물 수정")
     const [notice, setNotice] = useState({...intiState})
     const [result, setResult] = useState(null)
     const {moveToList, moveToRead} = useCustomMove()
-
+    const [page,setPage] = useRecoilState(pageState)
+    const [serverData, setServerData] = useState(initState)
     useEffect(() => {
 
         getOne(notiNo).then(data => setNotice(data))
@@ -24,16 +40,32 @@ const NoticeModifyComponent = ({notiNo}) => {
 
     const handleClickModify = () => { // 수정버튼 클릭시
 
-        putOneNotice(notice).then(data => {
+        putOne(notice).then(data => {
             console.log("modify result : " + data)
-
-        }).catch(console.log("Fail"))
+            setResult("SUCCESS")
+        }).catch(error => {
+            console.log(error)
+            setResult("FAIL")
+        })
     }
     const handleClickDelete = () => {
         deleteOne(notiNo).then(data => {
             console.log("delete result : " + data)
+            setResult("DELETE SUCCESS")
         })
     }
+
+
+    // 모달 창 닫은 후 동작
+    const closeModal = () => {
+        if (result === 'DELETE SUCCESS') {
+            moveToList({ pathName: '/notice/list', pageParam: { page: `${page.page}`, size: `${page.size}` } })
+        } else {
+            moveToRead({ pathName: '/notice/read', num: notiNo, totalPage: serverData.totalCount })
+        }
+    }
+
+
 
     const handleChangeNotice = (e) => {
         notice[e.target.name] = e.target.value
@@ -43,7 +75,7 @@ const NoticeModifyComponent = ({notiNo}) => {
 
     return(
         <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-
+            {result ? <ResultModal title={'처리결과'} content={result} callbackFn={closeModal} ></ResultModal> : <></>}
             <div className="flex justify-center mt-10">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">NotiNo</div>
