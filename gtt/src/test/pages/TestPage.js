@@ -12,7 +12,7 @@ import QuilEditor from "../../components/common/quill/QuilEditor";
 import QuilEditorReadOnly from "../../components/common/quill/QuillEditorReadOnly";
 import SidebarLayout from "../../layouts/SidebarLayout";
 // 회원정보 U,D(CRUD중) TEST
-import MemberList from "./MemberList";
+import MemberList from "../../pages/member/MemberList";
 
 const TestPage = () => {
     const slides = [

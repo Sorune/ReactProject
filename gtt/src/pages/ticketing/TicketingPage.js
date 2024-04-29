@@ -14,7 +14,7 @@ const TicketingPage = () => {
             matchHour: "19:00",
             matchName: "LCK 스프링",
             matchRound: "2라운드",
-            matchOpponent: "T1 vs KT"
+            matchOpponent: "SKT1 vs KT"
         }
     ];
 

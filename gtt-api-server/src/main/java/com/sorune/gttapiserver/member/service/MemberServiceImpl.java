@@ -67,15 +67,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override // 회원 탈퇴
-    public void cencelMember(Long memBno) {
+    public void cencelMember(Long num) {
         // 주어진 번호의 회원 정보를 데이터베이스에서 삭제
-        memberRepository.deleteById(memBno);
+        memberRepository.deleteById(num);
     }
 
     @Override
-    public MemberDTO searchMember(Long memBno) {
+    public MemberDTO searchMember(Long num) {
         // 회원 번호로 회원 정보를 조회
-        Optional<Member> member = memberRepository.findById(memBno);
+        Optional<Member> member = memberRepository.findById(num);
         // 조회된 회원 정보를 DTO로 변환
         MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
         // 변환된 DTO를 반환
@@ -85,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public PageResponseDTO<MemberDTO> memberList(PageRequestDTO pageRequestDTO) {
 
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("memBno").descending());
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("num").descending());
         // 페이징과 정렬 정보를 이용하여 회원 목록을 조회
         Page<Member> result = memberRepository.findAll(pageable);
         List<MemberDTO> dtoList = result.stream().map(member -> modelMapper.map(member, MemberDTO.class)).toList();
