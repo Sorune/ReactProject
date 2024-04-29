@@ -1,30 +1,35 @@
 
-// 요청을 수행하기 위한 서버 경로
 import axios from "axios";
-
+// 요청을 수행하기 위한 서버 경로 -> 사용시 본인 경로로 써주세요!
 const API_SERVER_HOST = 'http://localhost:8001';
 
-// 회원 리스트 출력
+
+// 회원 리스트 출력 ㅇ
 export const memberList = async () => {
-    const res = await axios.get(`${API_SERVER_HOST}/list`);
-    return respons.data;
+    const res = await axios.get(`${API_SERVER_HOST}/api/member/list`);
+    return res.data;
 };
 
-// 회원 한명 조회
+// 회원 한명 조회 ㅇ
 export const getMember = async (num) => {
-    const res = await axios.get(`${API_SERVER_HOST}/${num}`);
-    return res.data
-}
+    try {
+        const response = await axios.get(`${API_SERVER_HOST}/api/member/${num}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching member', error);
+        return null;
+    }
+};
 
-// 회원 삭제
+// 회원 삭제 ㅇ
 export const removeMember = async (num) => {
-    const res = await axios.delete(`${API_SERVER_HOST}/${num}`);
+    const res = await axios.delete(`${API_SERVER_HOST}/api/member/${num}`);
     return res.data;
 }
 
-// 회원수정
-export const updateMember = async (userId, pw, nick, birth, zoneCode, address, addrSub) => {
-    const res = await axios.put(`${API_SERVER_HOST}/${num}`,
+// 회원수정 ㅇ
+export const updateMember = async (num, userId, pw, nick, birth, zoneCode, address, addrSub) => {
+    const res = await axios.put(`${API_SERVER_HOST}/api/member/${num}`,
         {
             "userId":userId,
             "pw":pw,
