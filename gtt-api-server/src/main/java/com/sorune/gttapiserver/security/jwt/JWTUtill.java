@@ -69,4 +69,8 @@ public class JWTUtill {
 
         return claims;
     }
+
+    public static Claims getClaimsFromAccessToken(String accessToken) {
+        return null;
+    }
 }
