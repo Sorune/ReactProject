@@ -15,7 +15,6 @@ import {
     CardBody,
     IconButton,
     Input,
-    TypographyProps,
 } from "@material-tailwind/react";
 
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
@@ -29,20 +28,8 @@ import {
 import merge from "deepmerge";
 
 // area chart
-interface ChartsPropsType {
-    height: number;
-    series: object[];
-    options: object;
-}
 
-function AreaChart({
-                       height = 90,
-                       series,
-                       colors,
-                       options,
-                   }: Partial<ChartsPropsType> & {
-    colors: string | string[];
-}) {
+function AreaChart({ height = 90, series, colors, options }) {
     const chartOptions = React.useMemo(
         () => ({
             colors,
@@ -126,12 +113,7 @@ function AreaChart({
     );
 
     return (
-        <Chart
-            type="area"
-            height={height}
-            series={series as ApexAxisChartSeries}
-            options={chartOptions as any}
-        />
+        <Chart type="area" height={height} series={series} options={chartOptions} />
     );
 }
 
@@ -333,7 +315,7 @@ function TablesExample8() {
                                         <td className={classes}>
                                             <Typography
                                                 variant="small"
-                                                color={color as TypographyProps["color"]}
+                                                color={color}
                                                 className="!font-bold text-right"
                                             >
                                                 {change}

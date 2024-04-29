@@ -67,6 +67,8 @@ const TestPage = () => {
                 <hr className="my-5" />
             <p>회원 정보 리스트 출력 및 수정/삭제</p>
             <MemberList/>
+                <p>채팅 팝업</p>
+                <Chat
             </SidebarLayout>
         </BasicLayout>
     )

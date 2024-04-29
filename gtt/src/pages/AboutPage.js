@@ -4,44 +4,28 @@ import {TeamCard} from "../components/common/TeamCard";
 
 const members = [
     {
-        img: `https://www.material-tailwind.com/img/avatar1.jpg`,
-        name: "Ryan Samuel",
-        title: "Co-Founder",
+        img: `/img/bongo-cat.gif`,
+        name: "남태욱",
+        title: "Team Leader",
+        git:"https://github.com/Sorune",
     },
     {
-        img: `https://www.material-tailwind.com/img/avatar2.jpg`,
-        name: "Ryan Samuel",
-        title: "Co-Founder",
+        img: `/img/bonobono.gif`,
+        name: "이서준",
+        title: "Team Sub Leader",
+        git:"https://github.com/lsj0317",
     },
     {
-        img: `https://www.material-tailwind.com/img/avatar5.jpg`,
-        name: "Nora Hazel",
-        title: "UI/UX Designer",
+        img: `/img/뽀빠이.gif`,
+        name: "양지웅",
+        title: "Team Member",
+        git:"https://github.com/Yangjiwung",
     },
     {
-        img: `https://www.material-tailwind.com/img/avatar4.jpg`,
-        name: "Otto Gonzalez",
-        title: "Marketing Specialist",
-    },
-    {
-        img: `https://www.material-tailwind.com/img/avatar6.jpg`,
-        name: "Emma Roberts",
-        title: "UI Designer",
-    },
-    {
-        img: `https://www.material-tailwind.com/img/avatar3.jpg`,
-        name: "William Pearce",
-        title: "Web Developer",
-    },
-    {
-        img: "https://www.material-tailwind.com/image/avatar7.svg",
-        name: "Bruce Mars",
-        title: "UI/UX Designer",
-    },
-    {
-        img: "https://www.material-tailwind.com/image/avatar8.svg",
-        name: "Annie Sprrat",
-        title: "Marketing Specialist",
+        img: `/img/jerry.gif`,
+        name: "전필우",
+        title: "Team Member",
+        git:"https://github.com/5516146",
     },
 ];
 
@@ -74,7 +58,7 @@ const AboutPage = ()=>{
                             service and innovative solutions.
                         </Typography>
                     </div>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                         {members.map((props, key) => (
                             <TeamCard key={key} {...props} />
                         ))}

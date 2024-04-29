@@ -1,8 +1,7 @@
 
+// 요청을 수행하기 위한 서버 경로
 import axios from "axios";
-// 요청을 수행하기 위한 서버 경로 -> 사용시 본인 경로로 써주세요!
-const API_SERVER_HOST = 'http://localhost:8001';
-
+import {API_SERVER_HOST} from "./filesApi";
 
 // 회원 리스트 출력 ㅇ
 export const memberList = async () => {

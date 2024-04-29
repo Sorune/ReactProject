@@ -1,6 +1,5 @@
 import axios from "axios"
-
-export const API_SERVER_HOST = 'http://localhost:8080'
+import {API_SERVER_HOST} from "./filesApi";
 
 const prefix = `${API_SERVER_HOST}/api/player`
 
@@ -20,6 +19,19 @@ export const getPlayerList = async (pageParam) => {
 export const postAdd = async (player) => {
     const header =     {headers: {'Content-Type': 'application/json'}}
     const res = await axios.post(`${prefix}/`, player, header)
+
+    return res.data
+}
+
+export const putOnePlayer = async (pno, player) => {
+    const header =     {headers: {'Content-Type': 'application/json'}}
+    const res = await axios.put(`${prefix}/${pno}`, player, header)
+
+    return res.data
+}
+
+export const deleteOnePlayer = async (pno) =>{
+    const res = await axios.delete(`${prefix}/${pno}`)
 
     return res.data
 }

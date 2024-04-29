@@ -58,7 +58,8 @@ export const CommentCell=({comno,writer, position, content, newsNo,modDate, reco
                                 modify
                             </Button>
                             {isModify?<Button size="sm" color="red" variant="text" className="rounded-md"
-                            onClick={handleDelete}>delete</Button>:<Button size="sm" color="red" variant="text" className="rounded-md" onClick={handleConfirm}>Confirm</Button>
+                                     onClick={handleDelete}>delete</Button>:<Button size="sm" color="red" variant="text" className="rounded-md"
+                                                                                    onClick={handleConfirm}>Confirm</Button>
                             }
                             <Button size="sm" color="red" variant="text" className="rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 recommend">
