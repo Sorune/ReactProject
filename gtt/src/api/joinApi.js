@@ -1,9 +1,8 @@
 import axios from "axios";
 import {API_SERVER_HOST} from "./filesApi";
+import {useNavigate} from "react-router-dom";
 // 요청을 완료하기 위한 서버 경로;
 
-
-// 회원가입 메서드
 export const join = async (id, password, nick, birth, zoneCode, address, addrSub) => {
     const prefix = `${API_SERVER_HOST}/api/member/`;
     axios.post(prefix, {
@@ -19,19 +18,15 @@ export const join = async (id, password, nick, birth, zoneCode, address, addrSub
         const result = response.data.memBno;
         console.log("결과는 : " + result);
         if(result) {
-            alert("회원가입을 성공했습니다 로그인 화면으로 이동합니다.: " + response.data.message);
-            window.location("/login")
+            alert("회원가입을 성공했습니다 로그인 화면으로 이동합니다.: " + result);
+            navigate("/login")
         }else {
             alert("회원가입을 실패했습니다.");
         }
     })
-    .catch(error => {
-        console.error("Join request failed", error);
-        alert("회원가입 실패 : " + (error.response?.data?.message || "서버 연결 확인"));
-    });
 };
 
-// 회원 아이디 검증 메서드
+// 회원 아이디 검증 메서
 export const validateID = async (id) => {
     try {
         console.log(id)

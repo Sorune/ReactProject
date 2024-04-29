@@ -13,9 +13,9 @@ import {
     useBirth,
     useAddrSub
 } from '../../hooks/useInput';
-import {join} from "../../api/joinApi";
 
 const SignIn = () => {
+    const {join,validateID} = joinApi();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [address, setAddress] = useState('');
