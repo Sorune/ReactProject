@@ -5,7 +5,7 @@ const PlayerAddPage = () => {
     return (
         <div className="p-4 w-full bg-white">
             <div className="text-3xl font-extrabold">
-                Player Add Page
+                Player Add
             </div>
 
             <AddComponent/>

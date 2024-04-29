@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {getPlayerList} from "../../api/playerApi"
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
-import {Avatar, Card, CardBody, IconButton, Typography} from "@material-tailwind/react";
+import {Avatar, Button, Card, CardBody, IconButton, Typography} from "@material-tailwind/react";
 import {useLocation} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
@@ -39,7 +39,7 @@ const TABS = [
 
 const ListComponent = () => {
     const pathName = useLocation().pathname
-    const {refresh,moveToList, moveToAdd, setRefresh} = useCustomMove()
+    const {refresh,moveToList, moveToAdd, moveToRead, setRefresh} = useCustomMove()
     const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
     const [fetching, setFetching] = useState(false)
@@ -78,7 +78,10 @@ const ListComponent = () => {
                                 >
                                     {player.realName}
                                 </Typography>
-                                <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}/>
+
+                                <Button onClick={()=> moveToRead({pathName:'/player/read',num:player.pno,totalPage:serverData.totalCount})}>
+                                    READ
+                                </Button>
 
                             </CardBody>
                         </Card>
