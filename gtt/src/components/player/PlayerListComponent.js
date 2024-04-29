@@ -1,13 +1,14 @@
-import {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {getPlayerList} from "../../api/playerApi"
 import useCustomMove from "../../hooks/useCustomMove";
-import FetchingModal from "../common/FetchingModal"
-import host from "../../api/playerApi"
 import PageComponent from "../common/PageComponent";
 import {Avatar, Card, CardBody, IconButton, Typography} from "@material-tailwind/react";
-import {createSearchParams, useLocation, useNavigate, useSearchParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
+
+import PlayerButtons from "./list/PlayerButtons";
+import PlayerListHeader from "../player/list/PlayerListHeader";
 
 const initState = {
     dtoList:[],
@@ -21,21 +22,27 @@ const initState = {
     totalPage:0,
     current:0
 }
+const TABS = [
+    {
+        label: "All",
+        value: "all",
+    },
+    {
+        label: "Monitored",
+        value: "monitored",
+    },
+    {
+        label: "Unmonitored",
+        value: "unmonitored",
+    },
+];
 
 const ListComponent = () => {
     const pathName = useLocation().pathname
-    const {refresh,moveToList, setRefresh} = useCustomMove()
+    const {refresh,moveToList, moveToAdd, setRefresh} = useCustomMove()
     const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
     const [fetching, setFetching] = useState(false)
-    const navigate = useNavigate()
-    const [queryParams] = useSearchParams()
-    const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
-    const queryStr = createSearchParams({page, size}).toString()
-
-    const moveToRead = useCallback(() => {
-        navigate({pathname:`/player/read/`, search:queryStr})
-    },[page, size])
 
     useEffect(() => {
         setFetching(true)
@@ -50,6 +57,7 @@ const ListComponent = () => {
     return (
         <section className="min-h-screen py-8 px-8 lg:py-28">
             <div className="container mx-auto">
+                <PlayerListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/player/add'} />
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
                     {serverData.dtoList.map((player) => (
                         <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
@@ -70,12 +78,8 @@ const ListComponent = () => {
                                 >
                                     {player.realName}
                                 </Typography>
+                                <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}/>
 
-                                <div>
-                                    <a href={`/player/read/${player.pno}`}>
-                                        <button>Read</button>
-                                    </a>
-                                </div>
                             </CardBody>
                         </Card>
                     ))}
