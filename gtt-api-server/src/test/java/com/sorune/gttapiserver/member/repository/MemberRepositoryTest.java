@@ -53,7 +53,7 @@ public class MemberRepositoryTest {
 
             Member member = Member.builder()
                     .userId("test" + i)
-                    .pw("pass" + i)
+                    .password("pass" + i)
                     .nick("seojun" + i)
                     .address("오산시(" + i + ")동")
                     .zoneCode("123-" + i)

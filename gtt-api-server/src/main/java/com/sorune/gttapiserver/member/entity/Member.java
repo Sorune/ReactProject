@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @ToString(exclude = "roles")
+@Table(name = "member")
 @DynamicInsert
 @DynamicUpdate
 public class Member extends BaseEntity {
@@ -25,7 +26,7 @@ public class Member extends BaseEntity {
     private Long num;        // 맴버 번호 자동생성 nn
 
     @Column(nullable = false)
-    private String pw;       // 맴버 비번 자동생성 nn
+    private String password;       // 맴버 비번 자동생성 nn
 
     @Column(nullable = false)
     private String nick;     // 맴버 별명 자동생성 nn
@@ -54,6 +55,7 @@ public class Member extends BaseEntity {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private Set<MemberRole> roles = new HashSet<>();
 
 
@@ -67,7 +69,7 @@ public class Member extends BaseEntity {
 
     // 회원 비밀번호 수정용
     public void editMemPw(String pw) {
-        this.pw = pw;
+        this.password = pw;
     }
 
     // 회원 생년월일 수정용
