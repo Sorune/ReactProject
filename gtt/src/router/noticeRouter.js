@@ -20,8 +20,6 @@ const noticeRouter =() =>
             element: <Navigate replace to="list"/>
         },
         {
-            path: "read",
-            element: <Suspense fallback={Loading}><Read/></Suspense>
             path: "read/:notiNo",
             element: <Suspense fallback={Loading}><Read/></Suspense>
         },

@@ -85,7 +85,7 @@ const SignIn = () => {
         e.preventDefault();
         if (!termsChecked) {
             alert("개인정보 취급방침에 동의해야 합니다.");
-            return;
+
         } else {
             // 로그인 api 메서드 호출
             const data = await join(inputID, inputPass, inputNick, birth, zoneCode, address, addrSub);

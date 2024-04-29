@@ -1,7 +1,6 @@
 package com.sorune.gttapiserver.notice.repository;
 
 import com.sorune.gttapiserver.notice.entity.Notice;
-import com.sorune.gttapiserver.notice.repository.NoticeRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

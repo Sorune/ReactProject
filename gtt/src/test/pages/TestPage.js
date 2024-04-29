@@ -12,7 +12,8 @@ import QuilEditor from "../../components/common/quill/QuilEditor";
 import QuilEditorReadOnly from "../../components/common/quill/QuillEditorReadOnly";
 import SidebarLayout from "../../layouts/SidebarLayout";
 // 회원정보 U,D(CRUD중) TEST
-import MemberList from "../../pages/member/MemberList";
+import ChatComponent from "../../components/common/chat/ChatComponent";
+import ChatListComponent from "../../components/common/chat/ChatListComponent";
 
 const TestPage = () => {
     const slides = [
@@ -36,9 +37,7 @@ const TestPage = () => {
     };
 
     return (
-
-        <BasicLayout>
-            <SidebarLayout>
+        <SidebarLayout>
             <p>컨텐츠 헤더</p>
             <ContentHeader/>
             <p>컨텐츠 바디</p>
@@ -65,12 +64,11 @@ const TestPage = () => {
             <p>유저정보 보기모달 레이아웃</p>
             {/*  ---- 회원 ----  */}
                 <hr className="my-5" />
-            <p>회원 정보 리스트 출력 및 수정/삭제</p>
-            <MemberList/>
-                <p>채팅 팝업</p>
-                <Chat
-            </SidebarLayout>
-        </BasicLayout>
+            <p>채팅 메뉴</p>
+            <ChatComponent/>
+            <p>채팅방 리스트</p>
+            <ChatListComponent/>
+        </SidebarLayout>
     )
 }
 

@@ -25,8 +25,8 @@ public class ChatRoomRepository {
         return chatRoomDTOMap.get(id);
     }
 
-    public ChatRoomDTO createRoom(String name) {
-        ChatRoomDTO chatRoomDTO = ChatRoomDTO.create(name);
+    public ChatRoomDTO createRoom(String name,String manager) {
+        ChatRoomDTO chatRoomDTO = ChatRoomDTO.create(name,manager);
         chatRoomDTOMap.put(chatRoomDTO.getRoomId(), chatRoomDTO);
         return chatRoomDTO;
     }

@@ -1,13 +1,11 @@
 import {Avatar, Typography} from "@material-tailwind/react";
 import useCustomMove from "../../hooks/useCustomMove";
-import {useNavigate} from "react-router-dom";
 
 
 const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
 const ListComponent = ({serverData,page,size}) =>{
     const {moveToRead} = useCustomMove()
-    const navigate = useNavigate()
     const dtoList = Array.isArray(serverData.dtoList)?serverData.dtoList:[]
     console.log(dtoList)
     return (
