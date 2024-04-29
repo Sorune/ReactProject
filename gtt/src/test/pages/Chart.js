@@ -18,19 +18,7 @@ const Chart = dynamic(() => import("react-apexcharts"), {
 // deepmerge
 import merge from "deepmerge";
 
-// line chart
-interface ChartsPropsType {
-    height: number;
-    series: object[];
-    options: object;
-}
-
-function AreaChart({
-                       height = 350,
-                       series,
-                       colors,
-                       options,
-                   }: Partial<ChartsPropsType> & { colors: string | string[] }) {
+function AreaChart({ height = 350, series, colors, options }) {
     const chartOptions = React.useMemo(
         () => ({
             colors,
@@ -117,19 +105,14 @@ function AreaChart({
                         },
                     },
                 },
-                options ? options : {}
+                options ? options : {},
             ),
         }),
-        [height, colors, options]
+        [height, colors, options],
     );
 
     return (
-        <Chart
-            type="area"
-            height={height}
-            series={series as ApexAxisChartSeries}
-            options={chartOptions as any}
-        />
+        <Chart type="area" height={height} series={series} options={chartOptions} />
     );
 }
 
@@ -187,15 +170,11 @@ export function ChartsExample5() {
                         series={[
                             {
                                 name: "2022 Sales",
-                                data: [
-                                    0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900,
-                                ],
+                                data: [ 0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900],
                             },
                             {
                                 name: "2023 Sales",
-                                data: [
-                                    200, 160, 150, 260, 600, 790, 900, 660, 720, 800, 500, 800,
-                                ],
+                                data: [ 200, 160, 150, 260, 600, 790, 900, 660, 720, 800, 500, 800],
                             },
                         ]}
                     />
