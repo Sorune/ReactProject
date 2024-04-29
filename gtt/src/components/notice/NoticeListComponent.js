@@ -41,7 +41,7 @@ const ListComponent = () => {
                 {serverData.dtoList.map(notice =>
                 <div key={notice.notiNo}
                     className="w-full min-w-[400px] p-2 m-2 rounded shadow-md"
-                    onClick={() => moveToRead(notice.notiNo)}
+                    onClick={() => moveToRead({pathName:'/notice/read', num:notice.notiNo, totalPage:serverData.totalCount})}
                 >
                     <div className="flex ">
                         <div className="font-extrabold text-2xl p-2 w-1/12">
