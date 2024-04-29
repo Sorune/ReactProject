@@ -5,6 +5,7 @@ const ListPage = () => {
 
     const [queryparams] = useSearchParams()
 
+
     // list?page=1&size=10 parsInt로 인트형으로 변환
     const page = queryparams.get("page") ? parseInt(queryparams.get("page")) : 1
     const size = queryparams.get("size") ? parseInt(queryparams.get("size")) : 10

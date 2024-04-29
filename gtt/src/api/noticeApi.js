@@ -30,8 +30,9 @@ export const deleteOne = async (notice) => {
     return res.data
 }
 
-export const putOne = async (notice) =>{
+export const putOneNotice = async (notice) =>{
 
     const res = await axios.put(`${prefix}/${notice.notiNo}`, notice)
+
     return res.data
 }
