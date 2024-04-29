@@ -15,7 +15,6 @@ const initState = {
 
 const ReadComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
-
     const navigate = useNavigate()
     const [queryParams] = useSearchParams()
     const page = queryParams.get("page") ? parseInt(queryParams.get("page")) : 1
@@ -28,7 +27,6 @@ const ReadComponent = ({pno}) => {
     const moveToList = useCallback(() => {
         navigate({pathname:'/player/list', search:queryStr})
     },[page, size])
-
 
     useEffect(() => {
         getOnePlayer(pno).then(data => {

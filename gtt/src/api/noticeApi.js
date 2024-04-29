@@ -18,3 +18,20 @@ export const getList =async (pageParam) => {
     return res.data
 }
 
+export const postAdd = async (noticeObj) => {
+
+    const res = await axios.post(`${prefix}/`,noticeObj)
+    return res.data
+}
+
+export const deleteOne = async (notice) => {
+
+    const res = await axios.delete(`${prefix}/${notice.notiNo}`, notice)
+    return res.data
+}
+
+export const putOne = async (notice) =>{
+
+    const res = await axios.put(`${prefix}/${notice.notiNo}`, notice)
+    return res.data
+}
