@@ -1,19 +1,30 @@
 package com.sorune.gttapiserver.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Log4j2
+@Component
 public class JWTUtill {
     private static String key ="123456789123456789412345678941234597891234567891232465498";
+    private static ObjectMapper objectMapper;
+
+    @Autowired
+    public JWTUtill(ObjectMapper objectMapper) {
+        JWTUtill.objectMapper = objectMapper;
+    }
 
     public static String generateToken(Map<String, Object> claims,int min) {
         SecretKey key = null;
@@ -23,6 +34,10 @@ public class JWTUtill {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+        // LocalDate를 문자열로 변환하여 claims 맵에 추가
+        String birthDateStr = claims.get("birth").toString();
+        claims.put("birth", birthDateStr);
 
         return Jwts.builder()
                 .setHeader(Map.of("type","JWT"))

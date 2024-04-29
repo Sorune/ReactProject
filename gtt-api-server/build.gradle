@@ -52,9 +52,10 @@ dependencies {
     // API 서버는 사용자의 상태를 유지하지 않기 때문에 JWT와 같은 토큰을 매번 같이 전송해서 인증을 확인함(Access Token)
     // Refresh Token : 토큰 유효기간을 짧게 지정하는데 이를 나중에 갱신하는 토큰 (OAuth2에서 사용: 소셜로그인)
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.4' // 사용 중인 Jackson 버전에 맞는 버전으로 변경
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 

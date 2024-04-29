@@ -29,7 +29,8 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         claims.put("accessToken", accessToken);
         claims.put("refreshToken", refreshToken);
-
+        claims.remove("password");
+        claims.remove("pw");
         Gson gson = new Gson();
 
         String jsonStr = gson.toJson(claims);
