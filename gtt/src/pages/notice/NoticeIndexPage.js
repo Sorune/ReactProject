@@ -16,6 +16,14 @@ const NoticeIndexPage = () =>{
 
     return (
         <SidebarLayout>
+            <div className="w-full flex m-2 p-2">
+                <div className="text-xl m-1 p-2 w-20 font-extrabold text-center" onClick={handleClickList}>
+                    List
+                </div>
+                <div className="text-xl m-1 p-2 w-20 font-extrabold text-center" onClick={handleClickAdd}>
+                    ADD
+                </div>
+            </div>
             <div>
                 <Outlet />
             </div>
