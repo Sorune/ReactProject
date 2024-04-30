@@ -43,7 +43,7 @@ const BasicMenu = () =>{
                     <Link to={'/ticketing/'} onClick={pageReset}>Ticketing</Link>
                 </Typography>
                 <Typography as="li" className="pr-4 text-2xl hover:text-blue-500 text-blue-gray-800">
-                    <Link to={'/notice/'} onClick={pageReset}>Notice</Link>
+                    <Link to={'/notice/list'} onClick={pageReset}>Notice</Link>
                 </Typography>
                 {prop.children}
             </ul>

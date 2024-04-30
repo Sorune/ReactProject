@@ -15,7 +15,7 @@ const PlayerReadPage = () => {
         <div className="font-extrabold w-full bg-white mt-6">
 
             <div className="text-2xl">
-                Player Read Page
+                Player Read
             </div>
 
             <ReadComponent pno={pno}></ReadComponent>

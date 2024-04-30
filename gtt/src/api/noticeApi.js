@@ -1,6 +1,8 @@
 import axios from "axios";
 import {API_SERVER_HOST} from "./filesApi";
 
+//export const API_SERVER_HOST = 'http://localhost:8080'
+
 const prefix = `${API_SERVER_HOST}/api/notice`
 
 export const  getOne =async (notiNo) => {
@@ -30,9 +32,10 @@ export const deleteOne = async (notice) => {
     return res.data
 }
 
-export const putOneNotice = async (notice) =>{
-
-    const res = await axios.put(`${prefix}/${notice.notiNo}`, notice)
+export const putOne = async (notice) =>{
+    //const header =     {headers: {'Content-Type': 'application/json'}}
+   // alert(notice.content)
+     const res = await axios.put(`${prefix}/${notice.notiNo}`, notice)
 
     return res.data
 }
