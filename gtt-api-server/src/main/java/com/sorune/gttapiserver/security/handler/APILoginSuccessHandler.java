@@ -24,8 +24,8 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         MemberDTO memberDTO = (MemberDTO) authentication.getPrincipal();
         Map<String, Object> claims = memberDTO.getClaims();
         // JWT 인증서 유효기간 설정
-        String accessToken = JWTUtill.generateToken(claims, 1); // 1분간 유효
-        String refreshToken = JWTUtill.generateToken(claims,10); // 10분 유효
+        String accessToken = JWTUtill.generateToken(claims, 30); // 1분간 유효
+        String refreshToken = JWTUtill.generateToken(claims,60); // 10분 유효
 
         claims.put("accessToken", accessToken);
         claims.put("refreshToken", refreshToken);

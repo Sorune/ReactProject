@@ -2,6 +2,7 @@ package com.sorune.gttapiserver.security.filter;
 
 import com.google.gson.Gson;
 import com.sorune.gttapiserver.member.DTO.MemberDTO;
+import com.sorune.gttapiserver.member.entity.Member;
 import com.sorune.gttapiserver.member.entity.MemberRole;
 import com.sorune.gttapiserver.security.jwt.JWTUtill;
 import jakarta.servlet.FilterChain;
@@ -15,8 +16,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Log4j2
 public class JWTCheckFilter extends OncePerRequestFilter {
@@ -41,20 +45,26 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             Map<String,Object> claims = JWTUtill.parseToken(accessToken);
 
             log.info("JWT.claims : "+claims);
+            Long num = Long.parseLong(claims.get("num").toString());
             String email = (String) claims.get("email");
-            String pw =(String) claims.get("pw");
+            String pw = (String) claims.get("pw");
             String nick = (String) claims.get("nick");
             boolean enabled = (boolean) claims.get("enabled");
             String phone = (String) claims.get("phone");
             String userId = (String) claims.get("userId");
-            Set<MemberRole> roles = (Set<MemberRole>) claims.get("roles");
-
-            MemberDTO memberDTO = new MemberDTO(userId,pw,nick,enabled,roles);
-
+            String zoneCode = (String) claims.get("zoneCode");
+            String address = (String) claims.get("address");
+            String addrSub = (String) claims.get("addrSub");
+            LocalDate birth = LocalDate.parse((String)claims.get("birth"));
+            log.info("JWT.claims.roles : "+claims.get("roles"));
+            List<MemberRole> roles = ((List<String>) claims.get("roles")).stream().map(claim->Member.convertStringToMemberRole(claim)).filter(Objects::nonNull).collect(Collectors.toList());
+            log.info(userId,pw,nick,enabled,roles,phone);
+// MemberDTO 생성
+            MemberDTO memberDTO = new MemberDTO(num,enabled, nick, userId, zoneCode, address, addrSub, email, phone, birth, pw, roles);
+            log.info("memberDTO : " + memberDTO);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberDTO,pw,memberDTO.getAuthorities());
-
+            log.info("authenticationToken : "+authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error(e.getMessage());
