@@ -1,7 +1,7 @@
 import {createSearchParams, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {useCallback} from "react";
 import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
-import useCustomMove from "../../hooks/useCustomMove";
+import ContentHeader from "../../components/common/ContentHeader";
 
     const ReadPage =() =>{
         const {notiNo} =useParams() // notiNo을 담고있음
@@ -12,12 +12,13 @@ import useCustomMove from "../../hooks/useCustomMove";
 
 
         return(
-                    <div className="text-3xl font-extrabold w-full bg-white mt-6">
-                        <div className="text-2xl">
-                            Read Page Component{notiNo}
-                        </div>
-                        <NoticeReadComponent notiNo={notiNo} page={page} size={size}></NoticeReadComponent>
-                     </div>
+
+            <div className="text-3xl font-extrabold w-full bg-white mt-6">
+                <div className="text-2xl">
+                    Read Page Component{notiNo}
+                </div>
+                <NoticeReadComponent notiNo={notiNo} page={page} size={size}></NoticeReadComponent>
+             </div>
         );
 }
 export default ReadPage;
