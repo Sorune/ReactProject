@@ -1,5 +1,10 @@
 package com.sorune.gttapiserver.security.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sorune.gttapiserver.security.filter.JWTCheckFilter;
+import com.sorune.gttapiserver.security.handler.APILoginFailHandler;
+import com.sorune.gttapiserver.security.handler.APILoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -28,8 +34,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final DataSource dataSource;
+<<<<<<< HEAD
     /*private final UserDetailsService userDetailsService;
 */
+=======
+    private final UserDetailsService userDetailsService;
+
+
+>>>>>>> fb3db1c9247b2b394cdab3556e4c364f6329d12c
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -39,13 +51,18 @@ public class SecurityConfig {
                 .sessionManagement(sessionConfig->
                         sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(config-> {
-                            config.loginPage("/api/member/login");
+                            config.loginPage("/api/member/login")
+                                    .successHandler(new APILoginSuccessHandler())
+                                    .failureHandler(new APILoginFailHandler());
                         })
+                .addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class)
                 /*.rememberMe(httpSecurityRememberMeConfigurer ->
                         httpSecurityRememberMeConfigurer
                                 .tokenRepository(persistentTokenRepository())
                                 .userDetailsService(userDetailsService)
-                                .tokenValiditySeconds(60*60*24*30)
+                                .tokenValiditySec
+                                ...
+                                0onds(60*60*24*30)
                 )*/
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer.logoutUrl("/api/member/logout"))
