@@ -4,7 +4,7 @@ import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
 import useCustomMove from "../../hooks/useCustomMove";
 
     const ReadPage =() =>{
-        const {notiNo} =useParams() // 번홀을 담고있음
+        const {notiNo} =useParams() // notiNo을 담고있음
         const [queryParams] = useSearchParams()
 
         const page = queryParams.get("page") ? parseInt(queryParams.get("page")) : 1

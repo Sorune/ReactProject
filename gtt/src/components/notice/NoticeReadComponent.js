@@ -51,7 +51,7 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
             <div className="flex justify-end p-4">
                 <Button onClick={()=> moveToList({
                         pathName:'/notice/list',
-                        pageParam:{size: {size}, page:{page}}
+                        pageParam:{page:page, size:size}
                     })}>List</Button>
 
                 <Button onClick={() => moveToModify({

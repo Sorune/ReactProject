@@ -3,8 +3,7 @@ import {Button} from "@material-tailwind/react";
 import {deleteOne, getOne, putOne} from "../../api/noticeApi";
 import ResultModal from "../common/ResultModal";
 import useCustomMove from "../../hooks/useCustomMove";
-import {useRecoilState} from "recoil";
-import {pageState} from "../../atoms/pageState";
+
 const intiState = {
     notiNo: 0,
     title:'',
@@ -25,13 +24,14 @@ const initState = {
     current: 0
 }
 
-const NoticeModifyComponent = ({notiNo}) => {
-    console.log(notiNo + "번 게시물 수정")
+const NoticeModifyComponent = ({notiNo, page}) => {
+    //console.log(notiNo + "번 게시물 수정")
     const [notice, setNotice] = useState({...intiState})
     const [result, setResult] = useState(null)
     const {moveToList, moveToRead} = useCustomMove()
-    const [page,setPage] = useRecoilState(pageState)
+
     const [serverData, setServerData] = useState(initState)
+
     useEffect(() => {
 
         getOne(notiNo).then(data => setNotice(data))
@@ -49,11 +49,16 @@ const NoticeModifyComponent = ({notiNo}) => {
         })
     }
     const handleClickDelete = () => {
+        console.log(notiNo)
         deleteOne(notiNo).then(data => {
             console.log("delete result : " + data)
             setResult("DELETE SUCCESS")
+        }).catch(error => {
+            console.log(error)
+            setResult("FAIL")
         })
     }
+
 
 
     // 모달 창 닫은 후 동작
