@@ -1,7 +1,10 @@
-import {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {getOnePlayer} from "../../api/playerApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
+import {useRecoilValue} from "recoil";
+import {pageState} from "../../atoms/pageState";
+import PlayerButtons from "./list/PlayerButtons";
+import PlayerListHeader from "./list/PlayerListHeader";
 
 const initState = {
     pno : 0,
@@ -12,21 +15,26 @@ const initState = {
     position : '',
     birthDate : null
 }
+const TABS = [
+    {
+        label: "All",
+        value: "all",
+    },
+    {
+        label: "Monitored",
+        value: "monitored",
+    },
+    {
+        label: "Unmonitored",
+        value: "unmonitored",
+    },
+];
 
 const ReadComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
-    const navigate = useNavigate()
-    const [queryParams] = useSearchParams()
-    const page = queryParams.get("page") ? parseInt(queryParams.get("page")) : 1
-    const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
-    const queryStr = createSearchParams({page, size}).toString()
+    const page = useRecoilValue(pageState)
+    const { moveToModify,moveToList } = useCustomMove();
 
-    const moveToModify = useCallback(() => {
-        navigate({pathname:`/player/modify/${pno}`, search:queryStr})
-    },[page, size])
-    const moveToList = useCallback(() => {
-        navigate({pathname:'/player/list', search:queryStr})
-    },[page, size])
 
     useEffect(() => {
         getOnePlayer(pno).then(data => {
@@ -36,22 +44,17 @@ const ReadComponent = ({pno}) => {
     }, [pno])
 
     return (
-        <div className= "border-2 border-sky-200 mt-100 m-2 p-4">
-            {makeDiv('Pno', player.pno)}
-            {makeDiv('Age', player.age)}
-            {makeDiv('NickName', player.nickName)}
-            {makeDiv('RealName', player.realName)}
-            {makeDiv('TeamName', player.teamName)}
-            {makeDiv('Position', player.position)}
-            {makeDiv('BirthDate', player.birthDate)}
+        <div>
+            <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={pno} moveToModify={moveToModify}/>
 
-            <div className="flex justify-end p-4">
-                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToModify()}>
-                    Modify
-                </button>
-                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={() => moveToList()}>
-                    List
-                </button>
+            <div className= "border-2 border-sky-200 mt-100 m-2 p-4">
+                {makeDiv('Pno', player.pno)}
+                {makeDiv('Age', player.age)}
+                {makeDiv('NickName', player.nickName)}
+                {makeDiv('RealName', player.realName)}
+                {makeDiv('TeamName', player.teamName)}
+                {makeDiv('Position', player.position)}
+                {makeDiv('BirthDate', player.birthDate)}
             </div>
         </div>
     )

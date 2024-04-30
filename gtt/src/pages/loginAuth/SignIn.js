@@ -13,9 +13,9 @@ import {
     useBirth,
     useAddrSub
 } from '../../hooks/useInput';
-import {join} from "../../api/joinApi";
 
 const SignIn = () => {
+    const {join,validateID} = useState();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [address, setAddress] = useState('');
@@ -23,8 +23,8 @@ const SignIn = () => {
     const [modalOpen, modalSetOpen]  = React.useState(false);
     const [termsChecked, setTermsChecked] = useState(false);
     // useInput에서 리턴한 값
-    const [inputID, inputIdChange, idValid, checkID, clearInput] = useConfirmID('');
-    const [inputNick, inputNickChange, nickMatch, clearNick] = useConfirmNick('');
+    const [inputID, inputIdChange, idValid, checkID, clearInput] = useState('');
+    const [inputNick, inputNickChange, nickMatch, clearNick] = useState('');
     const [inputPass, inputPassChange, inputConfirmPass, inputConfirmPassChange, passMatch, clearPassword] = usePasswordMatch("", "");
     const [birth, insertBirthChange] = useBirth('');
     const [addrSub, insertAddrSubChange] = useAddrSub('');

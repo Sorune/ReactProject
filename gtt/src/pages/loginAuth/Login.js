@@ -1,19 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
-import { useId, usePw } from "../../hooks/useLogin";
-// import {handleLogin} from "../../api/loginApi";
+import { checkId, checkPw } from "../../hooks/useUserAuth";
 import {login} from "../../api/loginApi";
+
+
+
+
 
 const Login = () => {
     // useLogin에서 리턴한 값/메서드
-    const [loginID, insertIdChange] = useId("");
-    const [loginPW, insertPwChange] = usePw("");
+    const [loginID, insertIdChange] = useState("");
+    const [loginPW, insertPwChange] = useState("");
 
     const navigate = useNavigate();
     // 회원가입 페이지로 이동하는 메서드
     const moveToLink = (e) => {
         // 클릭한 요소에서 'data-value' 속성 값을 가져와서 목적지 변수에 저장
-        const destination = e.target.dataset.value;
+        /*const destination = e.target.dataset.value;
         // 목적지 값에 따라 다르게 처리 "login"이면 로그인 페이지로 이동하고
         switch (destination) {
             case "/" :          // 홈메인으로 이동
@@ -22,11 +25,11 @@ const Login = () => {
             case "signIn" :     // 회원가입으로 이동
                 navigate("/signIn");
                 break;
-        }
+        }*/
     };
 
-    const goLogin = async (e) => {
-        e.preventDefault();
+    const goLogin = async ({userId}) => {
+        /*e.preventDefault();
         try {
             // const data = await handleLogin(loginID, loginPW);
             const data = await login(loginID, loginPW);
@@ -48,7 +51,7 @@ const Login = () => {
 
         } catch (error) {
             alert(error.message);  // API의 오류 메시지 또는 처리된 오류 표시
-        }
+        }*/
     }
 
 
