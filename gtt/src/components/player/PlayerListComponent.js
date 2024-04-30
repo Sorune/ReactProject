@@ -58,7 +58,7 @@ const ListComponent = () => {
         <section className="min-h-screen py-8 px-8 lg:py-28">
             <div className="container mx-auto">
                 <PlayerListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/player/add'} />
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4" >
                     {serverData.dtoList.map((player) => (
                         <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
                             <CardBody className="text-center">

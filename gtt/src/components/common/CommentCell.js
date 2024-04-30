@@ -76,9 +76,6 @@ export const CommentCell=({comno,writer, position, content, newsNo,modDate, reco
                 </div>
             </CardHeader>
             <CardBody className="mb-2 pt-4">
-                <Typography>
-                    {content}
-                </Typography>
                 {isModify?<Typography>{comment}</Typography>:<Textarea value={comment} placeholder={"comment"} label={"comment"} onChange={handleChange}/>}
             </CardBody>
             <CardFooter className="p-1 flex justify-end">
