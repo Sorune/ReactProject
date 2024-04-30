@@ -26,7 +26,7 @@ const PlayerAddComponent = () => {
     const [result, setResult] = useState(null)
 
     const page = useRecoilValue(pageState)
-    const {moveToList} = useCustomMove();
+    const {moveToList, moveToRead} = useCustomMove();
 
     const navigate = useNavigate()
     const [queryParams] = useSearchParams()
@@ -36,26 +36,6 @@ const PlayerAddComponent = () => {
     const handleChangePlayer = (e) => {
         player[e.target.name] = e.target.value
         setPlayer({...player})
-    }
-    const handleClickAdd = (e) => {
-        const formData = new FormData()
-
-        formData.append("nickName", player.nickName)
-        formData.append("realName", player.realName)
-        formData.append("age", player.age)
-        formData.append("teamName", player.teamName)
-        formData.append("position", player.position)
-        formData.append("birthDate", player.birthDate)
-
-        console.log(formData)
-
-        setFetching(true)
-
-        postAdd(formData).then(data => {
-            setFetching(false)
-            moveToList()
-            setResult(data.result)
-        })
     }
 
     const closeModal = () => {
@@ -111,13 +91,12 @@ const PlayerAddComponent = () => {
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">BirthDate</div>
                     <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="birthDate" type={'text'} value={player.birthDate} onChange={handleChangePlayer}></input>
+                           name="birthDate" type={'date'} value={player.birthDate} onChange={handleChangePlayer}></input>
                 </div>
             </div>
             <div className="flex justify-end">
                 <div className="relative md-4 flex p-4 flex-wrap items-stretch">
-                    <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}
-                                   player={player}/>
+                    <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno} player={player} moveToRead={moveToRead}/>
                 </div>
             </div>
         </div>
