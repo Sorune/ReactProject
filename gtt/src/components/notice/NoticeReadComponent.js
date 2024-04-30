@@ -19,8 +19,8 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
 
     const [notice, setNotice] = useState(initStaste)
     //const queryStr = createSearchParams({page, size}).toString()
-   // console.log(queryStr)
-    console.log(page, size)
+    //console.log(queryStr)
+    //console.log(page, size)
     // 이동 관련 기능은 모두 useCustomMove() 사용
     const {moveToList, moveToModify} =useCustomMove()
 
@@ -51,7 +51,7 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
             <div className="flex justify-end p-4">
                 <Button onClick={()=> moveToList({
                         pathName:'/notice/list',
-                        pageParam:{size: {size}, page:{page}}
+                        pageParam:{page:page, size:size}
                     })}>List</Button>
 
                 <Button onClick={() => moveToModify({

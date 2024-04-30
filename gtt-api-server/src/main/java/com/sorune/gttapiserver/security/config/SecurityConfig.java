@@ -1,3 +1,4 @@
+/*
 package com.sorune.gttapiserver.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -102,3 +103,4 @@ public class SecurityConfig {
         return tokenRepository;
     }
 }
+*/
