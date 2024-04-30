@@ -1,6 +1,7 @@
 package com.sorune.gttapiserver.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sorune.gttapiserver.member.entity.MemberRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +15,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -34,11 +37,15 @@ public class JWTUtill {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage());
         }
-
+        log.info("claims:" + claims);
         // LocalDate를 문자열로 변환하여 claims 맵에 추가
         String birthDateStr = claims.get("birth").toString();
         claims.put("birth", birthDateStr);
-
+        /*Set<MemberRole> roles = (Set<MemberRole>)claims.get("roles");
+        Set<String> roleStrings = roles.stream()
+                .map(MemberRole::name)
+                .collect(Collectors.toSet());
+        claims.put("roles", roleStrings);*/
         return Jwts.builder()
                 .setHeader(Map.of("type","JWT"))
                 .setClaims(claims)

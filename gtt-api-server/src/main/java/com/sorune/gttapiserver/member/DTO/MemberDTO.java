@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sorune.gttapiserver.member.entity.Member;
 import com.sorune.gttapiserver.member.entity.MemberRole;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -35,14 +36,24 @@ public class MemberDTO extends User implements OAuth2User{
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime editDate;
 
-    private Set<MemberRole> roles;
+    private List<MemberRole> roles;
 
     private Map<String, Object> props; //소셜 로그인 정보
-    public MemberDTO(String userId, String pw, String nick, boolean isEnabled, Set<MemberRole> authorities) {
-        super(userId,pw,authorities.stream().map(str -> new SimpleGrantedAuthority("ROLE_" + str)).collect(Collectors.toList()));
+    public MemberDTO(String userId, String pw, String nick, boolean isEnabled, List<MemberRole> authorities) {
+        super(userId,pw,authorities.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList()));
+        this.nick = nick;
+        this.userId = userId;
+        this.enabled = isEnabled;
+        this.roles = authorities;
+        this.password = pw;
     }
-    public MemberDTO(boolean isEnabled, String nick, String userId, String zoneCode, String address, String addrSub, String email, String phone, LocalDate birth, String password, Set<MemberRole> authorities) {
-        super(userId, password, authorities.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())).collect(Collectors.toList()));
+    public MemberDTO(Long num,boolean isEnabled, String nick, String userId, String zoneCode, String address, String addrSub, String email, String phone, LocalDate birth, String password, List<MemberRole> authorities) {
+        super(userId, password, authorities.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList()));
+        this.num = num;
         this.enabled = isEnabled;
         this.nick = nick;
         this.userId = userId;
@@ -74,6 +85,16 @@ public class MemberDTO extends User implements OAuth2User{
     @Override
     public String getPassword() { return this.password;}
 
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        if (roles == null) {
+            return Collections.emptyList();
+        }
+
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
+    }
 
     public Map<String, Object> getClaims() {
         Map<String, Object> dataMap = new HashMap<>();
@@ -91,7 +112,7 @@ public class MemberDTO extends User implements OAuth2User{
         dataMap.put("birth", this.getBirth());
         dataMap.put("joinDate", this.getJoinDate());
         dataMap.put("editDate", this.getEditDate());
-        dataMap.put("props", this.getProps());
+        dataMap.put("roles", this.getRoles());
         return dataMap;
     }
 
@@ -115,6 +136,7 @@ public class MemberDTO extends User implements OAuth2User{
 
     public MemberDTO toDTO(Member member) {
         return new MemberDTO(
+                member.getNum(),
                 member.isEnabled(),
                 member.getNick(),
                 member.getUserId(),

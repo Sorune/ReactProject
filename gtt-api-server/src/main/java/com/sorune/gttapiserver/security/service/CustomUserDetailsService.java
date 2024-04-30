@@ -33,6 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(userId);
         }
         MemberDTO memberDTO = new MemberDTO(
+                member.getNum(),
                 member.isEnabled(),
                 member.getNick(),
                 member.getUserId(),

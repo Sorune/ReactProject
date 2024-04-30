@@ -8,7 +8,9 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,7 +59,7 @@ public class Member extends BaseEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private Set<MemberRole> roles = new HashSet<>();
+    private List<MemberRole> roles = new ArrayList<>();
 
 
     // 회원 닉네임 수정용
@@ -94,4 +96,15 @@ public class Member extends BaseEntity {
     public void addRole(MemberRole role) { this.roles.add(role); }
 
     public void clearRoles() { this.roles.clear(); }
+
+    public static MemberRole convertStringToMemberRole(String roleString) {
+        try {
+            return MemberRole.valueOf(roleString);
+        } catch (IllegalArgumentException e) {
+            // 문자열이 유효한 MemberRole Enum 상수와 일치하지 않는 경우
+            // 적절한 예외 처리를 수행할 수 있습니다.
+            // 여기서는 null을 반환하도록 합니다.
+            return null;
+        }
+    }
 }
