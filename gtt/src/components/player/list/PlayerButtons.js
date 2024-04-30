@@ -29,7 +29,7 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
 
         putOnePlayer(pno, formData).then(data => {
             moveTo({
-                pathName:pathName+'read'+pno,
+                pathName:pathName+'read/'+player.pno,
                 pageParam: {page: `${page.page}`, size: `${page.size}`}
             })
         })
@@ -45,11 +45,9 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
         formData.append("position", player.position)
         formData.append("birthDate", player.birthDate)
 
-        console.log(formData)
-
         postAdd(formData).then(data => {
             moveTo({
-                pathName:pathName+'read/'+pno,
+                pathName:pathName+'read/'+player.pno,
                 pageParam: {page: `${page.page}`, size: `${page.size}`}
             })
         })
