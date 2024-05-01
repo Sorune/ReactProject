@@ -1,10 +1,12 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {getOnePlayer} from "../../api/playerApi";
+import {getOnePlayer, getPlayerList} from "../../api/playerApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import PlayerButtons from "./list/PlayerButtons";
-import { Rating } from "@material-tailwind/react";
+import {Avatar, Button, Card, CardBody, Rating, Typography, IconButton} from "@material-tailwind/react";
+import PCommentList from "../playerComment/PlayerCommentListComponent"
+import { ChatBubbleLeftIcon } from "@heroicons/react/outline";
 
 const initState = {
     pno : 0,
@@ -15,20 +17,6 @@ const initState = {
     position : '',
     birthDate : null
 }
-const TABS = [
-    {
-        label: "All",
-        value: "all",
-    },
-    {
-        label: "Monitored",
-        value: "monitored",
-    },
-    {
-        label: "Unmonitored",
-        value: "unmonitored",
-    },
-];
 
 function RatedIcon() {
     return (
@@ -61,7 +49,6 @@ function UnratedIcon() {
         </svg>
     );
 }
-
 
 const ReadComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
@@ -103,7 +90,10 @@ const ReadComponent = ({pno}) => {
                         onChange={(value) => setRated(value)}
                     />
                 </div>
+                <IconButton>Add Comment</IconButton>
             </div>
+
+            <PCommentList/>
         </div>
     )
 }
