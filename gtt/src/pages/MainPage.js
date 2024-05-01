@@ -46,7 +46,6 @@ export const TestimonialCard =({img,client,clientInfo,}) =>{
 
 const MainPage= () =>{
     return (
-
             <SidebarLayout>
                 <section className="px-8 py-10 lg:py-28 h-full bg-sky-500">
                     <div className="container mx-auto">

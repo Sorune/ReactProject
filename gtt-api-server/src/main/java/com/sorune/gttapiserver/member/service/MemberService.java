@@ -18,6 +18,8 @@ public interface MemberService {
     PageResponseDTO<MemberDTO> memberList(PageRequestDTO pageRequestDTO);
     // 회원 가입시 중복 id 체크
     boolean checkId(String id);
+    // 회원 가입시 중복 닉네임 체크
+    boolean checkNick(String nick);
     // 회원 로그인시 id 일치여부 체크
     boolean isLogin(String id, String pw);
 

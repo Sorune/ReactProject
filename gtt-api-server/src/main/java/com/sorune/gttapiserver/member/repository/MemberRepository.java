@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByUserId(String userId);
+    Member findByNick(String nick);
     Member findByUserIdAndPassword(String userId, String password);
     Member findByEmail(String email);
     Member findByPhone(String phone);
@@ -20,8 +21,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @EntityGraph(attributePaths = {"roles"})
     @Query("select m from Member m where m.userId = :userId or m.email = :userId")
     Member getWithRoles(@Param("userId") String userId);
-
-
-
 
 }

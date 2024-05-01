@@ -1,16 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
-import { checkId, checkPw } from "../../hooks/useUserAuth";
-import {login} from "../../api/loginApi";
-
-
-
-
+import useUserAuth from "../../hooks/useUserAuth";
 
 const Login = () => {
-    // useLogin에서 리턴한 값/메서드
-    const [loginID, insertIdChange] = useState("");
-    const [loginPW, insertPwChange] = useState("");
+
+    // 1. 이페이지에서만 값을 가지고 있을 것이므로 여기에 state작성
+    //      변수         메서드
+    const [memberId, setMemberId] = useState(''); // id
+    const [memberPw, setMemberPw] = useState(''); // pw
+
+    // 2. useUserAuth 에서 리턴한 메서드
+    const { checkIdAndPw } = useUserAuth(); // 로그인 훅
+
+    const handleLogin = (e) => { // 폼제출 이벤트
+        e.preventDefault(); // 동작 막기
+        checkIdAndPw(memberId, memberPw); // 로그인 훅 실행
+    };
 
     const navigate = useNavigate();
     // 회원가입 페이지로 이동하는 메서드
@@ -28,40 +33,11 @@ const Login = () => {
         }*/
     };
 
-    const goLogin = async ({userId}) => {
-        /*e.preventDefault();
-        try {
-            // const data = await handleLogin(loginID, loginPW);
-            const data = await login(loginID, loginPW);
-            console.log(data);
-            if(data === true) {
-                alert('로그인 성공 : ' + data.message);
-                navigate('/');  // 성공 후 메인으로 이동
-            }else if(data === false) {
-                alert('로그인 실패 : ' + data.message);
-            }
-            // switch (data) {
-            //     case "SUCCESS" :
-            //         alert('로그인 성공 : ' + data.message);
-            //         return navigate('/');  // 성공 후 메인으로 이동
-            //     case "FAILURE" :
-            //         alert('로그인 실패 : ' + data.message);
-            //         break;
-            // }
-
-        } catch (error) {
-            alert(error.message);  // API의 오류 메시지 또는 처리된 오류 표시
-        }*/
-    }
-
-
-
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a href="#" data-value="/" onClick={moveToLink} className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                        {/* <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo"> */}
                         GTT    
                     </a>
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -69,14 +45,15 @@ const Login = () => {
                             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 LOGIN
                             </h1>
-                            <form className="space-y-4 md:space-y-6" onSubmit={goLogin}>
+                            {/*<form className="space-y-4 md:space-y-6" onSubmit={goLogin}>*/}
+                            <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
                                 <div>
                                     <label htmlFor="id" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID</label>
-                                    <input type="text" value={loginID} onChange={insertIdChange} name="id" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="your id"/>
+                                    <input type="text" value={memberId} onChange={(e) => setMemberId(e.target.value)} name="id" id="id" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="your id"/>
                                 </div>
                                 <div>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                    <input type="password" value={loginPW} onChange={insertPwChange} name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••"/>
+                                    <input type="password" value={memberPw} onChange={(e) => setMemberPw(e.target.value)} name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="••••••••"/>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-start">
