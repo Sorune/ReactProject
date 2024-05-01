@@ -10,5 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByUserId(String userId);
+    Member findByNick(String nick);
     Member findByUserIdAndPw(String userId, String pw);
 }

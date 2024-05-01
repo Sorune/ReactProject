@@ -1,7 +1,8 @@
 
 // 요청을 수행하기 위한 서버 경로
 import axios from "axios";
-import {API_SERVER_HOST} from "./filesApi";
+// import {API_SERVER_HOST} from "./filesApi";
+const API_SERVER_HOST = "http://localhost:8001";
 
 // 회원 리스트 출력 ㅇ
 export const memberList = async () => {

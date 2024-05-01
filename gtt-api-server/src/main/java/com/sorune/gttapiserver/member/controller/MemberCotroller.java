@@ -89,9 +89,17 @@ public class MemberCotroller {
     }
 
 
+    // 아이디 검증
     @GetMapping("/checkId/{userId}")
     public Map<String,Object> checkId(@PathVariable String userId) {
         log.info("checkId : " + userId);
         return Map.of("message",memberService.checkId(userId));
+    }
+
+    // 닉네임 검증
+    @GetMapping("/checkNick/{nick}")
+    public Map<String,Object> checkNick(@PathVariable String nick) {
+        log.info("checkNick : " + nick);
+        return Map.of("message",memberService.checkNick(nick));
     }
 }
