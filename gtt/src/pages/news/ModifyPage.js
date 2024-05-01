@@ -33,13 +33,10 @@ const ModifyPage = forwardRef(() => {
     const { moveToModify,moveToList } = useCustomMove(); // useCustomMove 훅 사용
     const [serverData, setServerData] = useState(newsDTO);
     const {refresh, setRefresh} = useCustomMove();
-    const {parseDeltaOrString} = useUtils();
     const newsNo = useLocation().pathname.split("/")[3]
     const ReadQuillRef = useRef(null);
     const [content,setContent] = useState("")
     const [title, setTitle] = useState("")
-    const [writer, setWriter] = useState("")
-    const [username, setUsername] = useState("")
 
     useEffect(() => {
         getOne(newsNo).then(data=>{

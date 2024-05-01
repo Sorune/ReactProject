@@ -6,6 +6,7 @@ import com.sorune.gttapiserver.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class ChatRoomController {
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     @MessageMapping("/message")
+    @SendTo("/sub/api/chat/{roomId}")
     public void message(ChatMessageDTO chatMessageDTO) {
         if(ChatMessageDTO.MessageType.JOIN.equals(chatMessageDTO.getMessageType()))
             chatMessageDTO.setMessage(chatMessageDTO.getSenderId()+"님이 입장하셨습니다.");

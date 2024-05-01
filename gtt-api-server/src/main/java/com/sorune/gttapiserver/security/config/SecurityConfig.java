@@ -65,7 +65,7 @@ public class SecurityConfig {
                     authorizeHttpRequests
                             .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                             .requestMatchers("/api/news/**","/api/comment/**","/api/player/**","/api/notice/**").permitAll()
-                            .requestMatchers("/api/chat/**","/chat/**").permitAll()// "/api/chat/**" 패턴을 허용
+                            .requestMatchers("/api/chat/**","/chat/**","/pub/**","/sub/**").permitAll()// "/api/chat/**" 패턴을 허용
                             .anyRequest().authenticated()
                     );
 
