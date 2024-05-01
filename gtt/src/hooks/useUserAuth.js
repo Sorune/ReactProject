@@ -1,30 +1,48 @@
 import { useNavigate } from 'react-router-dom';
 import { login, validateID, validateNick, join } from "../api/joinApi";
+import { useSetRecoilState} from "recoil";
+import {userState} from "../atoms/userState";
+import {tokenState} from "../atoms/tokenState";
 
 const useUserAuth = () => {
     // 페이지 네비게이션
     const navigate = useNavigate();
+    const setUserInfo = useSetRecoilState(userState);
+    const setTokenInfo = useSetRecoilState(tokenState);
 
     // 로그인
-    const checkIdAndPw = (userId, password) => {
-        login(userId, password)
-            .then(result => {
-                console.log(result);
-                if (result.accessToken) {
-                    // 로그인 성공 메시지
-                    alert("로그인 되었습니다.");
-                    // 메인 페이지로 이동
-                    navigate("/");
-                } else {
-                    // 실패 메시지
-                    alert("아이디/비밀번호를 확인하세요.");
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                // 오류 메시지
-                alert("로그인 과정에서 오류가 발생했습니다: " + error.message);
-            });
+    const checkIdAndPw = ({userId, password}) => {
+        const res = login(userId, password);
+        console.log(res);
+        res.then(result => {
+            console.log(result);
+            if (result.accessToken) {
+                // 로그인 성공 메시지
+                setTokenInfo((tokenInfo) => [{accessToken: result.accessToken, refreshToken: result.refreshToken}]);
+                setUserInfo((userInfo)=>[{
+                    num:result.num,
+                    userId:result.userId,
+                    nick:result.nick,
+                    zoneCode:result.zoneCode,
+                    address:result.address,
+                    addrSub:result.addrSub,
+                    email:result.email,
+                    phone:result.phone,
+                    birth:result.birth,
+                    roles:result.roles,
+                }]);
+                alert("로그인 되었습니다.");
+                navigate("/");
+            } else {
+                // 실패 메시지
+                alert("아이디/비밀번호를 확인하세요.");
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            // 오류 메시지
+            alert("로그인 과정에서 오류가 발생했습니다: " + error.message);
+        });
     };
 
 

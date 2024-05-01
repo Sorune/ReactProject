@@ -4,6 +4,9 @@ import {getList} from "../api/newsApi";
 import SidebarLayout from "../layouts/SidebarLayout";
 import {MainSectionCard} from "../components/common/MainSectionCard";
 import {getPlayerList} from "../api/playerApi";
+import {useRecoilValue} from "recoil";
+import {userState} from "../atoms/userState";
+import {tokenState} from "../atoms/tokenState";
 
 const initState = {
     dtoList:[],
@@ -23,6 +26,10 @@ const MainPage= () =>{
     const [noticeServerData, setNoticeServerData] = useState(initState)
     const [playerServerData, setPlayerServerData] = useState(initState)
     const [refresh,setRefresh] = useState(false)
+
+    const [userInfo] = useRecoilValue(userState)
+    const [tokenInfo] = useRecoilValue(tokenState)
+    console.log(tokenInfo,userInfo)
     useEffect(() => {
         getList({page: 1, size: 5}).then(data => {
             setNewsServerData(data)
