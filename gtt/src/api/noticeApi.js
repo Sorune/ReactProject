@@ -26,9 +26,9 @@ export const postAdd = async (noticeObj) => {
     return res.data
 }
 
-export const deleteOne = async (notice) => {
+export const deleteOne = async (notiNo) => {
 
-    const res = await axios.delete(`${prefix}/${notice.notiNo}`, notice)
+    const res = await axios.delete(`${prefix}/${notiNo}`)
     return res.data
 }
 
