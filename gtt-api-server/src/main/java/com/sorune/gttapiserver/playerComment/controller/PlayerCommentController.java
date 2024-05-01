@@ -39,7 +39,7 @@ public class PlayerCommentController {
         return Map.of("result", "success");
     }
 
-    @DeleteMapping("/{playerComNo")
+    @DeleteMapping("/{playerComNo}")
     public Map<String, String> DeleteComment(@PathVariable("playerComNo") Long playerComNo) {
         playerCommentService.deletePlayerComment(playerComNo);
 

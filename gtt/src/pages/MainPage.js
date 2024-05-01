@@ -30,11 +30,12 @@ export const TestimonialCard =({img,client,clientInfo,}) =>{
             setServerData(data)
         })
     },[refresh]);
+    console.log(serverData)
     return (
         <Card shadow={false} className="bg-gray-100/50 rounded-2xl p-6">
             <CardBody className="px-4 py-0 flex flex-wrap-reverse gap-x-6 justify-between items-center">
                 <table className="mt-4 w-full min-w-max table-auto text-left">
-                    {serverData.dtoList.length >0 && (
+                    {!serverData.error&&serverData.dtoList.length >0 && (
                         <CardListComponent serverData={serverData} page={1} size={5}/>)
                     }
                 </table>

@@ -3,6 +3,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sorune.gttapiserver.security.filter.JWTCheckFilter;
 import com.sorune.gttapiserver.security.handler.APILoginFailHandler;
 import com.sorune.gttapiserver.security.handler.APILoginSuccessHandler;
+import com.sorune.gttapiserver.security.handler.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -41,8 +42,15 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                /*.sessionManagement(sessionConfig->
-                        sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))*/
+                .sessionManagement(sessionConfig->
+                        sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorizeHttpRequests->
+                        authorizeHttpRequests
+                                .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                                .requestMatchers("/api/comment/**","/api/player/**","/api/notice/**").permitAll()
+                                .requestMatchers( "api/news/**","/api/chat/**","/chat/**","/pub/**","/sub/**").permitAll()// "/api/chat/**" 패턴을 허용
+                                .anyRequest().authenticated()
+                )
                 .formLogin(config-> {
                             config.loginPage("/api/member/login")
                                     .successHandler(new APILoginSuccessHandler())
@@ -59,13 +67,10 @@ public class SecurityConfig {
                 )*/
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer.logoutUrl("/api/member/logout"))
-                .authorizeHttpRequests(authorizeHttpRequests->
-                    authorizeHttpRequests
-                            .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
-                            .requestMatchers("/api/news/**","/api/comment/**","/api/player/**","/api/notice/**").permitAll()
-                            .requestMatchers("/api/chat/**","/chat/**","/pub/**","/sub/**").permitAll()// "/api/chat/**" 패턴을 허용
-                            .anyRequest().authenticated()
-                    );
+                .exceptionHandling(config->
+                        config.accessDeniedHandler(new CustomAccessDeniedHandler()))
+        ;
+
 
         return http.build();
     }
