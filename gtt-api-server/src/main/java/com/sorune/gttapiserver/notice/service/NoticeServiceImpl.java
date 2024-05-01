@@ -44,11 +44,16 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     public NoticeDTO get(Long notiNo) {
 
+
         Optional<Notice> result = noticeRepository.findById(notiNo);
 
         Notice notice =result.orElseThrow();
 
         NoticeDTO noticeDTO = modelMapper.map(notice,NoticeDTO.class);
+
+        noticeDTO.setHits(notice.getHits()+1);
+        log.info("조회수 : " + noticeDTO.getHits() );
+        noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
 
         return noticeDTO;
     }

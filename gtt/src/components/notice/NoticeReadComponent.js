@@ -14,7 +14,8 @@ const initStaste = {
     writer:'',
     content:'',
     regDate:'null',
-    modDate:'null'
+    modDate:'null',
+    hits:0
 }
 
 const NoticeReadComponent = ({notiNo, page, size}) => {
@@ -35,8 +36,8 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
 
     return(
 
-        <Card className="p-2 m-2 min-h-[10rem]">
-            <ContentHeader pathName={"/notice/"} moveToModify={moveToModify} notiNo={notiNo} serverData={serverData} page={page} moveTo={moveToList} />
+        <Card className="p-2 m-2 min-h-[25rem]">
+            <ContentHeader pathName={"/notice/"} moveToModify={moveToModify} numValue={notiNo} serverData={serverData} page={page} moveTo={moveToList} />
             <div className="grid grid-cols-auto gap-4 grid-rows-auto flex items-stretch flex items-center flex flex-box mt-2 mb-2 ml-4 ">
                 <div className="col-start-1 col-end-5 self-center">
                     <strong>{notice.title}</strong>
@@ -57,7 +58,7 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
                               d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
                               clip-rule="evenodd"/>
                     </svg>
-                    &nbsp;&nbsp;<small>views</small>
+                    &nbsp;&nbsp;<small>{notice.hits}</small>
                 </div>
                 <div className="col-start-9 col-end-9 self-center p-1">
                     <small>date : {notice.regDate}</small>
@@ -71,15 +72,5 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
 
     )
 }
-
-const makeDiv = (title, value) =>
-    <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">{title}</div>
-            <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
-                {value} {/* 위 makeDiv 안의 값*/}
-            </div>
-        </div>
-    </div>
 
 export default NoticeReadComponent;
