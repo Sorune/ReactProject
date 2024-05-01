@@ -1,12 +1,9 @@
-import BasicLayout from "../layouts/BasicLayout";
 import {Card, CardBody, CardHeader, Typography} from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
 import {getList} from "../api/newsApi";
-import useCustomMove from "../hooks/useCustomMove";
-import {useRecoilState} from "recoil";
-import {pageState} from "../atoms/pageState";
-import CardListComponent from "../components/common/CardListComponent";
 import SidebarLayout from "../layouts/SidebarLayout";
+import {MainSectionCard} from "../components/common/MainSectionCard";
+import {getPlayerList} from "../api/playerApi";
 
 const initState = {
     dtoList:[],
@@ -21,30 +18,19 @@ const initState = {
     current:0
 }
 
-export const TestimonialCard =({img,client,clientInfo,}) =>{
-    const [page,setPage] = useRecoilState(pageState)
-    const {refresh,moveToList,moveToRead, moveToAdd} = useCustomMove()
-    const [serverData, setServerData] = useState(initState)
+const MainPage= () =>{
+    const [newsServerData, setNewsServerData] = useState(initState)
+    const [noticeServerData, setNoticeServerData] = useState(initState)
+    const [playerServerData, setPlayerServerData] = useState(initState)
+    const [refresh,setRefresh] = useState(false)
     useEffect(() => {
         getList({page: 1, size: 5}).then(data => {
-            setServerData(data)
+            setNewsServerData(data)
+        })
+        getPlayerList({page:1, size:5}).then(data => {
+            setPlayerServerData(data)
         })
     },[refresh]);
-    console.log(serverData)
-    return (
-        <Card shadow={false} className="bg-gray-100/50 rounded-2xl p-6">
-            <CardBody className="px-4 py-0 flex flex-wrap-reverse gap-x-6 justify-between items-center">
-                <table className="mt-4 w-full min-w-max table-auto text-left">
-                    {!serverData.error&&serverData.dtoList.length >0 && (
-                        <CardListComponent serverData={serverData} page={1} size={5}/>)
-                    }
-                </table>
-            </CardBody>
-        </Card>
-);
-}
-
-const MainPage= () =>{
     return (
             <SidebarLayout>
                 <section className="px-8 py-10 lg:py-28 h-full bg-white">
@@ -64,10 +50,10 @@ const MainPage= () =>{
                             transformative learning opportunities.
                         </Typography>
                         <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
-                            <TestimonialCard/>
-                            <TestimonialCard/>
-                            <TestimonialCard/>
-                            <TestimonialCard/>
+                            <MainSectionCard serverData={newsServerData} sectionTitle={"News"}/>
+                            <MainSectionCard serverData={playerServerData} sectionTitle={"Player"}/>
+                            <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"}/>
+                            <MainSectionCard serverData={newsServerData}  sectionTitle={"News"}/>
                         </div>
                     </div>
                 </section>

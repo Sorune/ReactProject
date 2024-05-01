@@ -1,6 +1,8 @@
 package com.sorune.gttapiserver.member.DTO;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sorune.gttapiserver.member.entity.Member;
 import com.sorune.gttapiserver.member.entity.MemberRole;
 import lombok.*;
@@ -67,8 +69,29 @@ public class MemberDTO extends User implements OAuth2User{
         this.roles = authorities; // authorities를 roles로 설정
     }
 
-    public MemberDTO(){
-        super(null,null,null);
+    @JsonCreator
+    public MemberDTO(
+            @JsonProperty("userId") String userId,
+            @JsonProperty("password") String password,
+            @JsonProperty("nick") String nick,
+            @JsonProperty("birth") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul") LocalDate birth,
+            @JsonProperty("zoneCode") String zoneCode,
+            @JsonProperty("address") String address,
+            @JsonProperty("addrSub") String addrSub,
+            @JsonProperty("phone") String phone,
+            @JsonProperty("email") String email){
+        super(userId,password,List.of(MemberRole.ROLE_USER).stream().map((role)->new SimpleGrantedAuthority(role.name())).collect(Collectors.toList()));
+        this.userId=userId;
+        this.password=password;
+        this.nick=nick;
+        this.birth=birth;
+        this.zoneCode=zoneCode;
+        this.address=address;
+        this.addrSub=addrSub;
+        this.phone=phone;
+        this.email=email;
+        this.roles = List.of(MemberRole.ROLE_USER);
+        this.enabled = true;
 
     }
     @Override
