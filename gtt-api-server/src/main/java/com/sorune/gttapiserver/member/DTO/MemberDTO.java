@@ -67,6 +67,10 @@ public class MemberDTO extends User implements OAuth2User{
         this.roles = authorities; // authorities를 roles로 설정
     }
 
+    public MemberDTO(){
+        super(null,null,null);
+
+    }
     @Override
     public Map<String, Object> getAttributes() {
         return this.getProps();
