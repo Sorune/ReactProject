@@ -12,9 +12,7 @@ const ModifyPage = () => {
             <div className="text-3xl font-extrabold">
                 Modify Page
             </div>
-
             <NoticeModifyComponent notiNo={notiNo} page={page}/>
-
         </div>
     )
 }

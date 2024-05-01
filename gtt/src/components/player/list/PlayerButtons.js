@@ -3,9 +3,11 @@ import {Link, useLocation} from "react-router-dom";
 import React from "react";
 import {deleteOnePlayer, postAdd, putOnePlayer} from "../../../api/playerApi";
 
+
 const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
+
 
     const handleClickDelete = () => {
 
@@ -46,8 +48,10 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
         formData.append("birthDate", player.birthDate)
 
         postAdd(formData).then(data => {
+            console.log(data, data.pno)
+
             moveTo({
-                pathName:pathName+'read/'+player.pno,
+                pathName:pathName+'read/' + data.pno,
                 pageParam: {page: `${page.page}`, size: `${page.size}`}
             })
         })

@@ -2,11 +2,12 @@ import TicketingNav from "./TicketingNav";
 import TicketingPage from "./TicketingPage";
 import TicketingSide from "./TicketingSide";
 import BasicLayout from "../../layouts/BasicLayout";
+import SidebarLayout from "../../layouts/SidebarLayout";
 
 const TicketingMain = () => {
 
     return (
-        <BasicLayout>
+        <SidebarLayout>
             <div>
                 <div>
                     {/* 티켓팅 페이지 상단 */}
@@ -23,7 +24,7 @@ const TicketingMain = () => {
                     </div>
                 </div>
             </div>
-        </BasicLayout>
+        </SidebarLayout>
 
     );
 }
