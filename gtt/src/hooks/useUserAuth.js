@@ -6,11 +6,11 @@ const useUserAuth = () => {
     const navigate = useNavigate();
 
     // 로그인
-    const checkIdAndPw = (userId, pw) => {
-        login(userId, pw)
+    const checkIdAndPw = (userId, password) => {
+        login(userId, password)
             .then(result => {
                 console.log(result);
-                if (result.success) {
+                if (result.accessToken) {
                     // 로그인 성공 메시지
                     alert("로그인 되었습니다.");
                     // 메인 페이지로 이동
