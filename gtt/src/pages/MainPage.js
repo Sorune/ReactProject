@@ -48,7 +48,7 @@ const MainPage= () =>{
     return (
 
             <SidebarLayout>
-                <section className="px-8 py-10 lg:py-28 h-full bg-sky-500">
+                <section className="px-8 py-10 lg:py-28 h-full bg-white">
                     <div className="container mx-auto">
                         <Typography
                             variant="h2"

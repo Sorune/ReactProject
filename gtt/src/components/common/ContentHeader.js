@@ -2,7 +2,7 @@ import {Breadcrumbs, Button} from "@material-tailwind/react";
 import {Link, useLocation} from "react-router-dom";
 import React from "react";
 
-const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData,newsNo})=>{
+const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData,newsNo ,notiNo})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
     return (

@@ -2,6 +2,7 @@ import {createSearchParams, useNavigate, useParams, useSearchParams} from "react
 import {useCallback} from "react";
 import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
 import ContentHeader from "../../components/common/ContentHeader";
+import {Card, CardHeader} from "@material-tailwind/react";
 
     const ReadPage =() =>{
         const {notiNo} =useParams() // notiNo을 담고있음
@@ -13,12 +14,12 @@ import ContentHeader from "../../components/common/ContentHeader";
 
         return(
 
-            <div className="text-3xl font-extrabold w-full bg-white mt-6">
-                <div className="text-2xl">
-                    Read Page Component{notiNo}
-                </div>
+            <div className=" w-full bg-white mt-6">
                 <NoticeReadComponent notiNo={notiNo} page={page} size={size}></NoticeReadComponent>
              </div>
+
+
+
         );
 }
 export default ReadPage;
