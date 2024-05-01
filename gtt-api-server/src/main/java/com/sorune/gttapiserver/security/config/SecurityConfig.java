@@ -1,9 +1,10 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+package com.sorune.gttapiserver.security.config;
+
 import com.sorune.gttapiserver.security.filter.JWTCheckFilter;
 import com.sorune.gttapiserver.security.handler.APILoginFailHandler;
 import com.sorune.gttapiserver.security.handler.APILoginSuccessHandler;
 import com.sorune.gttapiserver.security.handler.CustomAccessDeniedHandler;
+import com.sorune.gttapiserver.security.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -68,7 +69,8 @@ public class SecurityConfig {
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer.logoutUrl("/api/member/logout"))
                 .exceptionHandling(config->
-                        config.accessDeniedHandler(new CustomAccessDeniedHandler()))
+                        config.accessDeniedHandler(new CustomAccessDeniedHandler())
+                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
         ;
 
 

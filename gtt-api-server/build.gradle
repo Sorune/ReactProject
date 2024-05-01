@@ -38,7 +38,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 
-    // implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티용
+    implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티용
     // oauth2-client 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'com.google.code.gson:gson:2.10.1' // 로그인 성공 후 json 데이터 생성
