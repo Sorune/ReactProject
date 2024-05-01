@@ -6,11 +6,11 @@ const useUserAuth = () => {
     const navigate = useNavigate();
 
     // 로그인
-    const checkIdAndPw = (userId, pw) => {
-        login(userId, pw)
+    const checkIdAndPw = (userId, password) => {
+        login(userId, password)
             .then(result => {
                 console.log(result);
-                if (result.success) {
+                if (result.token) {
                     // 로그인 성공 메시지
                     alert("로그인 되었습니다.");
                     // 메인 페이지로 이동
@@ -47,8 +47,8 @@ const useUserAuth = () => {
     // };
 
     // 비밀번호 일치 확인
-    const checkPw = (pw, confirmPw) => {
-        if (pw !== confirmPw) {
+    const checkPw = (password, confirmPw) => {
+        if (password !== confirmPw) {
             // 비밀번호 불일치
             alert("비밀번호가 일치하지 않습니다.");
             return false;
@@ -99,7 +99,7 @@ const useUserAuth = () => {
     };
 
     // 회원가입
-    const joinMember = (e, userId, pw, phone, nick, email, birth, address, addrSub, zoneCode) => {
+    const joinMember = (e, userId, password, phone, nick, email, birth, address, addrSub, zoneCode) => {
         // 기본 이벤트 중단
         e.preventDefault();
 
@@ -109,7 +109,7 @@ const useUserAuth = () => {
         //     return;
         // }
 
-        join(userId, pw, nick, birth, zoneCode, address, addrSub, phone, email) // 회원가입 API 호출
+        join(userId, password, nick, birth, zoneCode, address, addrSub, phone, email) // 회원가입 API 호출
             .then(result => {
                 if (result.success) {
                     // 성공 메시지
