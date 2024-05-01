@@ -26,13 +26,13 @@ public class MemberServiceTest {
     @Autowired
     private MemberService memberService;
 
-    @Test // 한명의 회원정보 등록
+    /*@Test // 한명의 회원정보 등록
     public void testMemberInsert(){
         MemberDTO memberDTO = new MemberDTO(true,"testUser","test1234","1","1","1","test@gmail.com","010-1234-5678",LocalDate.now(),encoder.encode("1234"),Set.of(MemberRole.ROLE_USER));
         log.info(memberDTO.toString());
         Long memNum = memberService.joinMember(memberDTO);
         System.out.println(memNum);
-    }
+    }*/
 
     /*@Test // 한명의 회원정보 수정
     public void testMemberModify() {

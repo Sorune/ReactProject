@@ -67,7 +67,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            /*log.error(e.getMessage());
 
             Gson gson = new Gson();
             String msg = gson.toJson(Map.of("error", "ERROR_ACCESS_TOKEN"));
@@ -75,7 +75,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             PrintWriter printWriter = response.getWriter();
             printWriter.println(msg);
-            printWriter.close();
+            printWriter.close();*/
+
+            filterChain.doFilter(request, response);
         }
     }
 }

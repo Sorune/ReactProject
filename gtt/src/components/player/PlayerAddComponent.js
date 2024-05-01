@@ -9,8 +9,6 @@ import {pageState} from "../../atoms/pageState";
 import ContentHeader from "../common/ContentHeader";
 import { startTransition } from 'react';
 import PlayerButtons from "./list/PlayerButtons";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const initState = {
     age : 0,
