@@ -1,14 +1,13 @@
 import axios from "axios";
-const API_SERVER_HOST = "http://localhost:8001";
+import {API_SERVER_HOST} from "./filesApi";
+
+const prefix = `${API_SERVER_HOST}/api/member`;
 
 // 로그인
-export const login = async (id, password) => {
-    const url = `${API_SERVER_HOST}/api/member/login`;
+export const login = async (userId, pw) => {
+    const url = `${prefix}/login`;
     try {
-        const response = await axios.post(url, {
-            "userId": id,
-            "pw": password
-        });
+        const response = await axios.post(url, {"userId": userId, "pw": pw});
         return response.data;
     } catch (error) {
         throw error; 
@@ -16,8 +15,8 @@ export const login = async (id, password) => {
 };
 
 // 아이디 중복확인
-export const validateID = async (id) => {
-    const url = `${API_SERVER_HOST}/api/member/checkId/${id}`;
+export const validateID = async (userId) => {
+    const url = `${prefix}/checkId/${userId}`;
     try {
         const response = await axios.get(url);
         return response.data;
@@ -28,7 +27,7 @@ export const validateID = async (id) => {
 
 // 닉네임 중복확인
 export const validateNick = async (nick) => {
-    const url = `${API_SERVER_HOST}/api/member/checkNick/${nick}`;
+    const url = `${prefix}/checkNick/${nick}`;
     try {
         const response = await axios.get(url);
         return response.data; 
@@ -38,19 +37,24 @@ export const validateNick = async (nick) => {
 };
 
 // 회원가입
-export const join = async (id, password, nick, birth, zoneCode, address, addrSub, phone, email) => {
-    const url = `${API_SERVER_HOST}/api/member/join`;
+export const join = async (userId, pw, nick, birth, zoneCode, address, addrSub, phone, email) => {
+    const url = `${prefix}/`;
+    const memberData = {
+        userId, // 백엔드에서 기대하는 키 이름과 같은지 확인 필요
+        pw,
+        nick,
+        birth,
+        zoneCode,
+        address,
+        addrSub,
+        phone,
+        email
+    };
     try {
-        const response = await axios.post(url, {
-            "userId": id,
-            "pw": password,
-            "nick": nick,
-            "birth": birth,
-            "zoneCode": zoneCode,
-            "address": address,
-            "addrSub": addrSub,
-            "phone": phone,
-            "email": email
+        const response = await axios.post(url, memberData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
         return response.data;
     } catch (error) {
