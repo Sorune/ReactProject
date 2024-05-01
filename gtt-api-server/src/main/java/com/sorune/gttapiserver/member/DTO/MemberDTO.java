@@ -20,8 +20,10 @@ public class MemberDTO {
 
     private Long num;           // 회원번호 nn
     private String pw;          // 회원 비밀번호 nn
-    private String nick;     
-    private String userId;          // 회원 아이디 nn
+    private String nick;        // 회원 닉네임
+    private String email;       // 회원 이메일
+    private String phone;       // 회원 전화번호
+    private String userId;      // 회원 아이디 nn
     private String zoneCode;    // 회원 주소(우편번호) nn
     private String address;     // 회원 주소(검색주소) nn
     private String addrSub;     // 회원 주소(나머지 동/호/수 등)

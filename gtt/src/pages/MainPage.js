@@ -62,10 +62,10 @@ const MainPage= () =>{
                         transformative learning opportunities.
                     </Typography>
                     <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
-                        <TestimonialCard/>
-                        <TestimonialCard/>
-                        <TestimonialCard/>
-                        <TestimonialCard/>
+                        {/*<TestimonialCard/>*/}
+                        {/*<TestimonialCard/>*/}
+                        {/*<TestimonialCard/>*/}
+                        {/*<TestimonialCard/>*/}
                     </div>
                 </div>
             </section>

@@ -24,9 +24,10 @@ const SignIn = () => {
     const [zoneCode, setZoneCode] = useState('');   // zoneCode
 
     // 2. useUserAuth 에서 리턴한 메서드
-    const { checkId, checkPw, checkNick, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
+    // const { checkId, checkPw, checkNick, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
+    const { checkPw, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
     // 회원가입
-    const {joinMember} = useUserAuth(userId, pw, phone, nick, email, birth, address, address, addrSub);
+    const {joinMember} = useUserAuth(userId, pw, phone, nick, email, birth, address, addrSub, zoneCode);
     // 추가정보작성 아코디언 이벤트
     const [detail, setDetail] = React.useState(1);
     const detailOpen = (value) => setDetail(detail === value ? 0 : value);
@@ -68,7 +69,8 @@ const SignIn = () => {
                                     {/* ID */}
                                     <label htmlFor="userId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</label>
                                     {/*<input name="userId" value={userId} onChange={(e) => setUserId(e.target.value)} onBlur={checkId} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />*/}
-                                    <input name="userId" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} onBlur={() => checkId(userId)} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
+                                    {/*<input name="userId" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} onBlur={() => checkId(userId)} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />*/}
+                                    <input name="userId" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
                                 </div>
                                 <div>
                                     <label htmlFor="pw" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
@@ -98,7 +100,8 @@ const SignIn = () => {
                                 <div>
                                     <Typography as="label" htmlFor="nickname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임</Typography>
                                     {/* nick */}
-                                    <input name="nickname" value={nick} onChange={(e) => setNick(e.target.value)} onBlur={checkNick} type="text" id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
+                                    {/*<input name="nickname" value={nick} onChange={(e) => setNick(e.target.value)} onBlur={checkNick} type="text"id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>*/}
+                                    <input name="nickname" value={nick} onChange={(e) => setNick(e.target.value)} type="text"id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
                                 </div>
                                 <div>
                                     <Accordion open={detail === 1}>

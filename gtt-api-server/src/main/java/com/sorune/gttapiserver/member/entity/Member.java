@@ -23,25 +23,31 @@ public class Member extends BaseEntity {
     private Long num;        // 맴버 번호 자동생성 nn
 
     @Column(nullable = false)
-    private String pw;       // 맴버 비번 자동생성 nn
+    private String pw;       // 맴버 비번 nn
 
     @Column(nullable = false)
-    private String nick;     // 맴버 별명 자동생성 nn
+    private String nick;     // 맴버 별명 nn
 
     @Column(nullable = false)
-    private String userId;       // 맴버 아이디 자동생성 nn
+    private String userId;       // 맴버 아이디 nn
 
     @Column(nullable = false)
-    private LocalDate birth;    // 맴버 생일 자동생성 nn
+    private String email;       // 맴버 이메일 nn
 
     @Column(nullable = false)
-    private String zoneCode;   // 맴버 우편 자동생성 nn
+    private String phone;       // 맴버 휴대폰 nn
 
     @Column(nullable = false)
-    private String address;     // 맴버 주소 자동생성 nn
+    private LocalDate birth;    // 맴버 생일 nn
 
     @Column(nullable = false)
-    private String addrSub;     // 맴버 나머지 주소 자동생성 nn
+    private String zoneCode;   // 맴버 우편 nn
+
+    @Column(nullable = false)
+    private String address;     // 맴버 주소 nn
+
+    @Column(nullable = false)
+    private String addrSub;     // 맴버 나머지 주소 nn
 
     // 회원 닉네임 수정용
     public void editMemNick(String nick) {
@@ -50,6 +56,12 @@ public class Member extends BaseEntity {
 
     // 회원 아이디 수정용
     public void editMemId(String userId) {this.userId = userId;}
+
+    // 회원 휴대폰 수정용
+    public void editPhone(String phone) {this.phone = phone;}
+
+    // 회원 이메일 수정용
+    public void editEmail(String email) {this.email = email;}
 
     // 회원 비밀번호 수정용
     public void editMemPw(String pw) {
