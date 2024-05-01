@@ -21,9 +21,7 @@ public class Notice extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notiNo;
-
     private String title;
-
     private String content;
 
     private String writer;

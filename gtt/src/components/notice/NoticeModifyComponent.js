@@ -29,7 +29,7 @@ const NoticeModifyComponent = ({notiNo, page}) => {
     const [notice, setNotice] = useState({...intiState})
     const [result, setResult] = useState(null)
     const {moveToList, moveToRead} = useCustomMove()
-
+    const [regDate, setRegDate] = useState("")
     const [serverData, setServerData] = useState(initState)
 
     useEffect(() => {
@@ -39,8 +39,12 @@ const NoticeModifyComponent = ({notiNo, page}) => {
     }, [notiNo])
 
     const handleClickModify = () => { // 수정버튼 클릭시
+        const modifiedNotice = { ...notice };
+        delete modifiedNotice.regDate;
+        delete modifiedNotice.modDate;
+        delete modifiedNotice.writer;
 
-        putOne(notice).then(data => {
+        putOne(modifiedNotice).then(data => {
             console.log("modify result : " + data)
             setResult("SUCCESS")
         }).catch(error => {
@@ -49,7 +53,7 @@ const NoticeModifyComponent = ({notiNo, page}) => {
         })
     }
     const handleClickDelete = () => {
-        console.log(notiNo)
+        console.log(notiNo + "번 게시물 삭제 ")
         deleteOne(notiNo).then(data => {
             console.log("delete result : " + data)
             setResult("DELETE SUCCESS")
@@ -80,7 +84,7 @@ const NoticeModifyComponent = ({notiNo, page}) => {
 
     return(
         <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-            {result ? <ResultModal title={'처리결과'} content={result} callbackFn={closeModal} ></ResultModal> : <></>}
+          {/*  {result ? <ResultModal title={'처리결과'} content={result} callbackFn={closeModal} ></ResultModal> : <></>}*/}
             <div className="flex justify-center mt-10">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">NotiNo</div>

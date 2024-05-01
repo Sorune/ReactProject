@@ -16,6 +16,7 @@ const About = lazy(()=>import("../pages/AboutPage.js"));
 const Login = lazy(() => import("../pages/loginAuth/Login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const Member = lazy(() => import("../pages/member/Member.js"));
+const Team = lazy(()=>import("../pages/teams/TeamPage"))
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
 const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
 const PlayerIndex = lazy(() => import("../pages/player/PlayerIndexPage"));
@@ -40,7 +41,11 @@ const root = createBrowserRouter([
         element:<Suspense fallback={Loading}><GridTest/></Suspense>,
         errorElement:NotFound,
     },
-
+    {
+      path:"team",
+      element:<Suspense fallback={Loading}><Team />></Suspense>,
+        errorElement:NotFound,
+    },
     {
         path:"",
         element:<Suspense fallback={Loading}><Main/></Suspense>,

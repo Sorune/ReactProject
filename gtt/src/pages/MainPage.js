@@ -6,6 +6,7 @@ import useCustomMove from "../hooks/useCustomMove";
 import {useRecoilState} from "recoil";
 import {pageState} from "../atoms/pageState";
 import CardListComponent from "../components/common/CardListComponent";
+import SidebarLayout from "../layouts/SidebarLayout";
 
 const initState = {
     dtoList:[],
@@ -44,32 +45,34 @@ export const TestimonialCard =({img,client,clientInfo,}) =>{
 
 const MainPage= () =>{
     return (
-        <BasicLayout>
-            <section className="px-8 py-10 lg:py-28 h-full bg-sky-500">
-                <div className="container mx-auto">
-                    <Typography
-                        variant="h2"
-                        color="blue-gray"
-                        className="mb-4 !text-2xl lg:!text-4xl"
-                    >
-                        The heartfelt testimonials of our community
-                    </Typography>
-                    <Typography
-                        variant="lead"
-                        className="max-w-3xl !text-gray-500 mb-10 lg:mb-20"
-                    >
-                        From life-enhancing gadgets to unparalleled customer support, and
-                        transformative learning opportunities.
-                    </Typography>
-                    <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
-                        <TestimonialCard/>
-                        <TestimonialCard/>
-                        <TestimonialCard/>
-                        <TestimonialCard/>
+
+            <SidebarLayout>
+                <section className="px-8 py-10 lg:py-28 h-full bg-sky-500">
+                    <div className="container mx-auto">
+                        <Typography
+                            variant="h2"
+                            color="blue-gray"
+                            className="mb-4 !text-2xl lg:!text-4xl"
+                        >
+                            The heartfelt testimonials of our community
+                        </Typography>
+                        <Typography
+                            variant="lead"
+                            className="max-w-3xl !text-gray-500 mb-10 lg:mb-20"
+                        >
+                            From life-enhancing gadgets to unparalleled customer support, and
+                            transformative learning opportunities.
+                        </Typography>
+                        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+                            <TestimonialCard/>
+                            <TestimonialCard/>
+                            <TestimonialCard/>
+                            <TestimonialCard/>
+                        </div>
                     </div>
-                </div>
-            </section>
-        </BasicLayout>
+                </section>
+            </SidebarLayout>
+
     );
 }
 

@@ -1,4 +1,3 @@
-
 package com.sorune.gttapiserver.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,10 +34,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final DataSource dataSource;
-
-    /*private final UserDetailsService userDetailsService;
-*/
-
     private final UserDetailsService userDetailsService;
 
 
@@ -48,8 +43,8 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionConfig->
-                        sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                /*.sessionManagement(sessionConfig->
+                        sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))*/
                 .formLogin(config-> {
                             config.loginPage("/api/member/login")
                                     .successHandler(new APILoginSuccessHandler())
