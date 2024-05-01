@@ -48,5 +48,17 @@ public class NoticeServiceTests {
         log.info(responseDTO);
 
     }
+    
+    @Test 
+    public void testModify(){
+
+        NoticeDTO noticeDTO = NoticeDTO.builder()
+                .notiNo(104L)
+                .title("수정")
+                .content("수정내용")
+                .writer("수정유저")
+                .build();
+        noticeService.modify(noticeDTO);
+    } 
 
 }
