@@ -3,6 +3,8 @@ import {useCallback} from "react";
 import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
 import ContentHeader from "../../components/common/ContentHeader";
 import {Card, CardHeader} from "@material-tailwind/react";
+import CommentInputCell from "../../components/common/CommentInputCell";
+import {CommentCell} from "../../components/common/CommentCell";
 
     const ReadPage =() =>{
         const {notiNo} =useParams() // notiNo을 담고있음
@@ -13,12 +15,15 @@ import {Card, CardHeader} from "@material-tailwind/react";
 
 
         return(
-
             <div className=" w-full bg-white mt-6">
                 <NoticeReadComponent notiNo={notiNo} page={page} size={size}></NoticeReadComponent>
+                <div className="p-0 m-2 mt-10">
+                    <CommentInputCell/>
+                </div>
+                <div className="p-0 m-2 mt-10">
+                    <CommentCell/>
+                </div>
              </div>
-
-
 
         );
 }

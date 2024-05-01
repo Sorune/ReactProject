@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Button} from "@material-tailwind/react";
+import {Button, Card, CardBody, CardFooter, CardHeader, Input, Textarea, Typography} from "@material-tailwind/react";
 import {deleteOne, getOne, putOne} from "../../api/noticeApi";
-import ResultModal from "../common/ResultModal";
+
 import useCustomMove from "../../hooks/useCustomMove";
+import {DialogResult} from "../common/DialogResult";
+import {DropDownInput} from "../common/DropDownInput";
+import QuilEditor from "../common/quill/QuilEditor";
+import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
+import ContentHeader from "../common/ContentHeader";
 
 const intiState = {
     notiNo: 0,
@@ -38,6 +43,9 @@ const NoticeModifyComponent = ({notiNo, page}) => {
 
     }, [notiNo])
 
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(!open);
+
     const handleClickModify = () => { // 수정버튼 클릭시
         const modifiedNotice = { ...notice };
         delete modifiedNotice.regDate;
@@ -57,12 +65,17 @@ const NoticeModifyComponent = ({notiNo, page}) => {
         deleteOne(notiNo).then(data => {
             console.log("delete result : " + data)
             setResult("DELETE SUCCESS")
+
         }).catch(error => {
             console.log(error)
             setResult("FAIL")
         })
     }
-
+// 모달을 닫으면 원래 있던 리스트로 페이지 정보를 가지고 리턴
+    const closeDialog = () =>{
+        setResult(null)
+        moveToList({pathName:'/notice/list', pageParam:{page:page.page, size:page.size}})
+    }
 
 
     // 모달 창 닫은 후 동작
@@ -83,54 +96,61 @@ const NoticeModifyComponent = ({notiNo, page}) => {
     }
 
     return(
-        <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-          {/*  {result ? <ResultModal title={'처리결과'} content={result} callbackFn={closeModal} ></ResultModal> : <></>}*/}
-            <div className="flex justify-center mt-10">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">NotiNo</div>
-                    <div className="w-4/5 p-6 rounded-r border border-solid shadow-md bg-grey-100">
-                        {notice.notiNo}
+        <div className="m-2 p-4">
+            <ContentHeader pathName={"/notice/"} serverData={serverData} page={page} moveTo={moveToList} />
+            <Card className="p-2 m-2 min-h-[10rem]">
+                <CardHeader floated={false} shadow={false} className="rounded-none">
+                    <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+                        <div>
+                            <Typography variant="h5" color="blue-gray">
+                                Notice
+                            </Typography>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">WRITER</div>
-                    <div className="w-4/5 p-6 rounded-r border border-solid shadow-md bg-gray-100">
-                        {notice.writer}
+                </CardHeader>
+                <CardBody>
+                <form>
+                    <div className="grid grid-cols-auto gap-4 grid-rows-auto flex items-stretch flex items-center flex flex-box mt-2 mb-2 ml-2 ">
+                        <div className="col-start-1 col-end-3 p-1">
+                            <Input label="제목" name="title" onChange={handleChangeNotice} value={notice.title} />
+                        </div>
+                        <div className="col-start-3 p-1">
+                            <div className="w-full">
+                                <Input label="작성자" onChange={handleChangeNotice}  value={notice.writer} />
+                            </div>
+                        </div>
                     </div>
+                    <hr/>
+                    <div className="p-3">
+                        <Textarea label="내용" name="content" onChange={handleChangeNotice} value={notice.content}/>
+                    </div>
+                    <div className="p-3 justify-self-end flex justify-center">
 
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">TITLE</div>
-                    <input className="w-4/5 p-6 rounded-r border border-solid shadow-md bg-gray-100"
-                           name="title"
-                           type={'text'}
-                           value={notice.title}
-                           onChange={handleChangeNotice}
-                    >
-                    </input>
-                </div>
-            </div>
-
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">CONTENT</div>
-                    <textarea className="w-4/5 p-6 rounded-r border border-solid shadow-md bg-gray-100"
-                           name="content"
-                           value={notice.content}
-                           onChange={handleChangeNotice}
-                    >
-                    </textarea>
-                </div>
-            </div>
-
-            <div className="flex justify-end p-4">
-                <Button Button size="sm" color="red" className="rounded-md" onClick={handleClickDelete}>삭제</Button>
-                <Button Button size="sm" color="blue" className="rounded-md" onClick={handleClickModify}>수정</Button>
-            </div>
+                    </div>
+                </form>
+                </CardBody>
+                <CardFooter>
+                    <div className="flex justify-end p-4 space-x-4">
+                        <Button Button size="sm" color="red" className="rounded-md" onClick={handleClickDelete}>
+                            {result ?<DialogResult
+                                title={'공지사항'}
+                                content={`${result}`}
+                                callbackFn={closeDialog}
+                                open={result !== null}
+                                setOpen={setOpen}
+                            />: <></> }삭제
+                        </Button>
+                        <Button Button size="sm" color="blue" className="rounded-md" onClick={handleClickModify}>
+                            {result ?<DialogResult
+                                title={'공지사항'}
+                                content={`${result}`}
+                                callbackFn={closeDialog}
+                                open={result !== null}
+                                setOpen={setOpen}
+                            />: <></> }수정</Button>
+                    </div>
+                </CardFooter>
+            </Card>
         </div>
     )
 }

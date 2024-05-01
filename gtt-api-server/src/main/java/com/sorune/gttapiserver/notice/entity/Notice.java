@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -25,6 +26,9 @@ public class Notice extends BaseEntity {
     private String content;
 
     private String writer;
+
+    @ColumnDefault("0")
+    private Long hits;
 
     public void changeTitle(String title){this.title=title;}
     public void changeContent(String content){this.content=content;}
