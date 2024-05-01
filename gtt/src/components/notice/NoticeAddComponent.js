@@ -12,10 +12,10 @@ const initState = {
     content:'',
     regDate:''
 }
-const NoticeAddComponent = () =>{
-    const [queryparams] = useSearchParams()
+const NoticeAddComponent = ({page}) =>{
+ /*   const [queryparams] = useSearchParams()
     const page = queryparams.get("page") ? parseInt(queryparams.get("page")) : 1
-    const size = queryparams.get("size") ? parseInt(queryparams.get("size")) : 10
+    const size = queryparams.get("size") ? parseInt(queryparams.get("size")) : 10*/
 
     const [notice, setNotice] = useState(initState)
 
@@ -24,7 +24,7 @@ const NoticeAddComponent = () =>{
 
     const handleChangeNotice = (e)=> {
         notice[e.target.name] = e.target.value
-        setResult(result.notiNo)
+
         setNotice({...notice})
     }
 
@@ -34,24 +34,25 @@ const NoticeAddComponent = () =>{
             console.log(result)
             //초기화
             setNotice(initState)
+            setResult(result.notiNo)
         }).catch(e => {
             console.error(e)
         })
     }
-const {moveToList} = useCustomMove()
+    // 모달을 닫으면 원래 있던 리스트로 페이지 정보를 가지고 리턴
+    const {moveToList} = useCustomMove()
     const closeModal = () =>{
         setResult(null)
-        //moveToList({'list' {page:page,size:size}})
+        moveToList({pathName:'/notice/list', pageParam:{page:page.page, size:page.size}})
     }
 
     return(
+
         <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-
-            {/*모달 처리*/}
-            {result ? <ResultModal title={'공지사항'} content={`새로운 게시물${result} 번 게시물이 추가되었습니다.`}
-                callbackFn={closeModal}/>: <></> }
-
             <div className="flex justify-center">
+                {/*모달*/}
+                {result ? <ResultModal title={'공지사항'} content={`새로운 게시물${result} 번 게시물이 추가되었습니다.`}
+                                       callbackFn={closeModal}/>: <></> }
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">TITLE</div>
                     <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
@@ -92,6 +93,7 @@ const {moveToList} = useCustomMove()
                     <Button onClick={handleClickAdd}>ADD</Button>
                 </div>
             </div>
+
 
 
         </div>

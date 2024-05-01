@@ -79,7 +79,7 @@ public class MemberCotroller {
         log.info("Login attempt for ID: {}", memberDTO.getUserId());
         // Removed logging of password for security reasons
 
-        boolean loginSuccess = memberService.isLogin(memberDTO.getUserId(), memberDTO.getPw());
+        boolean loginSuccess = memberService.isLogin(memberDTO.getUserId(), memberDTO.getPassword());
 
         if (loginSuccess) {
             return ResponseEntity.ok(Map.of("result", "SUCCESS", "message", "Login successful"));

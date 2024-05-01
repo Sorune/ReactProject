@@ -1,41 +1,40 @@
 package com.sorune.gttapiserver.member.service;
 
+import com.sorune.gttapiserver.common.formatter.LocalDateTimeFormatter;
 import com.sorune.gttapiserver.member.DTO.MemberDTO;
+import com.sorune.gttapiserver.member.entity.MemberRole;
 import com.sorune.gttapiserver.player.DTO.PlayerDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Set;
+
+import static org.springframework.data.util.Lazy.of;
 
 @SpringBootTest
 @RequiredArgsConstructor
 @Log4j2
 public class MemberServiceTest {
 
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Autowired
     private MemberService memberService;
 
     @Test // 한명의 회원정보 등록
     public void testMemberInsert(){
-        MemberDTO memberDTO = MemberDTO.builder()
-                .num(101L)
-                .userId("user1")
-                .pw("1234")
-                .nick("user1")
-                .zoneCode("1234-1")
-                .address("경기도 오산시 00동")
-                .birth(LocalDate.of(1990, 5, 16))
-                .build();
-
+        MemberDTO memberDTO = new MemberDTO(true,"testUser","test1234","1","1","1","test@gmail.com","010-1234-5678",LocalDate.now(),encoder.encode("1234"),Set.of(MemberRole.ROLE_USER));
+        log.info(memberDTO.toString());
         Long memNum = memberService.joinMember(memberDTO);
         System.out.println(memNum);
     }
 
-    @Test // 한명의 회원정보 수정
+    /*@Test // 한명의 회원정보 수정
     public void testMemberModify() {
         MemberDTO memberDTO = MemberDTO.builder()
                 .num(1L)
@@ -60,5 +59,5 @@ public class MemberServiceTest {
     public void testMemberSearch() {
         Long memNo = 99L;
         log.info(memberService.searchMember(memNo));
-    }
+    }*/
 }

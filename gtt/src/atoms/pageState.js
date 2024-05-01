@@ -16,6 +16,11 @@ export const signinState = atom({
     default: initSignInState
 })
 
+export const accessTokenState = atom({
+    key:'accessTokenState',
+    default:"",
+})
+
 export const pageState = atom({
     key:'pageState',
     default:initPageState

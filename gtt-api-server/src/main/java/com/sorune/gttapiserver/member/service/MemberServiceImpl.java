@@ -37,6 +37,7 @@ public class MemberServiceImpl implements MemberService {
     public Long joinMember(MemberDTO memberDTO) {
 
         Member member = modelMapper.map(memberDTO, Member.class);
+        log.info(member);
         // 회원 정보를 데이터베이스에 저장함.
         memberRepository.save(member);
         // 저장된 회원의 고유 번호를 반환.
@@ -50,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
         // 회원 아이디 수정
         member.editMemId(memberDTO.getUserId());
         // 회원 비밀번호 수정
-        member.editMemPw(memberDTO.getPw());
+        member.editMemPw(memberDTO.getPassword());
         // 회원 닉네임 수정
         member.editMemNick(memberDTO.getNick());
         // 회원 우편번호 수정
@@ -119,7 +120,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean isLogin(String id, String pw) {
-        Member members = memberRepository.findByUserIdAndPw(id, pw);
+        Member members = memberRepository.findByUserIdAndPassword(id, pw);
         return members == null;
     }
 }

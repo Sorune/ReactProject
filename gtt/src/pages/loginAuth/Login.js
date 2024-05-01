@@ -21,7 +21,7 @@ const Login = () => {
     // 회원가입 페이지로 이동하는 메서드
     const moveToLink = (e) => {
         // 클릭한 요소에서 'data-value' 속성 값을 가져와서 목적지 변수에 저장
-        const destination = e.target.dataset.value;
+        /*const destination = e.target.dataset.value;
         // 목적지 값에 따라 다르게 처리 "login"이면 로그인 페이지로 이동하고
         switch (destination) {
             case "/" :          // 홈메인으로 이동
@@ -30,7 +30,7 @@ const Login = () => {
             case "signIn" :     // 회원가입으로 이동
                 navigate("/signIn");
                 break;
-        }
+        }*/
     };
 
     return (

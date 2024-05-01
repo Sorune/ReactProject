@@ -1,5 +1,10 @@
 package com.sorune.gttapiserver.security.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sorune.gttapiserver.security.filter.JWTCheckFilter;
+import com.sorune.gttapiserver.security.handler.APILoginFailHandler;
+import com.sorune.gttapiserver.security.handler.APILoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -30,22 +36,28 @@ public class SecurityConfig {
     private final DataSource dataSource;
     private final UserDetailsService userDetailsService;
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionConfig->
-                        sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                /*.sessionManagement(sessionConfig->
+                        sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))*/
                 .formLogin(config-> {
-                            config.loginPage("/api/member/login");
+                            config.loginPage("/api/member/login")
+                                    .successHandler(new APILoginSuccessHandler())
+                                    .failureHandler(new APILoginFailHandler());
                         })
+                .addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class)
                 /*.rememberMe(httpSecurityRememberMeConfigurer ->
                         httpSecurityRememberMeConfigurer
                                 .tokenRepository(persistentTokenRepository())
                                 .userDetailsService(userDetailsService)
-                                .tokenValiditySeconds(60*60*24*30)
+                                .tokenValiditySec
+                                ...
+                                0onds(60*60*24*30)
                 )*/
                 .logout(httpSecurityLogoutConfigurer ->
                         httpSecurityLogoutConfigurer.logoutUrl("/api/member/logout"))
@@ -53,7 +65,7 @@ public class SecurityConfig {
                     authorizeHttpRequests
                             .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                             .requestMatchers("/api/news/**","/api/comment/**","/api/player/**","/api/notice/**").permitAll()
-                            .requestMatchers("/api/chat/**","/chat/**").permitAll()// "/api/chat/**" 패턴을 허용
+                            .requestMatchers("/api/chat/**","/chat/**","/pub/**","/sub/**").permitAll()// "/api/chat/**" 패턴을 허용
                             .anyRequest().authenticated()
                     );
 
@@ -90,3 +102,4 @@ public class SecurityConfig {
         return tokenRepository;
     }
 }
+

@@ -2,6 +2,9 @@ import {useEffect, useState} from "react";
 import {getOne} from "../../api/noticeApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import {Button} from "@material-tailwind/react";
+import {createSearchParams, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
+
+
 
 const initStaste = {
     notiNo:0,
@@ -12,11 +15,22 @@ const initStaste = {
     modDate:'null'
 }
 
-const NoticeReadComponent = ({notiNo, page}) => {
+const NoticeReadComponent = ({notiNo, page, size}) => {
 
     const [notice, setNotice] = useState(initStaste)
+    //const queryStr = createSearchParams({page, size}).toString()
+    //console.log(queryStr)
+    //console.log(page, size)
     // 이동 관련 기능은 모두 useCustomMove() 사용
     const {moveToList, moveToModify} =useCustomMove()
+
+/*
+    const navigate = useNavigate()
+    const [queryParams] = useSearchParams()
+    const page = queryParams.get("page") ? parseInt(queryParams.get("page")) : 1
+    const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
+    const queryStr = createSearchParams({page, size}).toString()
+*/
 
     useEffect(()=>{
         getOne(notiNo).then(data => {
@@ -36,12 +50,13 @@ const NoticeReadComponent = ({notiNo, page}) => {
 
             <div className="flex justify-end p-4">
                 <Button onClick={()=> moveToList({
-                        pathName:'notice/list',
-                        pageParam:{page: `${page.page}`, size: `${page.size}`}
+                        pathName:'/notice/list',
+                        pageParam:{page:page, size:size}
                     })}>List</Button>
 
                 <Button onClick={() => moveToModify({
-                    pathName:'modify', num:notiNo
+                    pathName:'/notice/modify',
+                    num:notiNo
                 })}>Modify</Button>
             </div>
 

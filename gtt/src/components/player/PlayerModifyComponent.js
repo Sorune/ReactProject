@@ -1,10 +1,7 @@
-import {useCallback, useEffect, useState} from "react";
-import {getOnePlayer, putOnePlayer, deleteOnePlayer} from "../../api/playerApi";
-import FetchingModal from "../common/FetchingModal";
-import {API_SERVER_HOST} from "../../api/filesApi";
-import useCustomMove from "../../hooks/useCustomMove";
-import ResultModal from "../common/ResultModal";
+import React, {useCallback, useEffect, useState} from "react";
+import {getOnePlayer} from "../../api/playerApi";
 import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
+import PlayerButtons from "./list/PlayerButtons";
 
 const initState = {
     pno:0,
@@ -16,12 +13,8 @@ const initState = {
     birthDate : null
 }
 
-const host = API_SERVER_HOST
-
 const PlayerModifyComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
-    const [fetching, setFetching] = useState(false)
-    const [result, setResult] = useState(null)
 
     const navigate = useNavigate()
     const [queryParams] = useSearchParams()
@@ -29,19 +22,14 @@ const PlayerModifyComponent = ({pno}) => {
     const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
     const queryStr = createSearchParams({page, size}).toString()
 
-    const moveToRead = useCallback(() => {
-        navigate({pathname:`/player/read/${pno}`, search:queryStr})
-    },[page, size])
     const moveToList = useCallback(() => {
         navigate({pathname:'/player/list', search:queryStr})
     },[page, size])
 
     useEffect(() => {
-        setFetching(true)
 
         getOnePlayer(pno).then(data => {
             setPlayer(data)
-            setFetching(false)
         })
     }, [pno])
 
@@ -50,49 +38,9 @@ const PlayerModifyComponent = ({pno}) => {
         setPlayer({...player})
     }
 
-    const handleClickModify = () => {
-        const formData = new FormData()
-
-        formData.append("nickName", player.nickName)
-        formData.append("realName", player.realName)
-        formData.append("age", player.age)
-        formData.append("teamName", player.teamName)
-        formData.append("position", player.position)
-        formData.append("birthDate", player.birthDate)
-
-        setFetching(true)
-
-        putOnePlayer(pno, formData).then(data => {
-            setResult('Modified')
-            setFetching(false)
-        })
-    }
-
-    const handleClickDelete = () => {
-        setFetching(true)
-
-        deleteOnePlayer(pno).then(data => {
-            setResult("Deleted")
-            setFetching(false)
-        })
-    }
-
-    const closeModal = () => {
-        if (result === 'Modified') {
-            moveToRead(pno)
-        } else if (result === 'Deleted') {
-            moveToList()
-        }
-
-        setResult(null)
-    }
 
     return (
         <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-            {fetching ? <FetchingModal/> : <></>}
-
-            {result ? <ResultModal title={`${result}`} content={'정상적으로 처리되었습니다.'} callbackFn={closeModal()}/> : <></> }
-
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">PNO</div>
@@ -151,9 +99,7 @@ const PlayerModifyComponent = ({pno}) => {
             </div>
 
             <div className="flex justify-end p-4">
-                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-red-500" onClick={handleClickDelete}>Delete</button>
-                <button type="button" className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-orange-500" onClick={handleClickModify}>Modify</button>
-                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500" onClick={moveToList}>List</button>
+                <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={pno} player={player}/>
             </div>
         </div>
     )
