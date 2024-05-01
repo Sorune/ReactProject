@@ -7,8 +7,8 @@ const prefix = `${API_SERVER_HOST}/api/member`;
 export const login = async (userId, password) => {
     const url = `${prefix}/login`;
     let formData = new FormData();
-    formData.append("username",userId);
-    formData.append("password",pw);
+    formData.append("username", userId);
+    formData.append("password", password);
     try {
         const response = await axios.post(url, formData);
         console.log(response)
@@ -43,24 +43,24 @@ export const validateNick = async (nick) => {
 // 회원가입
 export const join = async (userId, password, nick, birth, zoneCode, address, addrSub, phone, email) => {
     const url = `${prefix}/`;
-    const memberData = {
-        userId, // 백엔드에서 기대하는 키 이름과 같은지 확인 필요
-        password,
-        nick,
-        birth,
-        zoneCode,
-        address,
-        addrSub,
-        phone,
-        email
-    };
+    let formData = new FormData();
+    formData.append("username", userId);
+    formData.append("password", password);
+    formData.append("nick", nick);
+    formData.append("birth", birth);
+    formData.append("zoneCode", zoneCode);
+    formData.append("address", address);
+    formData.append("addrSub", addrSub);
+    formData.append("phone", phone);
+    formData.append("email", email);
 
     try {
-        const response = await axios.post(url, memberData, {
+        const response = await axios.post(url, formData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
+        console.log(response);
         return response.data;
     } catch (error) {
         throw error;

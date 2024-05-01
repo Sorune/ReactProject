@@ -29,7 +29,7 @@ const SignIn = () => {
     // 회원가입
     const {joinMember} = useUserAuth(userId, password, phone, nick, email, birth, address, addrSub, zoneCode);
     // 추가정보작성 아코디언 이벤트
-    const [detail, setDetail] = React.useState(1);
+    const [detail, setDetail] = React.useState(0);
     const detailOpen = (value) => setDetail(detail === value ? 0 : value);
     // 머트리얼 모달 동작 메서드
     const modalHandleOpen = () => modalSetOpen(true);
