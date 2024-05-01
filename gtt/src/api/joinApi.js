@@ -6,8 +6,12 @@ const prefix = `${API_SERVER_HOST}/api/member`;
 // 로그인
 export const login = async (userId, password) => {
     const url = `${prefix}/login`;
+    let formData = new FormData();
+    formData.append("username",userId);
+    formData.append("password",pw);
     try {
-        const response = await axios.post(url, {"userId": userId, "password": password});
+        const response = await axios.post(url, formData);
+        console.log(response)
         return response.data;
     } catch (error) {
         throw error; 
