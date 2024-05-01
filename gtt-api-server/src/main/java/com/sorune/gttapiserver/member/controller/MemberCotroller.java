@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,7 +21,7 @@ import java.util.Map;
 public class MemberCotroller {
 
     private final MemberService memberService;
-
+    private final PasswordEncoder passwordEncoder;
     private final CustomFileUtil fileUtil;
 
     // 회원 전체 리스트
@@ -40,15 +39,15 @@ public class MemberCotroller {
     }
 
     // 회원 가입 ㅇ
-    @PostMapping("/")
+    @PostMapping("/register")
     public Map<String, Long> join(@RequestBody MemberDTO memberDTO) {
-
+        log.info(memberDTO);
 //        List<MultipartFile> files = memberDTO.getFiles();
 //        List<String> uploadFileNames = fileUtil.saveFiles(files);
 //        memberDTO.setFileDTOList(uploadFileNames);
 
         log.info("member : " + memberDTO);
-
+        memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
         Long num = memberService.joinMember(memberDTO);
 
         return Map.of("memBno", num);

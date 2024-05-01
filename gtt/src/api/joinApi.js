@@ -41,24 +41,20 @@ export const validateNick = async (nick) => {
 };
 
 // 회원가입
-export const join = async (userId, password, nick, birth, zoneCode, address, addrSub, phone, email) => {
-    const url = `${prefix}/`;
-    let formData = new FormData();
-    formData.append("username", userId);
-    formData.append("password", password);
-    formData.append("nick", nick);
-    formData.append("birth", birth);
-    formData.append("zoneCode", zoneCode);
-    formData.append("address", address);
-    formData.append("addrSub", addrSub);
-    formData.append("phone", phone);
-    formData.append("email", email);
-
+export const join = async ({userId:userId, password:password, phone:phone, nick:nick, email:email, birth:birth, address:address, addrSub:addrSub, zoneCode:zoneCode}) => {
+    const url = `${prefix}/register`;
+    console.log({userId:userId, password:password, phone:phone, nick:nick, email:email, birth:birth, address:address, addrSub:addrSub, zoneCode:zoneCode})
     try {
-        const response = await axios.post(url, formData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        const response = await axios.post(url,{
+            userId:userId,
+            password:password,
+            phone:phone,
+            nick:nick,
+            email:email,
+            birth:birth,
+            zoneCode:zoneCode,
+            address:address,
+            addrSub:addrSub,
         });
         console.log(response);
         return response.data;

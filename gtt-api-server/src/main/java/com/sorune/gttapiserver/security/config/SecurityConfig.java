@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -49,6 +50,7 @@ public class SecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                                 .requestMatchers("/api/comment/**","/api/player/**","/api/notice/**", "/api/member/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/member/register").permitAll()
                                 .requestMatchers( "api/news/**","/api/chat/**","/chat/**","/pub/**","/sub/**").permitAll()// "/api/chat/**" 패턴을 허용
                                 .anyRequest().authenticated()
                 )

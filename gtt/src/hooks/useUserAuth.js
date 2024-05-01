@@ -48,6 +48,7 @@ const useUserAuth = () => {
 
     // 비밀번호 일치 확인
     const checkPw = (password, confirmPw) => {
+        console.log(password,confirmPw)
         if (password !== confirmPw) {
             // 비밀번호 불일치
             alert("비밀번호가 일치하지 않습니다.");
@@ -99,8 +100,9 @@ const useUserAuth = () => {
     };
 
     // 회원가입
-    const joinMember = (e, userId, password, phone, nick, email, birth, address, addrSub, zoneCode) => {
+    const joinMember = (e,userId, password, phone, nick, email, birth, address, addrSub, zoneCode) => {
         // 기본 이벤트 중단
+        console.log(e)
         e.preventDefault();
 
         // 전화번호 검증 (주석 처리된 코드 사용을 원할 경우 주석 해제)
@@ -111,6 +113,7 @@ const useUserAuth = () => {
 
         join(userId, password, nick, birth, zoneCode, address, addrSub, phone, email) // 회원가입 API 호출
             .then(result => {
+                console.log(result)
                 if (result.success) {
                     // 성공 메시지
                     console.log(result);
