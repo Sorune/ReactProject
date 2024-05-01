@@ -13,7 +13,7 @@ const SignIn = () => {
     // 1. 이페이지에서만 값을 가지고 있을 것이므로 여기에 state작성
     //      변수         메서드
     const [userId, setUserId] = useState('');       // id
-    const [pw, setPw] = useState('');               // pw
+    const [password, setPw] = useState('');               // pw
     const [confirmPw, setConfirmPw] = useState(''); // confirmPw
     const [nick, setNick] = useState('');           // nick
     const [phone, setPhone] = useState('');         // phone
@@ -27,9 +27,9 @@ const SignIn = () => {
     // const { checkId, checkPw, checkNick, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
     const { checkPw, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
     // 회원가입
-    const {joinMember} = useUserAuth(userId, pw, phone, nick, email, birth, address, addrSub, zoneCode);
+    const {joinMember} = useUserAuth(userId, password, phone, nick, email, birth, address, addrSub, zoneCode);
     // 추가정보작성 아코디언 이벤트
-    const [detail, setDetail] = React.useState(1);
+    const [detail, setDetail] = React.useState(0);
     const detailOpen = (value) => setDetail(detail === value ? 0 : value);
     // 머트리얼 모달 동작 메서드
     const modalHandleOpen = () => modalSetOpen(true);
@@ -73,10 +73,10 @@ const SignIn = () => {
                                     <input name="userId" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
                                 </div>
                                 <div>
-                                    <label htmlFor="pw" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
+                                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
                                     <input
-                                        name="pw"
-                                        value={pw}
+                                        name="password"
+                                        value={password}
                                         onChange={(e) => setPw(e.target.value)}
                                         type="password"
                                         id="password"
