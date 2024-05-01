@@ -3,13 +3,14 @@ import {postAdd} from "../../api/playerApi"
 import FetchingModal from "../common/FetchingModal"
 import ResultModal from "../common/ResultModal"
 import useCustomMove from "../../hooks/useCustomMove";
-import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
+import {createSearchParams, useSearchParams} from "react-router-dom";
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import ContentHeader from "../common/ContentHeader";
 import { startTransition } from 'react';
 import PlayerButtons from "./list/PlayerButtons";
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const initState = {
     age : 0,
@@ -28,7 +29,7 @@ const PlayerAddComponent = () => {
     const page = useRecoilValue(pageState)
     const {moveToList, moveToRead} = useCustomMove();
 
-    const navigate = useNavigate()
+
     const [queryParams] = useSearchParams()
     const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
     const queryStr = createSearchParams({page, size}).toString()
@@ -92,6 +93,7 @@ const PlayerAddComponent = () => {
                     <div className="w-1/5 p-6 text-right font-bold">BirthDate</div>
                     <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
                            name="birthDate" type={'date'} value={player.birthDate} onChange={handleChangePlayer}></input>
+                    {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>*/}
                 </div>
             </div>
             <div className="flex justify-end">

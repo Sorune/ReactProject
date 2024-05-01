@@ -1,4 +1,4 @@
-/*
+
 package com.sorune.gttapiserver.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,14 +35,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final DataSource dataSource;
-<<<<<<< HEAD
+
     /*private final UserDetailsService userDetailsService;
 */
-=======
+
     private final UserDetailsService userDetailsService;
 
 
->>>>>>> fb3db1c9247b2b394cdab3556e4c364f6329d12c
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -108,4 +107,4 @@ public class SecurityConfig {
         return tokenRepository;
     }
 }
-*/
+
