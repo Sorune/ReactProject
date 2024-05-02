@@ -8,11 +8,11 @@ const Login = () => {
     const [memberId, setMemberId] = useState(''); // id
     const [memberPw, setMemberPw] = useState(''); // pw
     // 2. useUserAuth 에서 리턴한 메서드
-    const { checkIdAndPw } = useUserAuth(); // 로그인 훅
+    const { confirmLogin } = useUserAuth(); // 로그인 훅
 
     const handleLogin = (e) => { // 폼제출 이벤트
         e.preventDefault();
-        checkIdAndPw({userId:memberId, password:memberPw}); // 로그인 훅 실행
+        confirmLogin({userId:memberId, password:memberPw}); // 로그인 훅 실행
     };
 
     return (

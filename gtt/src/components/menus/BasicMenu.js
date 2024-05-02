@@ -16,13 +16,14 @@ import {useRecoilState, useResetRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {userState} from "../../atoms/userState";
 import {Cog8ToothIcon, UserCircleIcon} from "@heroicons/react/16/solid";
+import useUserAuth from "../../hooks/useUserAuth";
 
 const BasicMenu = () =>{
     const [openNav, setOpenNav] = React.useState(false);
     const userInfo = useRecoilState(userState)
-    const userLogout = useResetRecoilState(userState)
     const pageReset = useResetRecoilState(pageState)
     const navigate = useNavigate();
+    const {logout} = useUserAuth()
     // 로그인 페이지로 이동하는 메서드
     const moveToLogin = () => {
         navigate("/login");
@@ -33,8 +34,7 @@ const BasicMenu = () =>{
     }
     const moveToLogout = ()=>{
         if(window.confirm("로그아웃 하시겠습니까?")){
-            userLogout()
-            navigate("/")
+            logout()
         }
     }
     React.useEffect(() => {

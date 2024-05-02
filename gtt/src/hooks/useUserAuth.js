@@ -1,18 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { login, validateID, validateNick, join } from "../api/joinApi";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
 import {userState} from "../atoms/userState";
 import {tokenState} from "../atoms/tokenState";
-import {setCookie} from "../utill/cookieUtill";
+import {removeCookie, setCookie} from "../utill/cookieUtill";
 
 const useUserAuth = () => {
     // 페이지 네비게이션
     const navigate = useNavigate();
     const [userInfo,setUserInfo] = useRecoilState(userState);
+    const removeUserInfo = useResetRecoilState(userState);
     const [tokenInfo,setTokenInfo] = useRecoilState(tokenState);
+    const removeTokenInfo = useResetRecoilState(tokenState)
 
     // 로그인
-    const checkIdAndPw = ({userId, password}) => {
+    const confirmLogin = ({userId, password}) => {
         const res = login(userId, password);
         console.log(res);
         res.then(result => {
@@ -33,6 +35,7 @@ const useUserAuth = () => {
                     roles:result.roles,
                 }]);
                 setCookie("user",userInfo,1);
+                setCookie("token",tokenInfo)
                 alert("로그인 되었습니다.");
                 navigate("/");
             } else {
@@ -154,8 +157,15 @@ const useUserAuth = () => {
             });
     };
 
+    const logout = ()=>{
+        removeUserInfo()
+        removeTokenInfo()
+        removeCookie("user","/")
+        removeCookie("token","/")
+    }
+
     // 모든 리턴
-    return { checkIdAndPw, checkPw, joinMember, formatPhoneNumber, validatePhoneNumber };
+    return { confirmLogin, checkPw, joinMember, formatPhoneNumber, validatePhoneNumber, logout };
 };
 
 export default useUserAuth;
