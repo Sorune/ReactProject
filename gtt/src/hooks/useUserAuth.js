@@ -35,7 +35,7 @@ const useUserAuth = () => {
                     roles:result.roles,
                 }]);
                 setCookie("user",userInfo,1);
-                setCookie("token",tokenInfo)
+                setCookie("token",tokenInfo,1);
                 alert("로그인 되었습니다.");
                 navigate("/");
             } else {

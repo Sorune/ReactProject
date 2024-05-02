@@ -26,6 +26,7 @@ const GridTest = lazy(()=>import("../test/pages/GridTest"))
 const NotFound = lazy(()=>import("../pages/error/404NotFound"))
 const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
 const NoticeIndex = lazy(()=> import("../pages/notice/NoticeIndexPage"))
+const MyPage = lazy(() => import("../pages/loginAuth/MyPage"))
 const root = createBrowserRouter([
     {
         path:"spin",
@@ -121,6 +122,10 @@ const root = createBrowserRouter([
         children: noticeRouter(),
         element:<Suspense fallback={Loading}><NoticeIndex/></Suspense>,
         errorElement:NotFound,
+    },
+    {
+        path:"myPage",
+        element:<Suspense fallback={Loading}><MyPage/></Suspense>
     }
 ])
 
