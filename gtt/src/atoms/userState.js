@@ -16,9 +16,7 @@ const initUserState = {
 }
 
 const loadUserCookie = ()=>{
-    const userInfo = getCookie("user")
-
-    return userInfo
+    return getCookie("user")
 }
 
 export const userState = atom({

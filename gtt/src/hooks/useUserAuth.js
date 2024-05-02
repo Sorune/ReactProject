@@ -3,7 +3,7 @@ import { login, validateID, validateNick, join } from "../api/joinApi";
 import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
 import {userState} from "../atoms/userState";
 import {tokenState} from "../atoms/tokenState";
-import {removeCookie, setCookie} from "../utill/cookieUtill";
+import {getCookie, removeCookie, setCookie} from "../utill/cookieUtill";
 
 const useUserAuth = () => {
     // 페이지 네비게이션
@@ -34,8 +34,20 @@ const useUserAuth = () => {
                     birth:result.birth,
                     roles:result.roles,
                 }]);
-                setCookie("user",userInfo,1);
-                setCookie("token",tokenInfo)
+                setCookie("user",{
+                    num:result.num,
+                    userId:result.userId,
+                    nick:result.nick,
+                    zoneCode:result.zoneCode,
+                    address:result.address,
+                    addrSub:result.addrSub,
+                    email:result.email,
+                    phone:result.phone,
+                    birth:result.birth,
+                    roles:result.roles,
+                },1);
+                setCookie("token",{accessToken: result.accessToken, refreshToken: result.refreshToken},1);
+                console.log(getCookie("user"),getCookie("token"))
                 alert("로그인 되었습니다.");
                 navigate("/");
             } else {
@@ -162,6 +174,8 @@ const useUserAuth = () => {
         removeTokenInfo()
         removeCookie("user","/")
         removeCookie("token","/")
+
+
     }
 
     // 모든 리턴
