@@ -4,14 +4,15 @@ import {API_SERVER_HOST} from "./filesApi";
 const prefix = `${API_SERVER_HOST}/api/member`;
 
 // 로그인
-export const login = async (userId, pw) => {
+export const login = async (userId, password) => {
+    console.log(userId,password);
     const url = `${prefix}/login`;
-    try {
-        const response = await axios.post(url, {"userId": userId, "pw": pw});
-        return response.data;
-    } catch (error) {
-        throw error; 
-    }
+    let formData = new FormData();
+    formData.append("username", userId);
+    formData.append("password", password);
+    const response = await axios.post(url, formData);
+    console.log(response)
+    return response.data;
 };
 
 // 아이디 중복확인
@@ -37,25 +38,22 @@ export const validateNick = async (nick) => {
 };
 
 // 회원가입
-export const join = async (userId, pw, nick, birth, zoneCode, address, addrSub, phone, email) => {
-    const url = `${prefix}/`;
-    const memberData = {
-        userId, // 백엔드에서 기대하는 키 이름과 같은지 확인 필요
-        pw,
-        nick,
-        birth,
-        zoneCode,
-        address,
-        addrSub,
-        phone,
-        email
-    };
+export const join = async ({userId:userId, password:password, phone:phone, nick:nick, email:email, birth:birth, address:address, addrSub:addrSub, zoneCode:zoneCode}) => {
+    const url = `${prefix}/register`;
+    console.log({userId:userId, password:password, phone:phone, nick:nick, email:email, birth:birth, address:address, addrSub:addrSub, zoneCode:zoneCode})
     try {
-        const response = await axios.post(url, memberData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        const response = await axios.post(url,{
+            userId:userId,
+            password:password,
+            phone:phone,
+            nick:nick,
+            email:email,
+            birth:birth,
+            zoneCode:zoneCode,
+            address:address,
+            addrSub:addrSub,
         });
+        console.log(response);
         return response.data;
     } catch (error) {
         throw error;

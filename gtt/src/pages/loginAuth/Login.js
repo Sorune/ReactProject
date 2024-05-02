@@ -1,45 +1,27 @@
-import { useNavigate } from 'react-router-dom';
-import React, { useState } from "react";
+import {Link} from 'react-router-dom';
+import React, {memo, useEffect, useState} from "react";
 import useUserAuth from "../../hooks/useUserAuth";
 
 const Login = () => {
-
     // 1. 이페이지에서만 값을 가지고 있을 것이므로 여기에 state작성
     //      변수         메서드
     const [memberId, setMemberId] = useState(''); // id
     const [memberPw, setMemberPw] = useState(''); // pw
-
     // 2. useUserAuth 에서 리턴한 메서드
     const { checkIdAndPw } = useUserAuth(); // 로그인 훅
 
     const handleLogin = (e) => { // 폼제출 이벤트
-        e.preventDefault(); // 동작 막기
-        checkIdAndPw(memberId, memberPw); // 로그인 훅 실행
-    };
-
-    const navigate = useNavigate();
-    // 회원가입 페이지로 이동하는 메서드
-    const moveToLink = (e) => {
-        // 클릭한 요소에서 'data-value' 속성 값을 가져와서 목적지 변수에 저장
-        /*const destination = e.target.dataset.value;
-        // 목적지 값에 따라 다르게 처리 "login"이면 로그인 페이지로 이동하고
-        switch (destination) {
-            case "/" :          // 홈메인으로 이동
-                navigate("/");
-                break;
-            case "signIn" :     // 회원가입으로 이동
-                navigate("/signIn");
-                break;
-        }*/
+        e.preventDefault();
+        checkIdAndPw({userId:memberId, password:memberPw}); // 로그인 훅 실행
     };
 
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <a href="#" data-value="/" onClick={moveToLink} className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                    <Link to={"/"} data-value="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                         GTT    
-                    </a>
+                    </Link>
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -70,7 +52,7 @@ const Login = () => {
                                     로그인
                                 </button>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                    계정이 없으신가요? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500" data-value="signIn" onClick={moveToLink}>회원가입</a>
+                                    계정이 없으신가요? <Link to={"/signIn"} className="font-medium text-primary-600 hover:underline dark:text-primary-500" data-value="signIn" >회원가입</Link>
                                 </p>
                             </form>
                         </div>

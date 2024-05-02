@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import AddrWithDaum from './AddrWithDaum';
 import {Button, IconButton, Typography, AccordionHeader, AccordionBody, Accordion} from '@material-tailwind/react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
 import useUserAuth from "../../hooks/useUserAuth";
+import {join} from "../../api/joinApi"
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ const SignIn = () => {
     // 1. 이페이지에서만 값을 가지고 있을 것이므로 여기에 state작성
     //      변수         메서드
     const [userId, setUserId] = useState('');       // id
-    const [pw, setPw] = useState('');               // pw
+    const [password, setPassword] = useState('');               // pw
     const [confirmPw, setConfirmPw] = useState(''); // confirmPw
     const [nick, setNick] = useState('');           // nick
     const [phone, setPhone] = useState('');         // phone
@@ -22,14 +23,13 @@ const SignIn = () => {
     const [address, setAddress] = useState('');     // address
     const [addrSub, setAddrSub] = useState('');     // addrSub
     const [zoneCode, setZoneCode] = useState('');   // zoneCode
-
     // 2. useUserAuth 에서 리턴한 메서드
     // const { checkId, checkPw, checkNick, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
     const { checkPw, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
     // 회원가입
-    const {joinMember} = useUserAuth(userId, pw, phone, nick, email, birth, address, addrSub, zoneCode);
+    const {joinMember} = useUserAuth();
     // 추가정보작성 아코디언 이벤트
-    const [detail, setDetail] = React.useState(1);
+    const [detail, setDetail] = React.useState(0);
     const detailOpen = (value) => setDetail(detail === value ? 0 : value);
     // 머트리얼 모달 동작 메서드
     const modalHandleOpen = () => modalSetOpen(true);
@@ -39,6 +39,7 @@ const SignIn = () => {
         setAddress(fullAddress);
         setZoneCode(zoneCode);
     };
+    console.log(userId, password, phone, nick, email, birth, address, addrSub, zoneCode)
     // 로그인 페이지로 가는 메서드 - 버튼 이벤트 처리용
     const moveToLink = (e) => {
         // 클릭한 요소에서 'data-value' 속성 값을 가져와서 목적지 변수에 저장
@@ -51,20 +52,22 @@ const SignIn = () => {
             navigate("/");
         }
     };
+    useEffect(() => {
 
+    }, []);
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                    <Link to={"/"} className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                         GTT
-                    </a>
+                    </Link>
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 JOIN
                             </h1>
-                            <form className="space-y-4 md:space-y-6" action="#" onSubmit={joinMember}>
+                            <form className="space-y-4 md:space-y-6" action="#" onSubmit={(e)=>join({userId:userId, password:password, phone:phone, nick:nick, email:email, birth:birth, address:address, addrSub:addrSub, zoneCode:zoneCode})}>
                                 <div>
                                     {/* ID */}
                                     <label htmlFor="userId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</label>
@@ -73,11 +76,11 @@ const SignIn = () => {
                                     <input name="userId" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
                                 </div>
                                 <div>
-                                    <label htmlFor="pw" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
+                                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
                                     <input
-                                        name="pw"
-                                        value={pw}
-                                        onChange={(e) => setPw(e.target.value)}
+                                        name="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         type="password"
                                         id="password"
                                         placeholder="••••••••"
@@ -90,7 +93,7 @@ const SignIn = () => {
                                         name="confirmPw"
                                         value={confirmPw}
                                         onChange={(e) => setConfirmPw(e.target.value)}
-                                        onBlur={checkPw}
+                                        onBlur={()=>checkPw(password,confirmPw)}
                                         type="password"
                                         id="confirm-password"
                                         placeholder="••••••••"
@@ -112,7 +115,7 @@ const SignIn = () => {
                                             <div>
                                                 <Typography as="label" htmlFor="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</Typography>
                                                 {/* birth */}
-                                                <input type={"date"} value={birth} onChange={(e) => setBirth(e.target.value)} name="birth" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                                <input type={"date"} value={birth} onChange={(e) => setBirth(e.target.value,"yyyy-MM-dd")} name="birth" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                             </div>
                                             <div>
                                                 <label htmlFor="zoneCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</label>
@@ -185,7 +188,7 @@ const SignIn = () => {
                                         <input checked={termsChecked} onChange={(e) => setTermsChecked(e.target.checked)} id="terms" type="checkbox" />
                                     </div>
                                     <label htmlFor="terms" className="ml-3 text-sm font-light text-gray-500 dark:text-gray-300">
-                                        개인정보 취급방침에 동의합니다
+                                        <Link to={"#"} className="underline text-blue-500">개인정보 취급방침</Link>에 동의합니다
                                     </label>
                                 </div>
                                 <button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
@@ -193,10 +196,10 @@ const SignIn = () => {
                                 </button>
                                 <p className='ml-3 text-sm font-light text-gray-500 dark:text-gray-300'>
                                     이미 계정이 있으신가요? &nbsp;
-                                    <a href="#none" className="text-primary" data-value="login" onClick={moveToLink}>로그인</a>
+                                    <Link to={"/login"} className="text-primary" data-value="login">로그인</Link>
                                     <br />
                                     메인화면으로 돌아갈까요? &nbsp;
-                                    <a href="#none" className="text-primary" data-value="home" onClick={moveToLink}>홈으로</a>
+                                    <Link to={"/"} className="text-primary" data-value="home">홈으로</Link>
                                 </p>
                             </form>
                         </div>

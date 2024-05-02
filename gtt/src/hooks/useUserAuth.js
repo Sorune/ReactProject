@@ -1,30 +1,48 @@
 import { useNavigate } from 'react-router-dom';
 import { login, validateID, validateNick, join } from "../api/joinApi";
+import { useSetRecoilState} from "recoil";
+import {userState} from "../atoms/userState";
+import {tokenState} from "../atoms/tokenState";
 
 const useUserAuth = () => {
     // 페이지 네비게이션
     const navigate = useNavigate();
+    const setUserInfo = useSetRecoilState(userState);
+    const setTokenInfo = useSetRecoilState(tokenState);
 
     // 로그인
-    const checkIdAndPw = (userId, pw) => {
-        login(userId, pw)
-            .then(result => {
-                console.log(result);
-                if (result.success) {
-                    // 로그인 성공 메시지
-                    alert("로그인 되었습니다.");
-                    // 메인 페이지로 이동
-                    navigate("/");
-                } else {
-                    // 실패 메시지
-                    alert("아이디/비밀번호를 확인하세요.");
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                // 오류 메시지
-                alert("로그인 과정에서 오류가 발생했습니다: " + error.message);
-            });
+    const checkIdAndPw = ({userId, password}) => {
+        const res = login(userId, password);
+        console.log(res);
+        res.then(result => {
+            console.log(result);
+            if (result.accessToken) {
+                // 로그인 성공 메시지
+                setTokenInfo((tokenInfo) => [{accessToken: result.accessToken, refreshToken: result.refreshToken}]);
+                setUserInfo((userInfo)=>[{
+                    num:result.num,
+                    userId:result.userId,
+                    nick:result.nick,
+                    zoneCode:result.zoneCode,
+                    address:result.address,
+                    addrSub:result.addrSub,
+                    email:result.email,
+                    phone:result.phone,
+                    birth:result.birth,
+                    roles:result.roles,
+                }]);
+                alert("로그인 되었습니다.");
+                navigate("/");
+            } else {
+                // 실패 메시지
+                alert("아이디/비밀번호를 확인하세요.");
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            // 오류 메시지
+            alert("로그인 과정에서 오류가 발생했습니다: " + error.message);
+        });
     };
 
 
@@ -47,8 +65,9 @@ const useUserAuth = () => {
     // };
 
     // 비밀번호 일치 확인
-    const checkPw = (pw, confirmPw) => {
-        if (pw !== confirmPw) {
+    const checkPw = (password, confirmPw) => {
+        console.log(password,confirmPw)
+        if (password !== confirmPw) {
             // 비밀번호 불일치
             alert("비밀번호가 일치하지 않습니다.");
             return false;
@@ -99,8 +118,9 @@ const useUserAuth = () => {
     };
 
     // 회원가입
-    const joinMember = (e, userId, pw, phone, nick, email, birth, address, addrSub, zoneCode) => {
+    const joinMember = (e,userId, password, phone, nick, email, birth, address, addrSub, zoneCode) => {
         // 기본 이벤트 중단
+        console.log(e)
         e.preventDefault();
 
         // 전화번호 검증 (주석 처리된 코드 사용을 원할 경우 주석 해제)
@@ -109,8 +129,9 @@ const useUserAuth = () => {
         //     return;
         // }
 
-        join(userId, pw, nick, birth, zoneCode, address, addrSub, phone, email) // 회원가입 API 호출
+        join(userId, password, nick, birth, zoneCode, address, addrSub, phone, email) // 회원가입 API 호출
             .then(result => {
+                console.log(result)
                 if (result.success) {
                     // 성공 메시지
                     console.log(result);

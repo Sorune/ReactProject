@@ -16,7 +16,7 @@ import java.util.Map;
 @Log4j2
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/22hat")
 public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;

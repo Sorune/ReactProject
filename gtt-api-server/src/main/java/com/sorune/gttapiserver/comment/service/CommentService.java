@@ -8,7 +8,9 @@ import com.sorune.gttapiserver.news.entity.News;
 
 public interface CommentService {
 
-    Long register(CommentDTO commentDTO); // 댓글 작성
+    Long register(Long newNo, CommentDTO commentDTO); // 댓글 작성
+
+    Long noticeRegister(Long notiNo, CommentDTO commentDTO);
 
     CommentDTO get(Long comNo);
 
@@ -18,5 +20,7 @@ public interface CommentService {
 
     // 페이징 처리 된 List
     PageResponseDTO<CommentDTO> list(PageRequestDTO pageRequestDTO, Long newsNo);
+    PageResponseDTO<CommentDTO> notiList(PageRequestDTO pageRequestDTO, Long notiNo);
+
 
 }
