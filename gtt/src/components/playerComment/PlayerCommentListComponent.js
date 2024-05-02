@@ -38,13 +38,14 @@ const initState = {
 }
 
 const PlayerCommentListComponent = () => {
-    const pathName = useLocation().pathname
     const {refresh,moveToList, moveToAdd, moveToRead, setRefresh} = useCustomMove()
     const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
+    const pno = useLocation().pathname.split("/")[3]
+
 
     useEffect(() => {
-        getPCommentList({page:page.page, size:page.size}).then(data => {
+        getPCommentList({page:page.page, size:page.size}, pno).then(data => {
             console.log(data)
             setServerData(data)
         })

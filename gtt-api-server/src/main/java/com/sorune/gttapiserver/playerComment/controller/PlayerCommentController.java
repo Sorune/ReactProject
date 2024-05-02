@@ -22,8 +22,8 @@ public class PlayerCommentController {
     }
 
     @GetMapping("/list")
-    public PageResponseDTO<PlayerCommentDTO> getCommentList(PageRequestDTO pageRequestDTO){
-        return playerCommentService.getPlayerCommentList(pageRequestDTO);
+    public PageResponseDTO<PlayerCommentDTO> getCommentList(PageRequestDTO pageRequestDTO, Long pno){
+        return playerCommentService.getPlayerCommentList(pageRequestDTO, pno);
     }
 
     @PostMapping("/")

@@ -9,9 +9,9 @@ export const getOnePComment = async (playerComNo) => {
     return res.data
 }
 
-export const getPCommentList = async (pageParam) => {
+export const getPCommentList = async (pageParam, pno) => {
     const {page, size} = pageParam
-    const res = await axios.get(`${prefix}/list`, {params:{page:page, size:size}})
+    const res = await axios.get(`${prefix}/list`, {params:{page:page, size:size}}, pno)
 
     return res.data
 }
