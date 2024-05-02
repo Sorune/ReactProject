@@ -7,7 +7,7 @@ const prefix = `${API_SERVER_HOST}/api/member`;
 export const login = async (userId, password) => {
     console.log(userId,password);
     const url = `${prefix}/login`;
-    let formData = new FormData();
+    let formData = new URLSearchParams();
     formData.append("username", userId);
     formData.append("password", password);
     const response = await axios.post(url, formData);
