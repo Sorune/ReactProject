@@ -14,5 +14,5 @@ public interface PlayerCommentService {
 
     PlayerCommentDTO getPlayerComment(Long playerComNo);
 
-    PageResponseDTO<PlayerCommentDTO> getPlayerCommentList(PageRequestDTO pageRequestDTO);
+    PageResponseDTO<PlayerCommentDTO> getPlayerCommentList(PageRequestDTO pageRequestDTO, Long pno);
 }

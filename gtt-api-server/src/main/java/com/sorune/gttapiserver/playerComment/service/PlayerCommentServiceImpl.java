@@ -41,7 +41,7 @@ public class PlayerCommentServiceImpl implements PlayerCommentService {
         PlayerComment pComment = playerCommentRepository.findById(dto.getPlayerComNo()).get();
 
         pComment.changeComment(dto.getComment());
-        pComment.changeComment(dto.getComment());
+        pComment.changeRecomNo(dto.getRecomNo());
 
         playerCommentRepository.save(pComment);
     }
@@ -61,10 +61,10 @@ public class PlayerCommentServiceImpl implements PlayerCommentService {
     }
 
     @Override
-    public PageResponseDTO<PlayerCommentDTO> getPlayerCommentList(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("pno").descending());
+    public PageResponseDTO<PlayerCommentDTO> getPlayerCommentList(PageRequestDTO pageRequestDTO, Long pno) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("playerComNo").descending());
 
-        Page<PlayerComment> result = playerCommentRepository.findAll(pageable);
+        Page<PlayerComment> result = playerCommentRepository.findAllByPnoOrderByPlayerComNo(pageable, pno);
 
         List<PlayerCommentDTO> dtoList = result.stream().map(playerComment -> modelMapper.map(playerComment, PlayerCommentDTO.class)).toList();
 
