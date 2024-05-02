@@ -56,6 +56,9 @@ public class Member extends BaseEntity {
     @ColumnDefault("1")
     private boolean enabled;
 
+    @ColumnDefault("0")
+    private boolean social;
+
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     @Enumerated(EnumType.STRING)
