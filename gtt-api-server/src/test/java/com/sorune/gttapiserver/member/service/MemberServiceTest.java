@@ -1,18 +1,10 @@
 package com.sorune.gttapiserver.member.service;
 
-import com.sorune.gttapiserver.common.formatter.LocalDateTimeFormatter;
-import com.sorune.gttapiserver.member.DTO.MemberDTO;
-import com.sorune.gttapiserver.member.entity.MemberRole;
-import com.sorune.gttapiserver.player.DTO.PlayerDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.time.LocalDate;
-import java.util.Set;
 
 import static org.springframework.data.util.Lazy.of;
 
