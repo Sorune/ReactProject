@@ -15,7 +15,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import {useRecoilState, useResetRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {userState} from "../../atoms/userState";
-import {Cog8ToothIcon, UserCircleIcon} from "@heroicons/react/16/solid";
+import {UserCircleIcon} from "@heroicons/react/16/solid";
 import useUserAuth from "../../hooks/useUserAuth";
 
 const BasicMenu = () =>{
