@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {
     Navbar,
@@ -15,11 +15,12 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import {useRecoilState, useResetRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {userState} from "../../atoms/userState";
-import {Cog8ToothIcon, UserCircleIcon} from "@heroicons/react/16/solid";
+import {UserCircleIcon} from "@heroicons/react/16/solid";
 import useUserAuth from "../../hooks/useUserAuth";
 
 const BasicMenu = () =>{
     const [openNav, setOpenNav] = React.useState(false);
+    const [refresh,setRefresh] = useState(false)
     const userInfo = useRecoilState(userState)
     const pageReset = useResetRecoilState(pageState)
     const navigate = useNavigate();
@@ -38,6 +39,7 @@ const BasicMenu = () =>{
     const moveToLogout = ()=>{
         if(window.confirm("로그아웃 하시겠습니까?")){
             logout()
+            setRefresh(!refresh)
         }
     }
     React.useEffect(() => {
@@ -45,7 +47,7 @@ const BasicMenu = () =>{
           "resize",
           () => window.innerWidth >= 960 && setOpenNav(false),
         );
-      }, [userInfo]);
+      }, [userInfo,refresh]);
   
     const NavList =(prop)=>{
         return(
