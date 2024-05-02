@@ -38,7 +38,7 @@ const ReadComponent = ({pno}) => {
         <div>
             <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={pno} moveToModify={moveToModify}/>
 
-            <div className="border-2 border-sky-200 mt-100 m-2 p-4">
+            <div className="mt-100 m-2 p-4">
                 {makeDiv('Pno', player.pno)}
                 {makeDiv('Age', player.age)}
                 {makeDiv('NickName', player.nickName)}
@@ -53,10 +53,11 @@ const ReadComponent = ({pno}) => {
 
                 </div>
                 <br/>
-                <PCommentList/>
                 <br/><hr/><br/>
                 <PCommentAdd/>
+                <br/><hr/><br/>
                 <PCommentList/>
+
             </div>
         </div>
     )

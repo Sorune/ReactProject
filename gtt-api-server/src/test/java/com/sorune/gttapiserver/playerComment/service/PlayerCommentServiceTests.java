@@ -21,7 +21,7 @@ public class PlayerCommentServiceTests {
         PlayerCommentDTO dto = PlayerCommentDTO.builder()
                 .pno(1l)
                 .comment("최고상혁")
-                .recomNo(5l)
+                .recomNo(4l)
                 .comWriter("user100")
                 .build();
 

@@ -56,8 +56,11 @@ const PlayerCommentAddComponent = () => {
     const {moveToList, moveToRead} = useCustomMove();
 
     const handleChangePComment= (e) => {
-        playerComment[e.target.name] = e.target.value
-        setPlayerComment({...playerComment})
+        if (e.target && e.target.name) {
+            const { name, value } = e.target;
+            playerComment[name] = value;
+            setPlayerComment({...playerComment});
+        }
     }
 
     const handleAdd = () => {
@@ -70,7 +73,7 @@ const PlayerCommentAddComponent = () => {
 
         postPCommentAdd(formData).then(data => {
             alert("SUCCESS")
-            setRefresh(!refresh)
+            window.location.reload()
         })
     }
 
@@ -78,26 +81,27 @@ const PlayerCommentAddComponent = () => {
         <div className="border-4">
             <br/>
             <br/>
-            <div className="flex w-96 flex-col gap-6">
-                <Textarea variant="static" label="Comment" placeholder="Comment" name="comment" onChange={handleChangePComment}/>
-                <div>
-                     <Rating
-                         value={4}
-                         ratedColor="red"
-                         ratedIcon={<RatedIcon/>}
-                         unratedIcon={<UnratedIcon/>}
-                         name="recomNo"
-                         onChange={handleChangePComment}
-                     />
+            <div className="flex w-full flex-col gap-6">
+                <Textarea className="w-full" variant="static" label="Comment" placeholder="Comment" name="comment" onChange={handleChangePComment}/>
+                <div className="flex justify-around items-start">
+                    <Rating
+                        value={playerComment.recomNo}
+                        ratedColor="red"
+                        ratedIcon={<RatedIcon/>}
+                        unratedIcon={<UnratedIcon/>}
+                        name="recomNo"
+                        onChange={(newValue) => setPlayerComment({...playerComment, recomNo: newValue})}
+                    />
+
+                    <Button className="flex items-center gap-3 justify-end" onClick={handleAdd}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" className="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
+                        </svg>
+                        Add Comment
+                    </Button>
                 </div>
-                <Button className="flex items-center gap-3 justify-end">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                         stroke="currentColor" className="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
-                    </svg>
-                    Add Comment
-                </Button>
             </div>
 
 

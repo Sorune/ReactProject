@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface PlayerCommentRepository extends JpaRepository<PlayerComment, Long> {
 
-    Page<PlayerComment> findAllByPno(Pageable pageable, Long pno);
+    Page<PlayerComment> findAllByPnoOrderByPlayerComNo(Pageable pageable, Long pno);
 }
