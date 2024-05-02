@@ -18,11 +18,19 @@ public class CommentController {
 
     private final CommentService service;
 
-    @PostMapping("/")
-    public Map<String , Long> register(@RequestBody CommentDTO commentDTO){
+    @PostMapping("/news/{newsNo}/")
+    public Map<String , Long> register(@PathVariable(name = "newsNo") Long newsNo ,@RequestBody CommentDTO commentDTO){
         log.info("comment : "+commentDTO);
 
-        Long comNo = service.register(commentDTO);
+        Long comNo = service.register(newsNo,commentDTO);
+
+        return Map.of("comNo", comNo);
+    }
+    @PostMapping("/notice/{notiNo}/")
+    public Map<String, Long> registerNoticeComment(@PathVariable(name = "notiNo") Long notiNo, @RequestBody CommentDTO commentDTO) {
+        log.info("New comment for notice {}: {}", notiNo, commentDTO);
+
+        Long comNo = service.noticeRegister(notiNo, commentDTO);
 
         return Map.of("comNo", comNo);
     }
@@ -48,7 +56,15 @@ public class CommentController {
     public PageResponseDTO<CommentDTO> getList(PageRequestDTO pageRequestDTO, @PathVariable(name = "newsNo") long newsNo){
         log.info(pageRequestDTO);
         log.info("newsNo : "+newsNo);
+
         return service.list(pageRequestDTO, newsNo);
+    }
+
+    @GetMapping("/list/notice/{notiNo}")
+    public PageResponseDTO<CommentDTO> getNoticeComments(PageRequestDTO pageRequestDTO, @PathVariable(name = "notiNo") Long notiNo){
+    log.info(pageRequestDTO);
+
+    return service.notiList(pageRequestDTO, notiNo);
     }
 
 }

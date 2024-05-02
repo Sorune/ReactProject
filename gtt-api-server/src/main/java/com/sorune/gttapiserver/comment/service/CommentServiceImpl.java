@@ -35,10 +35,22 @@ public class CommentServiceImpl implements CommentService{
 
 
     @Override
-    public Long register(CommentDTO commentDTO) {
+    public Long register(Long newNo, CommentDTO commentDTO) {
+        commentDTO.setNewsNo(newNo);
 
         Comment comment = modelMapper.map(commentDTO, Comment.class);
 
+        Comment saveComment = commentRepository.save(comment);
+
+        return saveComment.getComNo();
+    }
+
+    @Override
+    public Long noticeRegister(Long notiNo, CommentDTO commentDTO) {
+
+        commentDTO.setNotiNo(notiNo);
+
+        Comment comment = modelMapper.map(commentDTO, Comment.class);
         Comment saveComment = commentRepository.save(comment);
 
         return saveComment.getComNo();
@@ -73,9 +85,8 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public PageResponseDTO<CommentDTO> list(PageRequestDTO pageRequestDTO,Long newsNo) {
-
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize(), Sort.by("comNo").descending());  // 1페이지가 0
-        Page<Comment> result = commentRepository.findAllByNewsNo(newsNo,pageable); // 페이징처리를 모든 객체를 찾아와 적용
+        Page<Comment> result = commentRepository.findAllByNewsNo(newsNo,pageable);
         log.info(result);
         List<CommentDTO> dtoList = result.getContent().stream().map(comment -> modelMapper.map(comment, CommentDTO.class)).collect(Collectors.toList());
 
@@ -89,4 +100,24 @@ public class CommentServiceImpl implements CommentService{
                         .build();
         return responseDTO;
     }
+
+    @Override
+    public PageResponseDTO<CommentDTO> notiList(PageRequestDTO pageRequestDTO, Long notiNo) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize(), Sort.by("comNo").descending());  // 1페이지가 0
+        Page<Comment> result = commentRepository.findAllByNewsNo(notiNo,pageable);
+        log.info(result);
+        List<CommentDTO> dtoList = result.getContent().stream().map(comment -> modelMapper.map(comment, CommentDTO.class)).collect(Collectors.toList());
+
+        long totalCount = result.getTotalElements();
+
+        PageResponseDTO<CommentDTO> responseDTO =
+                PageResponseDTO.<CommentDTO>withAll()
+                        .dtoList(dtoList)
+                        .pageRequestDTO(pageRequestDTO)
+                        .totalCount(totalCount)
+                        .build();
+        return responseDTO;
+    }
+
+
 }
