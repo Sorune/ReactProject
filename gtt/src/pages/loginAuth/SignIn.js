@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import AddrWithDaum from './AddrWithDaum';
 import {Button, IconButton, Typography, AccordionHeader, AccordionBody, Accordion} from '@material-tailwind/react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
@@ -59,9 +59,9 @@ const SignIn = () => {
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                    <Link to={"/"} className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                         GTT
-                    </a>
+                    </Link>
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -188,7 +188,7 @@ const SignIn = () => {
                                         <input checked={termsChecked} onChange={(e) => setTermsChecked(e.target.checked)} id="terms" type="checkbox" />
                                     </div>
                                     <label htmlFor="terms" className="ml-3 text-sm font-light text-gray-500 dark:text-gray-300">
-                                        개인정보 취급방침에 동의합니다
+                                        <Link to={"#"} className="underline text-blue-500">개인정보 취급방침</Link>에 동의합니다
                                     </label>
                                 </div>
                                 <button type="submit" className="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
@@ -196,10 +196,10 @@ const SignIn = () => {
                                 </button>
                                 <p className='ml-3 text-sm font-light text-gray-500 dark:text-gray-300'>
                                     이미 계정이 있으신가요? &nbsp;
-                                    <a href="#none" className="text-primary" data-value="login" onClick={moveToLink}>로그인</a>
+                                    <Link to={"/login"} className="text-primary" data-value="login">로그인</Link>
                                     <br />
                                     메인화면으로 돌아갈까요? &nbsp;
-                                    <a href="#none" className="text-primary" data-value="home" onClick={moveToLink}>홈으로</a>
+                                    <Link to={"/"} className="text-primary" data-value="home">홈으로</Link>
                                 </p>
                             </form>
                         </div>

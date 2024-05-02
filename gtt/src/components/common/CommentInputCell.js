@@ -3,15 +3,19 @@ import {useEffect, useRef, useState} from "react";
 import {insertComment} from "../../api/commentApi";
 import {useLocation} from "react-router-dom";
 import useCustomMove from "../../hooks/useCustomMove";
+import {useRecoilState} from "recoil";
+import {userState} from "../../atoms/userState";
 
 const CommentInputCell = ({refresh, setRefresh})=>{
+    const [userInfo] = useRecoilState(userState)
     const commnetInput = useRef()
     const writerInput = useRef()
     const [comment,setComment] = useState()
-    const writer = "user"
+    const writer = (userInfo[0]&&userInfo[0].nick!==undefined)?userInfo[0].nick:"Anonymous"
+    const newsNo = useLocation().pathname.split("/")[3]
+    console.log(userInfo[0],writer)
     const location = useLocation();
     const pathname = location.pathname;
-    const newsNo = pathname.startsWith("/news/") ? pathname.split("/")[3] : null;
     const notiNo = pathname.startsWith("/notice/") ? pathname.split("/")[3] : null;
 
     const handleOnChange = (e)=>{

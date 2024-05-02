@@ -1,9 +1,12 @@
-import {Card, CardBody, CardHeader, Typography} from "@material-tailwind/react";
+import {Typography} from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
 import {getList} from "../api/newsApi";
 import SidebarLayout from "../layouts/SidebarLayout";
 import {MainSectionCard} from "../components/common/MainSectionCard";
 import {getPlayerList} from "../api/playerApi";
+import {useRecoilState} from "recoil";
+import {userState} from "../atoms/userState";
+import {tokenState} from "../atoms/tokenState";
 
 const initState = {
     dtoList:[],
@@ -23,6 +26,9 @@ const MainPage= () =>{
     const [noticeServerData, setNoticeServerData] = useState(initState)
     const [playerServerData, setPlayerServerData] = useState(initState)
     const [refresh,setRefresh] = useState(false)
+
+    const [userInfo] = useRecoilState(userState)
+    const [tokenInfo] = useRecoilState(tokenState)
     useEffect(() => {
         getList({page: 1, size: 5}).then(data => {
             setNewsServerData(data)
@@ -33,7 +39,7 @@ const MainPage= () =>{
     },[refresh]);
     return (
             <SidebarLayout>
-                <section className="px-8 py-10 lg:py-28 h-full bg-white">
+                <section className="px-8 py-8 lg:py-18 ">
                     <div className="container mx-auto">
                         <Typography
                             variant="h2"

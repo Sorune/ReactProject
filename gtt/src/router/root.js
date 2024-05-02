@@ -47,7 +47,7 @@ const root = createBrowserRouter([
         errorElement:NotFound,
     },
     {
-        path:"",
+        path: "",
         element:<Suspense fallback={Loading}><Main/></Suspense>,
         errorElement:NotFound,
     },

@@ -16,6 +16,8 @@ const initState = {
 const NoticeAddComponent = ({page}) =>{
 
     const [notice, setNotice] = useState(initState)
+    const [title,setTitle] = useState(notice.title?notice.title:"")
+    const [writer, setWriter] =useState(notice.writer?notice.writer:"")
     const [serverData, setServerData] = useState(initState)
 
     // 결과데이터가 있는 경우 modal을 보여준다.
