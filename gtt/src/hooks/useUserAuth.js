@@ -1,14 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { login, validateID, validateNick, join } from "../api/joinApi";
-import { useSetRecoilState} from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import {userState} from "../atoms/userState";
 import {tokenState} from "../atoms/tokenState";
+import {setCookie} from "../utill/cookieUtill";
 
 const useUserAuth = () => {
     // 페이지 네비게이션
     const navigate = useNavigate();
-    const setUserInfo = useSetRecoilState(userState);
-    const setTokenInfo = useSetRecoilState(tokenState);
+    const [userInfo,setUserInfo] = useRecoilState(userState);
+    const [tokenInfo,setTokenInfo] = useRecoilState(tokenState);
 
     // 로그인
     const checkIdAndPw = ({userId, password}) => {
@@ -31,6 +32,7 @@ const useUserAuth = () => {
                     birth:result.birth,
                     roles:result.roles,
                 }]);
+                setCookie("user",userInfo,1);
                 alert("로그인 되었습니다.");
                 navigate("/");
             } else {

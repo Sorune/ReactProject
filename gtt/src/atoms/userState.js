@@ -1,4 +1,5 @@
 import {atom} from "recoil";
+import {getCookie} from "../utill/cookieUtill";
 
 
 const initUserState = {
@@ -14,7 +15,13 @@ const initUserState = {
     roles:["ROLE_Anonymous"],
 }
 
+const loadUserCookie = ()=>{
+    const userInfo = getCookie("user")
+
+    return userInfo
+}
+
 export const userState = atom({
     key:"userState",
-    default:initUserState
+    default:loadUserCookie()||initUserState
 })
