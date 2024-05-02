@@ -1,27 +1,55 @@
-import {createSearchParams, useNavigate, useParams, useSearchParams} from "react-router-dom";
-import {useCallback} from "react";
+import {createSearchParams, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {useCallback, useEffect, useState} from "react";
 import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
-import ContentHeader from "../../components/common/ContentHeader";
-import {Card, CardHeader} from "@material-tailwind/react";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import {CommentCell} from "../../components/common/CommentCell";
+import {getComList, getNoticeComments} from "../../api/commentApi";
+import {useRecoilState} from "recoil";
+import {pageState} from "../../atoms/pageState";
+
+const initState = {
+    dtoList: [],
+    pageNumList: [],
+    pageRequestDTO: null,
+    prev: false,
+    next: false,
+    totalCount: 0,
+    prevPage: 0,
+    nextPage: 0,
+    totalPage: 0,
+    current: 0
+}
 
     const ReadPage =() =>{
-        const {notiNo} =useParams() // notiNo을 담고있음
+        const notiNo = useLocation().pathname.split("/")[3]
         const [queryParams] = useSearchParams()
+        const [page,setPage] = useRecoilState(pageState)
+        const [refresh, setRefresh] = useState(false)
+       /* const page = queryParams.get("page") ? parseInt(queryParams.get("page")) : 1
+        const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10*/
+        const [comServerData, setComServerData] = useState(initState)
+        const [isFirst,setIsFirst] =useState(false)
 
-        const page = queryParams.get("page") ? parseInt(queryParams.get("page")) : 1
-        const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10
-
-
+        useEffect(() => {
+            let pathName = isFirst===true?`${notiNo+"?" + createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}` : `${notiNo}?page=1&size=10`; setIsFirst(true);
+            getNoticeComments({pathName}).then(data => {
+                setComServerData(data)
+                console.log("comServerData"+comServerData)
+            })
+        }, [queryParams, refresh])
         return(
             <div className=" w-full bg-white mt-6">
-                <NoticeReadComponent notiNo={notiNo} page={page} size={size}></NoticeReadComponent>
+                <NoticeReadComponent notiNo={notiNo} page={page} size={page.size}></NoticeReadComponent>
                 <div className="p-0 m-2 mt-10">
-                    <CommentInputCell/>
+                    <CommentInputCell refresh={refresh} setRefresh={setRefresh}/>
                 </div>
                 <div className="p-0 m-2 mt-10">
-                    <CommentCell/>
+                    {comServerData.dtoList.map((dto) => {
+                        console.log(dto)
+                        return(
+                            <CommentCell key={dto.comNo} notiNo={notiNo} comNo={dto.comNo}writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                        )
+                    })}
                 </div>
              </div>
 

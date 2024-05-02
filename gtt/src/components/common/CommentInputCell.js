@@ -14,19 +14,37 @@ const CommentInputCell = ({refresh, setRefresh})=>{
     const writer = (userInfo[0]&&userInfo[0].nick!==undefined)?userInfo[0].nick:"Anonymous"
     const newsNo = useLocation().pathname.split("/")[3]
     console.log(userInfo[0],writer)
+    const pathname = location.pathname;
+    const newsNo = pathname.startsWith("/news/") ? pathname.split("/")[3] : null;
     const handleOnChange = (e)=>{
         console.log(e.target.value)
         setComment(e.target.value)
     }
-    const handleSave = ()=>{
-        console.log("save")
-        insertComment(writer,comment,newsNo).then(message=>{
-            alert(message.comNo)
-            setComment("")
-            commnetInput.current.children[0].value = ""
-            setRefresh(!refresh)
-        }).catch(err => console.log(err))
+    const handleSave = () => {
+        console.log("save");
+        console.log(newsNo);
+        console.log(notiNo);
+
+        if (newsNo !== null) {
+            insertComment(writer, comment, newsNo, null).then((message) => {
+                alert(message.comNo);
+                setComment("");
+                commnetInput.current.children[0].value = "";
+                setRefresh(!refresh);
+            }).catch(err => console.log(err));
+        } else if (notiNo !== null) {
+            insertComment(writer, comment, null, notiNo).then((message) => {
+                alert(message.comNo);
+                setComment("");
+                commnetInput.current.children[0].value = "";
+                setRefresh(!refresh);
+            }).catch(err => console.log(err));
+        } else {
+            console.log("Error: newsNo or notiNo is required");
+        }
     }
+
+
     const handleReset = () =>{
         console.log("reset target : "+ commnetInput.current.children[0])
         commnetInput.current.children[0].value = ""
