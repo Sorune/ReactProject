@@ -29,7 +29,6 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
     const [serverData, setServerData] = useState(notice);
     useEffect(()=>{
         getOne(notiNo).then(data => {
-            console.log(data)
             setNotice(data)
         })
     }, [notiNo])
