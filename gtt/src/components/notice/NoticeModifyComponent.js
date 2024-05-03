@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {forwardRef, memo, useEffect, useRef, useState} from "react";
 import {Button, Card, CardBody, CardFooter, CardHeader, Input, Textarea, Typography} from "@material-tailwind/react";
 import {deleteOne, getOne, putOne} from "../../api/noticeApi";
 
@@ -30,7 +30,7 @@ const initState = {
     current: 0
 }
 
-const NoticeModifyComponent = ({notiNo, page}) => {
+const NoticeModifyComponent = forwardRef(({notiNo, page}) => {
     const quillEditorRef = useRef()
     //console.log(notiNo + "번 게시물 수정")
     const [notice, setNotice] = useState({...intiState})
@@ -42,12 +42,12 @@ const NoticeModifyComponent = ({notiNo, page}) => {
     useEffect(() => {
         getOne(notiNo).then(data => {
             console.log(data)
-            setNotice({...notice,title:data.title,content:data.content,writer:data.writer,notiNo:data.notiNo})
+            setNotice(prevNotice=>({...prevNotice,title:data.title,content:data.content,writer:data.writer,notiNo:data.notiNo}))
             const QuillInstance = quillEditorRef.current.getEditor();
             QuillInstance.setContents(data.content !== "" ? JSON.parse(data.content, new Delta()) : new Delta());
         })
 
-    }, [notiNo])
+    }, [page])
     console.log(notice)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(!open);
@@ -96,16 +96,21 @@ const NoticeModifyComponent = ({notiNo, page}) => {
 
 
     const handleChangeNotice = (e) => {
-        console.log(e.target.name, e.target.value)
-        notice[e.target.name] = e.target.value
-        setNotice({...notice})
-        console.log(notice)
-    }
-    const handleQuillChange = (e)=>{
+        const { name, value } = e.target;
+        setNotice(prevNotice => ({
+            ...prevNotice,
+            [name]: value
+        }));
+    };
+    const handleQuillChange = ()=>{
         const QuillInstance = quillEditorRef.current.getEditor();
         const val = QuillInstance.getContents();
+        console.log(val)
         setContent(val)
-        setNotice({...notice,content: JSON.stringify(val)})
+        setNotice(prevNotice => ({
+            ...prevNotice,
+            ["content"]: JSON.stringify(val)
+        }))
     }
 
     return(
@@ -166,5 +171,5 @@ const NoticeModifyComponent = ({notiNo, page}) => {
             </Card>
         </div>
     )
-}
+})
 export default NoticeModifyComponent;
