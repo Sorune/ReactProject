@@ -47,7 +47,7 @@ const initState = {
                     {comServerData.dtoList.map((dto) => {
                         console.log(dto)
                         return(
-                            <CommentCell key={dto.comNo} notiNo={notiNo} comNo={dto.comNo}writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                            <CommentCell key={dto.comNo} notiNo={notiNo} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
                         )
                     })}
                 </div>
