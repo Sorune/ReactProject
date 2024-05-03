@@ -26,9 +26,6 @@ const MyPage = () => {
     const [addrSub, setAddrSub] = useState(userInfo ? userInfo.addrSub : '');   // addrSub
     const [zoneCode, setZoneCode] = useState(userInfo ? userInfo.zoneCode : '');// zoneCode
 
-    // 추가정보작성 아코디언 이벤트
-    const [detail, setDetail] = React.useState(0);
-    const detailOpen = (value) => setDetail(detail === value ? 0 : value);
     // 머트리얼 모달 동작 메서드
     const modalHandleOpen = () => modalSetOpen(true);
     const modalHandleClose = () => modalSetOpen(false);
@@ -52,10 +49,13 @@ const MyPage = () => {
         window.location.reload();
     }
 
-    // 페이지 진입 시 num 값이 0이거나 null이면 다른 페이지로 이동
-    if (num === 0 || num === null) {
-        navigate('/login'); // 로그인 페이지로 이동
-    }
+    useEffect(() => {
+        // 페이지 진입 시 num 값이 0이거나 null이면 다른 페이지로 이동
+        if (num === 0 || num === null) {
+            alert("로그인 페이지로 이동합니다.")
+            navigate('/login'); // 로그인 페이지로 이동
+        }
+    }, [userInfo]);
 
     return (
         <SidebarLayout>
