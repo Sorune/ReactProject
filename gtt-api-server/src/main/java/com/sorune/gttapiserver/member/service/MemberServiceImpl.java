@@ -27,6 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 // 이 클래스가 비즈니스 로직을 처리하는 서비스로 사용된다고 스프링에 알림
 @Service
@@ -142,12 +143,12 @@ public class MemberServiceImpl implements MemberService {
         log.info(email);
         Optional<Member> result = Optional.ofNullable(memberRepository.findByEmail(email));
         if (result.isPresent()) {
-            MemberDTO memberDTO = modelMapper.map(result.get(), MemberDTO.class);
+            MemberDTO memberDTO = result.get().entityToDto();
             return memberDTO;
         }
         Member socialMember = makeSocialMember(email);
         memberRepository.save(socialMember);
-        MemberDTO memberDTO = modelMapper.map(socialMember, MemberDTO.class);
+        MemberDTO memberDTO = socialMember.entityToDto();
         return memberDTO;
     }
 
@@ -182,13 +183,16 @@ public class MemberServiceImpl implements MemberService {
     private Member makeSocialMember(String email){
         String tempPassword = makeTempPassword();
         log.info(tempPassword);
-
-        String nick = "";
+        StringBuffer tmp = new StringBuffer();
+        IntStream.rangeClosed(1,10).forEach((index)->tmp.append((int)(Math.random()*10)));
+        String nick = "user"+tmp.toString();
 
         Member member = Member.builder()
+                .userId(email)
                 .email(email)
                 .password(passwordEncoder.encode(tempPassword))
                 .nick(nick)
+                .enabled(true)
                 .social(true)
                 .build();
         member.addRole(MemberRole.ROLE_USER);

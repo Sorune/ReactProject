@@ -13,6 +13,44 @@ const useUserAuth = () => {
     const [tokenInfo,setTokenInfo] = useRecoilState(tokenState);
     const removeTokenInfo = useResetRecoilState(tokenState)
 
+    const successLogin = (result)=>{
+        if (result!==undefined&&result.accessToken) {
+            // 로그인 성공 메시지
+            setTokenInfo((tokenInfo) => [{accessToken: result.accessToken, refreshToken: result.refreshToken}]);
+            setUserInfo((userInfo)=>[{
+                num:result.num,
+                userId:result.userId,
+                nick:result.nick,
+                zoneCode:result.zoneCode,
+                address:result.address,
+                addrSub:result.addrSub,
+                email:result.email,
+                phone:result.phone,
+                birth:result.birth,
+                roles:result.roles,
+            }]);
+            setCookie("user",{
+                num:result.num,
+                userId:result.userId,
+                nick:result.nick,
+                zoneCode:result.zoneCode,
+                address:result.address,
+                addrSub:result.addrSub,
+                email:result.email,
+                phone:result.phone,
+                birth:result.birth,
+                roles:result.roles,
+            },1);
+            setCookie("token",{accessToken: result.accessToken, refreshToken: result.refreshToken},1);
+            console.log(getCookie("user"),getCookie("token"))
+            alert("로그인 되었습니다.");
+            navigate("/");
+        } else {
+            // 실패 메시지
+            alert("아이디/비밀번호를 확인하세요.");
+        }
+    }
+
     const exceptionHandle = (ex)=>{
         console.log(ex);
         const errorMsg = ex.response.data.message;
@@ -34,41 +72,7 @@ const useUserAuth = () => {
         console.log(res);
         res.then(result => {
             console.log(result);
-            if (result.accessToken) {
-                // 로그인 성공 메시지
-                setTokenInfo((tokenInfo) => [{accessToken: result.accessToken, refreshToken: result.refreshToken}]);
-                setUserInfo((userInfo)=>[{
-                    num:result.num,
-                    userId:result.userId,
-                    nick:result.nick,
-                    zoneCode:result.zoneCode,
-                    address:result.address,
-                    addrSub:result.addrSub,
-                    email:result.email,
-                    phone:result.phone,
-                    birth:result.birth,
-                    roles:result.roles,
-                }]);
-                setCookie("user",{
-                    num:result.num,
-                    userId:result.userId,
-                    nick:result.nick,
-                    zoneCode:result.zoneCode,
-                    address:result.address,
-                    addrSub:result.addrSub,
-                    email:result.email,
-                    phone:result.phone,
-                    birth:result.birth,
-                    roles:result.roles,
-                },1);
-                setCookie("token",{accessToken: result.accessToken, refreshToken: result.refreshToken},1);
-                console.log(getCookie("user"),getCookie("token"))
-                alert("로그인 되었습니다.");
-                navigate("/");
-            } else {
-                // 실패 메시지
-                alert("아이디/비밀번호를 확인하세요.");
-            }
+            successLogin(result)
         })
         .catch(error => {
             console.log(error);
@@ -194,7 +198,7 @@ const useUserAuth = () => {
     }
 
     // 모든 리턴
-    return { confirmLogin, checkPw, joinMember, formatPhoneNumber, validatePhoneNumber, logout,exceptionHandle };
+    return { confirmLogin, checkPw, joinMember, formatPhoneNumber, validatePhoneNumber, logout,exceptionHandle,successLogin };
 };
 
 export default useUserAuth;

@@ -1,6 +1,7 @@
 package com.sorune.gttapiserver.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sorune.gttapiserver.member.DTO.MemberDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -34,24 +35,16 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String nick;     // 맴버 별명 nn
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String userId;       // 맴버 아이디 nn
+    private String phone;
+    private LocalDate birth;    // 맴버 생일 nn
+    private String zoneCode;   // 맴버 우편 nn
+    private String address;     // 맴버 주소 nn
+    private String addrSub;     // 맴버 나머지 주소 nn
 
     @Column(nullable = false,unique = true)
     private String email;       // 맴버 아이디 자동생성 nn
-    private String phone;
-
-    @Column(nullable = false)
-    private LocalDate birth;    // 맴버 생일 nn
-
-    @Column(nullable = false)
-    private String zoneCode;   // 맴버 우편 nn
-
-    @Column(nullable = false)
-    private String address;     // 맴버 주소 nn
-
-    @Column(nullable = false)
-    private String addrSub;     // 맴버 나머지 주소 nn
 
     @ColumnDefault("1")
     private boolean enabled;
@@ -115,5 +108,22 @@ public class Member extends BaseEntity {
             // 여기서는 null을 반환하도록 합니다.
             return null;
         }
+    }
+
+    public MemberDTO entityToDto() {
+        return new MemberDTO(
+                this.num,
+                this.enabled,
+                this.nick,
+                this.userId,
+                this.zoneCode,
+                this.address,
+                this.addrSub,
+                this.email,
+                this.phone,
+                this.birth,
+                this.password,
+                this.roles
+        );
     }
 }
