@@ -27,6 +27,7 @@ const NotFound = lazy(()=>import("../pages/error/404NotFound"))
 const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
 const NoticeIndex = lazy(()=> import("../pages/notice/NoticeIndexPage"))
 const MyPage = lazy(() => import("../pages/loginAuth/MyPage"))
+const KakaoRedirect = lazy(()=>import("../pages/loginAuth/KakaoRedirectPage"))
 const root = createBrowserRouter([
     {
         path:"spin",
@@ -63,19 +64,23 @@ const root = createBrowserRouter([
         errorElement:NotFound,
     },
     {
-        path : "Login",
+        path : "login",
         element : <Suspense fallback = {Loading}><Login/></Suspense>,
         children : authRouter(),
         errorElement:NotFound,
     },
     {
-        path : "SignIn",
+        path: "login/kakao",
+        element: <Suspense fallback={Loading}><KakaoRedirect /></Suspense>
+    },
+    {
+        path : "signIn",
         element : <Suspense fallback = {Loading}><SignIn/></Suspense>,
         children : authRouter(),
         errorElement:NotFound,
     },
     {
-        path : "Member",
+        path : "member",
         element : <Suspense fallback = {Loading}><Member/></Suspense>,
         children : authRouter(),
         errorElement:NotFound,

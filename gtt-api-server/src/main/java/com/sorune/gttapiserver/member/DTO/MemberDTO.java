@@ -52,7 +52,7 @@ public class MemberDTO extends User implements OAuth2User{
         this.password = pw;
     }
     public MemberDTO(Long num,boolean isEnabled, String nick, String userId, String zoneCode, String address, String addrSub, String email, String phone, LocalDate birth, String password, List<MemberRole> authorities) {
-        super(userId, password, authorities.stream()
+        super(userId==null?email:userId, password, authorities.stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toList()));
         this.num = num;
