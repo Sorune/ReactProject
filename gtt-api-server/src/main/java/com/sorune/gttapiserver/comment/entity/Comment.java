@@ -31,6 +31,8 @@ public class Comment extends BaseEntity {
 
 
     private Long newsNo;    // news게시판 번호
+    
+    private Long notiNo;    // 공지사항 번호
 
     // 내용 수정용
     public void changeContent(String content){

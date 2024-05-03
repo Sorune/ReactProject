@@ -5,17 +5,14 @@ const prefix = `${API_SERVER_HOST}/api/member`;
 
 // 로그인
 export const login = async (userId, password) => {
+    console.log(userId,password);
     const url = `${prefix}/login`;
-    let formData = new FormData();
-    formData.append("username", userId);
-    formData.append("password", password);
-    try {
-        const response = await axios.post(url, formData);
-        console.log(response)
-        return response.data;
-    } catch (error) {
-        throw error; 
-    }
+    let data = new URLSearchParams();
+    data.append("username", userId);
+    data.append("password", password);
+    const response = await axios.post(url, data);
+    console.log(response)
+    return response.data;
 };
 
 // 아이디 중복확인

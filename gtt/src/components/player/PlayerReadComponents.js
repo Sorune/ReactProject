@@ -4,9 +4,19 @@ import useCustomMove from "../../hooks/useCustomMove";
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import PlayerButtons from "./list/PlayerButtons";
-import {Avatar, Button, Card, CardBody, Rating, Typography, IconButton} from "@material-tailwind/react";
+import {
+    Avatar,
+    Button,
+    Card,
+    CardBody,
+    Rating,
+    Typography,
+    IconButton,
+    CardHeader,
+    Tooltip, CardFooter
+} from "@material-tailwind/react";
 import PCommentList from "../playerComment/PlayerCommentListComponent"
-import { ChatBubbleLeftIcon } from "@heroicons/react/outline";
+import PCommentAdd from "../playerComment/PlayerCommentAddComponent"
 
 const initState = {
     pno : 0,
@@ -18,43 +28,12 @@ const initState = {
     birthDate : null
 }
 
-function RatedIcon() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-6 w-6"
-        >
-            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-        </svg>
-    );
-}
 
-function UnratedIcon() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-            />
-        </svg>
-    );
-}
 
 const ReadComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
     const page = useRecoilValue(pageState)
     const { moveToModify,moveToList } = useCustomMove();
-    const [rated, setRated] = React.useState(4);
 
 
 
@@ -69,41 +48,78 @@ const ReadComponent = ({pno}) => {
         <div>
             <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={pno} moveToModify={moveToModify}/>
 
-            <div className="border-2 border-sky-200 mt-100 m-2 p-4">
-                {makeDiv('Pno', player.pno)}
-                {makeDiv('Age', player.age)}
-                {makeDiv('NickName', player.nickName)}
-                {makeDiv('RealName', player.realName)}
-                {makeDiv('TeamName', player.teamName)}
-                {makeDiv('Position', player.position)}
-                {makeDiv('BirthDate', player.birthDate)}
+            <div className="mt-100 m-2 p-4">
+                <Card className="w-full max-w-[100rem] shadow-lg p-10">
+                    <CardHeader floated={false} color="blue-gray" >
+                        <div className="text-center">
+                        <img
+                            className="max-w-full"
+                            src="https://i.namu.wiki/i/eqYqt-fiIALMuq4l3lX4fp5TEBXitJagvp9dqH12s2s-iWVxaB0K0gqM4EHf06jx93ju4J4muw_Pd3smxZC7pb2bI2de5qy-yMvVC9pbfyHJqbv4nDZ7_h6NhGEgjRGwA9oy_4Qc8oL9Y_hkJB2Kzw.webp"
+                            alt="ui/ux review check"
+                        />
+                        <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
+                        </div>
+                    </CardHeader>
+                    <CardBody>
+                        <div className="mb-3 flex items-center justify-between">
+                            <Typography variant="h5" color="blue-gray" className="font-medium text-3xl">
+                                <strong>{player.nickName}</strong>
+                                <small className="ml-3 text-lg font-bold">{player.realName}</small>
+                            </Typography>
+                            <Typography
+                                color="blue-gray"
+                                className="flex items-center gap-1.5 font-normal"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    className="-mt-0.5 h-5 w-5 text-yellow-700"
+                                >
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                                        clipRule="evenodd"
+                                    />
+                                </svg>
+                                5.0
+                            </Typography>
+                        </div>
+                        <div className="grid grid-cols-3">
+                            <Typography color="gray" className="font-bold col-start-1 mb-3">
+                                소속팀 : {player.teamName}
+                            </Typography>
+                            <Typography color="gray" className="font-bold col-start-2 mb-3">
+                                나이 : {player.age}
+                            </Typography>
+                            <Typography color="gray" className="font-bold col-start-3 mb-3">
+                                생일 : {player.birthDate}
+                            </Typography>
+                            <Typography color="gray" className="font-bold col-start-1 mb-3">
+                                포지션 : {player.position}
+                            </Typography>
+                        </div>
 
-                <br/>
-                <br/>
+                        <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
+                            <Tooltip content={player.position}>
+                                <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                                    <img src= "../../public/img/position-mid.png" />
+                                </span>
+                            </Tooltip>
+                        </div>
+                    </CardBody>
+                </Card>
                 <div className="flex items-center justify-center gap-2 font-bold text-blue-gray-500">
-                    {rated}
-                    <Rating
-                        value={4}
-                        ratedColor="red"
-                        ratedIcon={<RatedIcon/>}
-                        unratedIcon={<UnratedIcon/>}
-                        onChange={(value) => setRated(value)}
-                    />
-                </div>
-                <IconButton>Add Comment</IconButton>
-            </div>
 
-            <PCommentList/>
+                </div>
+                <br/>
+                <br/><hr/><br/>
+                <PCommentAdd/>
+                <br/><hr/><br/>
+                <PCommentList/>
+
+            </div>
         </div>
     )
 }
-
-const makeDiv = (title, value) =>
-    <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">{title}</div>
-            <div className="w-4/5 p-6 rounded-r border-solid shadow-md">{value}</div>
-        </div>
-    </div>
-
 export default ReadComponent

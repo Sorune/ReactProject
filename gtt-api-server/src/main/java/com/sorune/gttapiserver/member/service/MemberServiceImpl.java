@@ -4,6 +4,7 @@ import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.member.DTO.MemberDTO;
 import com.sorune.gttapiserver.member.entity.Member;
+import com.sorune.gttapiserver.member.entity.MemberRole;
 import com.sorune.gttapiserver.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 // 이 클래스가 비즈니스 로직을 처리하는 서비스로 사용된다고 스프링에 알림
 @Service
@@ -32,6 +43,8 @@ public class MemberServiceImpl implements MemberService {
     private final ModelMapper modelMapper;
 
     private final MemberRepository memberRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override //회원 가입
     public Long joinMember(MemberDTO memberDTO) {
@@ -122,5 +135,67 @@ public class MemberServiceImpl implements MemberService {
     public boolean isLogin(String id, String pw) {
         Member members = memberRepository.findByUserIdAndPassword(id, pw);
         return members == null;
+    }
+
+    @Override
+    public MemberDTO getKakaoMember(String accessToken) {
+        String email = getEmailFromKakaoAccessToken(accessToken);
+        log.info(email);
+        Optional<Member> result = Optional.ofNullable(memberRepository.findByEmail(email));
+        if (result.isPresent()) {
+            MemberDTO memberDTO = result.get().entityToDto();
+            return memberDTO;
+        }
+        Member socialMember = makeSocialMember(email);
+        memberRepository.save(socialMember);
+        MemberDTO memberDTO = socialMember.entityToDto();
+        return memberDTO;
+    }
+
+    private String getEmailFromKakaoAccessToken(String accessToken) {
+        String kakaoGetUserURL = "https://kapi.kakao.com/v2/user/me";
+        if(accessToken == null){
+            throw new RuntimeException("Access Token is null");
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-Type","application/x-www-form-urlencoded");
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+
+        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(kakaoGetUserURL).build();
+        ResponseEntity<LinkedHashMap> response = restTemplate.exchange(uriBuilder.toString(), HttpMethod.GET,entity,LinkedHashMap.class);
+        log.info(response);
+        LinkedHashMap<String ,LinkedHashMap> body = response.getBody();
+        LinkedHashMap<String,String> kakaoAccount = body.get("kakao_account");
+        log.info(kakaoAccount);
+        return kakaoAccount.get("email");
+    }
+
+    private String makeTempPassword(){
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0 ; i < 10; i ++){
+            buffer.append((char)((int)(Math.random()*55)+65));
+        }
+        return buffer.toString();
+    }
+
+    private Member makeSocialMember(String email){
+        String tempPassword = makeTempPassword();
+        log.info(tempPassword);
+        StringBuffer tmp = new StringBuffer();
+        IntStream.rangeClosed(1,10).forEach((index)->tmp.append((int)(Math.random()*10)));
+        String nick = "user"+tmp.toString();
+
+        Member member = Member.builder()
+                .userId(email)
+                .email(email)
+                .password(passwordEncoder.encode(tempPassword))
+                .nick(nick)
+                .enabled(true)
+                .social(true)
+                .build();
+        member.addRole(MemberRole.ROLE_USER);
+        return member;
     }
 }

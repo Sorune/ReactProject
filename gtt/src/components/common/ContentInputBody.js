@@ -6,11 +6,13 @@ import {Delta} from "quill/core";
 import {memo} from "react";
 import {insertNews, modifyNews} from "../../api/newsApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {useLocation, useNavigate} from "react-router-dom";
+import {userState} from "../../atoms/userState";
 
 const ContentInputBody = memo(({serverData})=>{
+    const [userInfo,setUserInfo] = useRecoilState(userState)
     const navigate = useNavigate();
     const path = useLocation().pathname.split("/")[2];
     const {moveToList,moveToRead} = useCustomMove()
@@ -19,7 +21,7 @@ const ContentInputBody = memo(({serverData})=>{
     const buttonRef = useRef()
     const inputRef = useRef()
     const [title,setTitle] = useState("");
-    const [writer, setWriter]=useState("");
+    const [writer, setWriter]=useState(userInfo[0]&&userInfo[0].nick!==undefined?userInfo[0].nick:"Anonymous");
     const [selectedTeam, setSelectedTeam] = useState('');
     const [content,setContent] = useState("");
     const [stringContent,setStringContent] = useState({})
@@ -33,33 +35,15 @@ const ContentInputBody = memo(({serverData})=>{
             const QuillInstance = quillEditorRef.current.getEditor();
             QuillInstance.setContents(serverData.content!==""?JSON.parse(serverData.content,new Delta()):new Delta());
         }
-    }, [serverData]);
+    }, [serverData,userInfo]);
     const handleSave = () => {
-        /*if (quillEditorRef.current) {
-            const quillInstance = quillEditorRef.current.getEditor();
-            const value = quillInstance.getContents();
-            console.log(value); // 에디터의 전체 텍스트 내용 로그 출력
-            setContent(value)
-            console.log(JSON.stringify(value.ops))
-            console.log(stringContent)
-            // 여기에 axios를 사용하여 서버와 통신하는 로직을 추가할 수 있습니다.
-        }*/
         if(buttonRef.current){
             const buttonInstance = buttonRef.current
             setSelectedTeam(buttonInstance.innerText)
             console.log(selectedTeam)
         }
-        /*if (inputRef.current){
-            const inputInstance = inputRef.current
-            Array.from(inputInstance.children).map((child,i)=> {
-                if (i === 0) {
-                    setTitle(child.value)
-                    console.log(title)
-                }
-            })
-        }*/
         console.log(title,selectedTeam,content,stringContent)
-        insertNews(title,stringContent,selectedTeam,"user").then(message => {
+        insertNews(title,stringContent,selectedTeam,writer).then(message => {
             alert(message.newsNo + "번 등록 완료")
             moveToList({pathName: '/news/list',pageState:{ page:page.page, size : page.size}})
         })
@@ -92,7 +76,7 @@ const ContentInputBody = memo(({serverData})=>{
         setContent(val)
         setStringContent(JSON.stringify(val))
     }
-
+    console.log(userInfo)
     return (
 
         <Card className="p-2 m-2 min-h-[10rem]">

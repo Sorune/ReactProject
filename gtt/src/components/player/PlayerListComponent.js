@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {getPlayerList} from "../../api/playerApi"
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
-import {Avatar, Button, Card, CardBody, IconButton, Typography} from "@material-tailwind/react";
+import {Avatar, Button, Card, CardBody, CardHeader, IconButton, Typography} from "@material-tailwind/react";
 import {useLocation} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
@@ -37,6 +37,11 @@ const TABS = [
     },
 ];
 
+const testTeam ={
+    teamName:"Gen.G",
+    teamImg:"/img/team/geng.png"
+}
+
 const ListComponent = () => {
     const pathName = useLocation().pathname
     const {refresh,moveToList, moveToAdd, moveToRead, setRefresh} = useCustomMove()
@@ -60,35 +65,40 @@ const ListComponent = () => {
                 <PlayerListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/player/add'} />
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4" >
                     {serverData.dtoList.map((player) => (
-                        <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
-                            <CardBody className="text-center">
-                                <Avatar
-                                    src=''
-                                    alt='null'
-                                    variant="circular"
-                                    size="xxl"
-                                    className="mx-auto mb-6 object-top"
-                                />
-                                <Typography variant="h5" color="blue-gray" className="!font-medium text-lg">
-                                    {player.nickName}  ({player.teamName})
-                                </Typography>
+                        <Card
+                            className="relative grid h-[20rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-gradient-to-t from-black/80 via-black/50"
+                            onClick={() => moveToRead({ pathName: '/player/read', num: player.pno, totalPage: serverData.totalCount })}
+                        >
+                            <CardHeader
+                                floated={false}
+                                shadow={false}
+                                color="transparent"
+                                className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://i.namu.wiki/i/eqYqt-fiIALMuq4l3lX4fp5TEBXitJagvp9dqH12s2s-iWVxaB0K0gqM4EHf06jx93ju4J4muw_Pd3smxZC7pb2bI2de5qy-yMvVC9pbfyHJqbv4nDZ7_h6NhGEgjRGwA9oy_4Qc8oL9Y_hkJB2Kzw.webp')] bg-cover bg-center"
+                           />
+                            <CardBody className="relative py-14 px-6 md:px-12 opacity-0 hover:opacity-100">
+
                                 <Typography
-                                    color="blue-gray"
-                                    className="mb-2 !text-base !font-semibold text-gray-600"
+                                    variant="h2"
+                                    color="white"
+                                    className="mb-6 font-medium leading-[1.5]"
                                 >
+                                    {player.nickName}
+                                </Typography>
+                                <Typography variant="h5" className="mb-4 text-white">
                                     {player.realName}
                                 </Typography>
-
-                                <Button onClick={()=> moveToRead({pathName:'/player/read',num:player.pno,totalPage:serverData.totalCount})}>
-                                    READ
-                                </Button>
-
+                                <Avatar
+                                    size="xl"
+                                    variant="circular"
+                                    alt="tania andrew"
+                                    src={testTeam.teamImg}
+                                />
                             </CardBody>
                         </Card>
                     ))}
                 </div>
             </div>
-            <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName}/>
+            <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName} />
 
         </section>
     )
