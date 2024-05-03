@@ -39,8 +39,10 @@ public class JWTUtill {
         }
         log.info("claims:" + claims);
         // LocalDate를 문자열로 변환하여 claims 맵에 추가
-        String birthDateStr = claims.get("birth").toString();
-        claims.put("birth", birthDateStr);
+        if(claims.get("birth")!=null){
+            String birthDateStr = claims.get("birth").toString();
+            claims.put("birth", birthDateStr);
+        }
         /*Set<MemberRole> roles = (Set<MemberRole>)claims.get("roles");
         Set<String> roleStrings = roles.stream()
                 .map(MemberRole::name)

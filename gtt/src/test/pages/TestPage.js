@@ -14,6 +14,7 @@ import SidebarLayout from "../../layouts/SidebarLayout";
 // 회원정보 U,D(CRUD중) TEST
 import ChatComponent from "../../components/common/chat/ChatComponent";
 import ChatListComponent from "../../components/common/chat/ChatListComponent";
+import KakaoLoginComponent from "../../components/user/KakaoLoginComponent";
 
 const TestPage = () => {
     const slides = [
@@ -68,6 +69,8 @@ const TestPage = () => {
             <ChatComponent/>
             <p>채팅방 리스트</p>
             <ChatListComponent/>
+            <p>카카오 로그인</p>
+            <KakaoLoginComponent />
         </SidebarLayout>
     )
 }

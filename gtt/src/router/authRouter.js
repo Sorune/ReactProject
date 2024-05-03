@@ -19,7 +19,7 @@ const authRouter = ()=> {
         {
             path: "Member",
             element: <Suspense fallback={Loading}><Member/></Suspense>
-        }
+        },
     ]
 }
 

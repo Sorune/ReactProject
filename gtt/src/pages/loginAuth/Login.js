@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
 import React, {memo, useEffect, useState} from "react";
 import useUserAuth from "../../hooks/useUserAuth";
+import KakaoLoginComponent from "../../components/user/KakaoLoginComponent";
 
 const Login = () => {
     // 1. 이페이지에서만 값을 가지고 있을 것이므로 여기에 state작성
@@ -49,6 +50,7 @@ const Login = () => {
                                 <button onClick={handleLogin} type="submit" className="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                                     로그인
                                 </button>
+                                <KakaoLoginComponent/>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     계정이 없으신가요? <Link to={"/signIn"} className="font-medium text-primary-600 hover:underline dark:text-primary-500" data-value="signIn" >회원가입</Link>
                                 </p>
