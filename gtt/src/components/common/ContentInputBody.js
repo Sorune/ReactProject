@@ -37,29 +37,11 @@ const ContentInputBody = memo(({serverData})=>{
         }
     }, [serverData,userInfo]);
     const handleSave = () => {
-        /*if (quillEditorRef.current) {
-            const quillInstance = quillEditorRef.current.getEditor();
-            const value = quillInstance.getContents();
-            console.log(value); // 에디터의 전체 텍스트 내용 로그 출력
-            setContent(value)
-            console.log(JSON.stringify(value.ops))
-            console.log(stringContent)
-            // 여기에 axios를 사용하여 서버와 통신하는 로직을 추가할 수 있습니다.
-        }*/
         if(buttonRef.current){
             const buttonInstance = buttonRef.current
             setSelectedTeam(buttonInstance.innerText)
             console.log(selectedTeam)
         }
-        /*if (inputRef.current){
-            const inputInstance = inputRef.current
-            Array.from(inputInstance.children).map((child,i)=> {
-                if (i === 0) {
-                    setTitle(child.value)
-                    console.log(title)
-                }
-            })
-        }*/
         console.log(title,selectedTeam,content,stringContent)
         insertNews(title,stringContent,selectedTeam,writer).then(message => {
             alert(message.newsNo + "번 등록 완료")

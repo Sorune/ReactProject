@@ -5,6 +5,7 @@ import {Avatar, Button, Card, CardHeader, Chip, Input, Typography} from "@materi
 import {createSearchParams, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import QuilEditorReadOnly from "../common/quill/QuillEditorReadOnly";
 import ContentHeader from "../common/ContentHeader";
+import useUtils from "../../hooks/utils";
 
 
 
@@ -21,6 +22,7 @@ const initStaste = {
 const NoticeReadComponent = ({notiNo, page, size}) => {
 
     const [notice, setNotice] = useState(initStaste)
+    const {parseDeltaOrString} = useUtils();
     //const queryStr = createSearchParams({page, size}).toString()
     //console.log(queryStr)
     //console.log(page, size)
@@ -65,7 +67,7 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
             </div>
             <hr/>
                 <div className="p-4">
-                    {notice.content}
+                    <QuilEditorReadOnly value={parseDeltaOrString(notice.content)} />
                 </div>
         </Card>
 

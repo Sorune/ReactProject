@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Button, Card, CardBody, CardFooter, CardHeader, Input, Textarea, Typography} from "@material-tailwind/react";
 import {deleteOne, getOne, putOne} from "../../api/noticeApi";
 
@@ -8,6 +8,7 @@ import {DropDownInput} from "../common/DropDownInput";
 import QuilEditor from "../common/quill/QuilEditor";
 import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import ContentHeader from "../common/ContentHeader";
+import {Delta} from "quill/core";
 
 const intiState = {
     notiNo: 0,
@@ -30,19 +31,24 @@ const initState = {
 }
 
 const NoticeModifyComponent = ({notiNo, page}) => {
+    const quillEditorRef = useRef()
     //console.log(notiNo + "번 게시물 수정")
     const [notice, setNotice] = useState({...intiState})
     const [result, setResult] = useState(null)
     const {moveToList, moveToRead} = useCustomMove()
-    const [regDate, setRegDate] = useState("")
     const [serverData, setServerData] = useState(initState)
+    const [content,setContent] = useState("");
 
     useEffect(() => {
-
-        getOne(notiNo).then(data => setNotice(data))
+        getOne(notiNo).then(data => {
+            console.log(data)
+            setNotice({...notice,title:data.title,content:data.content,writer:data.writer,notiNo:data.notiNo})
+            const QuillInstance = quillEditorRef.current.getEditor();
+            QuillInstance.setContents(data.content !== "" ? JSON.parse(data.content, new Delta()) : new Delta());
+        })
 
     }, [notiNo])
-
+    console.log(notice)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(!open);
 
@@ -90,9 +96,16 @@ const NoticeModifyComponent = ({notiNo, page}) => {
 
 
     const handleChangeNotice = (e) => {
+        console.log(e.target.name, e.target.value)
         notice[e.target.name] = e.target.value
         setNotice({...notice})
         console.log(notice)
+    }
+    const handleQuillChange = (e)=>{
+        const QuillInstance = quillEditorRef.current.getEditor();
+        const val = QuillInstance.getContents();
+        setContent(val)
+        setNotice({...notice,content: JSON.stringify(val)})
     }
 
     return(
@@ -116,13 +129,13 @@ const NoticeModifyComponent = ({notiNo, page}) => {
                         </div>
                         <div className="col-start-3 p-1">
                             <div className="w-full">
-                                <Input label="작성자" onChange={handleChangeNotice}  value={notice.writer} />
+                                <Input label="작성자" value={notice.writer} />
                             </div>
                         </div>
                     </div>
                     <hr/>
                     <div className="p-3">
-                        <Textarea label="내용" name="content" onChange={handleChangeNotice} value={notice.content}/>
+                        <QuilEditor ref={quillEditorRef} onChange={handleQuillChange} value={content}/>
                     </div>
                     <div className="p-3 justify-self-end flex justify-center">
 
