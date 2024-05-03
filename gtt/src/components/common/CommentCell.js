@@ -10,7 +10,7 @@ import {useState} from "react";
 import {useLocation} from "react-router-dom";
 
 
-export const CommentCell=({comno,writer, position, content, newsNo,modDate, recomNo,refresh,setRefresh}) => {
+export const CommentCell=({comno,writer, position, content, newsNo, notiNo, modDate, recomNo,refresh,setRefresh}) => {
     const [isModify,setIsModify] =useState(true)
     const [comment,setComment] = useState(content)
     const toggleRecommend = () => {
@@ -31,7 +31,7 @@ export const CommentCell=({comno,writer, position, content, newsNo,modDate, reco
         }
     }
     const handleConfirm =()=>{
-        modifyComment({comNo:comno,content:comment,writer:writer, newsNo:newsNo, recomNo:recomNo}).then((message)=>{alert(message.result); setIsModify(!isModify)})
+        modifyComment({comNo:comno,content:comment,writer:writer, newsNo:newsNo,notiNo:notiNo, recomNo:recomNo}).then((message)=>{alert(message.result); console.log(comno); setIsModify(!isModify)})
     }
     return (
         <Card comNo={comno} color="transparent" shadow={true} className="w-full mb-3">
