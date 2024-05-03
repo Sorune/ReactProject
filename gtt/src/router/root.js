@@ -15,7 +15,7 @@ const Main = lazy(()=>import("../pages/MainPage.js"));
 const About = lazy(()=>import("../pages/AboutPage.js"));
 const Login = lazy(() => import("../pages/loginAuth/Login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
-const Member = lazy(() => import("../pages/member/Member.js"));
+const Member = lazy(() => import("../pages/admin/Member.js"));
 const Team = lazy(()=>import("../pages/teams/TeamPage"))
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
 const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));

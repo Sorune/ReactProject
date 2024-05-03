@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests->
                         authorizeHttpRequests
                                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
-                                .requestMatchers("/api/comment/**","/api/player/**","/api/notice/**", "/api/member/**").permitAll()
+                                .requestMatchers("/api/comment/**","/api/player/**","/api/notice/**", "/api/member/**", "/api/team/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/member/register").permitAll()
                                 .requestMatchers( "api/news/**","/api/chat/**","/chat/**","/pub/**","/sub/**").permitAll()// "/api/chat/**" 패턴을 허용
                                 .anyRequest().authenticated()

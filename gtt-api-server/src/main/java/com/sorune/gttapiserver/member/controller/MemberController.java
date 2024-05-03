@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
 @Log4j2
-public class MemberCotroller {
+public class MemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
