@@ -52,22 +52,13 @@ const MyPage = () => {
         window.location.reload();
     }
 
-    useEffect(() => {
-        // 페이지 진입 시 num 값이 0이거나 null이면 다른 페이지로 이동
-        if (num === 0 || num === null) {
-            navigate('/login'); // 로그인 페이지로 이동
-        }
-    }, [userInfo]);
+    // 페이지 진입 시 num 값이 0이거나 null이면 다른 페이지로 이동
+    if (num === 0 || num === null) {
+        navigate('/login'); // 로그인 페이지로 이동
+    }
 
     return (
         <SidebarLayout>
-            <div>
-                <section className="bg-gray-50">
-                    <div
-                        className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 w-full">
-                        <div
-                            className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                                 <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                     MyPage
                                 </h1>
@@ -219,11 +210,6 @@ const MyPage = () => {
                                         </button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
         </SidebarLayout>
     );
 }

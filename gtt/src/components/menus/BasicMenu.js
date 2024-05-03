@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {
     Navbar,
@@ -42,7 +42,7 @@ const BasicMenu = () =>{
             setRefresh(!refresh)
         }
     }
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener(
           "resize",
           () => window.innerWidth >= 960 && setOpenNav(false),
@@ -65,8 +65,6 @@ const BasicMenu = () =>{
             </ul>
         );
     }
-
-    console.log(userInfo[0].nick)
     return (
         <Navbar className="mx-auto max-w-full px-3 py-3">
             <div className="flex items-center justify-between text-black">
