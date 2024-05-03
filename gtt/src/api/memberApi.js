@@ -27,17 +27,19 @@ export const removeMember = async (num) => {
 }
 
 // 회원수정 ㅇ
-export const updateMember = async (num, userId, pw, nick, birth, zoneCode, address, addrSub) => {
+export const updateMember = async (num, userId, nick, birth, zoneCode, address, addrSub) => {
+    console.log(num, userId, nick, birth, zoneCode, address, addrSub)
+    const header =     {headers: {'Content-Type': 'application/json'}}
     const res = await axios.put(`${API_SERVER_HOST}/api/member/${num}`,
         {
             "userId":userId,
-            "pw":pw,
+            // "pw":pw,
             "nick":nick,
             "birth":birth,
             "zoneCode":zoneCode,
             "address":address,
             "addrSub":addrSub
-        })
+        }, header)
         .then(function (res)  {
             console.log(res.data.result);
             if (res.data.result === "SUCCESS") {

@@ -51,7 +51,7 @@ public class SecurityConfig {
                                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                                 .requestMatchers("/api/comment/**","/api/player/**","/api/notice/**", "/api/playercomment/**", "/api/member/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/playercomment/","/api/member/register").permitAll()
-                                .requestMatchers(HttpMethod.PUT,"/api/playercomment/").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"/api/playercomment/", "/api/member/**").permitAll()
                                 .requestMatchers( "api/news/**","/api/chat/**","/chat/**","/pub/**","/sub/**").permitAll()// "/api/chat/**" 패턴을 허용
                                 .anyRequest().authenticated()
                 )
