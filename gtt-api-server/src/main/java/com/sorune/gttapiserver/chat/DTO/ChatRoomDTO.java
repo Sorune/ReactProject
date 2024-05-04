@@ -16,4 +16,6 @@ import java.util.UUID;
 public class ChatRoomDTO {
     private Long id;
     private String name;
+    private String creator;
+
 }

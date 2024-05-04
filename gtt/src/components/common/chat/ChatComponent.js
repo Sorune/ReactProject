@@ -1,38 +1,25 @@
 import {
-    Badge,
-    Button,
-    Card,
-    CardFooter,
-    Chip,
     IconButton,
     Popover,
     PopoverContent,
     PopoverHandler,
-    Textarea,
-    Typography
 } from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faComments} from "@fortawesome/free-solid-svg-icons";
 import {memo, useEffect, useRef, useState} from "react";
-import {useRecoilState} from "recoil";
-import {chatListState,chatState} from "../../../atoms/chatData";
-import useWebSocket from "../../../hooks/useWebSocket";
-import ChatCell from "./ChatCell";
-import MyChatCell from "./MyChatCell";
-import {ArrowLeftIcon} from "@heroicons/react/24/outline";
+import {useRecoilState, useResetRecoilState} from "recoil";
+import {chatListState, chatRoomState, chatState} from "../../../atoms/chatData";
 import ChatRoomComponent from "./ChatRoomComponent";
 import ChatListComponent from "./ChatListComponent";
 
 export const dismissType = {
     outsidePress: false,
 };
-const userId = "test"
-
 const ChatComponent = memo(()=>{
     const [chatList, setChatList] = useRecoilState(chatListState);
+    const resetRoom = useResetRecoilState(chatRoomState);
     const [isOpen, setIsOpen] = useState(false);
-    const [isList, setIsList] = useState(false);
-    const [chatRoomId,setChatRoomId] = useState("");
+    const [isList, setIsList] = useState(true);
 
     const handleClick = () => {
         setIsOpen(!isOpen);
@@ -40,10 +27,13 @@ const ChatComponent = memo(()=>{
     const handleClose = () => {
         setIsOpen(false);
     };
-    const handleList = ()=>{
+    const moveList = ()=>{
+        setIsList(!isList);
+        resetRoom();
+    }
+    const moveRoom = ()=>{
         setIsList(!isList);
     }
-
     return(
         <div className={"fixed bottom-10 right-10 z-30"}>
             <Popover active={isOpen} dismiss={dismissType} onOutsideClick={handleClose}>
@@ -53,8 +43,8 @@ const ChatComponent = memo(()=>{
                 <PopoverContent>
                     <div className="w-[250px] h-[400px]">
                         {isList?
-                            <ChatListComponent chatList={chatList} moveTo={handleList}/>:
-                            <ChatRoomComponent moveTo={handleList} />}
+                            <ChatListComponent chatList={chatList} moveTo={moveRoom}/>:
+                            <ChatRoomComponent moveTo={moveList}/>}
                     </div>
                 </PopoverContent>
             </Popover>

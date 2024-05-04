@@ -1,40 +1,55 @@
-import {
-    Button,
-    Card,
-    CardFooter,
-    IconButton,
-    Popover,
-    PopoverHandler,
-    Textarea,
-    Typography
-} from "@material-tailwind/react";
+import {Card, IconButton, Textarea, Typography } from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import ChatCell from "./ChatCell";
 import MyChatCell from "./MyChatCell";
-import React, {useRef, useState} from "react";
-import {useRecoilState} from "recoil";
-import {chatState} from "../../../atoms/chatData";
+import React, {useEffect, useRef, useState} from "react";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {chatRoomState, chatState, messagesState} from "../../../atoms/chatData";
+import chatApi from "../../../api/chatApi";
+import {useStomp} from "../../../hooks/useStomp";
+import {userState} from "../../../atoms/userState";
 
 
 const ChatRoomComponent = ({moveTo}) => {
-    const chatRef = useRef(null);
     const [chat, setChat] = useRecoilState(chatState);
-
-
+    const [room, setRoom] = useRecoilState(chatRoomState);
+    const messageList = useRecoilValue(messagesState)
+    const {sendChat,connect,disConnect} = useStomp()
+    const user = useRecoilValue(userState);
+    const {getChatRoom}= chatApi()
+    const chatRef = useRef(null);
+    const [refresh,setRefresh] = useState(false);
+    useEffect(() => {
+        if(room.name===""){
+            getChatRoom({roomId:room.id}).then((room)=>{
+                console.log(room)
+                setRoom(prevData => ({
+                    ...prevData,
+                    id: room.room.id,
+                    name:room.room.name,
+                    creator: room.room.creator,
+                }));
+                if(room.room.name!==""){
+                    console.log("connect...",room.room.id);
+                    connect({id:room.room.id,sender:user.nick!=="Anonymous"?user.nick:"Anonymous"})
+                }
+            });
+        }
+    }, [refresh,messageList]);
+    console.log(messageList)
     const onChangeChat = (e) => {
         setChat(e.target.value);
     };
 
     const handleSubmit = ()=>{
-
+        sendChat({message:chat,sender:user.nick,roomId:room.id});
     }
 
     const handleReset = () =>{
         console.log("reset target : "+ chatRef.current.children[0])
         chatRef.current.children[0].value = ""
     }
-
     return (
         <div className="h-full">
             <div className={"grid grid-cols-6 outline-1 justify-center items-center"}>
@@ -42,18 +57,15 @@ const ChatRoomComponent = ({moveTo}) => {
                     <FontAwesomeIcon icon={faArrowLeft} className={"text-lg"}/>
                 </IconButton>
                 <Typography type={"div"} variant={"h5"}
-                            className={"text-black text-center col-start-2 col-end-5 overflow-auto"}>Room
-                    Name</Typography>
+                            className={"text-black text-center col-start-2 col-end-5 overflow-auto"}>{room.name}</Typography>
             </div>
             <Card className="mt-2 z-20 h-[350px]">
                 <div className="h-[250px] overflow-y-scroll scrollbar-hide">
-                    <ChatCell message={"test"}/>
-                    <MyChatCell message={"test"}/>
-                    <MyChatCell message={"test"}/>
-                    <MyChatCell message={"test"}/>
-                    <MyChatCell message={"test"}/>
-                    <MyChatCell message={"test"}/>
-                    <MyChatCell message={"test"}/>
+                    {messageList.map((message,index)=>{
+                       return message.sender===user.nick?
+                            <MyChatCell key={index} message={message.message}/>:
+                            <ChatCell key={index} message={message.message}/>
+                    })}
                 </div>
                 <div className="p-2">
                     <div className="grid w-full grid-cols-1 items-center rounded-[99px] border border-black p-2">
@@ -68,6 +80,7 @@ const ChatRoomComponent = ({moveTo}) => {
                             labelProps={{
                                 className: "before:content-none after:content-none",
                             }}
+                            onChange={onChangeChat}
                         />
                         <div className="flex justify-end">
                             <IconButton variant="text" className="rounded-full">
@@ -86,7 +99,7 @@ const ChatRoomComponent = ({moveTo}) => {
                                     />
                                 </svg>
                             </IconButton>
-                            <IconButton variant="text" className="rounded-full">
+                            <IconButton variant="text" className="rounded-full" onClick={handleSubmit}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"

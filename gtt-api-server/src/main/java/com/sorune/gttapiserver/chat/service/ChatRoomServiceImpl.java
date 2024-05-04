@@ -25,6 +25,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
+    public ChatRoomDTO findByName(String name) {
+        return modelMapper.map(chatRoomRepository.findByName(name), ChatRoomDTO.class);
+    }
+
+    @Override
     public Long save(ChatRoomDTO chatRoomDTO) {
         return chatRoomRepository.save(modelMapper.map(chatRoomDTO, ChatRoom.class)).getId();
     }
