@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class MemberControllerTest {
 
     @Autowired
-    private final MemberCotroller controller;
+    private final MemberController controller;
 
     @Test
     public void testSearchMember() {

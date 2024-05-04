@@ -1,9 +1,9 @@
 import axios from "axios";
-import {API_SERVER_HOST} from "./filesApi";
+import {API_SERVER_HOST, SERVER_HOST} from "./filesApi";
 
 
 const rest_api_key = "f729aa2b0752c47921b40ad9bff38364";
-const redirect_uri = "http://localhost:3000/login/kakao";
+const redirect_uri = `${SERVER_HOST}/login/kakao`;
 
 const auth_code_path = "https://kauth.kakao.com/oauth/authorize";
 
