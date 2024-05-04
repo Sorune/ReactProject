@@ -4,6 +4,7 @@ import { Button, Card, CardFooter, IconButton, Input, Tooltip, Typography } from
 import { useState, useEffect } from "react";
 import { PencilIcon, TrashIcon, ArrowPathIcon, CheckIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { allTeam, addTeam, updateTeam, deleteTeam } from "../../api/teamApi";
+import DropFiles from "../../components/common/DropFiles";
 
 // 테이블 머리부분에 들어가는 내용
 const TABLE_HEAD = ["Team Image", "Team Name", "Actions"];
@@ -55,11 +56,6 @@ const TeamPage = () => {
         await deleteTeam(id);
         fetchTeams();
     }
-    // 이미지 이름을 가져오는 메서드
-    const extractFileNameFromUrl = (url) => {
-        if (!url) return "No Image";  // 반환된 "No Image" 는 URL을 찾을 수 없거나 비었을때의 표시
-        return url.split('/').pop();  // URL에서 / 기준으로 이미지 이름만 자릅니다
-    };
     // 수정하기
     const startEdit = (team) => {
         setEditId(team.teamNo);
@@ -100,11 +96,11 @@ const TeamPage = () => {
                                 <td className={"col-start-1 col-end-3"}>
                                     {editId === team.teamNo ? (
                                         // <DropFiles onFileDrop={(img) => handleFileDrop(img)} />
-                                        <input type="file" name="teamImage" onChange={handleInputChange}/>
+                                        <td><DropFiles value={newTeam.teamImage} /*onFileDrop={handleFileDrop}*/
+                                                       onChange={handleInputChange}/></td>
                                     ) : (
                                         <img
                                             src={team.teamImage || "/img/no-image.png"}
-                                            alt={extractFileNameFromUrl(team.teamImage) || "이미지없음"}
                                             className={"w-24"}
                                         />
                                     )}
@@ -139,26 +135,13 @@ const TeamPage = () => {
                         ))}
                         {/*추가 버튼을 눌렀을때 tr 생성 */}
                         {add && (
-                            <tr>
+                            <tr className={"col-start-1 col-end-3"}>
+                                <td><DropFiles value={newTeam.teamImage} /*onFileDrop={handleFileDrop}*/ onChange={handleInputChange}/></td>
+                                <td><Input value={newTeam.teamName} onChange={handleInputChange} /></td>
                                 <td>
-                                    <input type="file" name="teamImage" onChange={handleInputChange}/>
-                                </td>
-                                <td>
-                                    <Input value={newTeam.teamName} onChange={(e) => handleInputChange({ target: { name: 'teamName', value: e.target.value } })} />
-                                </td>
-                                <td>
-                                    <IconButton onClick={handleAddTeam}>
-                                        <CheckIcon className="h-4 w-4"/>
-                                    </IconButton>
+                                    <IconButton onClick={handleAddTeam}><CheckIcon className="h-4 w-4"/></IconButton>
                                 </td>
                             </tr>
-                            // <tr>
-                            //     <td><DropFiles value={newTeam.teamImage} onFileDrop={handleFileDrop} onChange={handleInputChange}/></td>
-                            //     <td><Input value={newTeam.teamName} onChange={handleInputChange} /></td>
-                            //     <td>
-                            //         <IconButton onClick={handleAddTeam}><CheckIcon className="h-4 w-4"/></IconButton>
-                            //     </td>
-                            // </tr>
                         )}
                         </tbody>
                     </table>

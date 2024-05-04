@@ -1,9 +1,12 @@
 package com.sorune.gttapiserver.team.entity;
 
+import com.sorune.gttapiserver.files.Entity.Files;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
 
 @Entity  // 이 클래스를 데이터베이스 테이블과 매핑할 엔티티 클래스로 선언
 @Builder  // 객체 생성 시 빌더 패턴을 사용
@@ -23,13 +26,14 @@ public class Team {
     private String teamName;    // 팀 이름
 
     @Column
-    private String teamImage;   // 팀 이미지
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Files> teamImage;   // 팀 이미지
     // 팀 이름을 업데이트 할 때 사용하는 메서드
     public void changeTeamName(String teamName){
         this.teamName = teamName; // 넘겨받은 팀 이름으로 현재 팀 이름을 변경
     }
     // 팀 이미지를 업데이트 할 때 사용하는 메서드
-    public void changeTeamImage(String teamImage) {
+    public void changeTeamImage(List<Files> teamImage) {
         this.teamImage = teamImage; // 넘겨받은 팀 이미지로 현재 팀 이미지를 변경
     }
 }

@@ -2,6 +2,8 @@ package com.sorune.gttapiserver.team.service;
 
 import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
+import com.sorune.gttapiserver.files.DTO.FilesDTO;
+import com.sorune.gttapiserver.files.Entity.Files;
 import com.sorune.gttapiserver.team.DTO.TeamDTO;
 import com.sorune.gttapiserver.team.entity.Team;
 import com.sorune.gttapiserver.team.repository.TeamRepository;
@@ -49,7 +51,7 @@ public class TeamServiceImpl implements TeamService {
         // 팀 이름 수정
         team.changeTeamName(teamDTO.getTeamName());
         // 팀 이미지 변경
-        team.changeTeamImage(teamDTO.getTeamImage());
+        team.changeTeamImage(teamDTO.getTeamImage().stream().map(file->modelMapper.map(file, Files.class)).toList());
         // 수정된 팀 정보를 데이터베이스에 저장함
     }
 
