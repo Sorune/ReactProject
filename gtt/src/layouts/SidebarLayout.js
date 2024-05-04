@@ -4,6 +4,7 @@ import Sidebar from "../test/pages/Sidebar";
 import ReadPage from "../pages/news/ReadPage";
 import SideCell from "../test/pages/SideCell";
 import {Button, Drawer} from "@material-tailwind/react";
+import ChatComponent from "../components/common/chat/ChatComponent";
 
 const SidebarLayout = ({ children }) => {
     const [isMobile, setIsMobile] = useState(false);
@@ -40,6 +41,7 @@ const SidebarLayout = ({ children }) => {
                         <div className={`${isMobile ? "" : "hidden"} sticky bottom-10 left-0 z-20`}>
                             <Button onClick={openSidebar}>sidebar</Button>
                         </div>
+                        <ChatComponent />
                     </main>
                     {/* 세 번째와 여섯 번째 열은 isMobile이 true일 때 hidden 클래스 추가 */}
                     <div className={`col-span-1 p-2 w-full max-w-[20rem] mt-20  ${isMobile ? "hidden" : "sticky right-0"} top-0 h-screen overflow-y-auto`}>
