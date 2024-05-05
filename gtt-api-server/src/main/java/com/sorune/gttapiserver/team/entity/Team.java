@@ -1,9 +1,12 @@
 package com.sorune.gttapiserver.team.entity;
 
+import com.sorune.gttapiserver.files.Entity.Files;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
 
 @Entity  // 이 클래스를 데이터베이스 테이블과 매핑할 엔티티 클래스로 선언
 @Builder  // 객체 생성 시 빌더 패턴을 사용

@@ -1,7 +1,7 @@
 package com.sorune.gttapiserver.chat.DTO;
 
+import com.sorune.gttapiserver.chat.entity.MessageType;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 @Builder
 @Getter
@@ -10,13 +10,12 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 @ToString
 public class ChatMessageDTO {
-
-    public enum MessageType{
-        ENTER,TALK,JOIN
-    }
-
+    private Long id;
+    private ChatRoomDTO room;
     private MessageType messageType;
     private String message;
     private String chatRoomId;
-    private String senderId;
+    private String sender;
+    private String senderEmail;
+
 }

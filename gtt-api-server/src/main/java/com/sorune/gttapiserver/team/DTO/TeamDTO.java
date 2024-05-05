@@ -1,6 +1,7 @@
 package com.sorune.gttapiserver.team.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sorune.gttapiserver.files.DTO.FilesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,10 +27,4 @@ public class TeamDTO {
     private LocalDateTime regDate; // 등록 날짜, 서울 시간대로 yyyy-MM-dd 포맷으로 나타낸다.
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime modDate; // 수정 날짜, 서울 시간대로 yyyy-MM-dd 포맷으로 나타낸다.
-
-    @Builder.Default
-    private List<MultipartFile> files = new ArrayList<>();  // 등록이나 수정할 때 새 파일을 올릴 때 쓴다.
-
-    @Builder.Default
-    private List<String> fileDTOList = new ArrayList<>();   // 업로드 완료된 파일 이름들
 }

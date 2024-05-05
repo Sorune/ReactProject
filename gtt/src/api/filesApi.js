@@ -11,6 +11,7 @@ export const SERVER_HOST = 'http://localhost:3000';
 const prefix = `${API_SERVER_HOST}/api/files`;
 export const insertFiles = async(file)=>{
     const formData = new FormData();
+    console.log(file);
     formData.append('file',file);
     const res = await axios.post(`${prefix}/`,formData)
     console.log(res, res.data)

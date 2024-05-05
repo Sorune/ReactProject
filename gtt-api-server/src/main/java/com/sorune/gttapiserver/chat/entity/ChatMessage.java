@@ -25,22 +25,23 @@ public class ChatMessage extends BaseEntity {
 
     @Column
     private String message;
-
     private MessageType messageType;
 
     @Builder
-    public ChatMessage(ChatRoom room, String sender, String senderEmail, String message) {
+    public ChatMessage(ChatRoom room, String sender, String senderEmail, String message, MessageType messageType) {
         this.room = room;
         this.sender = sender;
         this.senderEmail = senderEmail;
         this.message = message;
+        this.messageType = messageType;
     }
 
-    public static ChatMessage create(ChatRoom room, String sender, String senderEmail, String message) {
+    public static ChatMessage create(ChatRoom room, String sender, String senderEmail, String message, MessageType messageType) {
         return ChatMessage.builder()
                 .room(room)
                 .sender(sender)
                 .senderEmail(senderEmail)
+                .messageType(messageType)
                 .message(message).build();
     }
 }
