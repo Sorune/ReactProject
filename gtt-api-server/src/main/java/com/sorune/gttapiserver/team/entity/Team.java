@@ -26,14 +26,13 @@ public class Team {
     private String teamName;    // 팀 이름
 
     @Column
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Files> teamImage;   // 팀 이미지
+    private String teamImage;   // 팀 이미지
     // 팀 이름을 업데이트 할 때 사용하는 메서드
     public void changeTeamName(String teamName){
         this.teamName = teamName; // 넘겨받은 팀 이름으로 현재 팀 이름을 변경
     }
     // 팀 이미지를 업데이트 할 때 사용하는 메서드
-    public void changeTeamImage(List<Files> teamImage) {
+    public void changeTeamImage(String teamImage) {
         this.teamImage = teamImage; // 넘겨받은 팀 이미지로 현재 팀 이미지를 변경
     }
 }

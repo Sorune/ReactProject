@@ -37,6 +37,10 @@ public class TeamServiceImpl implements TeamService {
     @Override // 팀 생성
     public Long registerTeam(TeamDTO teamDTO) {
         Team team = modelMapper.map(teamDTO, Team.class);
+        /*Team team = Team.builder()
+                .teamName(teamDTO.getTeamName())
+                .teamImage(teamDTO.getTeamImage().stream().map(FilesDTO::toFiles).toList())
+                .build();*/
         // 팀 정보를 데이터 베이스에 저장함
         log.info(team);
         // 들어온 팀 정보를 로그에 출력
@@ -51,7 +55,8 @@ public class TeamServiceImpl implements TeamService {
         // 팀 이름 수정
         team.changeTeamName(teamDTO.getTeamName());
         // 팀 이미지 변경
-        team.changeTeamImage(teamDTO.getTeamImage().stream().map(file->modelMapper.map(file, Files.class)).toList());
+        team.changeTeamImage(teamDTO.getTeamImage());
+        //team.changeTeamImage(teamDTO.getTeamImage().stream().map(FilesDTO::toFiles).toList());
         // 수정된 팀 정보를 데이터베이스에 저장함
     }
 

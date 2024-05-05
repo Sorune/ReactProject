@@ -21,7 +21,7 @@ public class TeamDTO {
 
     private Long teamNo;        // 팀 번호
     private String teamName;    // 팀 이름
-    private List<FilesDTO> teamImage;   // 팀 이미지
+    private String teamImage;   // 팀 이미지
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime regDate; // 등록 날짜, 서울 시간대로 yyyy-MM-dd 포맷으로 나타낸다.
