@@ -5,7 +5,7 @@ const prefix = `${API_SERVER_HOST}/api/team`;
 
 // 팀 목록 출력
 export const allTeam = async () => {
-    const response = await axios.get(`${prefix}/list`);
+    const response = await axios.get(`${prefix}/teams`);
     return response.data;
 }
 

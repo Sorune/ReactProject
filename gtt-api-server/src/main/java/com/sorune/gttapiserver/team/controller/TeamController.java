@@ -58,4 +58,9 @@ public class TeamController {
         teamService.removeTeam(teamNo);  // 주어진 팀 번호로 팀 삭제
         return Map.of("result", "SUCCESS");  // 삭제 성공 메시지 반환
     }
+
+    @GetMapping("/teams")
+    public List<TeamDTO> readAllTeams() {
+        return teamService.getAllTeams();
+    }
 }
