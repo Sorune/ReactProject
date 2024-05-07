@@ -83,7 +83,7 @@ const ContentInputBody = memo(({serverData})=>{
             <form>
                 <div className="grid grid-cols-auto gap-4 grid-rows-auto flex items-stretch flex items-center flex flex-box mt-2 mb-2 ml-2 ">
                     <div className="col-start-1 col-end-3 p-1">
-                        <DropDownInput buttonRef={buttonRef} inputRef={inputRef} onChange={handleDropDownChange} title={title}/>
+                        <DropDownInput placeholder="title" buttonRef={buttonRef} inputRef={inputRef} onChange={handleDropDownChange} title={title}/>
                     </div>
                     <div className="col-start-3 p-1">
                         <div className="w-full">

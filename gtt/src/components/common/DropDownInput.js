@@ -18,7 +18,7 @@ const testTeam ={
 
 
 
-export const DropDownInput = forwardRef(({ onChange,title , buttonRef, inputRef}) => {
+export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  buttonRef, inputRef}) => {
     const { countries } = useCountries();
     const [teams, setTeams] = useState();
     const [team, setTeam] = React.useState(0);
@@ -33,6 +33,15 @@ export const DropDownInput = forwardRef(({ onChange,title , buttonRef, inputRef}
     console.log(teams)
     const handleChange = (e) => {
         onChange(e); // 상위 컴포넌트로 선택된 팀 전달
+    };
+    const handleClick = (e) => {
+        onClick(e); // 상위 컴포넌트로 선택된 팀 전달
+    };
+
+    const InputWithPlaceholder = ({ placeholder, ...rest }) => {
+        return (
+            <Input placeholder={placeholder} {...rest} />
+        );
     };
     return (
         <div className="relative flex w-full ">
@@ -75,7 +84,7 @@ export const DropDownInput = forwardRef(({ onChange,title , buttonRef, inputRef}
             </Menu>
             <Input
                 type="text"
-                placeholder="title"
+                placeholder={placeholder}
                 value={title}
                 ref={inputRef}
                 className="rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -86,6 +95,7 @@ export const DropDownInput = forwardRef(({ onChange,title , buttonRef, inputRef}
                     className: "min-w-0",
                 }}
                 onChange={handleChange}
+                onClick={handleClick}
             />
         </div>
     );
