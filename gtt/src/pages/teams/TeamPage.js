@@ -24,38 +24,46 @@ const TeamPage = () => {
         updateTeamImage();
     }, []);
     // 팀 리스트 불러오기
-    const fetchTeams = async () => {
-        const response = await allTeam();
-        if (response && Array.isArray(response.dtoList)) {
-            setTeams(response.dtoList);
-        } else {
-            console.error('Data is not an array', response);
-            setTeams([]);
-        }
+    const fetchTeams = () => {
+        allTeam()
+            .then(response => {
+                // 데이터 구조를 보다 상세하게 검증
+                if (response && response.dtoList && Array.isArray(response.dtoList)) {
+                    setTeams(response.dtoList);
+                } else {
+                    console.error('Data is not an array or dtoList is undefined', response);
+                    setTeams([]);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching teams', error);
+                setTeams([]);
+            });
     }
     const updateTeamImage = ()=>{
     }
-    // 팀 추가(생성)
-    const handleAddTeam = async () => {
-        try {
-            if (imageDiv.current) {
-                const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
-                console.log("file", fileName);
-                setNewTeam((prevTeam) => ({
-                    ...prevTeam,
-                    teamImage: fileName
-                }));
-            }
-
-            // 이미지 업데이트 후 추가 작업 수행
-            const resData = await addTeam(newTeam);
-            setTeams([...teams, resData]);
-            setAdd(false);
-            setNewTeam({ teamName: '', teamImage: "" });
-            fetchTeams();
-        } catch (error) {
-            console.log("Failed to add team. Error: " + error.message);
+    // 팀 추가
+    const handleAddTeam = () => {
+        // 새 팀 정보를 위한 로컬 변수 생성, newTeam 상태에서 복사
+        let updatedTeam = { ...newTeam };
+        // 이미지가 업로드된 경우, 이미지 파일 이름 추출 및 업데이트
+        if (imageDiv.current) {
+            const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
+            console.log("file", fileName); // 로그에 파일 이름 출력
+            updatedTeam.teamImage = fileName; // 로컬 변수에 이미지 파일 이름 설정
         }
+        // addTeam 함수를 호출하여 API를 통해 팀 추가 요청
+        addTeam(updatedTeam)
+            .then(resData => {
+                // 요청이 성공하면, 새 팀 데이터로 상태 업데이트
+                setTeams(prevTeams => [...prevTeams, resData]); // 상태에 새 팀 추가
+                setAdd(false); // 추가 모드 해제
+                setNewTeam({ teamName: '', teamImage: "" }); // 입력 필드 초기화
+            })
+            .catch(error => {
+                // 요청 실패 시 오류 로그 출력
+                console.log("Failed to add team. Error: " + error.message);
+            });
     };
     // 팀정보 수정
     const handleUpdateTeam = async () => {
@@ -104,8 +112,10 @@ const TeamPage = () => {
                                 <td className={"col-start-1 col-end-3"} onDrop={()=>console.log("td")}>
                                     {editId === team.teamNo ? (
                                         // <DropFiles onFileDrop={(img) => handleFileDrop(img)} />
-                                        <td><DropFiles value={newTeam.teamImage} /*onFileDrop={handleFileDrop}*/
-                                                       onChange={handleInputChange}/></td>
+                                        <td>
+                                            <DropFiles value={newTeam.teamImage} /*onFileDrop={handleFileDrop}*/
+                                                       onChange={handleInputChange}/>
+                                        </td>
                                     ) : (
                                         <img
                                             src={`${API_SERVER_HOST}/api/files/${team.teamImage}` || "/img/no-image.png"}

@@ -4,16 +4,8 @@ import { format, addWeeks } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 const teams = [
-    { name: "Gen.G", color: "#f0b90b" },
-    { name: "SKT1", color: "#bb0000" },
-    { name: "Hanwha Life Esports", color: "#005bac" },
-    { name: "kt Rolster", color: "#004aad" },
-    { name: "Dplus KIA", color: "#004098" },
-    { name: "KWANGODNG FREECS", color: "#551a8b" },
-    { name: "FearX", color: "#ff4500" },
-    { name: "Nongshim RedForce", color: "#db0f3c" },
-    { name: "DRX", color: "#0075c4" },
-    { name: "OKSavingBank BRION", color: "#1c49b7" }
+    "Gen.G", "SKT1", "Hanwha Life Esports", "kt Rolster", "Dplus KIA",
+    "KWANGODNG FREECS", "FearX", "Nongshim RedForce", "DRX", "OKSavingBank BRION"
 ];
 
 const startDate = new Date(2024, 4, 6);
@@ -43,23 +35,29 @@ const GameCard = React.memo(({ game, selectedTeam }) => (
     <Card className="mt-6 w-full">
         <CardBody>
             <div>
-                <div className="text-center" style={{ backgroundColor: selectedTeam?.name === game.team ? selectedTeam.color : 'transparent', color: selectedTeam?.name === game.team ? 'white' : 'black' }}>
-                    <Typography>
+                <div className={`text-center ${selectedTeam === game.team ? 'bg-blue-500' : ''}`}>
+                    <Typography className="text-white">
                         {game.matchDay.split(' ').pop()} {game.matchName} / {game.matchRound}
                     </Typography>
                 </div>
                 <div className="grid grid-cols-4 gap-4 text-center mt-2">
                     <div className="col-span-2">
-                        <Typography>{game.matchDay.split(' ').slice(0, -1).join(' ')}</Typography>
-                        <Typography>{game.matchHour}</Typography>
+                        <Typography>
+                            {game.matchDay.split(' ').slice(0, -1).join(' ')}<br/>
+                            {game.matchHour}
+                        </Typography>
                     </div>
                     <div className="col-span-1 text-center">
-                        <Typography>{game.matchOpponent}</Typography>
+                        <Typography>
+                            {game.matchOpponent}
+                        </Typography>
                     </div>
-                    <div className="col-span-1">
-                        <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800">
-                            예매
-                        </Button>
+                    <div className="col-span-1 flex justify-center align-center">
+                        <Typography>
+                            <Button className="col-span-4 md:col-span-1 w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800">
+                                예매
+                            </Button>
+                        </Typography>
                     </div>
                 </div>
             </div>
@@ -71,7 +69,7 @@ const TicketingPage = ({ selectedTeam }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const gamesPerPage = 4;
 
-    const filteredGames = useMemo(() => games.filter(game => game.team === selectedTeam?.name), [selectedTeam]);
+    const filteredGames = useMemo(() => games.filter(game => game.team === selectedTeam), [selectedTeam]);
 
     const paginatedGames = useMemo(() => {
         const startIndex = (currentPage - 1) * gamesPerPage;
