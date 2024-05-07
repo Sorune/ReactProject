@@ -59,7 +59,6 @@ const ListComponent = () => {
             // setBackgroundImageUrl(player.playerImage ? `${API_SERVER_HOST}/api/files/${player.playerImage}` : "https://i.namu.wiki/i/eqYqt-fiIALMuq4l3lX4fp5TEBXitJagvp9dqH12s2s-iWVxaB0K0gqM4EHf06jx93ju4J4muw_Pd3smxZC7pb2bI2de5qy-yMvVC9pbfyHJqbv4nDZ7_h6NhGEgjRGwA9oy_4Qc8oL9Y_hkJB2Kzw.webp");
         })
     }, [refresh])
-    console.log(`absolute inset-0 m-0 h-full w-full rounded-none bg-[url(${API_SERVER_HOST}/api/files/${serverData.dtoList[0].playerImage})] bg-cover bg-center`)
     return (
         <section className="min-h-screen py-8 px-8 lg:py-28">
             <div className="container mx-auto">
@@ -70,7 +69,7 @@ const ListComponent = () => {
                             className="relative grid h-[20rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-gradient-to-t from-black/80 via-black/50"
                             onClick={() => moveToRead({ pathName: '/player/read', num: player.pno, totalPage: serverData.totalCount })}
                         >
-                            {player.playerImage === "" ?
+                            {player.playerImage === null ?
                                 <CardHeader
                                     floated={false}
                                     shadow={false}
@@ -82,10 +81,19 @@ const ListComponent = () => {
                                     floated={false}
                                     shadow={false}
                                     color="transparent"
-                                    className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://i.namu.wiki/i/eqYqt-fiIALMuq4l3lX4fp5TEBXitJagvp9dqH12s2s-iWVxaB0K0gqM4EHf06jx93ju4J4muw_Pd3smxZC7pb2bI2de5qy-yMvVC9pbfyHJqbv4nDZ7_h6NhGEgjRGwA9oy_4Qc8oL9Y_hkJB2Kzw.webp')] bg-cover bg-center"
+                                    style={{
+                                        position: 'absolute',
+                                        inset: 0,
+                                        margin: 0,
+                                        height: '100%',
+                                        width: '100%',
+                                        borderRadius: 0,
+                                        backgroundImage: `url('${API_SERVER_HOST}/api/files/${player.playerImage}')`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                    }}
                                 />
                             }
-
 
                             <CardBody className="relative py-14 px-6 md:px-12 opacity-0 hover:opacity-100">
 
