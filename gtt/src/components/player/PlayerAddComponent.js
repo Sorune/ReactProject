@@ -1,5 +1,4 @@
 import React, {useCallback, useRef, useState} from "react";
-import {postAdd} from "../../api/playerApi"
 import FetchingModal from "../common/FetchingModal"
 import ResultModal from "../common/ResultModal"
 import useCustomMove from "../../hooks/useCustomMove";
@@ -7,7 +6,7 @@ import {createSearchParams, useSearchParams} from "react-router-dom";
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import ContentHeader from "../common/ContentHeader";
-import { startTransition } from 'react';
+import DropFiles from "../../components/common/DropFiles";
 import PlayerButtons from "./list/PlayerButtons";
 
 const initState = {
@@ -23,6 +22,7 @@ const PlayerAddComponent = () => {
     const [player, setPlayer] = useState({...initState})
     const [fetching, setFetching] = useState(false)
     const [result, setResult] = useState(null)
+    const imageDiv = useRef();
 
     const page = useRecoilValue(pageState)
     const {moveToList, moveToRead} = useCustomMove();
@@ -35,6 +35,8 @@ const PlayerAddComponent = () => {
     const handleChangePlayer = (e) => {
         player[e.target.name] = e.target.value
         setPlayer({...player})
+        console.log(player.playerImage)
+        // setPlayer(prev => ({ ...prev, playerImage: e.target.value }));
     }
 
     const closeModal = () => {
@@ -44,10 +46,11 @@ const PlayerAddComponent = () => {
 
     return (
         <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-            {fetching? <FetchingModal/> : <></>}
+            {fetching ? <FetchingModal/> : <></>}
 
             {/* ResultModal 안됨 */}
-            {result? <ResultModal title={'Player Add Result'} content={`${result}번 등록 완료`} callbackFn={closeModal}/> : <></>}
+            {result ?
+                <ResultModal title={'Player Add Result'} content={`${result}번 등록 완료`} callbackFn={closeModal}/> : <></>}
 
             <ContentHeader page={page} pathName={'/player/'} moveTo={moveToList}/>
 
@@ -90,13 +93,23 @@ const PlayerAddComponent = () => {
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">BirthDate</div>
                     <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="birthDate" type={'date'} value={player.birthDate} onChange={handleChangePlayer}></input>
+                           name="birthDate" type={'date'} value={player.birthDate}
+                           onChange={handleChangePlayer}></input>
                     {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>*/}
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="w-1/5 p-6 text-right font-bold">PlayerImage</div>
+                    <td>
+                        <DropFiles value={player.playerImage} name="playerImage" imageDiv={imageDiv}/>
+                    </td>
                 </div>
             </div>
             <div className="flex justify-end">
                 <div className="relative md-4 flex p-4 flex-wrap items-stretch">
-                    <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno} player={player} moveToRead={moveToRead}/>
+                    <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}
+                                   player={player} moveToRead={moveToRead} imageDiv={imageDiv}/>
                 </div>
             </div>
         </div>

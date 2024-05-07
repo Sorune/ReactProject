@@ -45,6 +45,7 @@ public class PlayerServiceImpl implements PlayerService{
         player.changePosition(playerDTO.getPosition());
         player.changeBirthDate(playerDTO.getBirthDate());
         player.changeTeam(playerDTO.getTeamName());
+        player.changePlayerImage(playerDTO.getPlayerImage());
 
         playerRepository.save(player);
     }
