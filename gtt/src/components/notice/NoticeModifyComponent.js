@@ -4,7 +4,6 @@ import {deleteOne, getOne, putOne} from "../../api/noticeApi";
 
 import useCustomMove from "../../hooks/useCustomMove";
 import {DialogResult} from "../common/DialogResult";
-import {DropDownInput} from "../common/DropDownInput";
 import QuilEditor from "../common/quill/QuilEditor";
 import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import ContentHeader from "../common/ContentHeader";
