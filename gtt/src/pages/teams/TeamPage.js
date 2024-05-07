@@ -1,7 +1,7 @@
 // 불러올 파일 import
 import SidebarLayout from "../../layouts/SidebarLayout";
 import { Button, Card, CardFooter, IconButton, Input, Tooltip, Typography } from "@material-tailwind/react";
-import {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { PencilIcon, TrashIcon, ArrowPathIcon, CheckIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { allTeam, addTeam, updateTeam, deleteTeam } from "../../api/teamApi";
 import DropFiles from "../../components/common/DropFiles";
@@ -24,38 +24,46 @@ const TeamPage = () => {
         updateTeamImage();
     }, []);
     // 팀 리스트 불러오기
-    const fetchTeams = async () => {
-        const response = await allTeam();
-        if (response && Array.isArray(response.dtoList)) {
-            setTeams(response.dtoList);
-        } else {
-            console.error('Data is not an array', response);
-            setTeams([]);
-        }
+    const fetchTeams = () => {
+        allTeam()
+            .then(response => {
+                // 데이터 구조를 보다 상세하게 검증
+                if (response && response.dtoList && Array.isArray(response.dtoList)) {
+                    setTeams(response.dtoList);
+                } else {
+                    console.error('Data is not an array or dtoList is undefined', response);
+                    setTeams([]);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching teams', error);
+                setTeams([]);
+            });
     }
     const updateTeamImage = ()=>{
     }
-    // 팀 추가(생성)
-    const handleAddTeam = async () => {
-        try {
-            if (imageDiv.current) {
-                const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
-                console.log("file", fileName);
-                setNewTeam((prevTeam) => ({
-                    ...prevTeam,
-                    teamImage: fileName
-                }));
-            }
-
-            // 이미지 업데이트 후 추가 작업 수행
-            const resData = await addTeam(newTeam);
-            setTeams([...teams, resData]);
-            setAdd(false);
-            setNewTeam({ teamName: '', teamImage: "" });
-            fetchTeams();
-        } catch (error) {
-            console.log("Failed to add team. Error: " + error.message);
+    // 팀 추가
+    const handleAddTeam = () => {
+        // 새 팀 정보를 위한 로컬 변수 생성, newTeam 상태에서 복사
+        let updatedTeam = { ...newTeam };
+        // 이미지가 업로드된 경우, 이미지 파일 이름 추출 및 업데이트
+        if (imageDiv.current) {
+            const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
+            console.log("file", fileName); // 로그에 파일 이름 출력
+            updatedTeam.teamImage = fileName; // 로컬 변수에 이미지 파일 이름 설정
         }
+        // addTeam 함수를 호출하여 API를 통해 팀 추가 요청
+        addTeam(updatedTeam)
+            .then(resData => {
+                // 요청이 성공하면, 새 팀 데이터로 상태 업데이트
+                setTeams(prevTeams => [...prevTeams, resData]); // 상태에 새 팀 추가
+                setAdd(false); // 추가 모드 해제
+                setNewTeam({ teamName: '', teamImage: "" }); // 입력 필드 초기화
+            })
+            .catch(error => {
+                // 요청 실패 시 오류 로그 출력
+                console.log("Failed to add team. Error: " + error.message);
+            });
     };
     // 팀정보 수정
     const handleUpdateTeam = async () => {
@@ -99,28 +107,28 @@ const TeamPage = () => {
                         </tr>
                         </thead>
                         <tbody onDrop={()=>console.log("tbody")}>
-                        {teams.map(team => ( // 서버에서 팀 정보를 불러옴
-                            <tr key={team.teamNo} onDrop={()=>console.log("tr")}>
-                                <td className={"col-start-1 col-end-3"} onDrop={()=>console.log("td")}>
+                        {teams.map(team => (
+                            <tr key={team.teamNo}>
+                                <td>
                                     {editId === team.teamNo ? (
-                                        // <DropFiles onFileDrop={(img) => handleFileDrop(img)} />
-                                        <td><DropFiles value={newTeam.teamImage} /*onFileDrop={handleFileDrop}*/
-                                                       onChange={handleInputChange}/></td>
+                                        <DropFiles value={newTeam.teamImage} onChange={handleInputChange}/>
                                     ) : (
                                         <img
-                                            src={`${API_SERVER_HOST}/api/files/${team.teamImage}` || "/img/no-image.png"}
-                                            className={"w-24"}
+                                            src={team.teamImage ? `${API_SERVER_HOST}/api/files/${team.teamImage}` : "/img/no-image.png"}
+                                            alt="Team Image"
+                                            onError={(e) => e.target.src = "/img/no-image.png"} // 에러 발생 시 대체 이미지
+                                            className="w-24 h-24 object-cover" // 이미지 크기 및 커버 설정
                                         />
                                     )}
                                 </td>
-                                <td className={"col-start-3 col-end-10"}>
+                                <td className="col-start-3 col-end-10">
                                     {editId === team.teamNo ? (
                                         <Input value={newTeam.teamName} onChange={(e) => setNewTeam({ ...newTeam, teamName: e.target.value })} />
                                     ) : (
                                         <Typography>{team.teamName}</Typography>
                                     )}
                                 </td>
-                                <td className={"col-start-10 col-end-12"}>
+                                <td className="col-start-10 col-end-12">
                                     <Tooltip content={editId === team.teamNo ? "Save Changes" : "Edit Team"}>
                                         <IconButton variant="text" onClick={() => editId === team.teamNo ? handleUpdateTeam() : startEdit(team)}>
                                             {editId === team.teamNo ? <CheckIcon className="h-4 w-4" /> : <PencilIcon className="h-4 w-4" />}

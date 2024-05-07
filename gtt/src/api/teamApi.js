@@ -5,7 +5,7 @@ const prefix = `${API_SERVER_HOST}/api/team`;
 
 // 팀 목록 출력
 export const allTeam = async () => {
-    const response = await axios.get(`${prefix}/teams`);
+    const response = await axios.get(`${prefix}/list`);
     return response.data;
 }
 
@@ -16,13 +16,13 @@ export const addTeam = async (team) => {
 }
 
 // 팀 수정
-export const updateTeam = async (id, team) => {
-    const response = await axios.put(`${prefix}/${id}`, team);
+export const updateTeam = async (teamNo, team) => {
+    const response = await axios.put(`${prefix}/${teamNo}`, team);
     return response.data;
 }
 
 // 팀 삭제
-export const deleteTeam = async (id) => {
-    const response = await axios.delete(`${prefix}/${id}`);
+export const deleteTeam = async (teamNo) => {
+    const response = await axios.delete(`${prefix}/${teamNo}`);
     return response.data;
 }

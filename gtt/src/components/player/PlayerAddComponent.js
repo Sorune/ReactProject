@@ -154,8 +154,8 @@ const PlayerAddComponent = () => {
                            name="birthDate" type={'date'} value={player.birthDate}
                            onChange={handleChangePlayer}></input>
                     {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>*/}
-                </div>
-            </div>
+            {/*    </div>*/}
+            {/*</div>*/}
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">PlayerImage</div>
