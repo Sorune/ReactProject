@@ -1,8 +1,8 @@
 import axios from "axios";
 
 //export const API_SERVER_HOST = 'http://sorune.asuscomm.com:39173'
-//export const API_SERVER_HOST = 'http://localhost:8001';
-export const API_SERVER_HOST = 'http://localhost:8080';
+export const API_SERVER_HOST = 'http://localhost:8001';
+//export const API_SERVER_HOST = 'http://localhost:8080';
 //export const API_SERVER_HOST = 'http://mbc-webcloud.iptime.org:8080'
 
 
