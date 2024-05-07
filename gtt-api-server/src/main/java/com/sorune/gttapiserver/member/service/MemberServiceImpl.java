@@ -86,7 +86,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.deleteById(num);
     }
 
-    @Override
+    @Override // 회원 한명 조회
     public MemberDTO searchMember(Long num) {
         // 회원 번호로 회원 정보를 조회
         Optional<Member> member = memberRepository.findById(num);
@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService {
         return memberDTO;
     }
 
-    @Override
+    @Override // 회원 전체 조회
     public PageResponseDTO<MemberDTO> memberList(PageRequestDTO pageRequestDTO) {
 
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("num").descending());

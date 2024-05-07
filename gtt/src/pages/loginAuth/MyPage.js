@@ -90,6 +90,7 @@ const MyPage = () => {
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         />
                                     </div>
+                                    <div>
                                         <Typography as="label" htmlFor="nickname"
                                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임(o)</Typography>
                                         {/* nick */}
@@ -97,7 +98,11 @@ const MyPage = () => {
                                         <input name="nick" value={nick} onChange={(e) => setNick(e.target.value)}
                                                type="text" id="nick"
                                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                    </div>
                                     <div>
+                                        <h1>추가정보확인 (수정)</h1>
+                                        <hr/>
+                                        <br/>
                                         <div>
                                             <Typography as="label" htmlFor="birth"
                                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</Typography>
@@ -151,7 +156,7 @@ const MyPage = () => {
                                         </div>
                                         <div>
                                             <label htmlFor="adress"
-                                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소</label>
+                                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소(o)</label>
                                             {/* address */}
                                             <input type="text" name="address" id="address" onChange={setAddress}
                                                    value={address || ''}
@@ -161,7 +166,7 @@ const MyPage = () => {
                                         <div>
                                             <label htmlFor="addrSub"
                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">나머지
-                                                주소</label>
+                                                주소(o)</label>
                                             {/* addrSub */}
                                             <input type="text" name="addrSub" id="addrSub" value={addrSub}
                                                    onChange={(e) => setAddrSub(e.target.value)}
