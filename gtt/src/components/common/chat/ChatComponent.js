@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faComments} from "@fortawesome/free-solid-svg-icons";
 import {memo, useEffect, useRef, useState} from "react";
 import {useRecoilState, useResetRecoilState} from "recoil";
-import {chatListState, chatRoomState, chatState} from "../../../atoms/chatData";
+import {chatListState, chatRoomState, chatState, messagesState} from "../../../atoms/chatData";
 import ChatRoomComponent from "./ChatRoomComponent";
 import ChatListComponent from "./ChatListComponent";
 
@@ -16,6 +16,7 @@ export const dismissType = {
     outsidePress: false,
 };
 const ChatComponent = memo(()=>{
+    const messageReset = useResetRecoilState(messagesState)
     const [chatList, setChatList] = useRecoilState(chatListState);
     const resetRoom = useResetRecoilState(chatRoomState);
     const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +29,7 @@ const ChatComponent = memo(()=>{
         setIsOpen(false);
     };
     const moveList = ()=>{
+        messageReset();
         setIsList(!isList);
         resetRoom();
     }

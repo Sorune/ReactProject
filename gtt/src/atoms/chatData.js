@@ -24,11 +24,6 @@ export const chatRoomState = atom({
     },
 })
 
-export const client = atom({
-    key:'clientState',
-    default:null,
-})
-
 export const messagesState = atom({
     key:'messagesState',
     default:[],

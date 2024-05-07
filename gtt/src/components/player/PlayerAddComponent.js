@@ -153,9 +153,9 @@ const PlayerAddComponent = () => {
                     <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
                            name="birthDate" type={'date'} value={player.birthDate}
                            onChange={handleChangePlayer}></input>
-                    {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+                    {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>
+                </div>
+            </div>*/}
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="w-1/5 p-6 text-right font-bold">PlayerImage</div>
@@ -167,8 +167,15 @@ const PlayerAddComponent = () => {
             <div className="flex justify-end">
                 <div className="relative md-4 flex p-4 flex-wrap items-stretch">
                     <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}
-                                   player={player} moveToRead={moveToRead} imageDiv={imageDiv}/>
+                                   player={player} moveToRead={moveToRead} imageDiv={imageDiv} setResultCallback={handleResult}/>
                 </div>
+                {result ?<DialogResult
+                    title={'플레이어'}
+                    content={`${result}`}
+                    callbackFn={closeDialog}
+                    open={result}
+                    setOpen={setOpen}
+                />: <></> }
             </div>
         </div>
     )

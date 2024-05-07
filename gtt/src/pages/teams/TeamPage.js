@@ -16,24 +16,19 @@ const TeamPage = () => {
     const imageDiv = useRef();
     const [teams, setTeams] = useState([]);
     const [add, setAdd] = useState(false);
+    const [refresh, setRefresh] = useState(false)
     const [editId, setEditId] = useState(null);
     const [newTeam, setNewTeam] = useState({ teamName: '', teamImage: "" });
     // 구성 요소가 마운트 해제되거나 효과가 다시 실행되기 전에 구독, 타이머, 이벤트 리스너 등을 정리하여 메모리 누수를 방지
     useEffect(() => {
         fetchTeams();
         updateTeamImage();
-    }, []);
+    }, [refresh]);
     // 팀 리스트 불러오기
     const fetchTeams = () => {
         allTeam()
             .then(response => {
-                // 데이터 구조를 보다 상세하게 검증
-                if (response && response.dtoList && Array.isArray(response.dtoList)) {
-                    setTeams(response.dtoList);
-                } else {
-                    console.error('Data is not an array or dtoList is undefined', response);
-                    setTeams([]);
-                }
+                setTeams(response);
             })
             .catch(error => {
                 console.error('Error fetching teams', error);
@@ -58,12 +53,14 @@ const TeamPage = () => {
                 // 요청이 성공하면, 새 팀 데이터로 상태 업데이트
                 setTeams(prevTeams => [...prevTeams, resData]); // 상태에 새 팀 추가
                 setAdd(false); // 추가 모드 해제
+                setRefresh(!refresh)
                 setNewTeam({ teamName: '', teamImage: "" }); // 입력 필드 초기화
             })
             .catch(error => {
                 // 요청 실패 시 오류 로그 출력
                 console.log("Failed to add team. Error: " + error.message);
             });
+
     };
     // 팀정보 수정
     const handleUpdateTeam = async () => {
@@ -72,7 +69,7 @@ const TeamPage = () => {
         setTeams(updatedTeams);
         setEditId(null);
         setNewTeam({ teamName: '', teamImage: ""});
-        fetchTeams();
+        setRefresh(!refresh)
     }
     // 팀정보 삭제
     const handleDeleteTeam = async (id) => {
@@ -111,7 +108,7 @@ const TeamPage = () => {
                             <tr key={team.teamNo}>
                                 <td>
                                     {editId === team.teamNo ? (
-                                        <DropFiles value={newTeam.teamImage} onChange={handleInputChange}/>
+                                        <DropFiles value={newTeam.teamImage} imageDiv={imageDiv} onChange={handleInputChange}/>
                                     ) : (
                                         <img
                                             src={team.teamImage ? `${API_SERVER_HOST}/api/files/${team.teamImage}` : "/img/no-image.png"}
