@@ -6,8 +6,6 @@ import {Avatar, Button, Card, CardBody, CardHeader, IconButton, Typography} from
 import {useLocation} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
-
-import PlayerButtons from "./list/PlayerButtons";
 import PlayerListHeader from "../player/list/PlayerListHeader";
 
 const initState = {
