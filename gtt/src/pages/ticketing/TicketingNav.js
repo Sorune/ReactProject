@@ -1,8 +1,27 @@
-import { Avatar, Card, CardBody, CardFooter, Typography } from "@material-tailwind/react";
-// import { Button } from "react-day-picker";
+import React, { useState } from 'react';
+import { Avatar, Card, CardBody, Typography } from "@material-tailwind/react";
 
+const TicketingNav = ({ onTeamSelect }) => {
+    const [selectedTeam, setSelectedTeam] = useState(null);
 
-const TicketingNav = () => {
+    // 팀 데이터 배열 정의
+    const teams = [
+        { name: "Gen.G", img: "/img/team/geng.png" },
+        { name: "SKT1", img: "/img/team/T1.png" },
+        { name: "Hanwha Life Esports", img: "/img/team/Hanwha_Life_Esports.png" },
+        { name: "kt Rolster", img: "/img/team/Rolster.png" },
+        { name: "Dplus KIA", img: "/img/team/DPlus_KIA.png" },
+        { name: "KWANGODNG FREECS", img: "/img/team/Freecs.png" },
+        { name: "FearX", img: "/img/team/FearX.png" },
+        { name: "Nongshim RedForce", img: "/img/team/NongShim.png" },
+        { name: "DRX", img: "/img/team/Brion.png" },
+        { name: "OKSavingBank BRION", img: "/img/team/OK.jpg" }
+    ];
+
+    const handleTeamSelect = (teamName) => {
+        setSelectedTeam(teamName);
+        onTeamSelect(teamName);
+    };
 
     return (
         <Card className="mt-6 w-full">
@@ -19,17 +38,14 @@ const TicketingNav = () => {
                         </Typography>
                     </div>
                 </div>
-                <div className="flex justify-center">
-                    <div>
-                        <div className="flex items-center gap-4">
-                            <Avatar src="/img/team/geng.png" alt="avatar" />
-                            <div>
-                                <Typography variant="h6">Gen.G</Typography>
-                            </div>
+                <div className="flex justify-center flex-wrap gap-4">
+                    {teams.map((team) => (
+                        <div key={team.name} className="flex items-center gap-4 cursor-pointer" onClick={() => handleTeamSelect(team.name)} style={{border: selectedTeam === team.name ? '2px solid skyblue' : 'none', padding: '4px', borderRadius: '50%'}}>
+                            <Avatar src={team.img} alt={team.name} />
                         </div>
-                    </div>
+                    ))}
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center mt-5">
                     <div className="items-center hidden gap-x-2 lg:flex">
                         <div className="relative flex w-full gap-2 md:w-max">
                             <div className="relative h-10 w-full  min-w-[288px]">
