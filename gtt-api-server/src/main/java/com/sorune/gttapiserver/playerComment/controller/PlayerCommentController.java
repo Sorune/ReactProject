@@ -23,6 +23,7 @@ public class PlayerCommentController {
 
     @GetMapping("/list/{pno}")
     public PageResponseDTO<PlayerCommentDTO> getCommentList(PageRequestDTO pageRequestDTO, @PathVariable("pno") Long pno){
+        pageRequestDTO.setPage(1);
         return playerCommentService.getPlayerCommentList(pageRequestDTO, pno);
     }
 

@@ -29,20 +29,17 @@ const initState = {
     birthDate : null
 }
 
-
-
 const ReadComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
     const page = useRecoilValue(pageState)
     const { moveToModify,moveToList } = useCustomMove();
 
 
-
     useEffect(() => {
         getOnePlayer(pno).then(data => {
             console.log(data)
             setPlayer(data)
-            console.log(player.playerImage)
+            console.log(data.birthDate)
         })
     }, [pno])
 
