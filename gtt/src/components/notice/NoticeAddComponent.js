@@ -28,8 +28,11 @@ const NoticeAddComponent = ({page}) =>{
     const [result, setResult] = useState(null) // 결과상태
 
     const handleChangeNotice = (e)=> {
-        notice[e.target.name] = e.target.value
-        setNotice({...notice})
+        const { name, value } = e.target;
+        setNotice(prevNotice => ({
+            ...prevNotice,
+            [name]: value
+        }));
     }
 
     const [open, setOpen] = useState(false);
@@ -56,8 +59,10 @@ const NoticeAddComponent = ({page}) =>{
         const val = QuillInstance.getContents();
         console.log(val)
         setContent(val)
-        notice["content"] = JSON.stringify(val)
-        setNotice({...notice})
+        setNotice(prevNotice => ({
+            ...prevNotice,
+            ["content"]: JSON.stringify(val)
+        }))
     }
 
     return(

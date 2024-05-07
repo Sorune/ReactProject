@@ -1,32 +1,25 @@
 import {
-    Button,
-    Card,
-    CardFooter,
     IconButton,
     Popover,
     PopoverContent,
     PopoverHandler,
-    Textarea
 } from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faComments} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faComments} from "@fortawesome/free-solid-svg-icons";
 import {memo, useEffect, useRef, useState} from "react";
-import {useRecoilState} from "recoil";
-import {chatListState,chatState} from "../../../atoms/chatData";
-import useWebSocket from "../../../hooks/useWebSocket";
+import {useRecoilState, useResetRecoilState} from "recoil";
+import {chatListState, chatRoomState, chatState} from "../../../atoms/chatData";
+import ChatRoomComponent from "./ChatRoomComponent";
+import ChatListComponent from "./ChatListComponent";
+
 export const dismissType = {
     outsidePress: false,
 };
-const userId = "test"
-
 const ChatComponent = memo(()=>{
-    const [chatRoomId,setChatRoomId] = useState("");
-    const chatRef = useRef(null);
-    const [client, setClient] = useState(null);
-    const [chat, setChat] = useRecoilState(chatState);
     const [chatList, setChatList] = useRecoilState(chatListState);
-    const {connect, disConnect, sendChat} = useWebSocket()
+    const resetRoom = useResetRecoilState(chatRoomState);
     const [isOpen, setIsOpen] = useState(false);
+    const [isList, setIsList] = useState(true);
 
     const handleClick = () => {
         setIsOpen(!isOpen);
@@ -34,66 +27,25 @@ const ChatComponent = memo(()=>{
     const handleClose = () => {
         setIsOpen(false);
     };
-
-    useEffect(()=>{
-        if(client!==undefined) {
-            const data = connect()
-            data.then((resData)=>{
-                setClient(resData.client);
-                setChatRoomId(resData.chatRoomId);
-                console.log(resData.chatRoomId,resData.client)
-            })
-        }
-
-        return()=>disConnect(client);
-    },[chatList])
-
-    const onChangeChat = (e) => {
-        setChat(e.target.value);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(chat,chatRoomId,client)
-        client.publish({
-            destination: "/pub/api/chat/message/",
-            contentsType: "application/json",
-            body: JSON.stringify({
-                messageType:"TALK",
-                message:chat,
-                chatRoomId:chatRoomId,
-                senderId:userId,
-            })
-        });
-        setChat("")
-    };
-    const handleReset = () =>{
-        console.log("reset target : "+ chatRef.current.children[0])
-        chatRef.current.children[0].value = ""
+    const moveList = ()=>{
+        setIsList(!isList);
+        resetRoom();
     }
-
+    const moveRoom = ()=>{
+        setIsList(!isList);
+    }
     return(
-        <div>
+        <div className={"fixed bottom-10 right-10 z-30"}>
             <Popover active={isOpen} dismiss={dismissType} onOutsideClick={handleClose}>
                 <PopoverHandler>
                     <IconButton variant="outlined" onClick={handleClick}><FontAwesomeIcon icon={faComments} className={"text-lg"} /></IconButton>
                 </PopoverHandler>
                 <PopoverContent>
-                    <Card className="z-20">
-
-                        <CardFooter>
-                            <Textarea ref={chatRef} variant="static" placeholder="Your Comment" rows={3} onChange={onChangeChat} value={chat}/>
-                            <div className="flex gap-2">
-                                <Button size="sm" color="red" variant="text" className="rounded-md"
-                                        onClick={handleReset}>
-                                    Cancel
-                                </Button>
-                                <Button size="sm" className="rounded-md" onClick={handleSubmit}>
-                                    Post Comment
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
+                    <div className="w-[250px] h-[400px]">
+                        {isList?
+                            <ChatListComponent chatList={chatList} moveTo={moveRoom}/>:
+                            <ChatRoomComponent moveTo={moveList}/>}
+                    </div>
                 </PopoverContent>
             </Popover>
         </div>

@@ -2,6 +2,8 @@ package com.sorune.gttapiserver.team.service;
 
 import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
+import com.sorune.gttapiserver.files.DTO.FilesDTO;
+import com.sorune.gttapiserver.files.Entity.Files;
 import com.sorune.gttapiserver.team.DTO.TeamDTO;
 import com.sorune.gttapiserver.team.entity.Team;
 import com.sorune.gttapiserver.team.repository.TeamRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 // 이 서비스는 비즈니스 로직을 처리하는 서비스라고 스프링에 알림
 @Service
@@ -32,9 +35,18 @@ public class TeamServiceImpl implements TeamService {
     private final ModelMapper modelMapper;
     private final TeamRepository teamRepository;
 
+    @Override
+    public List<TeamDTO> getAllTeams() {
+        return teamRepository.findAll().stream().map((element) -> modelMapper.map(element, TeamDTO.class)).collect(Collectors.toList());
+    }
+
     @Override // 팀 생성
     public Long registerTeam(TeamDTO teamDTO) {
         Team team = modelMapper.map(teamDTO, Team.class);
+        /*Team team = Team.builder()
+                .teamName(teamDTO.getTeamName())
+                .teamImage(teamDTO.getTeamImage().stream().map(FilesDTO::toFiles).toList())
+                .build();*/
         // 팀 정보를 데이터 베이스에 저장함
         log.info(team);
         // 들어온 팀 정보를 로그에 출력
@@ -50,6 +62,7 @@ public class TeamServiceImpl implements TeamService {
         team.changeTeamName(teamDTO.getTeamName());
         // 팀 이미지 변경
         team.changeTeamImage(teamDTO.getTeamImage());
+        //team.changeTeamImage(teamDTO.getTeamImage().stream().map(FilesDTO::toFiles).toList());
         // 수정된 팀 정보를 데이터베이스에 저장함
     }
 

@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {
     Navbar,
     Collapse,
@@ -24,6 +24,7 @@ const BasicMenu = () =>{
     const userInfo = useRecoilState(userState)
     const pageReset = useResetRecoilState(pageState)
     const navigate = useNavigate();
+    const pathName = useLocation().pathname
     const {logout} = useUserAuth()
     // 로그인 페이지로 이동하는 메서드
     const moveToLogin = () => {
@@ -40,9 +41,13 @@ const BasicMenu = () =>{
         if(window.confirm("로그아웃 하시겠습니까?")){
             logout()
             setRefresh(!refresh)
+            console.log(pathName)
+            if(pathName&&pathName==="/myPage"){
+                navigate("/")
+            }
         }
     }
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener(
           "resize",
           () => window.innerWidth >= 960 && setOpenNav(false),
@@ -65,8 +70,6 @@ const BasicMenu = () =>{
             </ul>
         );
     }
-
-    console.log(userInfo[0].nick)
     return (
         <Navbar className="mx-auto max-w-full px-3 py-3">
             <div className="flex items-center justify-between text-black">

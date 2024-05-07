@@ -3,6 +3,7 @@ package com.sorune.gttapiserver.team.controller;
 import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.common.util.CustomFileUtil;
+import com.sorune.gttapiserver.files.Entity.Files;
 import com.sorune.gttapiserver.team.DTO.TeamDTO;
 import com.sorune.gttapiserver.team.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,6 @@ public class TeamController {
     @PostMapping("/")
     public Map<String, Long> createTeam(@RequestBody TeamDTO teamDTO) {
         log.info(teamDTO);  // 받아온 TeamDTO를 로그에 기록
-        List<MultipartFile> files = teamDTO.getFiles();  // DTO에서 파일 리스트 가져옴
-        List<String> uploadFileNames = fileUtil.saveFiles(files);  // 파일 저장하고 파일 이름 목록 받아옴
-        teamDTO.setFileDTOList(uploadFileNames);           // 저장된 파일 이름들을 DTO에 설정
         Long teamNo = teamService.registerTeam(teamDTO);  // 팀 등록하고 팀 번호 받아옴
         return Map.of("result", teamNo);               // 팀 번호를 결과로 반환
     }
@@ -59,5 +57,10 @@ public class TeamController {
     public Map<String, String> deleteTeam(@PathVariable("teamNo") Long teamNo) {
         teamService.removeTeam(teamNo);  // 주어진 팀 번호로 팀 삭제
         return Map.of("result", "SUCCESS");  // 삭제 성공 메시지 반환
+    }
+
+    @GetMapping("/teams")
+    public List<TeamDTO> readAllTeams() {
+        return teamService.getAllTeams();
     }
 }
