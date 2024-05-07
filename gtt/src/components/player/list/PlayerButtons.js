@@ -1,12 +1,13 @@
 import {Breadcrumbs, Button} from "@material-tailwind/react";
 import {Link, useLocation} from "react-router-dom";
-import React from "react";
+import React, {useState} from "react";
 import {deleteOnePlayer, postAdd, putOnePlayer} from "../../../api/playerApi";
 
 
-const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player})=>{
+const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player, setResultCallback })=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
+    const [result, setResult] = useState(null)
 
 
     const handleClickDelete = () => {
@@ -49,6 +50,7 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
 
         postAdd(formData).then(data => {
             console.log(data, data.pno)
+            setResultCallback(data.pno)
 
             moveTo({
                 pathName:pathName+'read/' + data.pno,
