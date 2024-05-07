@@ -1,12 +1,13 @@
 import {Breadcrumbs, Button} from "@material-tailwind/react";
 import {Link, useLocation} from "react-router-dom";
-import React from "react";
+import React, {useState} from "react";
 import {deleteOnePlayer, postAdd, putOnePlayer} from "../../../api/playerApi";
 
 
-const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player})=>{
+const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player, imageDiv})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
+    const [result, setResult] = useState(null)
 
 
     const handleClickDelete = () => {
@@ -28,6 +29,7 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
         formData.append("teamName", player.teamName)
         formData.append("position", player.position)
         formData.append("birthDate", player.birthDate)
+        formData.append("playerImage", player.playerImage)
 
         putOnePlayer(pno, formData).then(data => {
             moveTo({
@@ -38,6 +40,9 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
     }
 
     const handleClickAdd = (e) => {
+        const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
+        console.log("file", fileName);
+
         const formData = new FormData()
 
         formData.append("nickName", player.nickName)
@@ -46,9 +51,13 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
         formData.append("teamName", player.teamName)
         formData.append("position", player.position)
         formData.append("birthDate", player.birthDate)
+        formData.append("playerImage", fileName)
+
+        console.log(formData)
 
         postAdd(formData).then(data => {
             console.log(data, data.pno)
+            setResultCallback(data.pno)
 
             moveTo({
                 pathName:pathName+'read/' + data.pno,
