@@ -1,7 +1,7 @@
 // 불러올 파일 import
 import SidebarLayout from "../../layouts/SidebarLayout";
 import { Button, Card, CardFooter, IconButton, Input, Tooltip, Typography } from "@material-tailwind/react";
-import {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { PencilIcon, TrashIcon, ArrowPathIcon, CheckIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { allTeam, addTeam, updateTeam, deleteTeam } from "../../api/teamApi";
 import DropFiles from "../../components/common/DropFiles";
@@ -107,30 +107,28 @@ const TeamPage = () => {
                         </tr>
                         </thead>
                         <tbody onDrop={()=>console.log("tbody")}>
-                        {teams.map(team => ( // 서버에서 팀 정보를 불러옴
-                            <tr key={team.teamNo} onDrop={()=>console.log("tr")}>
-                                <td className={"col-start-1 col-end-3"} onDrop={()=>console.log("td")}>
+                        {teams.map(team => (
+                            <tr key={team.teamNo}>
+                                <td>
                                     {editId === team.teamNo ? (
-                                        // <DropFiles onFileDrop={(img) => handleFileDrop(img)} />
-                                        <td>
-                                            <DropFiles value={newTeam.teamImage} /*onFileDrop={handleFileDrop}*/
-                                                       onChange={handleInputChange}/>
-                                        </td>
+                                        <DropFiles value={newTeam.teamImage} onChange={handleInputChange}/>
                                     ) : (
                                         <img
-                                            src={`${API_SERVER_HOST}/api/files/${team.teamImage}` || "/img/no-image.png"}
-                                            className={"w-24"}
+                                            src={team.teamImage ? `${API_SERVER_HOST}/api/files/${team.teamImage}` : "/img/no-image.png"}
+                                            alt="Team Image"
+                                            onError={(e) => e.target.src = "/img/no-image.png"} // 에러 발생 시 대체 이미지
+                                            className="w-24 h-24 object-cover" // 이미지 크기 및 커버 설정
                                         />
                                     )}
                                 </td>
-                                <td className={"col-start-3 col-end-10"}>
+                                <td className="col-start-3 col-end-10">
                                     {editId === team.teamNo ? (
                                         <Input value={newTeam.teamName} onChange={(e) => setNewTeam({ ...newTeam, teamName: e.target.value })} />
                                     ) : (
                                         <Typography>{team.teamName}</Typography>
                                     )}
                                 </td>
-                                <td className={"col-start-10 col-end-12"}>
+                                <td className="col-start-10 col-end-12">
                                     <Tooltip content={editId === team.teamNo ? "Save Changes" : "Edit Team"}>
                                         <IconButton variant="text" onClick={() => editId === team.teamNo ? handleUpdateTeam() : startEdit(team)}>
                                             {editId === team.teamNo ? <CheckIcon className="h-4 w-4" /> : <PencilIcon className="h-4 w-4" />}
