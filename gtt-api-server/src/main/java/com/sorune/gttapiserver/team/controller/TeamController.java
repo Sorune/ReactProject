@@ -47,8 +47,8 @@ public class TeamController {
     // 팀 수정 - 한 팀 ㅇ
     @PutMapping("/{teamNo}")
     public Map<String, String> updateTeam(@PathVariable("teamNo") Long teamNo, @RequestBody TeamDTO teamDTO) {
-        teamDTO.setTeamNo(teamNo);  // URL에서 받아온 팀 번호를 DTO에 설정
-        teamService.modifyTeam(teamDTO);  // 팀 정보 수정
+        teamDTO.setTeamNo(teamNo);          // URL에서 받아온 팀 번호를 DTO에 설정
+        teamService.modifyTeam(teamDTO);    // 팀 정보 수정
         return Map.of("result", "SUCCESS");  // 수정 성공 메시지 반환
     }
 

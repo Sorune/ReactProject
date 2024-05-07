@@ -60,21 +60,51 @@ const TeamPage = () => {
                 // 요청 실패 시 오류 로그 출력
                 console.log("Failed to add team. Error: " + error.message);
             });
-
     };
     // 팀정보 수정
-    const handleUpdateTeam = async () => {
-        const updatedTeam = await updateTeam(editId, newTeam);
-        const updatedTeams = teams.map(team => team.teamNo === editId ? { ...team, ...updatedTeam } : team);
-        setTeams(updatedTeams);
-        setEditId(null);
-        setNewTeam({ teamName: '', teamImage: ""});
-        setRefresh(!refresh)
+    const handleUpdateTeam = () => {
+        let updatedTeam = { ...newTeam };  // 새 팀 객체를 만들고, 기존 newTeam의 정보를 복사해 입력
+        // (imageDiv에서 최신 이미지 정보 확인)
+        // imageDiv의 마지막 자식 요소를 가져와서, 즉 마지막에 추가된 이미지를 찾음
+        const lastImage = imageDiv.current.lastElementChild;
+        // 그 이미지의 fileName 속성을 읽음 이미지가 없으면 null 처리
+        const newFileName = lastImage ? lastImage.getAttribute("fileName") : null;
+        // 새 이미지 파일이 있으면 해당 이미지 newTeam 업데이트
+        if (newFileName) {
+            // 새 이미지 파일 이름이 있으면, 팀 정보에 업데이트
+            updatedTeam.teamImage = newFileName;
+        }
+        // API 호출로 팀 정보를 업데이트
+        updateTeam(editId, updatedTeam)
+            .then(response => {
+                const updatedTeams = teams.map(team =>
+                    // 성공적으로 업데이트 되면, 모든 팀 리스트 중에서 현재 수정한 팀 정보만 새 정보로 교체
+                    team.teamNo === editId ? { ...team, ...response } : team
+                );
+                // 수정된 전체 팀 리스트를 상태로 설정
+                setTeams(updatedTeams);
+                // 팀 ID를 초기화
+                setEditId(null);
+                // 입력폼 초기화
+                setNewTeam({ teamName: '', teamImage: '' });
+                // list 갱신
+                setRefresh(!refresh);
+            })
+            .catch(error => {
+                // 업데이트에 실패시 에러 메시지 출력
+                console.log("Update Fail... " + error.message);
+            });
     }
     // 팀정보 삭제
-    const handleDeleteTeam = async (id) => {
-        await deleteTeam(id);
-        fetchTeams();
+    const handleDeleteTeam = (id) => {
+        deleteTeam(id)
+            .then(response => { // 호출에 성공 했을시
+                setTeams(prevTeams => [...prevTeams, response]);
+                setRefresh(!refresh); // 상태를 새로고침
+            })
+            .catch(error => { // 호출에 실패 했을시
+                console.log("Delete Fail... " + error.message);
+            });
     }
     // 수정하기
     const startEdit = (team) => {
