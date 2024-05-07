@@ -47,7 +47,6 @@ const ListComponent = () => {
     const [page,setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
     const [fetching, setFetching] = useState(false)
-    const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
 
     useEffect(() => {
         setFetching(true)
@@ -56,9 +55,9 @@ const ListComponent = () => {
             console.log(data)
             setServerData(data)
             setFetching(false)
-            // setBackgroundImageUrl(player.playerImage ? `${API_SERVER_HOST}/api/files/${player.playerImage}` : "https://i.namu.wiki/i/eqYqt-fiIALMuq4l3lX4fp5TEBXitJagvp9dqH12s2s-iWVxaB0K0gqM4EHf06jx93ju4J4muw_Pd3smxZC7pb2bI2de5qy-yMvVC9pbfyHJqbv4nDZ7_h6NhGEgjRGwA9oy_4Qc8oL9Y_hkJB2Kzw.webp");
         })
     }, [refresh])
+
     return (
         <section className="min-h-screen py-8 px-8 lg:py-28">
             <div className="container mx-auto">

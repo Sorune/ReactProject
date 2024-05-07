@@ -23,7 +23,7 @@ public class PlayerCommentController {
 
     @GetMapping("/list/{pno}")
     public PageResponseDTO<PlayerCommentDTO> getCommentList(PageRequestDTO pageRequestDTO, @PathVariable("pno") Long pno){
-        pageRequestDTO.setPage(1);
+        pageRequestDTO.setPage(1); // 페이징 처리 관련 문제로 막아놓음
         return playerCommentService.getPlayerCommentList(pageRequestDTO, pno);
     }
 
