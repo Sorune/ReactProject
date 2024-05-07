@@ -21,7 +21,7 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pno;
     private int age;
-    private String nickName, realName, teamName, position;
+    private String nickName, realName, teamName, position, playerImage;
     private Date birthDate;
 
 
@@ -43,5 +43,6 @@ public class Player {
     public void changePosition(String position){
         this.position = position;
     }
+    public void changePlayerImage(String playerImage){this.playerImage = playerImage;}
 
 }
