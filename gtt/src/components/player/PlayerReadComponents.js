@@ -17,6 +17,7 @@ import {
 } from "@material-tailwind/react";
 import PCommentList from "../playerComment/PlayerCommentListComponent"
 import PCommentAdd from "../playerComment/PlayerCommentAddComponent"
+import {API_SERVER_HOST} from "../../api/filesApi";
 
 const initState = {
     pno : 0,
@@ -41,6 +42,7 @@ const ReadComponent = ({pno}) => {
         getOnePlayer(pno).then(data => {
             console.log(data)
             setPlayer(data)
+            console.log(player.playerImage)
         })
     }, [pno])
 
@@ -52,12 +54,21 @@ const ReadComponent = ({pno}) => {
                 <Card className="w-full max-w-[100rem] shadow-lg p-10">
                     <CardHeader floated={false} color="blue-gray" >
                         <div className="text-center">
-                        <img
-                            className="max-w-full"
-                            src="https://i.namu.wiki/i/eqYqt-fiIALMuq4l3lX4fp5TEBXitJagvp9dqH12s2s-iWVxaB0K0gqM4EHf06jx93ju4J4muw_Pd3smxZC7pb2bI2de5qy-yMvVC9pbfyHJqbv4nDZ7_h6NhGEgjRGwA9oy_4Qc8oL9Y_hkJB2Kzw.webp"
-                            alt="ui/ux review check"
-                        />
-                        <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
+                            {player.playerImage === null ?
+                                <img
+                                    className="max-w-full"
+                                    src="https://i.namu.wiki/i/eqYqt-fiIALMuq4l3lX4fp5TEBXitJagvp9dqH12s2s-iWVxaB0K0gqM4EHf06jx93ju4J4muw_Pd3smxZC7pb2bI2de5qy-yMvVC9pbfyHJqbv4nDZ7_h6NhGEgjRGwA9oy_4Qc8oL9Y_hkJB2Kzw.webp"
+                                    alt="ui/ux review check"
+                                />
+                                :
+                                <img
+                                    className="max-w-full"
+                                    src={`${API_SERVER_HOST}/api/files/${player.playerImage}`}
+                                    alt="playerImage"
+                                />
+                            }
+                            <div
+                                className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 "/>
                         </div>
                     </CardHeader>
                     <CardBody>
