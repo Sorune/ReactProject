@@ -4,7 +4,7 @@ import AddrWithDaum from './AddrWithDaum';
 import {Button, IconButton, Typography, AccordionHeader, AccordionBody, Accordion} from '@material-tailwind/react';
 import {Dialog, DialogHeader, DialogBody} from '@material-tailwind/react';
 import {updateMember} from "../../api/memberApi";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {userState} from "../../atoms/userState";
 import SidebarLayout from "../../layouts/SidebarLayout";
 
@@ -12,20 +12,25 @@ import SidebarLayout from "../../layouts/SidebarLayout";
 const MyPage = () => {
     const navigate = useNavigate();
     const [modalOpen, modalSetOpen] = React.useState(false);
-    const userInfo = useRecoilValue(userState)
+    const [userInfo,setUserInfo] = useRecoilState(userState)
     // 1. 이페이지에서만 값을 가지고 있을 것이므로 여기에 state작성
     //      변수         메서드
-    const [num, setNum] = useState(userInfo ? userInfo.num : '');                           // num
-    const [userId, setUserId] = useState(userInfo ? userInfo.userId : '');      // id
-    const [password, setPassword] = useState(userInfo ? userInfo.password : '');            // pw
-    const [nick, setNick] = useState(userInfo ? userInfo.nick : '');            // nick
-    const [phone, setPhone] = useState(userInfo ? userInfo.phone : '');         // phone
-    const [email, setEmail] = useState(userInfo ? userInfo.email : '');         // email
-    const [birth, setBirth] = useState(userInfo ? userInfo.birth : '');         // birth
-    const [address, setAddress] = useState(userInfo ? userInfo.address : '');               // address
-    const [addrSub, setAddrSub] = useState(userInfo ? userInfo.addrSub : '');   // addrSub
-    const [zoneCode, setZoneCode] = useState(userInfo ? userInfo.zoneCode : '');// zoneCode
+    const [num, setNum] = useState(userInfo ? userInfo[0].num : '');                           // num
+    const [userId, setUserId] = useState(userInfo ? userInfo[0].userId : '');      // id
+    const [password, setPassword] = useState(userInfo ? userInfo[0].password : '');            // pw
+    const [nick, setNick] = useState(userInfo ? userInfo[0].nick : '');            // nick
+    const [phone, setPhone] = useState(userInfo ? userInfo[0].phone : '');         // phone
+    const [email, setEmail] = useState(userInfo ? userInfo[0].email : '');         // email
+    const [birth, setBirth] = useState(userInfo ? userInfo[0].birth : '');         // birth
+    const [address, setAddress] = useState(userInfo ? userInfo[0].address : '');               // address
+    const [addrSub, setAddrSub] = useState(userInfo ? userInfo[0].addrSub : '');   // addrSub
+    const [zoneCode, setZoneCode] = useState(userInfo ? userInfo[0].zoneCode : '');// zoneCode
 
+    // 페이지 진입 시 num 값이 0이거나 null이면 다른 페이지로 이동
+    if (num === 0 || num === null) {
+        alert("로그인 페이지로 이동합니다.")
+        navigate('/login'); // 로그인 페이지로 이동
+    }
     // 머트리얼 모달 동작 메서드
     const modalHandleOpen = () => modalSetOpen(true);
     const modalHandleClose = () => modalSetOpen(false);
@@ -34,28 +39,18 @@ const MyPage = () => {
         setAddress(fullAddress);
         setZoneCode(zoneCode);
     };
-    console.log(num, userId, password, phone, nick, email, birth, address, addrSub, zoneCode)
     // 로그인 페이지로 가는 메서드 - 버튼 이벤트 처리용
-
     const handleMemUpdate = ({num, userId, nick, birth, zoneCode, address, addrSub}) => {
         console.log(num, userId, nick, birth, zoneCode, address, addrSub);
 
         updateMember(num, userId, nick, birth, zoneCode, address, addrSub).then(data => {
-            navigate("/");
+            console.log(data)
         });
     };
 
     const handleReset = () => {
         window.location.reload();
     }
-
-    useEffect(() => {
-        // 페이지 진입 시 num 값이 0이거나 null이면 다른 페이지로 이동
-        if (num === 0 || num === null) {
-            alert("로그인 페이지로 이동합니다.")
-            navigate('/login'); // 로그인 페이지로 이동
-        }
-    }, [userInfo]);
 
     return (
         <SidebarLayout>
@@ -95,7 +90,6 @@ const MyPage = () => {
                                             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         />
                                     </div>
-                                    <div>
                                         <Typography as="label" htmlFor="nickname"
                                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임(o)</Typography>
                                         {/* nick */}
@@ -103,11 +97,7 @@ const MyPage = () => {
                                         <input name="nick" value={nick} onChange={(e) => setNick(e.target.value)}
                                                type="text" id="nick"
                                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                                    </div>
                                     <div>
-                                        <h1>추가정보확인 (수정)</h1>
-                                        <hr/>
-                                        <br/>
                                         <div>
                                             <Typography as="label" htmlFor="birth"
                                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</Typography>
@@ -161,7 +151,7 @@ const MyPage = () => {
                                         </div>
                                         <div>
                                             <label htmlFor="adress"
-                                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소(o)</label>
+                                                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소</label>
                                             {/* address */}
                                             <input type="text" name="address" id="address" onChange={setAddress}
                                                    value={address || ''}
@@ -171,7 +161,7 @@ const MyPage = () => {
                                         <div>
                                             <label htmlFor="addrSub"
                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">나머지
-                                                주소(o)</label>
+                                                주소</label>
                                             {/* addrSub */}
                                             <input type="text" name="addrSub" id="addrSub" value={addrSub}
                                                    onChange={(e) => setAddrSub(e.target.value)}
