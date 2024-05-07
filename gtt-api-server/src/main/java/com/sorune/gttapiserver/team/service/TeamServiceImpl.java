@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 // 이 서비스는 비즈니스 로직을 처리하는 서비스라고 스프링에 알림
 @Service
@@ -33,6 +34,11 @@ public class TeamServiceImpl implements TeamService {
     // 데이터 모델을 다른 데이터 모델로 매핑해준다
     private final ModelMapper modelMapper;
     private final TeamRepository teamRepository;
+
+    @Override
+    public List<TeamDTO> getAllTeams() {
+        return teamRepository.findAll().stream().map((element) -> modelMapper.map(element, TeamDTO.class)).collect(Collectors.toList());
+    }
 
     @Override // 팀 생성
     public Long registerTeam(TeamDTO teamDTO) {

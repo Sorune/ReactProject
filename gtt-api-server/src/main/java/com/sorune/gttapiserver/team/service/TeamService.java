@@ -4,7 +4,10 @@ import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.team.DTO.TeamDTO;
 
+import java.util.List;
+
 public interface TeamService {
+    List<TeamDTO> getAllTeams();
 
     // 팀 생성
     Long registerTeam(TeamDTO teamDTO);
