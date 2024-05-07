@@ -153,7 +153,7 @@ const PlayerAddComponent = () => {
                     <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
                            name="birthDate" type={'date'} value={player.birthDate}
                            onChange={handleChangePlayer}></input>
-                    {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>*/}
+                    {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>
                 </div>
             </div>
             <div className="flex justify-center">
@@ -169,7 +169,7 @@ const PlayerAddComponent = () => {
                     <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}
                                    player={player} moveToRead={moveToRead} imageDiv={imageDiv}/>
                 </div>
-            </div>
+            </div>*/}
         </div>
     )
 }
