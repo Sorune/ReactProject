@@ -66,7 +66,7 @@ public class PlayerServiceImpl implements PlayerService{
     @Override
     public PageResponseDTO<PlayerDTO> getPlayerList(PageRequestDTO pageRequestDTO) {
 
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("pno").descending());
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("pno").descending());
         Page<Player> result = playerRepository.findAllByPno(pageable);
         List<PlayerDTO> dtoList = result.stream().map(news -> modelMapper.map(news, PlayerDTO.class)).toList();
 
