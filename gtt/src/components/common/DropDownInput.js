@@ -95,7 +95,6 @@ export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  
                     className: "min-w-0",
                 }}
                 onChange={handleChange}
-                onClick={handleClick}
             />
         </div>
     );
