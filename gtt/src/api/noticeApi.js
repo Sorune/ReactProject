@@ -20,6 +20,16 @@ export const getNoticeList =async (pageParam) => {
     return res.data
 }
 
+export const getMyPost = async (pageParam, userId) => {
+    const { page, size } = pageParam
+
+        const res = await axios.get(`${prefix}/myPost/list`, {
+            params: {page: page, size: size, userId: userId}
+        })
+        return res.data
+}
+
+
 export const postAdd = async (noticeObj) => {
 
     const res = await axios.post(`${prefix}/`,noticeObj)

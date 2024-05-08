@@ -5,6 +5,8 @@ import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.news.entity.News;
 import com.sorune.gttapiserver.news.repository.NewsRepository;
+import com.sorune.gttapiserver.notice.domain.NoticeDTO;
+import com.sorune.gttapiserver.notice.entity.Notice;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -79,6 +82,22 @@ public class NewsServiceImpl implements NewsService {
                 .totalCount(totalCount)
                 .build();
 
+        return pageResponseDTO;
+    }
+
+    @Override
+    public PageResponseDTO<NewsDTO> getMyNews(PageRequestDTO pageRequestDTO, String userId) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("newsNo").descending());
+        Page<News> result = newsRepository.findAllByWriter(pageable, userId);
+        List<NewsDTO> dtoList = result.stream().map(news -> modelMapper.map(news, NewsDTO.class)).toList();
+        dtoList.forEach(dto -> log.info(dto));
+        long totalCount = result.getTotalElements();
+
+        PageResponseDTO pageResponseDTO = PageResponseDTO.<NewsDTO>withAll()
+                .dtoList(dtoList)
+                .pageRequestDTO(pageRequestDTO)
+                .totalCount(totalCount)
+                .build();
         return pageResponseDTO;
     }
 }
