@@ -47,12 +47,6 @@ const LoLListPage = () => {
     const keyList = keyString.split("/");
     console.log(items)
 
-    // 문자열로 들어가있는 HTML 코드 제거
-    const removeTags = (html) => {
-        const doc = new DOMParser().parseFromString(html, "text/html"); // DOMParser를 사용하여 HTML을 파싱
-        return doc.body.textContent || ""; // textContent를 사용하여 태그를 제외한 순수한 텍스트를 추출
-    };
-
     return (
         <Card className="grid">
             <Tabs value="all">
@@ -204,19 +198,25 @@ const LoLListPage = () => {
                                                     <Typography variant="h5" color="blue-gray"
                                                                 className="font-medium text-3xl">
                                                         <strong>{item.name}</strong>
-                                                        <small className="ml-3 text-lg font-bold">Tag : {item.tags}</small>
+                                                        {/*<small className="ml-3 text-lg font-bold">Tag : {item.tags}</small>*/}
                                                     </Typography>
                                                     <Typography variant="paragraph" color="blue-gray" className="font-bold">
                                                         가격 : {item.gold.total}
                                                     </Typography>
                                                 </div>
-                                                <div className="grid grid-cols-3">
+                                                <div className="grid">
                                                     <Typography color="gray" className="font-bold col-start-1 mb-3">
-                                                        {/*removeTags 함수를 적용하여 HTML 태그를 제거한 후에 이를 Typography 컴포넌트에 표시*/}
-                                                        설명<br/>{removeTags(item.description)}
+                                                        <hr/>
+                                                        <br/>
+                                                        {/*문자열로 들어오는 HTML 코드를 적용할 수 있도록 처리해 출력*/}
+                                                        <div dangerouslySetInnerHTML={{__html: item.description}}/>
+                                                        <br/>
+                                                        <hr/>
                                                     </Typography>
                                                     <Typography color="gray" className="font-bold col-start-1 mb-3">
+                                                        <br/>
                                                         {item.plaintext}
+                                                        <br/>
                                                     </Typography>
                                                 </div>
                                             </TabPanel>
@@ -229,23 +229,27 @@ const LoLListPage = () => {
                                             items[itemsKey].tags["6"] === selectedValues)
                                         && items[itemsKey].maps["11"] === true && !items[itemsKey].hasOwnProperty('inStore') ? (
                                             <TabPanel key={item.key} value={item.name} className="min-w-24">
-                                                <div className="mb-3 flex items-center justify-between">
+                                            <div className="mb-3 flex items-center justify-between">
                                                     <Typography variant="h5" color="blue-gray"
                                                                 className="font-medium text-3xl">
                                                         <strong>{item.name}</strong>
-                                                        <small className="ml-3 text-lg font-bold">Tag : {item.tags}</small>
+                                                        {/*<small className="ml-3 text-lg font-bold">Tag : {item.tags}</small>*/}
                                                     </Typography>
                                                     <Typography variant="paragraph" color="blue-gray" className="font-bold">
                                                         가격 : {item.gold.total}
                                                     </Typography>
                                                 </div>
-                                                <div className="grid grid-cols-3">
+                                                <div className="grid">
                                                     <Typography color="gray" className="font-bold col-start-1 mb-3">
-                                                        {/*removeTags 함수를 적용하여 HTML 태그를 제거한 후에 이를 Typography 컴포넌트에 표시*/}
-                                                        설명<br/>{removeTags(item.description)}
+                                                        <hr/><br/>
+                                                        {/*문자열로 들어오는 HTML 코드를 적용할 수 있도록 처리해 출력*/}
+                                                        <div dangerouslySetInnerHTML={{__html: item.description}}/>
+                                                        <br/><hr/>
                                                     </Typography>
                                                     <Typography color="gray" className="font-bold col-start-1 mb-3">
+                                                        <br/>
                                                         {item.plaintext}
+                                                        <br/>
                                                     </Typography>
                                                 </div>
                                             </TabPanel>
