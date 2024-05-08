@@ -8,6 +8,14 @@ export const getList = async(pageParam)=>{
     const res = await axios.get(`${prefix}/list`,{params:{page:page,size:size}})
     return res.data
 }
+export const getMyNews = async (pageParam, userId) => {
+    const { page, size } = pageParam
+
+    const res = await axios.get(`${prefix}/myPost/list`, {
+        params: {page: page, size: size, userId: userId}
+    })
+    return res.data
+}
 
 export const getOne = async(newsNo)=>{
     console.log(newsNo)

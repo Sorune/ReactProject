@@ -16,4 +16,6 @@ public interface NewsService {
 
     PageResponseDTO<NewsDTO> getList(PageRequestDTO pageRequestDTO);
 
+    PageResponseDTO<NewsDTO> getMyNews(PageRequestDTO pageRequestDTO, String userId);
+
 }

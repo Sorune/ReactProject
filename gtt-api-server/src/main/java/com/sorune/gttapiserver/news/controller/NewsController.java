@@ -30,6 +30,12 @@ public class NewsController {
         return newsService.getList(pageRequestDTO);
     }
 
+    @GetMapping("/myPost/list")
+    public PageResponseDTO<NewsDTO> getMyNews(PageRequestDTO pageRequestDTO, String userId){
+        log.info(pageRequestDTO);
+        return newsService.getMyNews(pageRequestDTO, userId);
+    }
+
     @GetMapping("/{newsno}")
     public NewsDTO getNews(@PathVariable("newsno") Long newsNo) { // 한 개의 게시물을 조화
 

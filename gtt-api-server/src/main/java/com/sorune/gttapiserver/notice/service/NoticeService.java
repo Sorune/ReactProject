@@ -3,6 +3,7 @@ package com.sorune.gttapiserver.notice.service;
 import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.notice.domain.NoticeDTO;
+import org.springframework.data.domain.Page;
 
 public interface NoticeService {
 
@@ -16,6 +17,6 @@ public interface NoticeService {
 
     PageResponseDTO<NoticeDTO> list(PageRequestDTO requestDTO);
 
-
+    PageResponseDTO<NoticeDTO> getMyPost(PageRequestDTO requestDTO, String userId);
 
 }

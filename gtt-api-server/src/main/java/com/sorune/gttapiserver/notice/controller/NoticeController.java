@@ -31,6 +31,12 @@ public class NoticeController {
 
         return noticeService.list(pageRequestDTO);
     }
+    @GetMapping("/myPost/list")
+    public PageResponseDTO<NoticeDTO> getMyPost(PageRequestDTO pageRequestDTO, String userId){
+        log.info(pageRequestDTO);
+
+        return noticeService.getMyPost(pageRequestDTO, userId);
+    }
 
     @PostMapping("/")
     public Map<String , Long> register(@RequestBody NoticeDTO noticeDTO){
