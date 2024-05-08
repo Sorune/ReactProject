@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {deleteOnePlayer, postAdd, putOnePlayer} from "../../../api/playerApi";
 
 
-const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player, imageDiv})=>{
+const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player, imageDiv, setResultCallback})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
     const [result, setResult] = useState(null)
@@ -57,8 +57,7 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
 
         postAdd(formData).then(data => {
             console.log(data, data.pno)
-            // setResultCallback(data.pno)
-
+            //setResultCallback(data.pno)
             moveTo({
                 pathName:pathName+'read/' + data.pno,
                 pageParam: {page: `${page.page}`, size: `${page.size}`}

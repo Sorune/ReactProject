@@ -84,7 +84,7 @@ const PlayerAddComponent = () => {
                 <form>
                     <div className="grid grid-cols-auto gap-4 grid-rows-auto flex items-stretch flex items-center flex flex-box mt-2 mb-2 ml-2 ">
                         <div className="col-start-1 col-end-3 p-1">
-                            <DropDownInput name="nickName" placeholder="NickName" buttonRef={buttonRef} inputRef={inputRef} onChange={handleDropDownChange} onClick={handleChangePlayer} defaultValue={player.nickName}/>
+                            <DropDownInput name="nickName" buttonRef={buttonRef} inputRef={inputRef} onChange={handleDropDownChange} value={player.nickName}/>
                         </div>
                         <div className="col-start-3 p-1">
                             <div className="w-full">
@@ -167,8 +167,15 @@ const PlayerAddComponent = () => {
             <div className="flex justify-end">
                 <div className="relative md-4 flex p-4 flex-wrap items-stretch">
                     <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}
-                                   player={player} moveToRead={moveToRead} imageDiv={imageDiv}/>
+                                   player={player} moveToRead={moveToRead} imageDiv={imageDiv} setResultCallback={handleResult}/>
                 </div>
+                {result ?<DialogResult
+                    title={'플레이어'}
+                    content={`${result}`}
+                    callbackFn={closeDialog}
+                    open={result}
+                    setOpen={setOpen}
+                />: <></> }
             </div>
         </div>
     )

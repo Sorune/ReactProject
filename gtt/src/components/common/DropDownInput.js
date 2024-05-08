@@ -18,10 +18,10 @@ const testTeam ={
 
 
 
-export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  buttonRef, inputRef}) => {
-    const { countries } = useCountries();
+export const DropDownInput = forwardRef(({onChange,title,  buttonRef, inputRef}) => {
     const [teams, setTeams] = useState();
     const [team, setTeam] = React.useState(0);
+    console.log(teams)
     const { teamNo,teamName,teamImage } = teams?teams[team]: {teamNo: 0,teamName:"",teamImg:"/img/team/geng.png"};
 
     useEffect(() => {
@@ -34,15 +34,8 @@ export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  
     const handleChange = (e) => {
         onChange(e); // 상위 컴포넌트로 선택된 팀 전달
     };
-    const handleClick = (e) => {
-        onClick(e); // 상위 컴포넌트로 선택된 팀 전달
-    };
 
-    const InputWithPlaceholder = ({ placeholder, ...rest }) => {
-        return (
-            <Input placeholder={placeholder} {...rest} />
-        );
-    };
+
     return (
         <div className="relative flex w-full ">
             <Menu placement="bottom-start" ref={buttonRef}>
@@ -54,7 +47,7 @@ export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  
                         className="flex h-10 items-center gap-2 rounded-r-none border border-r-0 border-blue-gray-200 bg-blue-gray-500/10 pl-3"
                     >
                         <img
-                            src={teams?`${API_SERVER_HOST}/api/files/${teamImage}`:"/img/no-image.png"}
+                            src={`${API_SERVER_HOST}/api/files/${teamImage}`}
                             alt={teams?teamNo:0}
                             className="h-4 w-4 rounded-full object-cover"
                         />
@@ -72,7 +65,7 @@ export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  
                                 onClick={() => setTeam(index)}
                             >
                                 <img
-                                    src={team.teams?`${API_SERVER_HOST}/api/files/${team.teamImage}`:"/img/no-image.png"}
+                                    src={`${API_SERVER_HOST}/api/files/${team.teamImage}`}
                                     alt={team.teams?team.teamName:""}
                                     className="h-5 w-5 rounded-full object-cover"
                                 />
@@ -84,7 +77,7 @@ export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  
             </Menu>
             <Input
                 type="text"
-                placeholder={placeholder}
+                placeholder="title"
                 value={title}
                 ref={inputRef}
                 className="rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -95,7 +88,6 @@ export const DropDownInput = forwardRef(({onClick,placeholder, onChange,title,  
                     className: "min-w-0",
                 }}
                 onChange={handleChange}
-                onClick={handleClick}
             />
         </div>
     );

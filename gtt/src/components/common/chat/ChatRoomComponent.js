@@ -4,7 +4,7 @@ import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import ChatCell from "./ChatCell";
 import MyChatCell from "./MyChatCell";
 import React, {useEffect, useRef, useState} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
 import {chatRoomState, chatState, messagesState} from "../../../atoms/chatData";
 import chatApi from "../../../api/chatApi";
 import {useStomp} from "../../../hooks/useStomp";
@@ -12,7 +12,7 @@ import {userState} from "../../../atoms/userState";
 
 
 const ChatRoomComponent = ({moveTo}) => {
-    const [chat, setChat] = useRecoilState(chatState);
+    const [chat, setChat] = useState("");
     const [room, setRoom] = useRecoilState(chatRoomState);
     const messageList = useRecoilValue(messagesState)
     const {sendChat,connect,disConnect} = useStomp()
@@ -37,13 +37,13 @@ const ChatRoomComponent = ({moveTo}) => {
             });
         }
     }, [refresh,messageList]);
-    console.log(messageList)
     const onChangeChat = (e) => {
         setChat(e.target.value);
     };
 
     const handleSubmit = ()=>{
         sendChat({message:chat,sender:user.nick,roomId:room.id});
+        setChat("");
     }
 
     const handleReset = () =>{

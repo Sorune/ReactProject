@@ -26,7 +26,7 @@ import useCustomMove from "../../hooks/useCustomMove";
 const Sidebar = ()=>{
 
     const navigate = useNavigate();
-
+    const pageReset = useResetRecoilState(pageState)
     return(
         <Card className="max-h-[calc(100vh-1rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
             <div className="mb-2 p-4">
@@ -35,13 +35,13 @@ const Sidebar = ()=>{
                 </Typography>
             </div>
             <List>
-                <ListItem onClick={() => { navigate('/news/') }}>
+                <ListItem onClick={() => { pageReset(); navigate('/news/') }}>
                     <ListItemPrefix>
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     News
                 </ListItem>
-                <ListItem onClick={() => { navigate('/player/') }}>
+                <ListItem onClick={() => { pageReset();  navigate('/player/') }}>
                     <ListItemPrefix>
                         <ShoppingBagIcon className="h-5 w-5" />
                     </ListItemPrefix>
@@ -50,7 +50,7 @@ const Sidebar = ()=>{
 
                 <Menu>
                     <MenuHandler>
-                <ListItem onClick={() => { navigate('/lol/list') }}>
+                <ListItem onClick={() => { pageReset();  navigate('/lol/list') }}>
                     <ListItemPrefix>
                         <InboxIcon className="h-5 w-5" />
                     </ListItemPrefix>
@@ -64,7 +64,7 @@ const Sidebar = ()=>{
                     </MenuList>
                 </Menu>
 
-                <ListItem onClick={() => { navigate('/ticketing/') }}>
+                <ListItem onClick={() => { pageReset();  navigate('/ticketing/') }}>
                     <ListItemPrefix>
                         <Cog6ToothIcon className="h-5 w-5" />
                     </ListItemPrefix>
