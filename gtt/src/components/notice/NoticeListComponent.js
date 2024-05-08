@@ -2,7 +2,7 @@
 // 초기값 세팅
 import useCustomMove from "../../hooks/useCustomMove";
 import {useCallback, useEffect, useState} from "react";
-import {getList} from "../../api/noticeApi";
+import {getNoticeList} from "../../api/noticeApi";
 import PageComponent from "../common/PageComponent";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
@@ -45,7 +45,7 @@ const ListComponent = () => {
     const [serverData, setServerData] = useState(initState)
 
     useEffect(() => {
-        getList({page:page.page, size:page.size}).then(data =>{
+        getNoticeList({page:page.page, size:page.size}).then(data =>{
             console.log(data)
             setServerData(data)
         })

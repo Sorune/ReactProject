@@ -27,6 +27,7 @@ const NotFound = lazy(()=>import("../pages/error/404NotFound"))
 const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
 const NoticeIndex = lazy(()=> import("../pages/notice/NoticeIndexPage"))
 const MyPage = lazy(() => import("../pages/loginAuth/MyPage"))
+const MyPost = lazy(()=>import("../pages/loginAuth/MyPost"))
 const KakaoRedirect = lazy(()=>import("../pages/loginAuth/KakaoRedirectPage"))
 const root = createBrowserRouter([
     {
@@ -131,6 +132,10 @@ const root = createBrowserRouter([
     {
         path:"myPage",
         element:<Suspense fallback={Loading}><MyPage/></Suspense>
+    },
+    {
+        path:"myPost",
+        element:<Suspense fallback={Loading}><MyPost/></Suspense>
     }
 ])
 

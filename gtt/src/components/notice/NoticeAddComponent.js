@@ -100,14 +100,14 @@ const NoticeAddComponent = ({page}) =>{
                     </form>
                 </CardBody>
                 <CardFooter>
-                    <Button onClick={handleClickAdd}>ADD
-                        {result ?<DialogResult
-                            title={'공지사항'}
-                            content={`새로운 게시물${result} 번 게시물이 추가되었습니다.`}
-                            callbackFn={closeDialog}
-                            open={result !== null}
-                            setOpen={setOpen}
-                        />: <></> }</Button>
+                    <Button onClick={handleClickAdd}>ADD</Button>
+                    {result ?<DialogResult
+                        title={'공지사항'}
+                        content={`새로운 게시물${result} 번 게시물이 추가되었습니다.`}
+                        callbackFn={closeDialog}
+                        open={result !== null}
+                        setOpen={setOpen}
+                    />: <></> }
                 </CardFooter>
             </Card>
         </div>

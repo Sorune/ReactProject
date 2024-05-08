@@ -12,7 +12,7 @@ export const  getOne =async (notiNo) => {
     return res.data
 }
 
-export const getList =async (pageParam) => {
+export const getNoticeList =async (pageParam) => {
     const {page, size} = pageParam
 
     const res = await axios.get(`${prefix}/list`, {params:{page:page, size:size}})
