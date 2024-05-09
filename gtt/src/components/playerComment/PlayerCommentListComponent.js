@@ -46,8 +46,7 @@ function UnratedIcon() {
     );
 }
 
-const PlayerCommentListComponent = () => {
-    const { refresh } = useCustomMove();
+const PlayerCommentListComponent = ({refresh, setRefresh}) => {
     const [serverData, setServerData] = useState([]);
     const [isModify, setIsModify] = useState("");
     const [modifiedComment, setModifiedComment] = useState("");
@@ -59,8 +58,9 @@ const PlayerCommentListComponent = () => {
     const pathName = `${pno}?${createSearchParams({ page: queryParams.get("page"), size: queryParams.get("size") }).toString()}`;
 
     useEffect(() => {
-        getPCommentList({ pathName }).then((data) => {
-            setServerData(data.dtoList);
+        getPCommentList({ pno }).then((data) => {
+            setServerData(data);
+            console.log(serverData)
         });
     }, [refresh]);
 
@@ -88,8 +88,10 @@ const PlayerCommentListComponent = () => {
         formData.append("recomNo", modifiedRecomNo);
 
         putOnePComment(playerComment.playerComNo, formData).then((data) => {
+            console.log(data)
             alert("COMMENT MODIFY SUCCESS");
             window.location.reload();
+            setRefresh(!refresh)
         });
     };
 

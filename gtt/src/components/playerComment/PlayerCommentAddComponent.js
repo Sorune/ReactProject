@@ -46,11 +46,10 @@ function UnratedIcon() {
     );
 }
 
-const PlayerCommentAddComponent = () => {
+const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const [playerComment, setPlayerComment] = useState({...initState})
     const writer = 'user100'
     const pno = useLocation().pathname.split("/")[3]
-    const [refresh, setRefresh] = useState(false)
 
     const page = useRecoilValue(pageState)
     const {moveToList, moveToRead} = useCustomMove();
@@ -73,7 +72,8 @@ const PlayerCommentAddComponent = () => {
 
         postPCommentAdd(formData).then(data => {
             alert("SUCCESS")
-            window.location.reload()
+            window.location.reload();
+            setRefresh(!refresh)
         })
     }
 
