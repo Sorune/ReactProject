@@ -59,8 +59,9 @@ const PlayerCommentListComponent = () => {
     const pathName = `${pno}?${createSearchParams({ page: queryParams.get("page"), size: queryParams.get("size") }).toString()}`;
 
     useEffect(() => {
-        getPCommentList({ pathName }).then((data) => {
-            setServerData(data.dtoList);
+        getPCommentList({ pno }).then((data) => {
+            setServerData(data);
+            console.log(serverData)
         });
     }, [refresh]);
 
