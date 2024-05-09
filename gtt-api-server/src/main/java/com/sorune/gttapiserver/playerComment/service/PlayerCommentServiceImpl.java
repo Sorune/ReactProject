@@ -60,22 +60,38 @@ public class PlayerCommentServiceImpl implements PlayerCommentService {
         return dto;
     }
 
-    @Override
-    public PageResponseDTO<PlayerCommentDTO> getPlayerCommentList(PageRequestDTO pageRequestDTO, Long pno) {
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("playerComNo").descending());
+//    @Override
+//    public PageResponseDTO<PlayerCommentDTO> getPlayerCommentList1(PageRequestDTO pageRequestDTO, Long pno) {
+//        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("playerComNo").descending());
+//
+//        Page<PlayerComment> result = playerCommentRepository.findAllByPnoOrderByPlayerComNo(pageable, pno);
+//
+//        List<PlayerCommentDTO> dtoList = result.stream().map(playerComment -> modelMapper.map(playerComment, PlayerCommentDTO.class)).toList();
+//
+//        long totalCount = result.getTotalElements();
+//
+//        PageResponseDTO pageResponseDTO = PageResponseDTO.<PlayerCommentDTO>withAll()
+//                .dtoList(dtoList)
+//                .pageRequestDTO(pageRequestDTO)
+//                .totalCount(totalCount)
+//                .build();
+//
+//        return pageResponseDTO;
+//    }
 
-        Page<PlayerComment> result = playerCommentRepository.findAllByPnoOrderByPlayerComNo(pageable, pno);
+    @Override
+    public List<PlayerCommentDTO> getPlayerCommentList2(Long pno) {
+        List<PlayerComment> result = playerCommentRepository.findAllByPnoOrderByPlayerComNo(pno);
 
         List<PlayerCommentDTO> dtoList = result.stream().map(playerComment -> modelMapper.map(playerComment, PlayerCommentDTO.class)).toList();
 
-        long totalCount = result.getTotalElements();
+        return dtoList;
+    }
 
-        PageResponseDTO pageResponseDTO = PageResponseDTO.<PlayerCommentDTO>withAll()
-                .dtoList(dtoList)
-                .pageRequestDTO(pageRequestDTO)
-                .totalCount(totalCount)
-                .build();
+    @Override
+    public Double getPlayerCommentRecomNo(Long pno) {
+        Double result = playerCommentRepository.meanOfRecomNoByPno(pno);
 
-        return pageResponseDTO;
+        return result;
     }
 }
