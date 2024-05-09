@@ -56,10 +56,11 @@ const PlayerAddComponent = () => {
     const handleDropDownChange = (e) => {
         if(buttonRef.current){
             const buttonInstance = buttonRef.current
-            setSelectedTeam(buttonInstance.innerText)
+            setPlayer((prevData)=>({...prevData,teamName: buttonInstance.innerText}))
             console.log(selectedTeam)
         }
         console.log(e.target.value)
+        setPlayer((prevData)=>({...prevData,nickName: e.target.value}))
     };
     const handleResult = (data) => {
         setResult(data);
