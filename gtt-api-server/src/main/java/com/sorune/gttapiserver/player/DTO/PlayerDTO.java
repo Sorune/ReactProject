@@ -18,8 +18,6 @@ public class PlayerDTO {
     private Long pno;
     private int age;
     private String nickName, realName, teamName, position, playerImage;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date birthDate;
-
-
 }

@@ -5,6 +5,7 @@ import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.player.DTO.PlayerDTO;
 import com.sorune.gttapiserver.player.service.PlayerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/player")
+@Log4j2
 public class PlayerController {
 
     private final PlayerService playerService;
@@ -21,6 +23,7 @@ public class PlayerController {
     @GetMapping("/{pno}")
     public PlayerDTO getPlayer(@PathVariable("pno") Long pno) {
         PlayerDTO playerDTO = playerService.getById(pno);
+        log.info(playerDTO.getBirthDate());
 
         return playerDTO;
     }

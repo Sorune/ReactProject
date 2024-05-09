@@ -104,7 +104,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public PageResponseDTO<CommentDTO> notiList(PageRequestDTO pageRequestDTO, Long notiNo) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize(), Sort.by("comNo").descending());  // 1페이지가 0
-        Page<Comment> result = commentRepository.findAllByNewsNo(notiNo,pageable);
+        Page<Comment> result = commentRepository.findAllByNotiNo(notiNo,pageable);
         log.info(result);
         List<CommentDTO> dtoList = result.getContent().stream().map(comment -> modelMapper.map(comment, CommentDTO.class)).collect(Collectors.toList());
 

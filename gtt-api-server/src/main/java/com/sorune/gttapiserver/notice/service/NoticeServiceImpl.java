@@ -104,5 +104,31 @@ public class NoticeServiceImpl implements NoticeService{
         return responseDTO;
     }
 
+    @Override
+    public PageResponseDTO<NoticeDTO> getMyPost(PageRequestDTO pageRequestDTO, String userId) {
+        Pageable pageable =
+                PageRequest.of(
+                        pageRequestDTO.getPage() - 1, // 1페이지는 0
+                        pageRequestDTO.getSize(),
+                        Sort.by("notiNo").descending());
+        Page<Notice> result = noticeRepository.findAllByWriter(pageable, userId);
+
+        List<NoticeDTO> dtoList = result.getContent()
+                .stream()
+                .map(notice -> modelMapper.map(notice, NoticeDTO.class))
+                .collect(Collectors.toList());
+        long totalCount =result.getTotalElements();
+
+        PageResponseDTO<NoticeDTO> responseDTO =
+                PageResponseDTO.<NoticeDTO>withAll()
+                        .dtoList(dtoList)
+                        .pageRequestDTO(pageRequestDTO)
+                        .totalCount(totalCount)
+                        .build();
+
+        return responseDTO;
+    }
+
+
 
 }
