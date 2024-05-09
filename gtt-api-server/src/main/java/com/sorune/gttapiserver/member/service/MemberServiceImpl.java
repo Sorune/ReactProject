@@ -27,6 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 // 이 클래스가 비즈니스 로직을 처리하는 서비스로 사용된다고 스프링에 알림
@@ -45,6 +46,11 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Override // 페이징 없는 전체 회원 조회
+    public List<MemberDTO> getAllMembers() {
+        return memberRepository.findAll().stream().map((element) -> modelMapper.map(element, MemberDTO.class)).collect(Collectors.toList());
+    }
 
     @Override //회원 가입
     public Long joinMember(MemberDTO memberDTO) {

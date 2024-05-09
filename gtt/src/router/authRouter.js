@@ -4,7 +4,7 @@ import Spin from "../test/pages/Spin";
 const Loading = Spin;
 const LoginAuth = lazy(() =>import("../pages/loginAuth/Login.js"));  // 로그인 페이지
 const SignIn = lazy(() =>import("../pages/loginAuth/SignIn.js"));    // 회원가입 페이지
-const Member = lazy(() => import("../pages/admin/Member.js"));
+const Member = lazy(() => import("../pages/member/Member.js"));
 
 const authRouter = ()=> {
     return[

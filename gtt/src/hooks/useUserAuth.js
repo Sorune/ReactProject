@@ -83,21 +83,20 @@ const useUserAuth = () => {
 
 
     // 아이디 중복 검사
-    // const checkId = async (userId) => {
-    //     try {
-    //         // ID 검증 API 호출
-    //         const result = await validateID(userId);
-    //         if (!result.data.userId.equals(userId)) {
-    //             // 사용 가능할 때
-    //             alert("사용 가능한 ID입니다.");
-    //         } else {
-    //             // 이미 사용 중일 때
-    //             alert("이미 사용중인 ID입니다.");
-    //         }
-    //     } catch (error) {
-    //         // 오류 발생시
-    //         alert("ID 검증 중 오류가 발생했습니다.");
-    //     }
+    // const checkId = (userId) => {
+    //     validateID(userId)
+    //         .then(result => {
+    //             if(!result.data.userId.equals(userId)) {
+    //                 // 사용 가능할 때
+    //                 alert("사용 가능한 ID입니다.");
+    //             } else {
+    //                 // 이미 사용 중일 때
+    //                 alert("이미 사용중인 ID입니다.");
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.log("중복아이디 검증 api 호출 실패... ", error);
+    //         });
     // };
 
     // 비밀번호 일치 확인
@@ -196,7 +195,7 @@ const useUserAuth = () => {
     }
 
     // 모든 리턴
-    return { confirmLogin, checkPw, joinMember, formatPhoneNumber, validatePhoneNumber, logout,exceptionHandle,successLogin };
+    return { confirmLogin, checkPw, joinMember, formatPhoneNumber, validatePhoneNumber, logout, exceptionHandle, successLogin};
 };
 
 export default useUserAuth;

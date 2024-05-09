@@ -4,8 +4,12 @@ import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.member.DTO.MemberDTO;
 
+import java.util.List;
+
 public interface MemberService {
 
+    // 페이징 없는 멤버조회
+    List<MemberDTO> getAllMembers();
     // 회원 가입
     Long joinMember(MemberDTO memberDTO);
     // 회원 수정
