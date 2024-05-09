@@ -6,6 +6,7 @@ import playerRouter from "./playerRouter.js";
 import Spin from "../test/pages/Spin";
 import noticeRouter from "./noticeRouter";
 import lolRouter from "./lolRouter";
+import adminRouter from "./adminRouter.js";
 
 
 const { createBrowserRouter } = require("react-router-dom");
@@ -15,7 +16,7 @@ const Main = lazy(()=>import("../pages/MainPage.js"));
 const About = lazy(()=>import("../pages/AboutPage.js"));
 const Login = lazy(() => import("../pages/loginAuth/Login.js"));
 const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
-const Member = lazy(() => import("../pages/admin/Member.js"));
+const Member = lazy(() => import("../pages/member/Member.js"));
 const Team = lazy(()=>import("../pages/teams/TeamPage"))
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
 const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
@@ -29,6 +30,8 @@ const NoticeIndex = lazy(()=> import("../pages/notice/NoticeIndexPage"))
 const MyPage = lazy(() => import("../pages/loginAuth/MyPage"))
 const MyPost = lazy(()=>import("../pages/loginAuth/MyPost"))
 const KakaoRedirect = lazy(()=>import("../pages/loginAuth/KakaoRedirectPage"))
+const AdminIndexPage = lazy(() => import("../pages/admin/AdminIndexPage"));
+
 const root = createBrowserRouter([
     {
         path:"spin",
@@ -45,8 +48,8 @@ const root = createBrowserRouter([
         errorElement:NotFound,
     },
     {
-      path:"team",
-      element:<Suspense fallback={Loading}><Team />></Suspense>,
+        path:"team",
+        element:<Suspense fallback={Loading}><Team />></Suspense>,
         errorElement:NotFound,
     },
     {
@@ -134,8 +137,15 @@ const root = createBrowserRouter([
         element:<Suspense fallback={Loading}><MyPage/></Suspense>
     },
     {
+        path: "admin",
+        element: <Suspense fallback={Loading}><AdminIndexPage/></Suspense>,
+        children: adminRouter(),
+        errorElement: NotFound
+    },
+    {
         path:"myPost",
         element:<Suspense fallback={Loading}><MyPost/></Suspense>
+    },
     }
 ])
 

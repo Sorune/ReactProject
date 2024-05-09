@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,11 +26,11 @@ public class MemberController {
     private final CustomFileUtil fileUtil;
 
     // 회원 전체 리스트
-    @GetMapping("/list")
-    public PageResponseDTO<MemberDTO> list(PageRequestDTO pageRequestDTO) {
-        log.info(pageRequestDTO);
-        return memberService.memberList(pageRequestDTO);
-    }
+//    @GetMapping("/list")
+//    public PageResponseDTO<MemberDTO> list(PageRequestDTO pageRequestDTO) {
+//        log.info(pageRequestDTO);
+//        return memberService.memberList(pageRequestDTO);
+//    }
 
     // 한명의 회원 조회 ㅇ
     @GetMapping("/{num}")
@@ -101,4 +102,8 @@ public class MemberController {
         log.info("checkNick : " + nick);
         return Map.of("message",memberService.checkNick(nick));
     }
+
+    // pageRequest 없는 회원 리스트
+    @GetMapping("/members")
+    public List<MemberDTO> getAllMembers() { return memberService.getAllMembers(); }
 }
