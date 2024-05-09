@@ -82,4 +82,9 @@ public class PlayerServiceImpl implements PlayerService{
         return pageResponseDTO;
     }
 
+    @Override
+    public void updateGpa(Long pno, Double gpa) {
+        playerRepository.setGpa(pno, gpa);
+    }
+
 }

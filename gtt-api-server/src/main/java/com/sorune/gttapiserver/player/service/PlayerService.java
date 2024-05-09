@@ -20,5 +20,5 @@ public interface PlayerService {
 
     PageResponseDTO<PlayerDTO> getPlayerList(PageRequestDTO pageRequestDTO);
 
-
+    void updateGpa(Long pno, Double gpa);
 }

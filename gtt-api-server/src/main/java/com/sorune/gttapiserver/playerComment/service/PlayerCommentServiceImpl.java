@@ -87,4 +87,11 @@ public class PlayerCommentServiceImpl implements PlayerCommentService {
 
         return dtoList;
     }
+
+    @Override
+    public Double getPlayerCommentRecomNo(Long pno) {
+        Double result = playerCommentRepository.meanOfRecomNoByPno(pno);
+
+        return result;
+    }
 }

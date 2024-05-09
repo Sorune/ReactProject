@@ -23,6 +23,7 @@ public class Player {
     private int age;
     private String nickName, realName, teamName, position, playerImage;
     private Date birthDate;
+    private Double gpa;
 
 
     public void changeBirthDate(Date birthDate){
@@ -44,5 +45,6 @@ public class Player {
         this.position = position;
     }
     public void changePlayerImage(String playerImage){this.playerImage = playerImage;}
+    public void changeGpa(Double gpa){this.gpa = gpa;}
 
 }

@@ -26,20 +26,22 @@ const initState = {
     realName : '',
     teamName : '',
     position : '',
-    birthDate : null
+    birthDate : null,
+    gpa : 0.0
 }
 
 const ReadComponent = ({pno}) => {
     const [player, setPlayer] = useState(initState)
     const page = useRecoilValue(pageState)
     const { moveToModify,moveToList } = useCustomMove();
+    const [refresh,setRefresh] = useState(false)
 
 
     useEffect(() => {
         getOnePlayer(pno).then(data => {
             console.log(data)
             setPlayer(data)
-            console.log(data.birthDate)
+            console.log(data.gpa)
         })
     }, [pno])
 
@@ -90,7 +92,7 @@ const ReadComponent = ({pno}) => {
                                         clipRule="evenodd"
                                     />
                                 </svg>
-                                5.0
+                                {player.gpa}
                             </Typography>
                         </div>
                         <div className="grid grid-cols-3">
@@ -122,10 +124,9 @@ const ReadComponent = ({pno}) => {
                 </div>
                 <br/>
                 <br/><hr/><br/>
-                <PCommentAdd/>
+                <PCommentAdd refresh={refresh} setRefresh={setRefresh}/>
                 <br/><hr/><br/>
-                <PCommentList/>
-
+                <PCommentList refresh={refresh} setRefresh={setRefresh}/>
             </div>
         </div>
     )
