@@ -21,16 +21,16 @@ import java.util.stream.Collectors;
 @ToString
 public class MemberDTO extends User implements OAuth2User{
 
-    private Long num;           // 회원번호 nn
-    private String password;          // 회원 비밀번호 nn
-    private String nick;     
-    private String userId;          // 회원 아이디 nn
-    private String zoneCode;    // 회원 주소(우편번호) nn
-    private String address;     // 회원 주소(검색주소) nn
+    private Long num;           // 회원번호
+    private String password;    // 회원 비밀번호
+    private String nick;        // 회원 닉네임
+    private String userId;      // 회원 아이디
+    private String zoneCode;    // 회원 주소(우편번호)
+    private String address;     // 회원 주소(검색주소)
     private String addrSub;     // 회원 주소(나머지 동/호/수 등)
-    private String email;
-    private String phone;
-    private boolean enabled;
+    private String email;       // 회원 이메일
+    private String phone;       // 회원 휴대폰번호
+    private boolean enabled;    // 회원 활성화 여부
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate birth;    // 회원 생년월일 nn
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

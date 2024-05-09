@@ -1,75 +1,79 @@
-import { Link } from 'react-router-dom';
-import { Accordion, AccordionHeader, AccordionBody, Card, CardBody, Typography, List, ListItem, ListItemPrefix } from "@material-tailwind/react";
-import { PresentationChartBarIcon, ShoppingBagIcon, UserCircleIcon, Cog6ToothIcon, InboxIcon, PowerIcon } from "@heroicons/react/24/solid";
-import React from "react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Accordion, AccordionHeader, AccordionBody, Card, Typography, List, ListItemPrefix } from "@material-tailwind/react";
+import {PresentationChartBarIcon, ShoppingBagIcon, UserCircleIcon, Cog6ToothIcon, InboxIcon, PowerIcon} from "@heroicons/react/24/solid";
+import { useResetRecoilState } from "recoil";
+import { pageState } from "../../atoms/pageState";
 
 const AdminSideComponent = () => {
+    const navigate = useNavigate();
+    const pageReset = useResetRecoilState(pageState);
+    const [open, setOpen] = useState(0);
 
     const menuItems = [
         {
             id: 1,
-            title: "방문자통계",
-            icon: PresentationChartBarIcon,
-            details: [
-                { name: "연간통계", path: "/annual-stats" },
-                { name: "월간통계", path: "/monthly-stats" },
-                { name: "주간통계", path: "/weekly-stats" },
-                { name: "일간통계", path: "/daily-stats" }
+            title: "회원관리",
+            icon: <UserCircleIcon className="h-5 w-5" />,
+            links: [
+                { title: "회원리스트", path: "/admin/list" },
+                { title: "회원추가", path: "/admin/memAdd" },
+                { title: "로그인테스트", path: "/admin/memLoginTest" },
+                { title: "회원설정", path: "/admin/memSet" }
             ]
         },
         {
             id: 2,
-            title: "주문현황",
-            icon: ShoppingBagIcon,
-            details: [
-                { name: "주문확인", path: "/order-confirmation" },
-                { name: "입금확인", path: "/payment-verification" },
-                { name: "배송확인", path: "/shipping-status" },
-                { name: "출고확인", path: "/dispatch-status" }
+            title: "방문자",
+            icon: <PresentationChartBarIcon className="h-5 w-5" />,
+            links: [
+                { title: "연간통계", path: "/admin/year" },
+                { title: "월간통계", path: "/admin/month" },
+                { title: "주간통계", path: "/admin/weekly" },
+                { title: "일간통계", path: "/admin/daily" }
             ]
         },
         {
             id: 3,
-            title: "메일함",
-            icon: InboxIcon,
-            details: [
-                { name: "수신확인", path: "/inbox" },
-                { name: "발신확인", path: "/outbox" },
-                { name: "메일작성", path: "/compose-mail" },
-                { name: "메일설정", path: "/mail-settings" }
+            title: "메일",
+            icon: <InboxIcon className="h-5 w-5" />,
+            links: [
+                { title: "수신확인", path: "/admin/inbox" },
+                { title: "발신확인", path: "/admin/outbox" },
+                { title: "메일쓰기", path: "/admin/compose" },
+                { title: "메일설정", path: "/admin/mailSet" }
             ]
         },
         {
             id: 4,
-            title: "회원관리",
-            icon: UserCircleIcon,
-            details: [
-                { name: "회원리스트", path: "/member-list" },
-                { name: "회원추가", path: "/add-member" },
-                { name: "로그인테스트", path: "/login-test" },
-                { name: "회원설정", path: "/member-settings" }
+            title: "구매관리",
+            icon: <ShoppingBagIcon className="h-5 w-5" />,
+            links: [
+                { title: "티켓팅확인", path: "/admin/order" },
+                { title: "입금확인", path: "/admin/payment" },
+                { title: "발송확인", path: "/admin/dispatch" },
+                { title: "사용확인", path: "/admin/shopping" }
             ]
         },
         {
             id: 5,
             title: "사이트설정",
-            icon: Cog6ToothIcon,
-            details: [
-                { name: "API 관리", path: "/api-management" },
-                { name: "디자인관리", path: "/design-management" },
-                { name: "광고관리", path: "/ad-management" },
-                { name: "서버연결관리", path: "/server-connection" }
+            icon: <Cog6ToothIcon className="h-5 w-5" />,
+            links: [
+                { title: "API설정", path: "/admin/api" },
+                { title: "디자인설정", path: "/admin/design" },
+                { title: "광고설정", path: "/admin/ad" },
+                { title: "서버설정", path: "/admin/server" }
             ]
-        }
+        },
     ];
 
-    const [open, setOpen] = React.useState(0);
-    const handleOpen = (value) => setOpen(open === value ? 0 : value);
+    const handleOpen = (id) => setOpen(open === id ? 0 : id);
 
     return (
         <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-6 shadow-xl shadow-blue-gray-900/5 overflow-hidden">
             <div className="mb-2 p-2">
-                <Typography variant="h5" color="blue-gray">
+                <Typography variant="h5" color="blue-gray" component="a" onClick={() => { pageReset(); navigate('/admin/') }}>
                     관리자메뉴
                 </Typography>
             </div>
@@ -77,30 +81,24 @@ const AdminSideComponent = () => {
                 {menuItems.map((item) => (
                     <Accordion key={item.id} open={open === item.id}>
                         <AccordionHeader onClick={() => handleOpen(item.id)}>
-                            <ListItem>
-                                <ListItemPrefix>
-                                    <item.icon className="h-5 w-5" />
-                                </ListItemPrefix>
-                                {item.title}
-                            </ListItem>
+                            <ListItemPrefix>{item.icon}</ListItemPrefix>
+                            {item.title}
                         </AccordionHeader>
                         <AccordionBody className="text-center">
-                            {item.details.map(detail => (
-                                <Link to={detail.path} key={detail.name}>
-                                    <Typography>
-                                        {detail.name}
-                                    </Typography>
-                                </Link>
+                            {item.links.map(link => (
+                                <Typography key={link.title} component="a" onClick={() => { pageReset(); navigate(link.path) }}>
+                                    {link.title}
+                                </Typography>
                             ))}
                         </AccordionBody>
                     </Accordion>
                 ))}
-                <ListItem>
+                <Typography className={`flex`}>
                     <ListItemPrefix>
                         <PowerIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     관리자모드종료
-                </ListItem>
+                </Typography>
             </List>
         </Card>
     );

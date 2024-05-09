@@ -22,7 +22,6 @@ const TeamPage = () => {
     // 구성 요소가 마운트 해제되거나 효과가 다시 실행되기 전에 구독, 타이머, 이벤트 리스너 등을 정리하여 메모리 누수를 방지
     useEffect(() => {
         fetchTeams();
-        updateTeamImage();
     }, [refresh]);
     // 팀 리스트 불러오기
     const fetchTeams = () => {
@@ -34,8 +33,6 @@ const TeamPage = () => {
                 console.error('Error fetching teams', error);
                 setTeams([]);
             });
-    }
-    const updateTeamImage = ()=>{
     }
     // 팀 추가
     const handleAddTeam = () => {

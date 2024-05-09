@@ -18,12 +18,8 @@ export const login = async (userId, password) => {
 // 아이디 중복확인
 export const validateID = async (userId) => {
     const url = `${prefix}/checkId/${userId}`;
-    try {
-        const response = await axios.get(url);
-        return response.data;
-    } catch (error) {
-        throw error; 
-    }
+    const response = await axios.get(url);
+    return response.data;
 };
 
 // 닉네임 중복확인
