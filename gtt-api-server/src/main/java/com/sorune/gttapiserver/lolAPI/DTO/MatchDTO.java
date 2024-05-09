@@ -7,7 +7,7 @@ public class MatchDTO {
     private String dateTimeUTC;
     private String team1;
     private String team2;
-    private String winner;
+    private String winner;              // 승자
     private String patch;               // 불필요
     private String link;                // 선수 객체로 들어가면 될 듯
     private String team;                // link 랑 묶으면 될 듯
