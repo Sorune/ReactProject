@@ -32,12 +32,14 @@ const MyPost = () => {
 
     const userId = userInfo.nick
     useEffect(() => {
+        if(newsServerData===initState) {
             getMyPost({page: 1, size: 5}, userId).then(data => {
                 setMyPostServerData(data);
             })
             getMyNews({page: 1, size: 5}, userId).then(data => {
                 setNewsServerData(data)
             })
+        }
     },[refresh])
 
     return(

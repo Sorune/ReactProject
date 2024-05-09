@@ -57,7 +57,7 @@ for result in results:
     #             where='P.TeamLast="%s"' %result["Name"]
     #         )
     #         #for player in players:
-                
+
     #             #for k,v in player.items():
     #                 #print(k,v)
     #         time.sleep(50)

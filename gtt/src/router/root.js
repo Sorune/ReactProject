@@ -146,7 +146,6 @@ const root = createBrowserRouter([
         path:"myPost",
         element:<Suspense fallback={Loading}><MyPost/></Suspense>
     },
-    }
 ])
 
 export default root;
