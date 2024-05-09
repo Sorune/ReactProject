@@ -31,6 +31,7 @@ const MyPage = lazy(() => import("../pages/loginAuth/MyPage"))
 const MyPost = lazy(()=>import("../pages/loginAuth/MyPost"))
 const KakaoRedirect = lazy(()=>import("../pages/loginAuth/KakaoRedirectPage"))
 const AdminIndexPage = lazy(() => import("../pages/admin/AdminIndexPage"));
+const Stadium = lazy(()=>import("../test/pages/Stadium"))
 
 const root = createBrowserRouter([
     {
@@ -146,6 +147,10 @@ const root = createBrowserRouter([
         path:"myPost",
         element:<Suspense fallback={Loading}><MyPost/></Suspense>
     },
+    {
+        path:"stadium",
+        element:<Suspense fallback={Loading}><Stadium/></Suspense>
+    }
 ])
 
 export default root;

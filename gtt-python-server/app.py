@@ -5,7 +5,7 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/api/grid/teams' method=['GET'])
+@app.route('/api/grid/teams', ['GET'])
 def getTeams():
     teams = request.json
     response = {
