@@ -28,6 +28,7 @@ const NotFound = lazy(()=>import("../pages/error/404NotFound"))
 const SidebarLayout = lazy(()=>import("../layouts/SidebarLayout.js"));
 const NoticeIndex = lazy(()=> import("../pages/notice/NoticeIndexPage"))
 const MyPage = lazy(() => import("../pages/loginAuth/MyPage"))
+const MyPost = lazy(()=>import("../pages/loginAuth/MyPost"))
 const KakaoRedirect = lazy(()=>import("../pages/loginAuth/KakaoRedirectPage"))
 const AdminIndexPage = lazy(() => import("../pages/admin/AdminIndexPage"));
 
@@ -140,6 +141,11 @@ const root = createBrowserRouter([
         element: <Suspense fallback={Loading}><AdminIndexPage/></Suspense>,
         children: adminRouter(),
         errorElement: NotFound
+    },
+    {
+        path:"myPost",
+        element:<Suspense fallback={Loading}><MyPost/></Suspense>
+    },
     }
 ])
 

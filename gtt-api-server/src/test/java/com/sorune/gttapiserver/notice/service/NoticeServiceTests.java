@@ -48,6 +48,14 @@ public class NoticeServiceTests {
         log.info(responseDTO);
 
     }
+
+    @Test
+    public void testGetMyPost(){
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();
+
+        PageResponseDTO<NoticeDTO> responseDTO = noticeService.getMyPost(pageRequestDTO, "ozo");
+        log.info(responseDTO);
+    }
     
     @Test 
     public void testModify(){

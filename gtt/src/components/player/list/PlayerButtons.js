@@ -58,7 +58,6 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
         postAdd(formData).then(data => {
             console.log(data, data.pno)
             //setResultCallback(data.pno)
-
             moveTo({
                 pathName:pathName+'read/' + data.pno,
                 pageParam: {page: `${page.page}`, size: `${page.size}`}

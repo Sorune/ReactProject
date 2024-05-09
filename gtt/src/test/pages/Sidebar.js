@@ -58,8 +58,8 @@ const Sidebar = ()=>{
                 </ListItem>
                     </MenuHandler>
                     <MenuList>
-                        <MenuItem  onClick={() => { pageReset();  navigate('/lol/list') }} >챔피언</MenuItem>
-                        <MenuItem>아이템</MenuItem>
+                        <MenuItem  onClick={() => { navigate('/lol/list') }} >챔피언</MenuItem>
+                        <MenuItem  onClick={() => { navigate('/lol/itemlist') }} >아이템</MenuItem>
                         <MenuItem>룬</MenuItem>
                     </MenuList>
                 </Menu>
