@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerDTO {
+public class ServerPlayerDTO {
     private Long id;
     private String nickName;
     private String name;                    // 불필요 ( 아래에서 가져다 쓰면 될 듯 )

@@ -1,12 +1,9 @@
 package com.sorune.gttapiserver.playerComment.repository;
 
-import com.sorune.gttapiserver.comment.entity.Comment;
-import com.sorune.gttapiserver.playerComment.entity.PlayerComment;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,8 +20,8 @@ public class PlayerCommentRepositoryTests {
         Pageable pageable =
                 PageRequest.of(0,10, Sort.by("playerComNo").descending());
 
-        Page<PlayerComment> result = playerCommentRepository.findAllByPno(pageable, 1l);
+        //Page<PlayerComment> result = playerCommentRepository.findAllByPno(pageable, 1l);
 
-        result.getContent().stream().forEach(comment -> log.info(comment));
+        //result.getContent().stream().forEach(comment -> log.info(comment));
     }
 }

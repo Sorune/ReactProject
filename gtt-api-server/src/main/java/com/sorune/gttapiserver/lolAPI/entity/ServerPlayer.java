@@ -12,7 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-public class Player {
+@Table(name = "server_Player")
+public class ServerPlayer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

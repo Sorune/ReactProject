@@ -11,7 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"matches"})
-public class Tournament {
+@Table(name = "server_Tournament")
+public class ServerTournament {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -28,5 +29,5 @@ public class Tournament {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @OneToMany
-    private List<Match> matches;
+    private List<ServerMatch> serverMatches;
 }

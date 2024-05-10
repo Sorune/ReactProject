@@ -13,7 +13,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Team {
+@Table(name = "server_Team")
+public class ServerTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -27,5 +28,5 @@ public class Team {
     private String rosterPhoto;
 
     @OneToMany
-    private List<Player> players;
+    private List<ServerPlayer> serverPlayers;
 }

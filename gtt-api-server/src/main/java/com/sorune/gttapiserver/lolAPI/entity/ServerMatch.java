@@ -6,15 +6,16 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDateTime;
 
 @Entity
-public class Match {
+@Table(name = "server_Match")
+public class ServerMatch {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long matchId;
 
     @OneToOne
-    private Team team1;
+    private ServerTeam serverTeam1;
     @OneToOne
-    private Team team2;
+    private ServerTeam serverTeam2;
 
     @Column
     @ColumnDefault(value = "0")

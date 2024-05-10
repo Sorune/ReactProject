@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class TournamentDTO {
+public class ServerTournamentDTO {
     private Long id;
     private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -21,5 +21,5 @@ public class TournamentDTO {
     private String region;
     private String country;
     private String league;
-    private List<MatchDTO> matches;
+    private List<ServerMatchDTO> matches;
 }

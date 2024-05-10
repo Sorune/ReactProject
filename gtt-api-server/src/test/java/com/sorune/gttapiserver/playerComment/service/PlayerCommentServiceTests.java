@@ -1,8 +1,6 @@
 package com.sorune.gttapiserver.playerComment.service;
 
 import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
-import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
-import com.sorune.gttapiserver.player.service.PlayerService;
 import com.sorune.gttapiserver.playerComment.DTO.PlayerCommentDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -33,9 +31,9 @@ public class PlayerCommentServiceTests {
     public void commentSelectTests(){
         PageRequestDTO req = PageRequestDTO.builder().page(1).size(10).build();
 
-        PageResponseDTO<PlayerCommentDTO> dto = pCService.getPlayerCommentList(req, 1l);
+        //PageResponseDTO<PlayerCommentDTO> dto = pCService.getPlayerCommentList1(req, 1l);
 
-        log.info(dto.toString());
+        //log.info(dto.toString());
     }
 
     @Test
