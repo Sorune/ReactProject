@@ -1,4 +1,6 @@
 from flask import Flask,jsonify,json,request;
+from model import LeaguePedia as lp
+
 app = Flask(__name__)
 
 @app.route('/')

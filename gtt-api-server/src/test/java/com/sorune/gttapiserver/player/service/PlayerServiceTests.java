@@ -1,12 +1,9 @@
 package com.sorune.gttapiserver.player.service;
 
 import com.sorune.gttapiserver.player.DTO.PlayerDTO;
-import com.sorune.gttapiserver.player.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
 
 @SpringBootTest
 public class PlayerServiceTests {

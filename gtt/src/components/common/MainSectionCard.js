@@ -5,7 +5,7 @@ import PlayerListComponent from "../player/PlayerListComponent";
 
 export const MainSectionCard =({serverData,sectionTitle}) =>{
     return (
-        <Card shadow={false} className="bg-gray-100/50 rounded-2xl p-6">
+        <Card shadow={false} className="bg-gray-100/50 rounded-2xl p-6 overflow-auto">
             <CardHeader shadow={false} className="bg-gray-100/50 rounded-2xl pt-6">
                 <Typography variant={"h3"}>{sectionTitle}</Typography>
             </CardHeader>
