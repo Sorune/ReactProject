@@ -26,24 +26,24 @@ teamList = []
 
 results = site.cargo_client.query(
     tables="Teams=T",
-    fields="T.Name,T.Image,T.Location,T.RosterPhoto",
+    fields="T.Name=TeamName,T.Image,T.Location,T.RosterPhoto",
     where="T.Region='Korea'"
 )
 
 for result in results:
-    teams = {"Name":"",
+    teams = {"TeamName":"",
     "Image":"",
     "Location":"",
     "RosterPhoto":"",
     "players":[]}
-    teams["Name"] = result["Name"]
+    teams["TeamName"] = result["TeamName"]
     teams["Image"] = result["Image"]
     teams["Location"] = result["Location"]
     teams["RosterPhoto"] = result["RosterPhoto"]
     teams["players"] = site.cargo_client.query(
                 tables="Players=P",
-                fields="P.ID,P.Name,P.NameFull,P.Country,P.Age,P.Birthdate,P.Team,P.Team2,P.Role,P.FavChamps",
-                where='P.TeamLast="%s" AND P.Team IS NOT NULL' %(result["Name"])
+                fields="P.ID=NickName,P.Name,P.NameFull,P.Country,P.Age,P.Birthdate,P.Team,P.Role,P.FavChamps",
+                where='P.TeamLast="%s" AND P.Team IS NOT NULL AND (P.Role="Top" OR P.Role="Mid" OR P.Role="Bot" OR P.Role="Jungle" OR P.Role="Support")' %(result["TeamName"])
             )
     teamList.append(teams)
     # for key,value in result.items():
@@ -96,7 +96,7 @@ for item in response:
 page_to_query = "Data:LCK CL/2024 Season/Spring Playoffs"
 response = site.cargo_client.query(
     tables="TournamentRosters=TR",
-    fields="TR.Team,TR.OverviewPage,TR.RosterLinks,TR.Roles",
+    fields="TR.Team,TR.OverviewPage=League,TR.RosterLinks,TR.Roles",
     where="TR.OverviewPage='LCK/2024 Season/Spring Season'",
 )
 for item in response:
@@ -104,7 +104,7 @@ for item in response:
 
 response = site.cargo_client.query(
     tables="MatchSchedule=MS",
-    fields="MS.OverviewPage,MS.Team1,MS.Team2,MS.Team1Score,MS.Team2Score,MS.MatchDay,MS.DateTime_UTC,MS.N_MatchInPage,MS.ShownRound",
+    fields="MS.OverviewPage=League,MS.Team1,MS.Team2,MS.Team1Score,MS.Team2Score,MS.MatchDay,MS.DateTime_UTC,MS.N_MatchInPage,MS.ShownRound",
     where="MS.OverviewPage='LCK/2024 Season/Spring Season'",
     order_by="MS.DateTime_UTC DESC"
 )
