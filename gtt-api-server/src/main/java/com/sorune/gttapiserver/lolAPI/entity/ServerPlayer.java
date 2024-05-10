@@ -2,6 +2,8 @@ package com.sorune.gttapiserver.lolAPI.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "server_Player")
+@Table(name = "server_player")
+@DynamicUpdate
+@DynamicInsert
 public class ServerPlayer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +29,6 @@ public class ServerPlayer {
     private String country;
     private int age;
     private LocalDate birthDate;
-    private String team;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)

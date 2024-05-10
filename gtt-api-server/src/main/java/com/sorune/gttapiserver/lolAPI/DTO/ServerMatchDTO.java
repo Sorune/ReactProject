@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ServerMatchDTO {
     private Long matchId;
-    private ServerTeam serverTeam1;
-    private ServerTeam serverTeam2;
+    private ServerTeamDTO serverTeam1;
+    private ServerTeamDTO serverTeam2;
     private Long team1Score;
     private Long team2Score;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:MM:SS", timezone = "Asia/Seoul")

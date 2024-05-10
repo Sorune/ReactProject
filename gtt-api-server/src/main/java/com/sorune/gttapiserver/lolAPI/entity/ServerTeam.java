@@ -1,10 +1,9 @@
 package com.sorune.gttapiserver.lolAPI.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
@@ -13,7 +12,10 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "server_Team")
+@ToString(exclude = "serverPlayers")
+@Table(name = "server_team")
+@DynamicUpdate
+@DynamicInsert
 public class ServerTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

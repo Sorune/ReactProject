@@ -2,16 +2,21 @@ package com.sorune.gttapiserver.lolAPI.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"matches"})
-@Table(name = "server_Tournament")
+@ToString(exclude = {"serverMatches"})
+@Table(name = "server_tournament")
+@DynamicUpdate
+@DynamicInsert
 public class ServerTournament {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +32,6 @@ public class ServerTournament {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ElementCollection(fetch = FetchType.LAZY)
     @OneToMany
     private List<ServerMatch> serverMatches;
 }

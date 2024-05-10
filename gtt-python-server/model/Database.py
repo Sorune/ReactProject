@@ -1,6 +1,14 @@
-import pymysql
+import sqlalchemy as db
+import pandas as pd
 
 def sql_connect():
-    conn = pymysql.connect(host='sorune.asuscomm.com',port=13917,user="gtt",password="gtt",db="gtt",charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor,use_unicode=True)
-    return conn
+    return db.create_engine("mysql+pymysql://gtt:gtt@sorune.asuscomm.com:13917/gtt",encoding='utf-8')
 
+engine = db.create_engine("mysql+pymysql://gtt:gtt@sorune.asuscomm.com:13917/gtt",pool_recycle=600)
+connection = engine.connect()
+metadata = db.MetaData()
+member = db.Table('member', metadata)
+print(member,metadata.tables)
+df = pd.read_sql_query(db.text("SELECT * FROM member;"),connection)
+print(df)
+connection.close()
