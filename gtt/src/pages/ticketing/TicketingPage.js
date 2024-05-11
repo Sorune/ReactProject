@@ -1,7 +1,10 @@
-import React, { useMemo, useState } from 'react';
-import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
+import React, {useCallback, useMemo, useState} from 'react';
+import {Card, CardBody, Typography, Button, Dialog, DialogHeader, DialogBody} from "@material-tailwind/react";
 import { format, addWeeks } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import {getMember} from "../../api/memberApi";
+import Stadium from "../../test/pages/Stadium";
+import TestStadium from "../../test/pages/TestStadium";
 
 const teams = [
     "Gen.G", "SKT1", "Hanwha Life Esports", "kt Rolster", "Dplus KIA",
@@ -31,46 +34,56 @@ const generateGames = () => {
 
 const games = generateGames();
 
-const GameCard = React.memo(({ game, selectedTeam }) => (
-    <Card className="mt-6 w-full">
-        <CardBody>
-            <div>
-                <div className={`text-center ${selectedTeam === game.team ? 'bg-blue-500' : ''}`}>
-                    <Typography className="text-white">
-                        {game.matchDay.split(' ').pop()} {game.matchName} / {game.matchRound}
+
+const formatDate = (dateString) => {
+    const parts = dateString.split(' ');
+    return { dayPart: parts.slice(0, -1).join(' '), timePart: parts.pop() };
+};
+
+const GameCard = React.memo(({ game, onOpenModal }) => {
+    const { dayPart, timePart } = formatDate(game.matchDay);
+
+    return (
+        <Card className="mt-6 w-full">
+            <CardBody>
+                <div className={`text-center ${game.isSelected ? 'bg-blue-500' : ''}`}>
+                    <Typography className="text-black">
+                        {timePart} {game.matchName} / {game.matchRound}
                     </Typography>
                 </div>
-                <div className="grid grid-cols-4 gap-4 text-center mt-2">
-                    <div className="col-span-2">
-                        <Typography>
-                            {game.matchDay.split(' ').slice(0, -1).join(' ')}<br/>
-                            {game.matchHour}
-                        </Typography>
-                    </div>
-                    <div className="col-span-1 text-center">
-                        <Typography>
-                            {game.matchOpponent}
-                        </Typography>
-                    </div>
-                    <div className="col-span-1 flex justify-center align-center">
-                        <Typography>
-                            <Button className="col-span-4 md:col-span-1 w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800">
-                                예매
-                            </Button>
-                        </Typography>
-                    </div>
+                <div className="grid grid-cols-3 gap-3 text-center mt-2">
+                    <Typography>{dayPart}<br/>{game.matchHour}</Typography>
+                    <Typography>{game.matchOpponent}</Typography>
+                    <Button onClick={() => onOpenModal(game)}
+                            className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
+                        예매
+                    </Button>
                 </div>
-            </div>
-        </CardBody>
-    </Card>
-));
+            </CardBody>
+        </Card>
+    );
+});
+
+// function usePagination(data, itemsPerPage) {
+//     const [currentPage, setCurrentPage] = useState(1);
+//     const totalPages = Math.ceil(data.length / itemsPerPage);
+//
+//     const currentData = useMemo(() => {
+//         const start = (currentPage - 1) * itemsPerPage;
+//         const end = start + itemsPerPage;
+//         return data.slice(start, end);
+//     }, [currentPage, itemsPerPage, data]);
+//
+//     return { currentData, currentPage, setCurrentPage, totalPages };
+// }
 
 const TicketingPage = ({ selectedTeam }) => {
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentGame, setCurrentGame] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const gamesPerPage = 4;
 
     const filteredGames = useMemo(() => games.filter(game => game.team === selectedTeam), [selectedTeam]);
-
     const paginatedGames = useMemo(() => {
         const startIndex = (currentPage - 1) * gamesPerPage;
         const endIndex = startIndex + gamesPerPage;
@@ -158,7 +171,6 @@ const TicketingPage = ({ selectedTeam }) => {
                 </DialogBody>
             </Dialog>
         </div>
-
     );
 }
 
