@@ -28,6 +28,8 @@ public class ServerMatch {
     private ServerTeam serverTeam2;
 
     @Column
+    private String league;
+    @Column
     @ColumnDefault(value = "0")
     private Long team1Score;
     @Column
