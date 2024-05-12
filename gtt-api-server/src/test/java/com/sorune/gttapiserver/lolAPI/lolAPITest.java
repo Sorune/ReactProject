@@ -92,7 +92,7 @@ public class lolAPITest {
 
     @Test
     public void testInsertMatch(){
-        ServerTeam team = teamRepository.findById(1L).get();
+        ServerTeam team = teamRepository.findById(2L).get();
         ServerMatch match = ServerMatch.builder()
                 .serverTeam1(team)
                 .serverTeam2(team)
