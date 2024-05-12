@@ -63,6 +63,7 @@ class ServerMatch(Base):
     __tablename__ = 'server_match'
 
     match_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    league = Column(String)
     match_date = Column(DateTime)
     team1score = Column(BigInteger)
     team2score = Column(BigInteger)
