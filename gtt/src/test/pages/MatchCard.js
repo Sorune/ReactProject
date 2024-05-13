@@ -35,12 +35,12 @@ const MatchCard = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        getTournament(815)
+        getTournament(818)
             .then(data => {
                 console.log("API data:", data);
                 // 랜덤으로 stadium 배열 생성
                 const stadium = ["LOL PARK", "KSPO DOME"];
-                const randomStadium = stadium[Math.floor(Math.random() * stadium.length)];
+                const randomStadium = stadium[parseInt(Math.random() * stadium.length)];
                 // 토너먼트 객체에 stadium 속성 추가
                 const updatedTournament = {
                     ...data.tournament,
