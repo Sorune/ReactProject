@@ -32,15 +32,16 @@ const MatchCard = () => {
         setShowDialog(false);
     };
 
+    // 랜덤으로 stadium 배열 생성
+    const stadium = ["LOL PARK", "KSPO DOME"];
+    const randomStadium = stadium[Math.floor(Math.random() * stadium.length)];
 
     useEffect(() => {
         setIsLoading(true);
-        getTournament(815)
+        getTournament(818)
             .then(data => {
                 console.log("API data:", data);
-                // 랜덤으로 stadium 배열 생성
-                const stadium = ["LOL PARK", "KSPO DOME"];
-                const randomStadium = stadium[Math.floor(Math.random() * stadium.length)];
+
                 // 토너먼트 객체에 stadium 속성 추가
                 const updatedTournament = {
                     ...data.tournament,
@@ -74,19 +75,19 @@ const MatchCard = () => {
                                 <small>{tournament.name}</small>
                             </Typography>
                         </div>
-                        <div className="grid grid-cols-6 flex items-center text-center">
+                        <div className="grid grid-cols-4 flex items-center ">
                             <Typography variant="h6">
                                <small> {match.matchDate}</small>
                             </Typography>
                             <Typography variant="h6">
                                 {tournament.stadium}
                             </Typography>
-                            <div className="col-start-3 col-end-6">
+                            <div className="col-start-3">
                                 <Typography variant="h5">
-                                    {match.serverTeam1.teamName} vs {match.serverTeam2.teamName}
+                                    {match.serverTeam1.teamName} <small>vs</small> {match.serverTeam2.teamName}
                                 </Typography>
                             </div>
-                            <div className="span-2 text-center mt-2">
+                            <div className="span- text-center mt-2">
                                 <Button onClick={() => handleOpenModal(match)}
                                         className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
                                     예매
