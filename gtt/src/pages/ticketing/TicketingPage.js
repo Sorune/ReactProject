@@ -1,10 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Card, CardBody, Typography, Button, Dialog, DialogHeader, DialogBody} from "@material-tailwind/react";
 import { format, addWeeks } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import {getMember} from "../../api/memberApi";
 import Stadium from "../../test/pages/Stadium";
 import TestStadium from "../../test/pages/TestStadium";
+import {getTournament} from "../../api/matchAPI";
+import MatchCard from "../../test/pages/MatchCard";
 
 const teams = [
     "Gen.G", "SKT1", "Hanwha Life Esports", "kt Rolster", "Dplus KIA",
@@ -77,8 +79,9 @@ const GameCard = React.memo(({ game, onOpenModal }) => {
 //     return { currentData, currentPage, setCurrentPage, totalPages };
 // }
 
+
 const TicketingPage = ({ selectedTeam }) => {
-    const [modalOpen, setModalOpen] = useState(false);
+
     const [currentGame, setCurrentGame] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const gamesPerPage = 4;
@@ -91,30 +94,14 @@ const TicketingPage = ({ selectedTeam }) => {
     }, [filteredGames, currentPage, gamesPerPage]);
 
     const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
-
-    const handleOpenModal = useCallback((game) => {
-        setCurrentGame(game);
-        setModalOpen(true);
-    }, [setCurrentGame, setModalOpen]);
-
     const changePage = (newPage) => {
         if (newPage < 1 || newPage > totalPages) return;
         setCurrentPage(newPage);
     };
-    const [showDialog, setShowDialog] = useState(false);
 
-    const handleOpenDialog = () => {
-        setShowDialog(true)
-    };
-    const handleCloseDialog = () => {
-        setShowDialog(false);
-    };
     return (
-        <div>
-            {/* Game cards */}
-            {paginatedGames.map((game, index) => (
-                <GameCard key={index} game={game} onOpenModal={handleOpenModal} />
-            ))}
+        <div >
+            <MatchCard />
             {/* Pagination */}
             <div className="flex justify-center space-x-2 mt-4">
                 <Button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>이전</Button>
@@ -126,50 +113,6 @@ const TicketingPage = ({ selectedTeam }) => {
                 ))}
                 <Button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>다음</Button>
             </div>
-            {/* Modal for booking details */}
-            <Dialog open={modalOpen} onClose={() => setModalOpen(false)} handler={handleOpenModal}>
-                <Dialog.Header>예매 정보</Dialog.Header>
-                <Dialog.Body>
-                    {currentGame && (
-                        <div>
-                            <p>경기일자: {currentGame.matchDay}</p>
-                            <p>주최명: {currentGame.matchName}</p>
-                            <p>상대팀: {currentGame.matchOpponent}</p>
-                            <p>경기정보: {currentGame.matchRound}</p>
-                        </div>
-                    )}
-                </Dialog.Body>
-                <Dialog.Footer>
-                    <Button onClick={() => {
-                        handleOpenDialog(currentGame);
-                        setModalOpen(false);
-                    } } >예매</Button>
-                    <Button onClick={() => setModalOpen(false)}>닫기</Button>
-                </Dialog.Footer>
-            </Dialog>
-            {/*좌석선택*/}
-            <Dialog size="lg" className="w-full" open={showDialog} handler={handleCloseDialog} >
-                <DialogHeader className="flex justify-between bg-gradient-to-r from-cyan-500 to-blue-500 bg-gradient-to-bl items-center">
-                    <div className="flex items-center">
-                        <Typography color="white" variant="h3" className="mr-4">
-                            예매하기
-                        </Typography>
-                        {currentGame && (
-                            <Typography className="mr-4" color="white" variant="h4">
-                                {currentGame.matchName} | {currentGame.matchRound}
-                            </Typography>
-                        )}
-                    </div>
-                    <Button variant="gradient" color="red" size="sm" onClick={handleCloseDialog}>
-                        X
-                    </Button>
-                </DialogHeader>
-                <DialogBody className="overflow-hidden ">
-                    <div className="max-w-full max-h-full h-[34.5rem]">
-                        <TestStadium/>
-                    </div>
-                </DialogBody>
-            </Dialog>
         </div>
         
     );
