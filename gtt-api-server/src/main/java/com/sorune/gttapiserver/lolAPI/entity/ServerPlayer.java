@@ -27,6 +27,7 @@ public class ServerPlayer {
     private String name;
     private String nameFull;
     private String country;
+    @Column
     private int age;
     private LocalDate birthDate;
 
