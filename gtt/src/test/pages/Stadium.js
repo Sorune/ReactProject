@@ -14,7 +14,7 @@ const Stadium = () => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [resultList, setResultList] = useState([]);
     const [selectedSectionRef, setSelectedSectionRef] = useState(null); // 이전에 선택한 섹션
-    const [checkedSeatsMap, setCheckedSeatsMap] = useState({});
+    const [sectionCheckStates, setSectionCheckStates] = useState({}); // 각 섹션의 체크 상태 저장
 
     const handleSelect = (selectedSection) => {
         // 선택한 섹션의 배경색 변경
@@ -31,8 +31,14 @@ const Stadium = () => {
             setSelectedSectionRef(target);
 
             // 이전에 선택한 좌석 정보 유지
-            setResultList([]);
-            setSelectedSeats([]);
+            // setResultList([]);
+            // setSelectedSeats([]);
+
+            // 선택한 섹션의 체크 상태 초기화
+            setSectionCheckStates((prevState) => ({
+                ...prevState,
+                [selectedSection]: [],
+            }));
         }
     };
 
@@ -46,6 +52,7 @@ const Stadium = () => {
         if (isChecked) {
             if (selectedSeats.length < 4 || alreadySelected) {
                 setSelectedSeats((prevSeats) => [...prevSeats, selectedValue]);
+                setResultList((prevList) => [...prevList, selectedValue]);
             } else {
                 alert("최대 4개까지 선택 가능합니다.");
                 // 선택한 체크박스를 해제
@@ -53,10 +60,7 @@ const Stadium = () => {
             }
         } else {
             // 체크가 해제되었을 때 결과 목록에서 해당 값 제거
-            setResultList((prevList) => {
-                const filteredList = prevList.filter((item) => item !== selectedValue);
-                return filteredList.length > 0 ? filteredList : [];
-            });
+            setResultList((prevList) => prevList.filter((item) => item !== selectedValue));
             // 선택한 좌석 목록에서도 해당 값 제거
             setSelectedSeats((prevSeats) => prevSeats.filter((item) => item !== selectedValue));
         }
@@ -73,32 +77,19 @@ const Stadium = () => {
     };
 
     useEffect(() => {
-        // 이전에 선택한 섹션의 체크 정보를 가져와서 해당되는 체크를 다시 설정
-        const prevCheckedSeats = checkedSeatsMap[section] || [];
-        const checkboxes = document.querySelectorAll("input[type='checkbox']");
-        checkboxes.forEach((checkbox) => {
-            const value = checkbox.value;
-            checkbox.checked = prevCheckedSeats.includes(value);
-        });
-        setSelectedSeats(prevCheckedSeats);
-        setResultList(prevCheckedSeats);
+        // 이전에 선택한 섹션으로 돌아왔을 때 해당 섹션의 체크 상태 복원
+        if (section && sectionCheckStates[section]) {
+            const checkboxes = document.querySelectorAll("input[type='checkbox']");
+            checkboxes.forEach((checkbox) => {
+                const value = checkbox.value;
+                checkbox.checked = sectionCheckStates[section].includes(value);
+            });
+        }
     }, [section]);
-
-    useEffect(() => {
-        setResultList(selectedSeats);
-    }, [selectedSeats]);
-
-    useEffect(() => {
-        // 선택한 섹션과 해당 섹션에서 선택한 좌석 정보를 checkedSeatsMap에 저장
-        setCheckedSeatsMap((prevMap) => ({
-            ...prevMap,
-            [section]: selectedSeats,
-        }));
-    }, [selectedSeats]);
     return (
         <div className="w-full h-[80%]">
             <div className="grid grid-cols-auto w-full h-full">
-                <div className="col-start-1 col-span-7 grid grid-rows-2 h-[95%]">
+                <div className="col-start-1 col-span-7 grid grid-rows-2 h-[85%]">
                     <div className="row-start-1 p-4 grid grid-cols-3 h-60">
                         <div
                             className="border p-4 col-start-1 flex items-center justify-center A"
@@ -138,7 +129,7 @@ const Stadium = () => {
                     </div>
                 </div>
 
-                <div className="col-start-9 col-end-12 col-span-1 grid grid-rows-2 h-[88%]">
+                <div className="col-start-9 col-end-12 col-span-1 grid grid-rows-2 justify-center h-[80%]">
                     <Card className="border h-full p-4">
                         <Typography className="text-center">{section}</Typography>
                         <div className="bg-gray-300 flex justify-center items-center">
@@ -152,7 +143,7 @@ const Stadium = () => {
                                             <input
                                                 key={i}
                                                 type="checkbox"
-                                                value={`${index + 1}-${i + 1}`}
+                                                value={`${section} 구역 ${index + 1}열 - ${i + 1}번석`}
                                                 onChange={handleCheckboxChange}
                                             />
                                         ))}
@@ -161,16 +152,16 @@ const Stadium = () => {
                         </div>
                     </Card>
                     <Card className="border h-full p-4 grid grid-rows-4 mt-5">
-                        <div className="row-start-1 row-span-3">
-                            <ul className="p-2 h-full">
+                        <div className="row-start-1 row-span-3 flex justify-center">
+                            <ul className="p- h-full">
                                 {resultList.map((value, index) => (
                                     <li key={index}>{value}</li>
                                 ))}
                             </ul>
                         </div>
-                        <div className="row-start-4 flex justify-end">
+                        <div className="row-start-4 flex flex justify-center">
                             <Button size="sm" onClick={reSetBtn}>reset</Button>
-                            <Button size="sm">Add Cart</Button>
+                            <Button size="sm" >Add Cart</Button>
                         </div>
                     </Card>
                 </div>
