@@ -34,11 +34,11 @@ public class PlayerCommentController {
     public List<PlayerCommentDTO> getCommentList(@PathVariable("pno") Long pno){
         List<PlayerCommentDTO> dtoList = playerCommentService.getPlayerCommentList2(pno);
 
-        Double avgRecomNo = playerCommentService.getPlayerCommentRecomNo(pno);
-        playerService.updateGpa(pno, avgRecomNo);
+//        Double avgRecomNo = playerCommentService.getPlayerCommentRecomNo(pno);
+//        playerService.updateGpa(pno, avgRecomNo);
 
-        PlayerDTO dto = playerService.getById(pno);
-        System.out.println(dto.toString());
+//        PlayerDTO dto = playerService.getById(pno);
+//        System.out.println(dto.toString());
 
         return dtoList;
     }

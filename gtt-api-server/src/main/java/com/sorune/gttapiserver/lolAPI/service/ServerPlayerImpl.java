@@ -26,7 +26,6 @@ public class ServerPlayerImpl implements ServerPlayerService {
     private final ServerPlayerRepository playerRepository;
     private final ModelMapper modelMapper;
 
-
     @Override
     @Transactional(readOnly = true)
     public PageResponseDTO<ServerPlayerDTO> getPlayers(PageRequestDTO pageRequestDTO) {
@@ -45,5 +44,13 @@ public class ServerPlayerImpl implements ServerPlayerService {
         System.out.println(pageResponseDTO);
 
         return pageResponseDTO;
+    }
+
+    @Override
+    public ServerPlayerDTO getPlayer(Long id) {
+        ServerPlayer serverPlayer = playerRepository.findById(id).get();
+        ServerPlayerDTO dto = modelMapper.map(serverPlayer, ServerPlayerDTO.class);
+
+        return dto;
     }
 }
