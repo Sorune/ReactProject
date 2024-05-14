@@ -1,4 +1,4 @@
-package com.sorune.gttapiserver.news.entity;
+package com.sorune.gttapiserver.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 // 세터 대신 감시용 코드 (데이터 변경 감지해 적용 -> Main 메소드에 추가 코드 입력)
 @EntityListeners(value = {AuditingEntityListener.class})
-abstract class BaseEntity { // 테이블의 공통 부분을 상속할 클래스
+public abstract class BaseEntity { // 테이블의 공통 부분을 상속할 클래스
     
     @CreatedDate // 게시물 생성할 때 동작
     @Column(name = "regDate", updatable = false) // 테이블에 필드명 지정, 업데이트 막음

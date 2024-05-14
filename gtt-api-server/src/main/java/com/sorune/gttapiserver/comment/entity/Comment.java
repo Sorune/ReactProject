@@ -1,5 +1,6 @@
 package com.sorune.gttapiserver.comment.entity;
 
+import com.sorune.gttapiserver.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

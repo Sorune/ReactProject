@@ -7,6 +7,7 @@ import {getPlayerList} from "../api/playerApi";
 import {useRecoilState} from "recoil";
 import {userState} from "../atoms/userState";
 import {tokenState} from "../atoms/tokenState";
+import {getNoticeList} from "../api/noticeApi";
 
 const initState = {
     dtoList:[],
@@ -36,6 +37,10 @@ const MainPage= () =>{
         getPlayerList({page:1, size:5}).then(data => {
             setPlayerServerData(data)
         })
+        getNoticeList({page:1, size:5}).then(data =>{
+            console.log(data)
+            setNoticeServerData(data)
+        })
     },[refresh]);
     return (
             <SidebarLayout>
@@ -56,10 +61,10 @@ const MainPage= () =>{
                             transformative learning opportunities.
                         </Typography>
                         <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
-                            <MainSectionCard serverData={newsServerData} sectionTitle={"News"}/>
-                            <MainSectionCard serverData={playerServerData} sectionTitle={"Player"}/>
                             <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"}/>
-                            <MainSectionCard serverData={newsServerData}  sectionTitle={"News"}/>
+                            <MainSectionCard serverData={newsServerData} sectionTitle={"News"}/>
+                            <MainSectionCard serverData={playerServerData} sectionTitle={"Board"}/>
+                            <MainSectionCard serverData={newsServerData}  sectionTitle={"FreeBoard"}/>
                         </div>
                     </div>
                 </section>

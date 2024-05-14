@@ -18,10 +18,12 @@ const MatchCard = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false)
     const [matchData, setMatchData] = useState(null)
+    const [stadiumName, setStadiumName] = useState("")
     const [showDialog, setShowDialog] = useState(false);
 
-    const handleOpenModal = useCallback((match) => {
+    const handleOpenModal = useCallback((match,stadiumName) => {
         setMatchData(match)
+        setStadiumName(stadiumName)
         setOpenModal(true);
     }, [setOpenModal]);
 
@@ -34,20 +36,12 @@ const MatchCard = () => {
 
     // 랜덤으로 stadium 배열 생성
     const stadium = ["LOL PARK", "KSPO DOME"];
-    const randomStadium = stadium[Math.floor(Math.random() * stadium.length)];
-
     useEffect(() => {
         setIsLoading(true);
         getTournament(818)
             .then(data => {
                 console.log("API data:", data);
-
-                // 토너먼트 객체에 stadium 속성 추가
-                const updatedTournament = {
-                    ...data.tournament,
-                    stadium: randomStadium
-                };
-                setTournament(updatedTournament);
+                setTournament({...data.tournament});
             })
             .catch(error => {
                 console.error("Error fetching tournament data:", error);
@@ -67,37 +61,40 @@ const MatchCard = () => {
 
     return (
         <div>
-            {tournament.matches.map((match, index) => (
-                <Card key={match.matchId} className="mb-4">
-                    <CardBody className="grid grid-rows-2 ">
-                        <div className="row-start-1 items-center text-center mb-0 ">
-                            <Typography variant="h6">
-                                <small>{tournament.name}</small>
-                            </Typography>
-                        </div>
-                        <div className="grid grid-cols-4 flex items-center ">
-                            <Typography variant="h6">
-                               <small> {match.matchDate}</small>
-                            </Typography>
-                            <Typography variant="h6">
-                                {tournament.stadium}
-                            </Typography>
-                            <div className="col-start-3">
-                                <Typography variant="h5">
-                                    {match.serverTeam1.teamName} <small>vs</small> {match.serverTeam2.teamName}
+            {tournament.matches.map((match, index) => {
+                const name = stadium[parseInt(Math.random() * stadium.length)]
+                return(
+                    <Card key={match.matchId} className="mb-4">
+                        <CardBody className="grid grid-rows-2 ">
+                            <div className="row-start-1 items-center text-center mb-0 ">
+                                <Typography variant="h6">
+                                    <small>{tournament.name}</small>
                                 </Typography>
                             </div>
-                            <div className="span- text-center mt-2">
-                                <Button onClick={() => handleOpenModal(match)}
-                                        className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
-                                    예매
-                                </Button>
+                            <div className="grid grid-cols-4 flex items-center ">
+                                <Typography variant="h6">
+                                    <small> {match.matchDate}</small>
+                                </Typography>
+                                <Typography variant="h6">
+                                    {name}
+                                </Typography>
+                                <div className="col-start-3">
+                                    <Typography variant="h5">
+                                        {match.serverTeam1.teamName} <small>vs</small> {match.serverTeam2.teamName}
+                                    </Typography>
+                                </div>
+                                <div className="span- text-center mt-2">
+                                    <Button onClick={() => handleOpenModal(match,name)}
+                                            className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
+                                        예매
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
-                    </CardBody>
-                </Card>
+                        </CardBody>
+                    </Card>
 
-            ))}
+                )
+            })}
             <Dialog open={openModal} onClose={() => {
                 setOpenModal(false)
                 setMatchData(null)
@@ -113,7 +110,7 @@ const MatchCard = () => {
                         <div>
                             <Typography variant="h6">
                                 <p>{matchData.matchDate}</p>
-                                <p>{tournament.stadium}</p>
+                                <p>{stadiumName}</p>
                             </Typography>
                             {matchData && (
                                 <Typography variant="h5">
@@ -156,7 +153,7 @@ const MatchCard = () => {
                 </DialogHeader>
                 <DialogBody className="overflow-hidden ">
                     <div className="max-w-full max-h-full h-[34.5rem]">
-                        {tournament.stadium === "LOL PARK" ? <Stadium/> : <TestStadium/>}
+                        {stadiumName === "LOL PARK" ? <Stadium/> : <TestStadium/>}
                         {/* 예매 정보 추가 */}
                     </div>
                 </DialogBody>
