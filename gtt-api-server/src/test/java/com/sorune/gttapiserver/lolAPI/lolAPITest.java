@@ -135,4 +135,9 @@ public class lolAPITest {
         ServerPlayer p = playerRepository.findByNickName("Faker");
         log.info(p.toString());
     }
+
+    @Test
+    public void getPlayers(){
+
+    }
 }

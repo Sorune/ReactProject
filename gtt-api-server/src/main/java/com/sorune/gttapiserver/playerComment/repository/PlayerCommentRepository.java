@@ -16,6 +16,7 @@ public interface PlayerCommentRepository extends JpaRepository<PlayerComment, Lo
     // 한 선수에 대한 전체 댓글 리스트
     List<PlayerComment> findAllByPnoOrderByPlayerComNo(Long pno);
 
+    // 한 선수에 대한 댓글 중 평점에 대한 평균을 가져옴
     @Query("SELECT AVG(pc.recomNo) FROM PlayerComment pc WHERE pc.pno = :pno")
     Double meanOfRecomNoByPno(@PathVariable("pno") Long pno);
 }

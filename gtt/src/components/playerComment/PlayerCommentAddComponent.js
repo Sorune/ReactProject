@@ -1,10 +1,12 @@
 import React, {useCallback, useRef, useState} from "react";
 import useCustomMove from "../../hooks/useCustomMove";
 import {createSearchParams, useLocation, useSearchParams} from "react-router-dom";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {Button, Rating, Textarea} from "@material-tailwind/react";
 import {postPCommentAdd} from "../../api/playerCommentApi";
+import {userState} from "../../atoms/userState";
+import {focus} from "@testing-library/user-event/dist/focus";
 
 const initState = {
     comment : '',
@@ -50,6 +52,8 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const [playerComment, setPlayerComment] = useState({...initState})
     const writer = 'user100'
     const pno = useLocation().pathname.split("/")[3]
+    const [userInfo,setUserInfo] = useRecoilState(userState)
+    const textareaRef = useRef(null);
 
     const page = useRecoilValue(pageState)
     const {moveToList, moveToRead} = useCustomMove();
@@ -65,16 +69,28 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const handleAdd = () => {
         const formData = new FormData()
 
-        formData.append("comment", playerComment.comment)
-        formData.append("comWriter", writer)
-        formData.append("pno", pno)
-        formData.append("recomNo", playerComment.recomNo)
+        if (playerComment.comment === "" ) { // 댓글이 null 이면 작성 안되게
+            alert("응원 문구를 입력하세요.")
+            textareaRef.current.focus();
+            return;
 
-        postPCommentAdd(formData).then(data => {
-            alert("SUCCESS")
-            window.location.reload();
-            setRefresh(!refresh)
-        })
+        } else if (playerComment.recomNo === 0) { // 평점이 0이면 작성 안되게
+            alert("평점을 입력하세요.")
+            textareaRef.current.focus();
+            return;
+
+        } else { // 댓글, 평점이 있으면 작성
+            formData.append("comment", playerComment.comment)
+            formData.append("comWriter", userInfo.nick)
+            formData.append("pno", pno)
+            formData.append("recomNo", playerComment.recomNo)
+
+            postPCommentAdd(formData).then(data => {
+                alert("SUCCESS")
+                window.location.reload();
+                setRefresh(!refresh)
+            })
+        }
     }
 
     return (
@@ -82,7 +98,7 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
             <br/>
             <br/>
             <div className="flex w-full flex-col gap-6">
-                <Textarea className="w-full" variant="static" label="Comment" placeholder="Comment" name="comment" onChange={handleChangePComment}/>
+                <Textarea ref={textareaRef} className="w-full" variant="static" label="Comment" placeholder="Comment" name="comment" onChange={handleChangePComment}/>
                 <div className="flex justify-around items-start">
                     <Rating
                         value={playerComment.recomNo}
