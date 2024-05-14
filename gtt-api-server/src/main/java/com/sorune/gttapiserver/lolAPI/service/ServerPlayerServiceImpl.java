@@ -5,8 +5,6 @@ import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerPlayerDTO;
 import com.sorune.gttapiserver.lolAPI.entity.ServerPlayer;
 import com.sorune.gttapiserver.lolAPI.repository.ServerPlayerRepository;
-import com.sorune.gttapiserver.player.DTO.PlayerDTO;
-import com.sorune.gttapiserver.player.entity.Player;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -21,13 +19,13 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ServerPlayerImpl implements ServerPlayerService {
+public class ServerPlayerServiceImpl implements ServerPlayerService {
 
     private final ServerPlayerRepository playerRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public PageResponseDTO<ServerPlayerDTO> getPlayers(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("id").descending());
         Page<ServerPlayer> result = playerRepository.getAllPlayerWithAll(pageable);

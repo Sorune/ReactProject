@@ -62,11 +62,11 @@ const ListComponent = () => {
             console.log(data)
             setServerData(data)
         })
-        getTeamList().then(data => {
-            console.log(data)
-            setTeam(data)
-            console.log(data[0].serverPlayers)
-        })
+        // getTeamList().then(data => {
+        //     console.log(data)
+        //     setTeam(data)
+        //     console.log(data[0].serverPlayers)
+        // })
     }, [refresh])
 
     return (
@@ -121,21 +121,23 @@ const ListComponent = () => {
                                 <Typography variant="h5" className="mb-4 text-white">
                                     {player.nameFull}
                                 </Typography>
-                                {
-                                    team.serverPlayers.map((teamPlayer) => {
-                                        if (teamPlayer.id === player.id) {
-                                            return (
-                                                <Avatar
-                                                    key={teamPlayer.id}
-                                                    size="xl"
-                                                    variant="circular"
-                                                    alt="tania andrew"
-                                                    src={`/img/players/${team.image}`} // team의 image 값 사용
-                                                />
-                                            );
-                                        }
-                                    })
-                                }
+
+                                {/*팀 이미지 매칭*/}
+                                {/*{*/}
+                                {/*    team.serverPlayers.map((teamPlayer) => {*/}
+                                {/*        if (teamPlayer.id === player.id) {*/}
+                                {/*            return (*/}
+                                {/*                <Avatar*/}
+                                {/*                    key={teamPlayer.id}*/}
+                                {/*                    size="xl"*/}
+                                {/*                    variant="circular"*/}
+                                {/*                    alt="tania andrew"*/}
+                                {/*                    src={`/img/players/${team.image}`} // team의 image 값 사용*/}
+                                {/*                />*/}
+                                {/*            );*/}
+                                {/*        }*/}
+                                {/*    })*/}
+                                {/*}*/}
 
                             </CardBody>
                         </Card>
