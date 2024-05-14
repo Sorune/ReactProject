@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {Button, Card, Typography} from "@material-tailwind/react";
+import useCustomMove from "../../hooks/useCustomMove";
+import {useNavigate} from "react-router-dom";
 
 const sitList = {
-    A1: [7, 7, 8, 8, 8, 8, 8, 9, 9],
-    A2: [7, 7, 7, 7, 7, 7, 7, 7, 7,],
-    A3: [7, 7, 8, 8, 8, 8, 8, 9, 9],
-    B1: [7, 7, 7, 7, 8, 8, 8, 8, 8, 9 ],
-    B2: [7, 7, 7, 7, 8, 8, 8, 8, 8, 9 ],
-    B3: [7, 7, 7, 7, 8, 8, 8, 8, 8, 9 ],
-    C1: [6, 7, 8, 8, 9, 10, 11, 12],
-    C2: [5, 6, 7, 7, 8, 9, 9, 10],
-    C3: [5, 7, 8, 8, 9, 10, 11, 12],
+    A1: {states:[7, 7, 8, 8, 8, 8, 8, 9, 9], price:115000},
+    A2: {states: [7, 7, 7, 7, 7, 7, 7, 7, 7,],price: 123000},
+    A3: {states: [7, 7, 8, 8, 8, 8, 8, 9, 9], price:115000},
+    B1: {states:[7, 7, 7, 7, 8, 8, 8, 8, 8, 9 ],price:168000},
+    B2: {states:[7, 7, 7, 7, 8, 8, 8, 8, 8, 9 ], price:168000},
+    C1: {states:[6, 7, 8, 8, 9, 10, 11, 12], price:115000},
+    C2: {states:[5, 6, 7, 7, 8, 9, 9, 10], price:123000},
+    C3: {states:[5, 7, 8, 8, 9, 10, 11, 12],price:115000},
 };
 
-const TestStadium = () => {
+const TestStadium = ({matchData, stadium}) => {
     const [section, setSection] = useState("");
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [resultList, setResultList] = useState([]);
     const [selectedSectionRef, setSelectedSectionRef] = useState(null); // 이전에 선택한 섹션
     const [sectionCheckStates, setSectionCheckStates] = useState({}); // 각 섹션의 체크 상태 저장
+    const navigate = useNavigate()
+    const [totalPrice, setTotalPrice] = useState(0);
+
+
 
     const handleSelect = (selectedSection) => {
         // 선택한 섹션의 배경색 변경
@@ -31,12 +36,7 @@ const TestStadium = () => {
             if (selectedSectionRef) {
                 selectedSectionRef.classList.remove("bg-gray-500");
             }
-
             setSelectedSectionRef(target);
-
-            // 이전에 선택한 좌석 정보 유지
-            // setResultList([]);
-            // setSelectedSeats([]);
 
             // 선택한 섹션의 체크 상태 초기화
             setSectionCheckStates((prevState) => ({
@@ -80,6 +80,13 @@ const TestStadium = () => {
         });
     };
 
+    const addCartBtn = useCallback(() => {
+        navigate("/cart/list", {state: {data: resultList, matchData, totalPrice, stadium}});
+    }, [resultList, navigate, matchData, totalPrice, stadium]);
+
+
+
+
     useEffect(() => {
         // 이전에 선택한 섹션으로 돌아왔을 때 해당 섹션의 체크 상태 복원
         if (section && sectionCheckStates[section]) {
@@ -90,6 +97,15 @@ const TestStadium = () => {
             });
         }
     }, [section]);
+
+    useEffect(() => {
+        const price = resultList.reduce((acc, seat) => {
+            const section = seat.split(" ")[0];
+            return acc + sitList[section]?.price || 0;
+        }, 0);
+        setTotalPrice(price);
+    }, [resultList]);
+
     return (
         <div className="w-full h-full">
             <div className="grid grid-cols-auto w-full">
@@ -136,19 +152,19 @@ const TestStadium = () => {
                             className="border p-4 gap-2 h-full flex items-center justify-center mr-2 C1"
                             onClick={() => handleSelect("C1")}
                         >
-                            <p>B1</p>
+                            <p>C1</p>
                         </div>
                         <div
                             className="border p-4 h-full flex items-center justify-center C2"
                             onClick={() => handleSelect("C2")}
                         >
-                            <p>B2</p>
+                            <p>C2</p>
                         </div>
                         <div
                             className="border p-4 h-full flex items-center justify-center ml-2 C3"
                             onClick={() => handleSelect("C3")}
                         >
-                            <p>B3</p>
+                            <p>C3</p>
                         </div>
                     </div>
                 </div>
@@ -161,7 +177,7 @@ const TestStadium = () => {
                         </div>
                         <div className="p-2 w-56 h-56 overflow-auto" id="selectArea">
                             {section &&
-                                sitList[section].map((num, index) => (
+                                sitList[section].states.map((num, index) => (
                                     <div key={index} className="flex justify-center">
                                         {[...Array(num)].map((_, i) => (
                                             <input
@@ -176,16 +192,20 @@ const TestStadium = () => {
                         </div>
                     </Card>
                     <Card className="border h-full p-4 grid grid-rows-4 mt-5">
-                        <div className="row-start-1 row-span-3 flex justify-center">
+                        <div className="row-start-1 row-span-2 flex justify-center">
                             <ul className="p- h-full">
                                 {resultList.map((value, index) => (
                                     <li key={index}>{value}</li>
                                 ))}
                             </ul>
                         </div>
+                        <div className="row-start-3 flex flex justify-center">
+                            <Typography variant="h6" className="text-xl mb-2">Total Price: {totalPrice}원</Typography>
+                        </div>
+
                         <div className="row-start-4 flex flex justify-center">
                             <Button size="sm" onClick={reSetBtn}>reset</Button>
-                            <Button size="sm" >Add Cart</Button>
+                            <Button size="sm" onClick={() => addCartBtn({resultList: resultList.join(',')})}>Add Cart</Button>
                         </div>
                     </Card>
                 </div>

@@ -9,6 +9,7 @@ import lolRouter from "./lolRouter";
 import adminRouter from "./adminRouter.js";
 import boardRouter from "./boardRouter";
 import freeBoardRouter from "./freeBoardRouter";
+import cartRouter from "./cartRouter";
 
 
 const { createBrowserRouter } = require("react-router-dom");
@@ -36,6 +37,7 @@ const MyPost = lazy(()=>import("../pages/loginAuth/MyPost"))
 const KakaoRedirect = lazy(()=>import("../pages/loginAuth/KakaoRedirectPage"))
 const AdminIndexPage = lazy(() => import("../pages/admin/AdminIndexPage"));
 const Stadium = lazy(()=>import("../test/pages/Stadium"))
+const CartMain = lazy(()=> import("../pages/cart/CartMain"))
 
 const root = createBrowserRouter([
     {
@@ -166,6 +168,11 @@ const root = createBrowserRouter([
     {
         path:"stadium",
         element:<Suspense fallback={Loading}><Stadium/></Suspense>
+    },
+    {
+        children:cartRouter(),
+        path:"cart",
+        element:<Suspense fallback={Loading}><CartMain/></Suspense>
     }
 ])
 
