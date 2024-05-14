@@ -1,128 +1,222 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import AddrWithDaum from './AddrWithDaum';
-import {Button, IconButton, Typography, AccordionHeader, AccordionBody, Accordion} from '@material-tailwind/react';
+import {
+    Button,
+    IconButton,
+    Typography,
+    AccordionHeader,
+    AccordionBody,
+    Accordion,
+    Input
+} from '@material-tailwind/react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
 import useUserAuth from "../../hooks/useUserAuth";
-import {join} from "../../api/joinApi"
 
 const SignIn = () => {
-    const navigate = useNavigate();
+    // 주소 검색 모달 상태 제어
     const [modalOpen, modalSetOpen]  = React.useState(false);
+    // 개인 정보 취급동의 상태 제어
     const [termsChecked, setTermsChecked] = useState(false);
-
-    // 1. 이페이지에서만 값을 가지고 있을 것이므로 여기에 state작성
-    //      변수         메서드
+    // 아이디 입력 상태 제어 (중복 아이디 체크여부 포함)
     const [userId, setUserId] = useState('');       // id
-    const [password, setPassword] = useState('');               // pw
+    const [idStatus, setIdStatus] = useState(null);
+    // 비밀번호 입력 상태제어 (비밀번호, 비밀번호 확인 체크 여부 포함)
+    const [password, setPassword] = useState('');   // pw
     const [confirmPw, setConfirmPw] = useState(''); // confirmPw
+    // 닉네임 입력 상태 제어 (중복 닉네임 체크여부 포함)
     const [nick, setNick] = useState('');           // nick
+    const [nickStatus, setNickStatus] = useState(null);
+    const [pwStatus, setPwStatus] = useState(null);
+    const [pw2Status, setPw2Status] = useState(null);
+    // 전화번호 입력 상태제어 (전화번호 유효성 체크여부 포함)
     const [phone, setPhone] = useState('');         // phone
+    const [phoneStatus, setPhoneStatus] = useState(null);
+    // 이메일 입력 상태제어 (중복 이메일 체크여부 포함)
     const [email, setEmail] = useState('');         // email
+    const [emailStatus, setEmailStatus] = useState(null);
+    // 나머지 주소 입력 상태제어 (나머지 주소 입력 체크여부 포함)
+    const [addrSub, setAddrSub] = useState('');     // addrSub
+    const [addrSubStatus, setAddrSubStatus] = useState(null);
+    // 그 외 생년월일 입력 및 우편번호, 주소 입력 상태제어
     const [birth, setBirth] = useState('');         // birth
     const [address, setAddress] = useState('');     // address
-    const [addrSub, setAddrSub] = useState('');     // addrSub
     const [zoneCode, setZoneCode] = useState('');   // zoneCode
-    // 2. useUserAuth 에서 리턴한 메서드
-    // const { checkId, checkPw, checkNick, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
-    const { checkPw, formatPhoneNumber, validatePhoneNumber} = useUserAuth();
-    // 회원가입
-    const {joinMember} = useUserAuth();
-    // 추가정보작성 아코디언 이벤트
-    const [detail, setDetail] = React.useState(0);
-    const detailOpen = (value) => setDetail(detail === value ? 0 : value);
-    // 머트리얼 모달 동작 메서드
+    // useUserAuth에서 리턴한 값 (입력된 내용 검증 메서드도 반환)
+    const { checkPw, checkId, checkEmail, checkNick, formatAndCheckPhoneNumber, handlePhoneBlur, checkAddrSub, validateAndJoin } = useUserAuth();
+    // 머트리얼 모달 동작 메서드 상태 제어
     const modalHandleOpen = () => modalSetOpen(true);
     const modalHandleClose = () => modalSetOpen(false);
+    // 추가정보작성 아코디언 이벤트 상태 제어
+    const [detail, setDetail] = React.useState(0);
+    const detailOpen = (value) => setDetail(detail === value ? 0 : value);
     // 주소 검색 후 결과 값을 반환하는 메서드
     const handleUpdateAddress = (fullAddress, zoneCode) => {
         setAddress(fullAddress);
         setZoneCode(zoneCode);
     };
-    console.log(userId, password, phone, nick, email, birth, address, addrSub, zoneCode)
-    // 로그인 페이지로 가는 메서드 - 버튼 이벤트 처리용
-    const moveToLink = (e) => {
-        // 클릭한 요소에서 'data-value' 속성 값을 가져와서 목적지 변수에 저장
-        const destination = e.target.dataset.value;
-        // 목적지 값에 따라 다르게 처리 "login"이면 로그인 페이지로 이동하고
-        if (destination === "login") {
-            navigate("/login");
-            // "home"이면 홈페이지(보통 "/"로 표시됨)로 이동
-        } else if (destination === "home") {
-            navigate("/");
-        }
+    // id 체크 핸들러
+    const handleCheckId = (userId) => {
+        checkId(userId, setUserId, setIdStatus);  // setIdStatus를 인수로 전달
     };
-    useEffect(() => {
+    // id 체크후 결과 값으로 input창 라벨 스타일 변경
+    const getUserIdLabel = () => {
+        if (idStatus === 'valid') return "ID (사용 가능)";
+        if (idStatus === 'invalid') return "ID (사용 중)";
+        return "ID 체크";
+    };
+    // pw 1,2 체크 핸들러
+    const handleCheckPw = (password, confirmPw) => {
+        checkPw(password, confirmPw, setPassword, setConfirmPw, setPwStatus, setPw2Status);
+    };
+    // pw 1,2 체크 후 input창 라벨 스타일 변경
+    const getUserPWLabel = () => {
+        if (pwStatus === 'valid') return "PW (입력)";
+        if (pwStatus === 'invalid') return "PW (입력)";
+        if (pw2Status === 'valid') return "PW (일치)";
+        if (pw2Status === 'invalid') return "PW (불일치)";
+        return "PW 체크";
+    };
+    // email 체크 핸들러
+    const handleCheckEmail = (email) => {
+        checkEmail(email, setEmail, setEmailStatus);  // setIdStatus를 인수로 전달
+    };
+    // email 체크후 결과 값으로 input창 라벨 스타일 변경
+    const getUserEmailLabel = () => {
+        if (emailStatus === 'valid') return "email (사용 가능)";
+        if (emailStatus === 'invalid') return "email (사용 중)";
+        return "이메일 체크";
+    }
+    // 닉네임 체크 핸들러
+    const handleCheckNick = (nick) => {
+        checkNick(nick, setNick, setNickStatus);  // setNickStatus를 인수로 전달
+    };
+    // 닉네임 체크후 결과 값으로 input창 라벨 스타일 변경
+    const getNickLabel = () => {
+        if (nickStatus === 'valid') return "닉네임 (사용 가능)";
+        if (nickStatus === 'invalid') return "닉네임 (사용 중)";
+        return "닉네임 체크";
+    };
+    // 전화번호 체크 핸들러
+    const handlePhoneChange = (e) => {
+        formatAndCheckPhoneNumber(e.target.value, setPhone, setPhoneStatus);
+    };
+    // 전화번호 체크후 결과 값으로 input창 라벨 스타일 변경
+    const getPhoneLabel = () => {
+        if (phoneStatus === 'valid') return "전화번호 (사용 가능)";
+        if (phoneStatus === 'invalid') return "전화번호 (불가능)";
+        return "전화번호 검증";
+    };
+    // 나머지 주소 체크 핸들러
+    const handleAddrSubBlur = () => {
+        checkAddrSub(addrSub, setAddrSubStatus);
+    };
+    // 나머지 주소 변경 처리
+    const handleAddrSubChange = (e) => {
+        const newAddrSub = e.target.value;
+        setAddrSub(newAddrSub); // 입력 값 상태 업데이트
+        checkAddrSub(newAddrSub, setAddrSubStatus); // 입력 값 검증
+    };
+    // 나머지 주소 체크후 결과 값으로 input창 라벨 스타일 변경
+    const getAddrSubLabel = () => {
+        if (addrSubStatus === 'valid') return "추가 주소 (입력됨)";
+        if (addrSubStatus === 'invalid') return "추가 주소를 입력해주세요";
+        return "추가 주소 입력";
+    };
 
-    }, []);
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                    <Link to={"/"} className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                        GTT
-                    </Link>
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                        <Link to={"/"} className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                            GTT
+                        </Link>
+                        <div className="p-6 space-y-4 md:space-y-6 sm:p-8 ">
                             <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                                 JOIN
                             </h1>
-                            <form className="space-y-4 md:space-y-6" action="#" onSubmit={(e)=>join({userId:userId, password:password, phone:phone, nick:nick, email:email, birth:birth, address:address, addrSub:addrSub, zoneCode:zoneCode})}>
+                            <form className="space-y-4 md:space-y-6" onSubmit={(e) => validateAndJoin(e, userId, password, confirmPw, nick, phone, email, addrSub, termsChecked, idStatus, pwStatus, pw2Status, nickStatus, phoneStatus, emailStatus, addrSubStatus, birth, address, zoneCode)}>
+                                {/* 폼 내용 */}
                                 <div>
                                     {/* ID */}
-                                    <label htmlFor="userId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</label>
-                                    {/*<input name="userId" value={userId} onChange={(e) => setUserId(e.target.value)} onBlur={checkId} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />*/}
-                                    {/*<input name="userId" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} onBlur={() => checkId(userId)} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />*/}
-                                    <input name="userId" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} type="text" id="userId" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="아이디를 입력하세요" />
+                                    <Typography htmlFor="userId" className="grid-2 block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID 입력</Typography>
+                                    <Input
+                                        name="userId"
+                                        label={getUserIdLabel()}
+                                        type="text"
+                                        value={userId}
+                                        onChange={(e) => setUserId(e.target.value)}
+                                        onBlur={() => handleCheckId(userId)}
+                                        error={idStatus === 'invalid'}
+                                        success={idStatus === 'valid'}
+                                        className="grid-2"  // 이전에는 "grid-3"였습니다.
+                                        placeholder="아이디를 입력하세요"
+                                    />
                                 </div>
                                 <div>
-                                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</label>
-                                    <input
+                                    {/* PW */}
+                                    <Typography htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력</Typography>
+                                    <Input
                                         name="password"
                                         value={password}
+                                        label={getUserPWLabel()}
                                         onChange={(e) => setPassword(e.target.value)}
                                         type="password"
                                         id="password"
-                                        placeholder="••••••••"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="비밀번호 입력"
+                                        className={`bg-gray-50 border ${password ? 'border-blue-500' : 'border-gray-300'} text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="confirmPw" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력 확인</label>
-                                    <input
+                                    {/* PW Confirm */}
+                                    <Typography htmlFor="confirmPw" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">PW 입력 확인</Typography>
+                                    <Input
                                         name="confirmPw"
+                                        label={getUserPWLabel()}
+                                        type="password"
                                         value={confirmPw}
                                         onChange={(e) => setConfirmPw(e.target.value)}
-                                        onBlur={()=>checkPw(password,confirmPw)}
-                                        type="password"
-                                        id="confirm-password"
-                                        placeholder="••••••••"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        onBlur={() => handleCheckPw(password, confirmPw)}
+                                        error={pw2Status === 'invalid'}
+                                        success={pw2Status === 'valid'}
+                                        className={`bg-gray-50 border ${pwStatus === 'invalid' ? 'border-red-500' : 'border-gray-300'} text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                                        placeholder="비밀번호 확인"
                                     />
                                 </div>
                                 <div>
-                                    <Typography as="label" htmlFor="nickname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임</Typography>
                                     {/* nick */}
-                                    {/*<input name="nickname" value={nick} onChange={(e) => setNick(e.target.value)} onBlur={checkNick} type="text"id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>*/}
-                                    <input name="nickname" value={nick} onChange={(e) => setNick(e.target.value)} type="text"id="nick" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="닉네임을 입력하세요"/>
+                                    <Typography as="label" htmlFor="nickname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">닉네임</Typography>
+                                    <Input
+                                        name="nickname"
+                                        label={getNickLabel()}
+                                        type="text"
+                                        value={nick}
+                                        onChange={(e) => setNick(e.target.value)}
+                                        onBlur={() => handleCheckNick(nick, setNick, setNickStatus)}
+                                        error={nickStatus === 'invalid'}
+                                        success={nickStatus === 'valid'}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="닉네임을 입력하세요"
+                                    />
                                 </div>
                                 <div>
                                     <Accordion open={detail === 1}>
                                         <AccordionHeader onClick={() => detailOpen(1)}>
                                                 추가정보작성
                                         </AccordionHeader>
-                                        <AccordionBody>
+                                        <AccordionBody className="scroll">
                                             <div>
                                                 <Typography as="label" htmlFor="birth" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">생년월일</Typography>
                                                 {/* birth */}
                                                 <input type={"date"} value={birth} onChange={(e) => setBirth(e.target.value,"yyyy-MM-dd")} name="birth" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                             </div>
                                             <div>
-                                                <label htmlFor="zoneCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</label>
+                                                <Typography htmlFor="zoneCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">우편번호</Typography>
                                                 <div className="grid grid-cols-12 gap-5">
                                                     <div className='col-span-10'>
                                                         {/* zoneCode */}
-                                                        <input type="text" value={zoneCode || ''} name="zoneCode" onChange={setZoneCode} id="zoneCode" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readOnly />
+                                                        <input type="text" value={zoneCode || ''} name="zoneCode" onChange={setZoneCode} id="zoneCode" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="우편번호(검색결과로 입력됨)" readOnly />
                                                     </div>
                                                     <div className='col-span-2'>
                                                         <IconButton onClick = {modalHandleOpen} variant="gradient" title='주소검색'>
@@ -151,33 +245,58 @@ const SignIn = () => {
                                                 </div>
                                             </div>
                                             <div>
-                                                <label htmlFor="adress" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소</label>
                                                 {/* address */}
-                                                <input type="text" name="address" id="address" onChange={setAddress} value={address || ''} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="주소입력" readOnly />
+                                                <Typography htmlFor="adress" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">주소</Typography>
+                                                <input type="text" name="address" id="address" onChange={setAddress} value={address || ''} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="주소입력(검색결과로 입력됨)" readOnly />
                                             </div>
                                             <div>
-                                                <label htmlFor="addrSub" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">나머지 주소</label>
                                                 {/* addrSub */}
-                                                <input type="text" name="addrSub" id="addrSub"  value={addrSub} onChange={(e) => setAddrSub(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="나머지 주소입력"/>
-                                            </div>
-                                            <div>
-                                                <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">전화번호</label>
-                                                {/* phone */}
-                                                <input
+                                                <Typography htmlFor="addrSub" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">나머지 주소</Typography>
+                                                <Input
+                                                    name="addrSub"
                                                     type="text"
-                                                    name="phone"
-                                                    id="phone"
-                                                    value={phone}
-                                                    onChange={(e) => setPhone(formatPhoneNumber(e.target.value))}
-                                                    onBlur={() => validatePhoneNumber(phone)}
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="전화번호 입력 (000-0000-0000)"
+                                                    id="addrSub"
+                                                    label={getAddrSubLabel()}
+                                                    value={addrSub}
+                                                    onChange={handleAddrSubChange}  // 이벤트 핸들러를 수정한 handleAddrSubChange로 변경
+                                                    onBlur={handleAddrSubBlur}
+                                                    error={addrSubStatus === 'invalid'}
+                                                    success={addrSubStatus === 'valid'}
+                                                    className={`bg-gray-50 border ${addrSubStatus === 'invalid' ? 'border-red-500' : 'border-gray-300'} text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                                                    placeholder="나머지 주소입력"
                                                 />
                                             </div>
                                             <div>
-                                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">이메일</label>
+                                                {/* phone */}
+                                                <Typography htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">휴대폰 번호</Typography>
+                                                <Input
+                                                    name="phone"
+                                                    type="text"
+                                                    id="phone"
+                                                    label={getPhoneLabel()}
+                                                    value={phone}
+                                                    onChange={handlePhoneChange}
+                                                    onBlur={() => handlePhoneBlur(phone, setPhone, setPhoneStatus)}
+                                                    error={phoneStatus === 'invalid'}
+                                                    success={phoneStatus === 'valid'}
+                                                    placeholder="전화번호를 입력하세요"
+                                                />
+                                            </div>
+                                            <div>
                                                 {/* email */}
-                                                <input type="text" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="이메일입력"/>
+                                                <Typography htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">이메일</Typography>
+                                                <Input
+                                                    name="email"
+                                                    id="email"
+                                                    label={getUserEmailLabel()}
+                                                    type="text"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    onBlur={() => handleCheckEmail(email)}
+                                                    error={emailStatus === 'invalid'}
+                                                    success={emailStatus === 'valid'}
+                                                    placeholder="이메일을 입력하세요"
+                                                />
                                             </div>
                                         </AccordionBody>
                                     </Accordion>
