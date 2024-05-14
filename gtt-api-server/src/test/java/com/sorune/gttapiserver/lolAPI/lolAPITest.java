@@ -2,6 +2,7 @@ package com.sorune.gttapiserver.lolAPI;
 
 import com.sorune.gttapiserver.common.formatter.LocalDateTimeFormatter;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerPlayerDTO;
+import com.sorune.gttapiserver.lolAPI.DTO.ServerTeamDTO;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerTournamentDTO;
 import com.sorune.gttapiserver.lolAPI.entity.*;
 import com.sorune.gttapiserver.lolAPI.repository.ServerMatchRepository;
@@ -138,7 +139,7 @@ public class lolAPITest {
     @Test
     @Transactional
     public void getPlayer(){
-        ServerPlayerDTO p = modelMapper.map(playerRepository.findById(102L).get(), ServerPlayerDTO.class);
+        ServerTeamDTO p = modelMapper.map(teamRepository.findByServerPlayersId(110L), ServerTeamDTO.class);
         log.info(p.toString());
     }
 

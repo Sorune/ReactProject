@@ -7,6 +7,8 @@ import Spin from "../test/pages/Spin";
 import noticeRouter from "./noticeRouter";
 import lolRouter from "./lolRouter";
 import adminRouter from "./adminRouter.js";
+import boardRouter from "./boardRouter";
+import freeBoardRouter from "./freeBoardRouter";
 
 
 const { createBrowserRouter } = require("react-router-dom");
@@ -19,6 +21,8 @@ const SignIn = lazy(() => import("../pages/loginAuth/SignIn.js"));
 const Member = lazy(() => import("../pages/member/Member.js"));
 const Team = lazy(()=>import("../pages/teams/TeamPage"))
 const NewsIndex=lazy(()=>import("../pages/news/IndexPage"));
+const BoardIndex = lazy(()=>import("../pages/board/IndexPage"));
+const FreeBoardIndex = lazy(()=>import("../pages/freeBoard/IndexPage"));
 const Ticketing = lazy(() => import("../pages/ticketing/TicketingMain.js"));
 const PlayerIndex = lazy(() => import("../pages/player/PlayerIndexPage"));
 const LOLIndex = lazy(()=>import("../pages/leagueoflegend/LoLIndexPage"))
@@ -94,6 +98,18 @@ const root = createBrowserRouter([
         path:"news",
         element:<Suspense fallback={Loading}><NewsIndex /></Suspense>,
         children:newsRouter(),
+        errorElement:NotFound,
+    },
+    {
+      path:"board",
+      element:<Suspense fallback={Loading}><BoardIndex /></Suspense>,
+      children:boardRouter(),
+      errorElement:NotFound,
+    },
+    {
+        path:"free",
+        element:<Suspense fallback={Loading}><FreeBoardIndex/></Suspense>,
+        children:freeBoardRouter(),
         errorElement:NotFound,
     },
     {

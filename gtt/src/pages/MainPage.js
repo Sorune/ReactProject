@@ -8,6 +8,8 @@ import {useRecoilState} from "recoil";
 import {userState} from "../atoms/userState";
 import {tokenState} from "../atoms/tokenState";
 import {getNoticeList} from "../api/noticeApi";
+import {getBoardList} from "../api/boardApi";
+import {getFreeList} from "../api/freeBoardApi";
 
 const initState = {
     dtoList:[],
@@ -26,6 +28,8 @@ const MainPage= () =>{
     const [newsServerData, setNewsServerData] = useState(initState)
     const [noticeServerData, setNoticeServerData] = useState(initState)
     const [playerServerData, setPlayerServerData] = useState(initState)
+    const [boardServerData,setBoardServerData] = useState(initState)
+    const [freeServerData, setFreeServerData]=useState(initState)
     const [refresh,setRefresh] = useState(false)
 
     const [userInfo] = useRecoilState(userState)
@@ -38,8 +42,13 @@ const MainPage= () =>{
             setPlayerServerData(data)
         })
         getNoticeList({page:1, size:5}).then(data =>{
-            console.log(data)
             setNoticeServerData(data)
+        })
+        getBoardList({page:1, size:5}).then(data =>{
+            setBoardServerData(data)
+        })
+        getFreeList({page:1, size:5}).then(data =>{
+            setFreeServerData(data)
         })
     },[refresh]);
     return (
@@ -61,10 +70,10 @@ const MainPage= () =>{
                             transformative learning opportunities.
                         </Typography>
                         <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
-                            <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"}/>
-                            <MainSectionCard serverData={newsServerData} sectionTitle={"News"}/>
-                            <MainSectionCard serverData={playerServerData} sectionTitle={"Board"}/>
-                            <MainSectionCard serverData={newsServerData}  sectionTitle={"FreeBoard"}/>
+                            <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"} path={"notice"}/>
+                            <MainSectionCard serverData={newsServerData} sectionTitle={"News"} path={"news"}/>
+                            <MainSectionCard serverData={boardServerData} sectionTitle={"Board"} path={"board"}/>
+                            <MainSectionCard serverData={freeServerData}  sectionTitle={"FreeBoard"} path={"free"}/>
                         </div>
                     </div>
                 </section>

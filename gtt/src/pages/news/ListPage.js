@@ -54,7 +54,7 @@ const ListPage = ()=>{
         <Card className="h-full w-full">
             <ListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/news/write'} />
             <CardBody className="overflow-scroll px-0">
-                <ListTable TABLE_HEAD={TABLE_HEAD} serverData={serverData} page={page.page} size={page.size} />
+                <ListTable TABLE_HEAD={TABLE_HEAD} serverData={serverData} path={"news"} />
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
                 <div className="w-full md:w-72">

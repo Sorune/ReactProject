@@ -35,7 +35,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void modifyBoard(BoardDTO boardDTO) {
-        Board board = modelMapper.map(boardDTO, Board.class);
+        Board board = boardRepository.getReferenceById(boardDTO.getBno());
         board.changeContent(boardDTO.getContent());
         board.changeTitle(boardDTO.getTitle());
         board.changeTheTeam(boardDTO.getTheTeam());
@@ -60,7 +60,7 @@ public class BoardServiceImpl implements BoardService {
         List<BoardDTO> dtoList = boards.stream().map(board -> modelMapper.map(board, BoardDTO.class)).toList();
         dtoList.forEach(dto -> log.info(dto));
         long totalCount = boards.getTotalElements();
-        return (PageResponseDTO<BoardDTO>) PageResponseDTO.withAll()
+        return PageResponseDTO.<BoardDTO>withAll()
                 .dtoList(dtoList)
                 .pageRequestDTO(pageRequestDTO)
                 .totalCount(totalCount)
@@ -74,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
         List<BoardDTO> dtoList = result.stream().map(board -> modelMapper.map(board, BoardDTO.class)).toList();
         dtoList.forEach(dto -> log.info(dto));
         long totalCount = result.getTotalElements();
-        return PageResponseDTO.withAll()
+        return PageResponseDTO.<BoardDTO>withAll()
                 .dtoList(dtoList)
                 .pageRequestDTO(pageRequestDTO)
                 .totalCount(totalCount)

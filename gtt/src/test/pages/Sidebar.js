@@ -41,6 +41,18 @@ const Sidebar = ()=>{
                     </ListItemPrefix>
                     News
                 </ListItem>
+                <ListItem onClick={() => { pageReset(); navigate('/board/') }}>
+                    <ListItemPrefix>
+                        <PresentationChartBarIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    Board
+                </ListItem>
+                <ListItem onClick={() => { pageReset(); navigate('/free/') }}>
+                    <ListItemPrefix>
+                        <PresentationChartBarIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    FreeBoard
+                </ListItem>
                 <ListItem onClick={() => { pageReset();  navigate('/player/') }}>
                     <ListItemPrefix>
                         <ShoppingBagIcon className="h-5 w-5" />
@@ -60,7 +72,6 @@ const Sidebar = ()=>{
                     <MenuList>
                         <MenuItem  onClick={() => { navigate('/lol/list') }} >챔피언</MenuItem>
                         <MenuItem  onClick={() => { navigate('/lol/itemlist') }} >아이템</MenuItem>
-                        <MenuItem>룬</MenuItem>
                     </MenuList>
                 </Menu>
 

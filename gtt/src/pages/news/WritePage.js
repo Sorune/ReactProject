@@ -5,7 +5,7 @@ import ContentInputBody from "../../components/common/ContentInputBody";
 import {useRecoilValue} from "recoil";
 import useCustomMove from "../../hooks/useCustomMove";
 import {pageState} from "../../atoms/pageState";
-
+import {insertNews, modifyNews} from "../../api/newsApi";
 
 
 const WritePage =forwardRef(()=>{
@@ -17,7 +17,7 @@ const WritePage =forwardRef(()=>{
             <ContentHeader page={page} pathName={'/news/'} moveTo={moveToList}/>
             <Card className="flex flex-auto p-1">
                 <CardBody>
-                    <ContentInputBody/>
+                    <ContentInputBody insert={insertNews} modify={modifyNews} pathName={"news"}/>
                 </CardBody>
             </Card>
         </section>
