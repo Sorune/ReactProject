@@ -1,6 +1,8 @@
 package com.sorune.gttapiserver.lolAPI;
 
 import com.sorune.gttapiserver.common.formatter.LocalDateTimeFormatter;
+import com.sorune.gttapiserver.lolAPI.DTO.ServerPlayerDTO;
+import com.sorune.gttapiserver.lolAPI.DTO.ServerTeamDTO;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerTournamentDTO;
 import com.sorune.gttapiserver.lolAPI.entity.*;
 import com.sorune.gttapiserver.lolAPI.repository.ServerMatchRepository;
@@ -13,6 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -77,6 +83,7 @@ public class lolAPITest {
                 .build());
     }
 
+    @Test
     public void testInsertTeam(){
         List<ServerPlayer> players = playerRepository.findAll();
         ServerTeam team = ServerTeam.builder()
@@ -89,6 +96,7 @@ public class lolAPITest {
         teamRepository.save(team);
     }
 
+    @Test
     public void testInsertMatch(){
         ServerTeam team = teamRepository.findById(2L).get();
         ServerMatch match = ServerMatch.builder()
@@ -99,6 +107,7 @@ public class lolAPITest {
         matchRepository.save(match);
     }
 
+    @Test
     public void testInsertTournament(){
         List<ServerMatch> matches = matchRepository.findAll();
         ServerTournament tournament = ServerTournament.builder()
@@ -112,22 +121,36 @@ public class lolAPITest {
         tournamentRepository.save(tournament);
     }
 
+    @Test
     @Transactional
     public void getTournament(){
         List<ServerTournament> tournaments = tournamentRepository.findAll();
         ServerTournament tournament = tournaments.get(0);
         log.info(tournament.toString());
-        ServerTeam team = teamRepository.findDetailById(1L);
+        ServerTeam team = teamRepository.findDetailById(2L);
         log.info(team.toString());
         log.info(team.getServerPlayers().toString());
-        ServerTournament serverTournament = tournamentRepository.findById(1L).get();
+        ServerTournament serverTournament = tournamentRepository.findById(2L).get();
         ServerTournamentDTO serverTournamentDTO = modelMapper.map(serverTournament, ServerTournamentDTO.class);
         log.info(serverTournamentDTO.toString());
 
     }
 
     @Test
-    public void getPlayers(){
+    @Transactional
+    public void getPlayer(){
+        ServerTeamDTO p = modelMapper.map(teamRepository.findByServerPlayersId(110L), ServerTeamDTO.class);
+        log.info(p.toString());
+    }
 
+    @Test
+    @Transactional
+    public void getPlayers(){
+        Pageable pageable = Pageable.ofSize(10);
+        Page<ServerPlayer> result = playerRepository.getAllPlayerWithAll(pageable);
+        log.info(result);
+        List<ServerPlayerDTO> dtoList = result.stream().map(serverPlayer -> modelMapper.map(serverPlayer, ServerPlayerDTO.class)).toList();
+
+        log.info(dtoList.toString());
     }
 }

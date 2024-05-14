@@ -1,4 +1,4 @@
-package com.sorune.gttapiserver.freeBoard.DTO;
+package comment.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -8,26 +8,27 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardDTO {
+@Data
+public class CommentDTO {
 
-    private Long pno;
-
-    private String title;
+    private Long comNo;
 
     private String content;
 
     private String writer;
 
-    private String image;
+    private Long newsNo;
 
-    private Long hits;
+    private Long notiNo;
+
+    private Long recomNo;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime regDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime modDate;
+
 }

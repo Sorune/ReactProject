@@ -27,7 +27,7 @@ public class ServerPlayerImpl implements ServerPlayerService {
     private final ModelMapper modelMapper;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public PageResponseDTO<ServerPlayerDTO> getPlayers(PageRequestDTO pageRequestDTO) {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("id").descending());
         Page<ServerPlayer> result = playerRepository.getAllPlayerWithAll(pageable);
