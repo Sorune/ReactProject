@@ -11,7 +11,7 @@ import {
 } from "@material-tailwind/react";
 import {getTournament} from "../../api/matchAPI";
 import TestStadium from "./TestStadium";
-import Stadium from "./Stadium";
+import Stadium from "./Stadium"
 
 const MatchCard = () => {
     const [tournament, setTournament] = useState(null);
@@ -65,37 +65,51 @@ const MatchCard = () => {
         return <Typography>No data found.</Typography>;
     }
 
+
     return (
         <div>
             {tournament.matches.map((match, index) => (
-                <Card key={match.matchId} className="mb-4">
-                    <CardBody className="grid grid-rows-2 ">
-                        <div className="row-start-1 items-center text-center mb-0 ">
-                            <Typography variant="h6">
+                <Card key={match.matchId} className="mb-4"
+                      style={{
+
+                          height:"150px",
+                          backgroundImage: `url(/img/LCK.png)`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundColor: 'rgba(255, 255, 255, 1.0)'}}>
+                    <CardBody>
+                        <div className="row-start-1 items-center text-center mb-0">
+                            <Typography variant="h6" color="white">
                                 <small>{tournament.name}</small>
                             </Typography>
                         </div>
-                        <div className="grid grid-cols-4 flex items-center ">
-                            <Typography variant="h6">
-                               <small> {match.matchDate}</small>
-                            </Typography>
-                            <Typography variant="h6">
-                                {tournament.stadium}
-                            </Typography>
-                            <div className="col-start-3">
-                                <Typography variant="h5">
+                        <div className="grid grid-cols-8 gap-5 flex items-center">
+                            <div className="col-start-1 col-end-2 ">
+                                <Typography variant="h6" color="white">
+                                    <small>{match.matchDate}</small>
+                                </Typography>
+                            </div>
+
+                            <div className="col-start-2 col-end-3 ">
+                                <Typography variant="h6" color="white">
+                                    {tournament.stadium}
+                                </Typography>
+                            </div>
+
+                            <div className="col-start-3 col-end-7 flex justify-center">
+                                <Typography variant="h4" color="white">
                                     {match.serverTeam1.teamName} <small>vs</small> {match.serverTeam2.teamName}
                                 </Typography>
                             </div>
-                            <div className="span- text-center mt-2">
-                                <Button onClick={() => handleOpenModal(match)}
-                                        className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
+                            <div className="col-start-8 flex justify-end w-full">
+                                <Button onClick={() => handleOpenModal(match)} className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
                                     예매
                                 </Button>
                             </div>
                         </div>
                     </CardBody>
                 </Card>
+
 
             ))}
             <Dialog open={openModal} onClose={() => {
@@ -142,8 +156,9 @@ const MatchCard = () => {
                         <Typography color="white" variant="h3" className="mr-4">
                             예매하기
                         </Typography>
-                        <Typography color="white" variant="h5">{tournament.name} -</Typography>
-                        &nbsp;
+                        <div>
+                            <Typography color="white" variant="h5">{tournament.name} -</Typography>
+                        </div>
                         {matchData && (
                             <Typography variant="h5" color="white">
                                 {matchData.serverTeam1.teamName} vs {matchData.serverTeam2.teamName}
@@ -156,7 +171,7 @@ const MatchCard = () => {
                 </DialogHeader>
                 <DialogBody className="overflow-hidden ">
                     <div className="max-w-full max-h-full h-[34.5rem]">
-                        {tournament.stadium === "LOL PARK" ? <Stadium/> : <TestStadium/>}
+                        {tournament.stadium === "LOL PARK" ? <Stadium matchData={matchData} stadium={tournament.stadium} /> : <TestStadium matchData={matchData} stadium={tournament.stadium}/>}
                         {/* 예매 정보 추가 */}
                     </div>
                 </DialogBody>
