@@ -129,4 +129,10 @@ public class lolAPITest {
         log.info(serverTournamentDTO.toString());
 
     }
+
+    @Test
+    public void getPlayer(){
+        ServerPlayer p = playerRepository.findByNickName("Faker");
+        log.info(p.toString());
+    }
 }

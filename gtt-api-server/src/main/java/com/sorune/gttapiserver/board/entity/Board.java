@@ -26,14 +26,15 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private String writer;
-    private String image;
+    private String theTeam;
 
     @ColumnDefault("0")
     private Long hits;
+    @ColumnDefault("0")
+    private Long recomNo;
 
     public void changeTitle(String title){this.title=title;}
     public void changeContent(String content){this.content=content;}
-    public void changeImage(String image){this.image=image;}
-
+    public void changeTheTeam(String theTeam){this.theTeam=theTeam;}
 
 }
