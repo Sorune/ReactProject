@@ -18,10 +18,12 @@ const MatchCard = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false)
     const [matchData, setMatchData] = useState(null)
+    const [stadiumName, setStadiumName] = useState("")
     const [showDialog, setShowDialog] = useState(false);
 
-    const handleOpenModal = useCallback((match) => {
+    const handleOpenModal = useCallback((match,stadiumName) => {
         setMatchData(match)
+        setStadiumName(stadiumName)
         setOpenModal(true);
     }, [setOpenModal]);
 
@@ -34,20 +36,12 @@ const MatchCard = () => {
 
     // 랜덤으로 stadium 배열 생성
     const stadium = ["LOL PARK", "KSPO DOME"];
-    const randomStadium = stadium[Math.floor(Math.random() * stadium.length)];
-
     useEffect(() => {
         setIsLoading(true);
         getTournament(818)
             .then(data => {
                 console.log("API data:", data);
-
-                // 토너먼트 객체에 stadium 속성 추가
-                const updatedTournament = {
-                    ...data.tournament,
-                    stadium: randomStadium
-                };
-                setTournament(updatedTournament);
+                setTournament({...data.tournament});
             })
             .catch(error => {
                 console.error("Error fetching tournament data:", error);
@@ -65,53 +59,54 @@ const MatchCard = () => {
         return <Typography>No data found.</Typography>;
     }
 
-
     return (
         <div>
-            {tournament.matches.map((match, index) => (
-                <Card key={match.matchId} className="mb-4"
-                      style={{
+            {tournament.matches.map((match, index) => {
+                const name = stadium[parseInt(Math.random() * stadium.length)]
+                return(
+                    <Card key={match.matchId} className="mb-4"
+                          style={{
 
-                          height:"150px",
-                          backgroundImage: `url(/img/LCK.png)`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          backgroundColor: 'rgba(255, 255, 255, 1.0)'}}>
-                    <CardBody>
-                        <div className="row-start-1 items-center text-center mb-0">
-                            <Typography variant="h6" color="white">
-                                <small>{tournament.name}</small>
-                            </Typography>
-                        </div>
-                        <div className="grid grid-cols-8 gap-5 flex items-center">
-                            <div className="col-start-1 col-end-2 ">
+                              height:"150px",
+                              backgroundImage: `url(/img/LCK.png)`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              backgroundColor: 'rgba(255, 255, 255, 1.0)'}}>
+                        <CardBody>
+                            <div className="row-start-1 items-center text-center mb-0">
                                 <Typography variant="h6" color="white">
-                                    <small>{match.matchDate}</small>
+                                    <small>{tournament.name}</small>
                                 </Typography>
                             </div>
+                            <div className="grid grid-cols-8 gap-5 flex items-center">
+                                <div className="col-start-1 col-end-2 ">
+                                    <Typography variant="h6" color="white">
+                                        <small>{match.matchDate}</small>
+                                    </Typography>
+                                </div>
 
-                            <div className="col-start-2 col-end-3 ">
-                                <Typography variant="h6" color="white">
-                                    {tournament.stadium}
-                                </Typography>
+                                <div className="col-start-2 col-end-3 ">
+                                    <Typography variant="h6" color="white">
+                                        {tournament.stadium}
+                                    </Typography>
+                                </div>
+
+                                <div className="col-start-3 col-end-7 flex justify-center">
+                                    <Typography variant="h4" color="white">
+                                        {match.serverTeam1.teamName} <small>vs</small> {match.serverTeam2.teamName}
+                                    </Typography>
+                                </div>
+                                <div className="col-start-8 flex justify-end w-full">
+                                    <Button onClick={() => handleOpenModal(match)} className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
+                                        예매
+                                    </Button>
+                                </div>
                             </div>
+                        </CardBody>
+                    </Card>
 
-                            <div className="col-start-3 col-end-7 flex justify-center">
-                                <Typography variant="h4" color="white">
-                                    {match.serverTeam1.teamName} <small>vs</small> {match.serverTeam2.teamName}
-                                </Typography>
-                            </div>
-                            <div className="col-start-8 flex justify-end w-full">
-                                <Button onClick={() => handleOpenModal(match)} className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
-                                    예매
-                                </Button>
-                            </div>
-                        </div>
-                    </CardBody>
-                </Card>
-
-
-            ))}
+                )
+            })}
             <Dialog open={openModal} onClose={() => {
                 setOpenModal(false)
                 setMatchData(null)
@@ -127,7 +122,7 @@ const MatchCard = () => {
                         <div>
                             <Typography variant="h6">
                                 <p>{matchData.matchDate}</p>
-                                <p>{tournament.stadium}</p>
+                                <p>{stadiumName}</p>
                             </Typography>
                             {matchData && (
                                 <Typography variant="h5">

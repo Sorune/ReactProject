@@ -5,7 +5,7 @@ import ContentInputBody from "../../components/common/ContentInputBody";
 import { useRecoilValue } from "recoil";
 import useCustomMove from "../../hooks/useCustomMove";
 import { pageState } from "../../atoms/pageState";
-import { getOne } from "../../api/newsApi";
+import { getOne,insertNews,modifyNews } from "../../api/newsApi";
 import {useLocation} from "react-router-dom";
 import useUtils from "../../hooks/utils";
 
@@ -62,6 +62,9 @@ const ModifyPage = forwardRef(() => {
                         teamImg={testTeam.teamImg}
                         date={serverData.regDate}
                         serverData={serverData}
+                        insert={insertNews}
+                        modify={modifyNews}
+                        pathName={"news"}
                     />
                 </CardBody>
             </Card>

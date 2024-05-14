@@ -1,3 +1,8 @@
+from typing import List, Dict, Optional
+from sqlalchemy import String, Integer, Float, Boolean, DateTime, Date
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+
 class Player:
     def __init__(self, nick_name, name, name_full, country, age, birth_date, roles, fav_champs):
         self.nick_name = nick_name
@@ -12,6 +17,7 @@ class Player:
     def __str__(self):
         return f'{self.nick_name}/{self.name}/{self.name_full}/{self.country}/{self.age}/{self.birth_date}/{self.roles}/{self.fav_champs}'
 
+
 class Team:
     def __init__(self, team_name, location, image, roster_photo, players):
         self.team_name = team_name
@@ -23,8 +29,9 @@ class Team:
     def __str__(self):
         return f'{self.team_name}/{self.location}/{self.image}/{self.roster_photo}/{self.players}'
 
+
 class Match:
-    def __init__(self,team1,team2,team1_score,team2_score,match_date):
+    def __init__(self, team1, team2, team1_score, team2_score, match_date):
         self.team1 = team1
         self.team2 = team2
         self.team1_score = team1_score
@@ -34,8 +41,9 @@ class Match:
     def __str__(self):
         return f'{self.team1}/{self.team2}/{self.team1_score}/{self.team2_score}/{self.match_date}'
 
+
 class Tournament:
-    def __init__(self, name, region, country, league,start_date,end_date,matches):
+    def __init__(self, name, region, country, league, start_date, end_date, matches):
         self.name = name
         self.region = region
         self.country = country

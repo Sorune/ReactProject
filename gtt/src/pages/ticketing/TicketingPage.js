@@ -114,7 +114,6 @@ const TicketingPage = ({ selectedTeam }) => {
                 <Button onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>다음</Button>
             </div>
         </div>
-        
     );
 }
 

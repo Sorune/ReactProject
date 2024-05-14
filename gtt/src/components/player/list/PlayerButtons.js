@@ -21,48 +21,100 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
     }
 
     const handleClickModify = () => {
+        const children = imageDiv.current.children;
+        let fileName = null;
+
+        if (children && children.length > 0) { // 이미지 파일이 존재한는지 여부
+            const firstChild = children[0];
+            fileName = firstChild.getAttribute("fileName");
+        } else { // 없을 시
+            console.error("imageDiv에 자식 요소가 없습니다.");
+        }
+
+        // const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
+        // console.log("file", fileName);
+
         const formData = new FormData()
 
-        formData.append("nickName", player.nickName)
-        formData.append("realName", player.realName)
-        formData.append("age", player.age)
-        formData.append("teamName", player.teamName)
-        formData.append("position", player.position)
-        formData.append("birthDate", player.birthDate)
-        formData.append("playerImage", player.playerImage)
+        if (player.nickName !== "" && player.realName !== "" && player.age !== "" && player.teamName !== ""
+            && player.position !== "" && player.birthDate !== "" && fileName !== "") { // input 요소에 값이 전부 있을 경우
 
-        putOnePlayer(pno, formData).then(data => {
-            moveTo({
-                pathName:pathName+'read/'+player.pno,
-                pageParam: {page: `${page.page}`, size: `${page.size}`}
+            formData.append("nickName", player.nickName)
+            formData.append("realName", player.realName)
+            formData.append("age", player.age)
+            formData.append("teamName", player.teamName)
+            formData.append("position", player.position)
+            formData.append("birthDate", player.birthDate)
+            formData.append("playerImage", player.playerImage)
+
+            console.log(formData)
+
+            putOnePlayer(pno, formData).then(data => {
+                moveTo({
+                    pathName:pathName+'read/'+player.pno,
+                    pageParam: {page: `${page.page}`, size: `${page.size}`}
+                })
             })
-        })
+        } else { // input 요소에 값이 하나라도 없는 경우
+            alert("올바른 값을 입력해주세요.");
+
+            return;
+        }
     }
 
     const handleClickAdd = (e) => {
-        const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
-        console.log("file", fileName);
+        const children = imageDiv.current.children;
+
+        let fileName = null;
+
+        if (children && children.length > 0) { // 이미지 파일이 존재하는지 여부
+
+            const firstChild = children[0];
+            fileName = firstChild.getAttribute("fileName");
+        } else { // 없을 시
+            console.error("imageDiv에 자식 요소가 없습니다.");
+        }
+
+        console.log(player.nickName)
+        console.log(player.realName)
+        console.log(player.age)
+        console.log(player.teamName)
+        console.log(player.position)
+        console.log(player.birthDate)
+        console.log(fileName)
+
+        // const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
+        // console.log("file", fileName);
 
         const formData = new FormData()
 
-        formData.append("nickName", player.nickName)
-        formData.append("realName", player.realName)
-        formData.append("age", player.age)
-        formData.append("teamName", player.teamName)
-        formData.append("position", player.position)
-        formData.append("birthDate", player.birthDate)
-        formData.append("playerImage", fileName)
+        if (player.nickName !== "" && player.realName !== "" && player.age !== 0
+            && player.teamName !== ""
+            && player.position !== "" && player.birthDate !== "" && fileName !== "") { // input 요소에 값이 전부 있을 경우
 
-        console.log(formData)
+            formData.append("nickName", player.nickName)
+            formData.append("realName", player.realName)
+            formData.append("age", player.age)
+            formData.append("teamName", player.teamName)
+            formData.append("position", player.position)
+            formData.append("birthDate", player.birthDate)
+            formData.append("playerImage", fileName)
 
-        postAdd(formData).then(data => {
-            console.log(data, data.pno)
-            //setResultCallback(data.pno)
-            moveTo({
-                pathName:pathName+'read/' + data.pno,
-                pageParam: {page: `${page.page}`, size: `${page.size}`}
+            console.log(formData)
+
+            postAdd(formData).then(data => {
+                console.log(data, data.pno)
+                //setResultCallback(data.pno)
+                moveTo({
+                    pathName:pathName+'read/' + data.pno,
+                    pageParam: {page: `${page.page}`, size: `${page.size}`}
+                })
             })
-        })
+        } else { // input 요소에 값이 하나라도 없는 경우
+            alert("올바른 값을 입력해주세요.");
+
+            return;
+        }
     }
 
     return (

@@ -1,9 +1,10 @@
 import {createSearchParams, useNavigate} from 'react-router-dom';
-import { login, validateID, validateNick, join } from "../api/joinApi";
+import {login, validateID, validateNick, join, vaiudateEmail, validateEmail} from "../api/joinApi";
 import {useRecoilState, useResetRecoilState, useSetRecoilState} from "recoil";
 import {userState} from "../atoms/userState";
 import {tokenState} from "../atoms/tokenState";
 import {getCookie, removeCookie, setCookie} from "../utill/cookieUtill";
+import {useState} from "react";
 
 const useUserAuth = () => {
     // 페이지 네비게이션
@@ -81,109 +82,149 @@ const useUserAuth = () => {
         });
     };
 
-
     // 아이디 중복 검사
-    // const checkId = (userId) => {
-    //     validateID(userId)
-    //         .then(result => {
-    //             if(!result.data.userId.equals(userId)) {
-    //                 // 사용 가능할 때
-    //                 alert("사용 가능한 ID입니다.");
-    //             } else {
-    //                 // 이미 사용 중일 때
-    //                 alert("이미 사용중인 ID입니다.");
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.log("중복아이디 검증 api 호출 실패... ", error);
-    //         });
-    // };
-
-    // 비밀번호 일치 확인
-    const checkPw = (password, confirmPw) => {
-        console.log(password,confirmPw)
-        if (password !== confirmPw) {
-            // 비밀번호 불일치
-            alert("비밀번호가 일치하지 않습니다.");
-            return false;
-        }
-        // 일치하면 true
-        return true;
-    };
-
-    // 닉네임 중복 검사
-    // const checkNick = async (nick) => {
-    //     try {
-    //         // 닉네임 검증 API 호출
-    //         const result = await validateNick(nick);
-    //         if (result.available) {
-    //             // 사용 가능할 때
-    //             alert("사용 가능한 닉네임입니다.");
-    //         } else {
-    //             // 이미 사용 중일 때
-    //             alert("이미 사용중인 닉네임입니다.");
-    //         }
-    //     } catch (error) {
-    //         // 오류 발생시
-    //         alert("닉네임 검증 중 오류가 발생했습니다.");
-    //     }
-    // };
-
-    // 전화번호 포맷팅
-    const formatPhoneNumber = (phoneNumber) => {
-        // 숫자만 추출
-        const numericPhone = phoneNumber.replace(/[^\d]/g, '');
-        if (numericPhone.length <= 3) return numericPhone;
-        if (numericPhone.length <= 7) return `${numericPhone.slice(0, 3)}-${numericPhone.slice(3)}`;
-        // 포맷 적용
-        return `${numericPhone.slice(0, 3)}-${numericPhone.slice(3, 7)}-${numericPhone.slice(7, 11)}`;
-    };
-
-    // 전화번호 유효성 검사
-    const validatePhoneNumber = (phoneNumber) => {
-        // 하이픈 제거
-        const normalizedPhone = phoneNumber.replace(/-/g, '');
-        if (normalizedPhone.length !== 11) {
-            // 11자리 아니면 경고
-            alert("전화번호는 11자리 숫자여야 합니다.");
-            return false;
-        }
-        // 11자리면 true
-        return true;
-    };
-
-    // 회원가입
-    const joinMember = (e,userId, password, phone, nick, email, birth, address, addrSub, zoneCode) => {
-        // 기본 이벤트 중단
-        console.log(e)
-        e.preventDefault();
-
-        // 전화번호 검증 (주석 처리된 코드 사용을 원할 경우 주석 해제)
-        // if (!validatePhoneNumber(phone)) {
-        //     alert("유효하지 않은 전화번호입니다.");
-        //     return;
-        // }
-
-        join(userId, password, nick, birth, zoneCode, address, addrSub, phone, email) // 회원가입 API 호출
+    const checkId = (userId, setUserId, setIdStatus) => {
+        validateID(userId)
             .then(result => {
-                console.log(result)
-                if (result.success) {
-                    // 성공 메시지
-                    console.log(result);
-                    alert("회원가입이 완료되었습니다. 로그인 페이지로 돌아갑니다.");
-                    // 로그인 페이지 이동
-                    navigate("/login");
-                } else {
-                    // 실패 메시지
-                    console.log(result);
-                    alert("회원가입에 실패했습니다.");
+                console.log("API 전체 응답:", result);  // 전체 응답 로깅
+                console.log("API 응답 메시지:", result.message);  // 메시지 로깅
+                // 직접적인 메시지 사용을 통한 조건 확인
+                if (result.message === true) {
+                    setIdStatus('valid');
+                } else if (result.message === false) {
+                    setIdStatus('invalid');
+                    setUserId("");  // 입력창을 빈값으로 설정
                 }
             })
             .catch(error => {
-                // 오류 로깅
-                console.log(error);
-                // 오류 메시지
-                alert("회원가입 과정에서 오류가 발생했습니다: " + error.message);
+                setIdStatus(null);  // API 호출 실패 시 ID 상태를 리셋
+            });
+    };
+
+    // 이메일 중복 검사
+    const checkEmail = (email, setEmail, setEmailStatus) => {
+        validateEmail(email)
+            .then(result => {
+                console.log("API 전체 응답:", result);  // 전체 응답 로깅
+                console.log("API 응답 메시지:", result.message);  // 메시지 로깅
+                // 직접적인 메시지 사용을 통한 조건 확인
+                if (result.message === true) {
+                    setEmailStatus('valid');
+                } else if (result.message === false) {
+                    setEmailStatus('invalid');
+                    setEmail("");  // 입력창을 빈값으로 설정
+                } else {
+                    console.log("예상치 못한 응답 메시지:", result.message);
+                    setEmailStatus(null);
+                }
+            })
+            .catch(error => {
+                setEmailStatus(null);  // API 호출 실패 시 ID 상태를 리셋
+            });
+    };
+
+    // 비밀번호 일치 확인
+    const checkPw = (password, confirmPw, setPassword, setConfirmPw, setPwStatus, setPw2Status) => {
+        console.log(password,confirmPw)
+        if (password !== confirmPw) { // 비밀번호 불일치
+            setPwStatus('invalid');
+            setPw2Status('invalid');
+            setConfirmPw("");
+            setPassword("");
+        }else { // 비밀번호 일치
+            setPwStatus('valid');
+            setPw2Status('valid');
+        }
+    };
+
+    // 닉네임 중복 검사
+    const checkNick = (nick, setNick, setNickStatus) => {
+        validateNick(nick)
+            .then(result => {
+                console.log("API response:", result);
+                if (result.message === true) {
+                    setNickStatus('valid');
+                } else if(result.message === false) {
+                    setNickStatus('invalid');
+                    setNick("");
+                }
+            })
+            .catch(error => {
+                setNickStatus(null);  // API 호출 실패 시 닉네임 상태를 초기화
+                console.error("Error checking nickname:", error);
+            });
+    };
+
+    // 전화번호 포맷 및 유효성 검사
+    const formatAndCheckPhoneNumber = (phone, setPhone, setPhoneStatus) => {
+        const numericPhone = phone.replace(/[^\d]/g, ''); // 숫자만 추출
+        let formattedPhone = numericPhone;
+        if (numericPhone.length <= 3) {
+            formattedPhone = numericPhone;
+        } else if (numericPhone.length <= 7) {
+            formattedPhone = `${numericPhone.slice(0, 3)}-${numericPhone.slice(3)}`;
+        } else if (numericPhone.length <= 11) {
+            formattedPhone = `${numericPhone.slice(0, 3)}-${numericPhone.slice(3, 7)}-${numericPhone.slice(7)}`;
+        }
+        setPhone(formattedPhone);  // 항상 전화번호를 형식화
+        if (numericPhone.length === 11) {
+            setPhoneStatus('valid'); // 전화번호가 유효한 경우
+        } else {
+            setPhoneStatus('invalid'); // 전화번호가 유효하지 않은 경우
+        }
+    };
+    // 전화번호 유효성검증 코드
+    const handlePhoneBlur = (phone, setPhone, setPhoneStatus) => {
+        const numericPhone = phone.replace(/[^\d]/g, '');
+        if (numericPhone.length !== 11) {
+            setPhone(''); // 전화번호가 유효하지 않으면 입력을 지움
+            setPhoneStatus(null);
+        }
+    };
+
+    // 나머지 주소 입력확인
+    const checkAddrSub = (addrSub, setAddrSubStatus) => {
+        if (addrSub.trim() === "") {
+            setAddrSubStatus('invalid');
+        } else {
+            setAddrSubStatus('valid');
+        }
+    };
+
+// 회원가입 전 입력 값 검증 및 API 호출
+    const validateAndJoin = (e, userId, password, confirmPw, nick, phone, email, addrSub, termsChecked, idStatus, pwStatus, pw2Status, nickStatus, phoneStatus, emailStatus, addrSubStatus, birth, address, zoneCode) => {
+        e.preventDefault();  // 폼 제출 기본 동작 중단
+        let errors = [];
+        // 입력 필드별 상태 검증
+        if (!userId || idStatus !== 'valid') errors.push("아이디");
+        if (!password || pwStatus !== 'valid' || pw2Status !== 'valid') errors.push("비밀번호");
+        if (!nick || nickStatus !== 'valid') errors.push("닉네임");
+        if (!phone || phoneStatus !== 'valid') errors.push("전화번호");
+        if (!email || emailStatus !== 'valid') errors.push("이메일");
+        if (!addrSub || addrSubStatus !== 'valid') errors.push("나머지 주소");
+        if (!termsChecked) errors.push("개인정보 취급방침 동의");
+
+        if (errors.length > 0) {
+            alert(`${errors.join(", ")}의 입력을 확인해주세요`);
+        }
+        join({ userId, password, nick, phone, email, birth, address, addrSub, zoneCode })
+            .then(response => {
+                // response.data가 존재하는지 확인
+                if (response.data === null) {
+                    // 응답 데이터가 없는 경우 실패로 간주
+                    console.log("등록 실패, 응답 데이터가 없음");
+                    alert("회원 가입에 실패했습니다. 다시 시도해주세요.");
+                } else {
+                    // 응답 데이터가 존재하면 회원가입 성공으로 간주
+                    console.log("등록 성공, 응답 데이터:", response.data);
+                    alert("회원 가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+                    navigate("/login");
+                }
+            })
+            .catch(error => {
+                // 네트워크 오류 또는 기타 API 호출 오류 처리
+                console.error("등록 과정 중 오류 발생:", error);
+                alert("회원 가입 과정 중 오류가 발생했습니다: " + (error.response?.data?.message || error.message));
             });
     };
 
@@ -195,7 +236,8 @@ const useUserAuth = () => {
     }
 
     // 모든 리턴
-    return { confirmLogin, checkPw, joinMember, formatPhoneNumber, validatePhoneNumber, logout, exceptionHandle, successLogin};
+    return { confirmLogin, checkId, checkEmail, checkNick, checkPw, validateAndJoin , formatAndCheckPhoneNumber, handlePhoneBlur, checkAddrSub,
+            logout, exceptionHandle, successLogin};
 };
 
 export default useUserAuth;

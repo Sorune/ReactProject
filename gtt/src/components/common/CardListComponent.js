@@ -1,10 +1,23 @@
 import {Avatar, Typography} from "@material-tailwind/react";
 import useCustomMove from "../../hooks/useCustomMove";
+import {useEffect, useState} from "react";
 
-const ListComponent = ({serverData,page,size}) =>{
+const ListComponent = ({serverData,page,size,path}) =>{
     const {moveToRead} = useCustomMove()
-    const dtoList = Array.isArray(serverData.dtoList)?serverData.dtoList:[]
-    console.log(dtoList)
+    const [num,setNum] = useState([])
+    const [dtoList,setDtoList] = useState([])
+    useEffect(() => {
+        setDtoList(serverData.dtoList)
+        if(path ==="news"){
+            setNum(serverData.dtoList.map(dto=>dto.newsNo))
+        }else if(path ==="board"){
+            setNum(serverData.dtoList.map(dto=>dto.bno))
+        }else if(path ==="free"){
+            setNum(serverData.dtoList.map(dto=>dto.fno))
+        }else if(path ==="notice"){
+            setNum(serverData.dtoList.map(dto=>dto.notiNo))
+        }
+    }, []);
     return (
         <tbody>
         {dtoList.map( (dto,index) => {
@@ -12,7 +25,7 @@ const ListComponent = ({serverData,page,size}) =>{
             const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
             return (
-                <tr key={dto.newsNo} onClick={()=> moveToRead({pathName:'/news/read',num:dto.newsNo,totalPage:serverData.totalCount})}>
+                <tr key={num[index]} onClick={()=> moveToRead({pathName:`/${path}/read`,num:num[index],totalPage:serverData.totalCount})}>
                     <td>
                         <div className="flex flex-col">
                             <Typography variant="small" color="blue-gray" className="font-normal">{dto.title}</Typography>

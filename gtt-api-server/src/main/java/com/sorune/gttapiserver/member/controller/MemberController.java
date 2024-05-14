@@ -103,6 +103,13 @@ public class MemberController {
         return Map.of("message",memberService.checkNick(nick));
     }
 
+    // 이메일 검증
+    @GetMapping("/checkEmail/{email}")
+    public Map<String, Object>  checkEmail(@PathVariable String email) {
+        log.info("checkNick : " + email);
+        return Map.of("message",memberService.checkEmail(email));
+    }
+
     // pageRequest 없는 회원 리스트
     @GetMapping("/members")
     public List<MemberDTO> getAllMembers() { return memberService.getAllMembers(); }

@@ -144,6 +144,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public boolean checkEmail(String email) {
+        Member member =memberRepository.findByEmail(email) ;
+        log.info(member);
+        return member==null;
+    }
+
+    @Override
     public MemberDTO getKakaoMember(String accessToken) {
         String email = getEmailFromKakaoAccessToken(accessToken);
         log.info(email);

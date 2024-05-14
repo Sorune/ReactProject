@@ -15,6 +15,6 @@ public class ServerTeamDTO {
     private String image;
     private String location;            // 불필요 / 국적 필요 없는지
     private String rosterPhoto;         // 선택 ( 선수 단체 이미지 )
-    private List<ServerPlayerDTO> players;
+    private List<ServerPlayerDTO> serverPlayers;
 
 }

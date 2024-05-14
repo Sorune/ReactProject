@@ -11,4 +11,5 @@ public interface ServerTeamRepository extends JpaRepository<ServerTeam, Long> {
     @Query("select distinct t from ServerTeam t  join fetch t.serverPlayers where t.id = :id")
     public ServerTeam findDetailById(Long id);
 
+    public ServerTeam findByServerPlayersId(Long id);
 }
