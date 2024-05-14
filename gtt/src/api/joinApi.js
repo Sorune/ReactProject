@@ -33,6 +33,13 @@ export const validateNick = async (nick) => {
     }
 };
 
+// 메일 중복확인
+export const validateEmail = async (email) => {
+    const url = `${prefix}/checkEmail/${email}`;
+    const response = await axios.get(url);
+    return response.data;
+}
+
 // 회원가입
 export const join = async ({userId:userId, password:password, phone:phone, nick:nick, email:email, birth:birth, address:address, addrSub:addrSub, zoneCode:zoneCode}) => {
     const url = `${prefix}/register`;

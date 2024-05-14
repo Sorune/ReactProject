@@ -26,7 +26,8 @@ public interface MemberService {
     boolean checkNick(String nick);
     // 회원 로그인시 id 일치여부 체크
     boolean isLogin(String id, String pw);
-
+    // 이메일 검증
+    boolean checkEmail(String email);
     MemberDTO getKakaoMember(String accessToken);
 
 }
