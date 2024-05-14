@@ -77,7 +77,6 @@ public class lolAPITest {
                 .build());
     }
 
-    @Test
     public void testInsertTeam(){
         List<ServerPlayer> players = playerRepository.findAll();
         ServerTeam team = ServerTeam.builder()
@@ -90,7 +89,6 @@ public class lolAPITest {
         teamRepository.save(team);
     }
 
-    @Test
     public void testInsertMatch(){
         ServerTeam team = teamRepository.findById(2L).get();
         ServerMatch match = ServerMatch.builder()
@@ -101,7 +99,6 @@ public class lolAPITest {
         matchRepository.save(match);
     }
 
-    @Test
     public void testInsertTournament(){
         List<ServerMatch> matches = matchRepository.findAll();
         ServerTournament tournament = ServerTournament.builder()
@@ -115,7 +112,6 @@ public class lolAPITest {
         tournamentRepository.save(tournament);
     }
 
-    @Test
     @Transactional
     public void getTournament(){
         List<ServerTournament> tournaments = tournamentRepository.findAll();
@@ -127,6 +123,11 @@ public class lolAPITest {
         ServerTournament serverTournament = tournamentRepository.findById(1L).get();
         ServerTournamentDTO serverTournamentDTO = modelMapper.map(serverTournament, ServerTournamentDTO.class);
         log.info(serverTournamentDTO.toString());
+
+    }
+
+    @Test
+    public void getPlayers(){
 
     }
 }
