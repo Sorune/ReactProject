@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 // import {getPlayerList} from "../../api/playerApi"
-import {getPlayerList} from "../../api/ServerPlayerApi"
+import {getPlayerList, getTeamList} from "../../api/ServerPlayerApi"
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
 import {Avatar, Button, Card, CardBody, CardHeader, IconButton, Typography} from "@material-tailwind/react";
@@ -57,6 +57,9 @@ const ListComponent = () => {
             setServerData(data)
             setFetching(false)
         })
+        getTeamList().then(data => {
+            console.log(data)
+        })
     }, [refresh])
 
     return (
@@ -67,7 +70,7 @@ const ListComponent = () => {
                     {serverData.dtoList.map((player) => (
                         <Card
                             className="relative grid h-[20rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-gradient-to-t from-black/80 via-black/50"
-                            onClick={() => moveToRead({ pathName: '/player/read', num: player.pno, totalPage: serverData.totalCount })}
+                            onClick={() => moveToRead({ pathName: '/player/read', num: player.id, totalPage: serverData.totalCount })}
                         >
                             {player.playerImage === null ?
                                 <CardHeader
@@ -105,7 +108,7 @@ const ListComponent = () => {
                                     {player.nickName}
                                 </Typography>
                                 <Typography variant="h5" className="mb-4 text-white">
-                                    {player.realName}
+                                    {player.nameFull}
                                 </Typography>
                                 <Avatar
                                     size="xl"

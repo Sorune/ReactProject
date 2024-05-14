@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServerPlayerRepository extends JpaRepository<ServerPlayer,Long> {
 
-    @Query("SELECT sp FROM ServerPlayer sp JOIN FETCH sp.roles")
+    @Query("SELECT sp FROM ServerPlayer sp ORDER BY sp.id")
     Page<ServerPlayer> getAllPlayerWithAll(Pageable pageable);
 }

@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {getOnePlayer, getPlayerList} from "../../api/playerApi";
+// import {getOnePlayer, getPlayerList} from "../../api/playerApi";
+import {getOnePlayer, getOneTeam} from "../../api/ServerPlayerApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
@@ -19,19 +20,31 @@ import PCommentList from "../playerComment/PlayerCommentListComponent"
 import PCommentAdd from "../playerComment/PlayerCommentAddComponent"
 import {API_SERVER_HOST} from "../../api/filesApi";
 
-const initState = {
-    pno : 0,
+const initState1 = {
+    id : 0,
     age : 0,
     nickName : '',
-    realName : '',
+    name : '',
+    nameFull : '',
+    country : '',
+    roles : '',
+    birthdate : null,
+    favChamps : []
+    // gpa : 0.0
+}
+
+const initState2 = {
+    id : 0,
     teamName : '',
-    position : '',
-    birthDate : null,
-    gpa : 0.0
+    location : '',
+    image : '',
+    rosterPhoto : "",
+    serverPlayer : null
 }
 
 const ReadComponent = ({pno}) => {
-    const [player, setPlayer] = useState(initState)
+    const [player, setPlayer] = useState(initState1)
+    const [team, setTeam] = useState(initState2)
     const page = useRecoilValue(pageState)
     const { moveToModify,moveToList } = useCustomMove();
     const [refresh,setRefresh] = useState(false)
@@ -41,6 +54,10 @@ const ReadComponent = ({pno}) => {
         getOnePlayer(pno).then(data => {
             console.log(data)
             setPlayer(data)
+            getOneTeam(pno).then(data2 => {
+                console.log(data2)
+                setTeam(data2)
+            })
             console.log(data.gpa)
         })
     }, [pno])
@@ -74,7 +91,7 @@ const ReadComponent = ({pno}) => {
                         <div className="mb-3 flex items-center justify-between">
                             <Typography variant="h5" color="blue-gray" className="font-medium text-3xl">
                                 <strong>{player.nickName}</strong>
-                                <small className="ml-3 text-lg font-bold">{player.realName}</small>
+                                <small className="ml-3 text-lg font-bold">{player.nameFull}</small>
                             </Typography>
                             <Typography
                                 color="blue-gray"
@@ -97,21 +114,26 @@ const ReadComponent = ({pno}) => {
                         </div>
                         <div className="grid grid-cols-3">
                             <Typography color="gray" className="font-bold col-start-1 mb-3">
-                                소속팀 : {player.teamName}
+                                소속팀 : {team.teamName}
                             </Typography>
                             <Typography color="gray" className="font-bold col-start-2 mb-3">
                                 나이 : {player.age}
                             </Typography>
                             <Typography color="gray" className="font-bold col-start-3 mb-3">
-                                생일 : {player.birthDate}
+                                생일 : {player.birthdate}
                             </Typography>
                             <Typography color="gray" className="font-bold col-start-1 mb-3">
-                                포지션 : {player.position}
+                                포지션 : {player.roles}
                             </Typography>
                         </div>
+                        <Typography color="gray" className="font-bold mb-3">
+                            선호 챔피언 : {player.favChamps.map((champ, index) => (
+                            <span>{champ}{index !== player.favChamps.length - 1 && ', '}</span>
+                        ))}
+                        </Typography>
 
                         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
-                            <Tooltip content={player.position}>
+                            <Tooltip content={player.roles}>
                                 <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
                                     <img src= "../../public/img/position-mid.png" />
                                 </span>

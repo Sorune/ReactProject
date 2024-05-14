@@ -3,8 +3,14 @@ import {API_SERVER_HOST} from "./filesApi";
 
 const prefix = `${API_SERVER_HOST}/api/lol`
 
-export const getOnePlayer = async (pno) => {
-    const res = await axios.get(`${prefix}/${pno}`)
+export const getOnePlayer = async (id) => {
+    const res = await axios.get(`${prefix}/player/${id}`)
+
+    return res.data
+}
+
+export const getOneTeam = async (id) => {
+    const res = await axios.get(`${prefix}/team/${id}`)
 
     return res.data
 }
@@ -12,6 +18,12 @@ export const getOnePlayer = async (pno) => {
 export const getPlayerList = async (pageParam) => {
     const {page, size} = pageParam
     const res = await axios.get(`${prefix}/player/list`, {params:{page:page, size:size}})
+
+    return res.data
+}
+
+export const getTeamList = async () => {
+    const res = await axios.get(`${prefix}/team/list`)
 
     return res.data
 }
