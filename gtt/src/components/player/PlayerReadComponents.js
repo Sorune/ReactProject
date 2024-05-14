@@ -79,7 +79,7 @@ const ReadComponent = ({pno}) => {
                                 :
                                 <img
                                     className="max-w-full"
-                                    src={`${API_SERVER_HOST}/api/files/${player.playerImage}`}
+                                    src={`/img/players/${player.nickName}.png`}
                                     alt="playerImage"
                                 />
                             }
