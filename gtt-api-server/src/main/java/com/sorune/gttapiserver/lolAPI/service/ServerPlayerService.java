@@ -10,4 +10,6 @@ import org.springframework.data.domain.Pageable;
 public interface ServerPlayerService {
 
     PageResponseDTO<ServerPlayerDTO> getPlayers(PageRequestDTO pageRequestDTO);
+
+    ServerPlayerDTO getPlayer(Long id);
 }
