@@ -1,6 +1,7 @@
 package com.sorune.gttapiserver.lolAPI;
 
 import com.sorune.gttapiserver.common.formatter.LocalDateTimeFormatter;
+import com.sorune.gttapiserver.lolAPI.DTO.ServerPlayerDTO;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerTournamentDTO;
 import com.sorune.gttapiserver.lolAPI.entity.*;
 import com.sorune.gttapiserver.lolAPI.repository.ServerMatchRepository;
@@ -13,6 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -121,23 +126,30 @@ public class lolAPITest {
         List<ServerTournament> tournaments = tournamentRepository.findAll();
         ServerTournament tournament = tournaments.get(0);
         log.info(tournament.toString());
-        ServerTeam team = teamRepository.findDetailById(1L);
+        ServerTeam team = teamRepository.findDetailById(2L);
         log.info(team.toString());
         log.info(team.getServerPlayers().toString());
-        ServerTournament serverTournament = tournamentRepository.findById(1L).get();
+        ServerTournament serverTournament = tournamentRepository.findById(2L).get();
         ServerTournamentDTO serverTournamentDTO = modelMapper.map(serverTournament, ServerTournamentDTO.class);
         log.info(serverTournamentDTO.toString());
 
     }
 
     @Test
+    @Transactional
     public void getPlayer(){
-        ServerPlayer p = playerRepository.findByNickName("Faker");
+        ServerPlayerDTO p = modelMapper.map(playerRepository.findById(102L).get(), ServerPlayerDTO.class);
         log.info(p.toString());
     }
 
     @Test
+    @Transactional
     public void getPlayers(){
+        Pageable pageable = Pageable.ofSize(10);
+        Page<ServerPlayer> result = playerRepository.getAllPlayerWithAll(pageable);
+        log.info(result);
+        List<ServerPlayerDTO> dtoList = result.stream().map(serverPlayer -> modelMapper.map(serverPlayer, ServerPlayerDTO.class)).toList();
 
+        log.info(dtoList.toString());
     }
 }
