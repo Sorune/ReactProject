@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {getPlayerList} from "../../api/playerApi"
+// import {getPlayerList} from "../../api/playerApi"
+import {getPlayerList} from "../../api/ServerPlayerApi"
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../common/PageComponent";
 import {Avatar, Button, Card, CardBody, CardHeader, IconButton, Typography} from "@material-tailwind/react";

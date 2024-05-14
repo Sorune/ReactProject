@@ -28,7 +28,7 @@ public class ServerPlayer {
     private String nameFull;
     private String country;
     @Column
-    private int age;
+    private Integer age;
     private LocalDate birthDate;
 
     @ElementCollection(fetch = FetchType.LAZY)
