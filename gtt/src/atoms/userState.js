@@ -15,7 +15,7 @@ const initUserState = {
     roles:["ROLE_Anonymous"],
 }
 
-const loadUserCookie = ()=>{
+export const loadUserCookie = ()=>{
     return getCookie("user")
 }
 

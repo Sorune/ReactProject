@@ -24,11 +24,11 @@ const SignIn = () => {
     // 비밀번호 입력 상태제어 (비밀번호, 비밀번호 확인 체크 여부 포함)
     const [password, setPassword] = useState('');   // pw
     const [confirmPw, setConfirmPw] = useState(''); // confirmPw
+    const [pwStatus, setPwStatus] = useState(null);
+    const [pw2Status, setPw2Status] = useState(null);
     // 닉네임 입력 상태 제어 (중복 닉네임 체크여부 포함)
     const [nick, setNick] = useState('');           // nick
     const [nickStatus, setNickStatus] = useState(null);
-    const [pwStatus, setPwStatus] = useState(null);
-    const [pw2Status, setPw2Status] = useState(null);
     // 전화번호 입력 상태제어 (전화번호 유효성 체크여부 포함)
     const [phone, setPhone] = useState('');         // phone
     const [phoneStatus, setPhoneStatus] = useState(null);
