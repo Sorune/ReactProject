@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, Typography } from "@material-tailwind/react";
+import {useNavigate} from "react-router-dom";
 
 const TABLE_HEAD = ["", "상품명", "경기일", "장소", "수량", "합계금액", ""];
 
 const CartListComponent = ({ cartData, setCartData }) => {
-    console.log(cartData.stadium)
+
     const totalPrices = cartData.reduce((total, item) => total + item.totalPrice, 0)
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
+    const navigate = useNavigate()
 
     const handleRemoveItem = (indexToRemove) => {
         // 선택한 인덱스를 제외한 새로운 배열 생성
@@ -18,14 +20,6 @@ const CartListComponent = ({ cartData, setCartData }) => {
         localStorage.setItem("cartData", JSON.stringify(newCartData));
     }
 
-    const handleCheckboxChange = (index) => {
-        if (selectedItems.includes(index)) {
-            setSelectedItems(selectedItems.filter((item) => item !== index));
-        } else {
-            setSelectedItems([...selectedItems, index]);
-        }
-    };
-
     const handleSelectAll = () => {
         setSelectAll(!selectAll);
         if (!selectAll) {
@@ -35,6 +29,18 @@ const CartListComponent = ({ cartData, setCartData }) => {
             setSelectedItems([]);
         }
     };
+
+    const handleCheckboxChange = (index) => {
+        if (selectedItems.includes(index)) {
+            // 이미 선택된 항목일 경우 선택 취소
+            setSelectedItems(selectedItems.filter((item) => item !== index));
+        } else {
+            // 선택되지 않은 항목일 경우 선택
+            setSelectedItems([...selectedItems, index]);
+        }
+        console.log(selectedItems)
+    };
+
 
     const handleRemoveSelectedItems = () => {
         if (selectedItems.length === 0) {
@@ -47,6 +53,19 @@ const CartListComponent = ({ cartData, setCartData }) => {
         localStorage.setItem("cartData", JSON.stringify(newCartData));
         setSelectedItems([]);
     };
+
+    const handlePayment = () => {
+        if(selectedItems.length === 0) {
+            alert("결제할 상품을 선택하세요.")
+            return;
+        }
+        const selectedProducts = selectedItems.map(index => cartData[index])
+        console.log("선택된 상품들:", selectedProducts);
+        navigate("/cart/payment", {state:{selectedProducts}
+    })
+    }
+
+
 
     return (
         <Card className="h-full w-full">
@@ -196,7 +215,7 @@ const CartListComponent = ({ cartData, setCartData }) => {
             </CardBody>
             <CardFooter>
                 <div className={`flex justify-center`}>
-                    <Button className={`mr-5`}>결제</Button>
+                    <Button className={`mr-5`} onClick={handlePayment}>결제</Button>
                     <Button className={`mr-5`} onClick={handleRemoveSelectedItems}>선택 삭제</Button>
                 </div>
             </CardFooter>
