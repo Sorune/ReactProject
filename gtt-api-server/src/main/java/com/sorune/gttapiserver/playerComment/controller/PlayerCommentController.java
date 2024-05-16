@@ -2,6 +2,8 @@ package com.sorune.gttapiserver.playerComment.controller;
 
 import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
+import com.sorune.gttapiserver.lolAPI.repository.ServerPlayerRepository;
+import com.sorune.gttapiserver.lolAPI.service.ServerPlayerService;
 import com.sorune.gttapiserver.player.DTO.PlayerDTO;
 import com.sorune.gttapiserver.player.service.PlayerService;
 import com.sorune.gttapiserver.playerComment.DTO.PlayerCommentDTO;
@@ -18,11 +20,11 @@ import java.util.Map;
 public class PlayerCommentController {
 
     private final PlayerCommentService playerCommentService;
-    private final PlayerService playerService;
+    private final ServerPlayerService playerService;
 
-    @GetMapping("/{playerComNo}")
-    public PlayerCommentDTO getOneComment(@PathVariable("playerComNo") Long playerComNo) {
-        return playerCommentService.getPlayerComment(playerComNo);
+    @GetMapping("/{pno}/{comWriter}")
+    public boolean getOneComment(@PathVariable("comWriter") String comWriter, @PathVariable("pno") Long pno) {
+        return playerCommentService.checkCommentduplicate(pno, comWriter);
     }
 
 //    @GetMapping("/list/{pno}")
@@ -30,15 +32,17 @@ public class PlayerCommentController {
 //        pageRequestDTO.setPage(1); // 페이징 처리 관련 문제로 막아놓음
 //        return playerCommentService.getPlayerCommentList(pageRequestDTO, pno);
 //    }
+
     @GetMapping("/list/{pno}")
     public List<PlayerCommentDTO> getCommentList(@PathVariable("pno") Long pno){
         List<PlayerCommentDTO> dtoList = playerCommentService.getPlayerCommentList2(pno);
 
-//        Double avgRecomNo = playerCommentService.getPlayerCommentRecomNo(pno);
-//        playerService.updateGpa(pno, avgRecomNo);
-
-//        PlayerDTO dto = playerService.getById(pno);
-//        System.out.println(dto.toString());
+        Double avgRecomNo = playerCommentService.getPlayerCommentRecomNo(pno);
+        if (avgRecomNo != null) {
+            playerService.updateGpa(pno, avgRecomNo);
+        } else if (avgRecomNo == null) {
+            playerService.updateGpa(pno, 0.0);
+        }
 
         return dtoList;
     }
@@ -46,8 +50,7 @@ public class PlayerCommentController {
     @PostMapping("/")
     public Long addComment(@RequestBody PlayerCommentDTO playerCommentDTO) {
         Long comNo = playerCommentService.addPlayerComment(playerCommentDTO);
-//        Double avgRecomNo = playerCommentService.getPlayerCommentRecomNo(playerCommentDTO.getPno());
-//        playerService.updateGpa(playerCommentDTO.getPno(), avgRecomNo);
+
         return comNo;
     }
 
@@ -55,8 +58,6 @@ public class PlayerCommentController {
     public Map<String, String> ModifyComment(@PathVariable("playerComNo") Long playerComNo, @RequestBody PlayerCommentDTO dto){
         dto.setPlayerComNo(playerComNo);
         playerCommentService.updatePlayerComment(dto);
-//        Double avgRecomNo = playerCommentService.getPlayerCommentRecomNo(dto.getPno());
-//        playerService.updateGpa(dto.getPno(), avgRecomNo);
 
         return Map.of("result", "success");
     }

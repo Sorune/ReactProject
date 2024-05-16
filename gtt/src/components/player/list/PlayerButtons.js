@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import {deleteOnePlayer, postAdd, putOnePlayer} from "../../../api/playerApi";
 
 
-const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, pno, player, imageDiv, setResultCallback})=>{
+const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, id, player, imageDiv, setResultCallback})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
     const [result, setResult] = useState(null)
@@ -12,7 +12,7 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
 
     const handleClickDelete = () => {
 
-        deleteOnePlayer(pno).then(data => {
+        deleteOnePlayer(id).then(data => {
             moveTo({
                 pathName:pathName+'list',
                 pageParam: {page: `${page.page}`, size: `${page.size}`}
@@ -36,22 +36,24 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
 
         const formData = new FormData()
 
-        if (player.nickName !== "" && player.realName !== "" && player.age !== "" && player.teamName !== ""
-            && player.position !== "" && player.birthDate !== "" && fileName !== "") { // input 요소에 값이 전부 있을 경우
+        if (player.nickName !== "" && player.name !== "" && player.age !== "" && player.nameFull !== ""
+            && player.roles !== "" && player.birthdate !== "" && player.country !== "" && player.favChamps !== "") { // input 요소에 값이 전부 있을 경우
 
             formData.append("nickName", player.nickName)
-            formData.append("realName", player.realName)
+            formData.append("name", player.name)
             formData.append("age", player.age)
-            formData.append("teamName", player.teamName)
-            formData.append("position", player.position)
-            formData.append("birthDate", player.birthDate)
-            formData.append("playerImage", player.playerImage)
+            formData.append("country", player.country)
+            formData.append("nameFull", player.nameFull)
+            formData.append("roles", player.roles)
+            formData.append("birthdate", player.birthdate)
+            formData.append("birthdatePrecision", player.birthdate)
+            formData.append("favChamps", player.favChamps)
 
             console.log(formData)
 
-            putOnePlayer(pno, formData).then(data => {
+            putOnePlayer(id, formData).then(data => {
                 moveTo({
-                    pathName:pathName+'read/'+player.pno,
+                    pathName:pathName+'read/'+player.id,
                     pageParam: {page: `${page.page}`, size: `${page.size}`}
                 })
             })
@@ -75,38 +77,41 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
             console.error("imageDiv에 자식 요소가 없습니다.");
         }
 
-        console.log(player.nickName)
-        console.log(player.realName)
-        console.log(player.age)
-        console.log(player.teamName)
-        console.log(player.position)
-        console.log(player.birthDate)
-        console.log(fileName)
+        console.log("nickName", player.nickName)
+        console.log("name", player.name)
+        console.log("age", player.age)
+        console.log("country", player.country)
+        console.log("nameFull", player.nameFull)
+        console.log("roles", player.roles)
+        console.log("birthdate", player.birthdate)
+        console.log("birthdatePrecision", player.birthdate)
+        console.log("favChamps", player.favChamps)
 
         // const fileName = Array.from(imageDiv.current.children)[0].getAttribute("fileName");
         // console.log("file", fileName);
 
         const formData = new FormData()
 
-        if (player.nickName !== "" && player.realName !== "" && player.age !== 0
-            && player.teamName !== ""
-            && player.position !== "" && player.birthDate !== "" && fileName !== "") { // input 요소에 값이 전부 있을 경우
+        if (player.nickName !== "" && player.name !== "" && player.age !== "" && player.nameFull !== ""
+            && player.roles !== "" && player.birthdate !== "" && player.country !== "" && player.favChamps !== "") { // input 요소에 값이 전부 있을 경우
 
             formData.append("nickName", player.nickName)
-            formData.append("realName", player.realName)
+            formData.append("name", player.name)
             formData.append("age", player.age)
-            formData.append("teamName", player.teamName)
-            formData.append("position", player.position)
-            formData.append("birthDate", player.birthDate)
-            formData.append("playerImage", fileName)
+            formData.append("country", player.country)
+            formData.append("nameFull", player.nameFull)
+            formData.append("roles", player.roles)
+            formData.append("birthdate", player.birthdate)
+            formData.append("birthdatePrecision", player.birthdate)
+            formData.append("favChamps", player.favChamps)
 
             console.log(formData)
 
             postAdd(formData).then(data => {
-                console.log(data, data.pno)
-                //setResultCallback(data.pno)
+                console.log(data, data.id)
+                //setResultCallback(data.id)
                 moveTo({
-                    pathName:pathName+'read/' + data.pno,
+                    pathName:pathName+'read/' + data.id,
                     pageParam: {page: `${page.page}`, size: `${page.size}`}
                 })
             })
@@ -128,7 +133,7 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
 
                 {path==="read"?
                     <Button className="rounded-full"
-                         onClick={() => moveToModify({pathName: pathName+"modify", num: pno})}>Modify</Button>:<></>}
+                         onClick={() => moveToModify({pathName: pathName+"modify", num: id})}>Modify</Button>:<></>}
 
                 {path==="modify"?
                     <div className="justify-between">
@@ -137,7 +142,7 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
 
                 {path==="list"?
                     <Button className="rounded-full" onClick={() => moveTo({
-                        pathName:pathName + "read/" + pno
+                        pathName:pathName + "read/" + id
                     })}>Read</Button> : <></> }
 
                 {path==="add" ?

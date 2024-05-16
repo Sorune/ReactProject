@@ -2,6 +2,7 @@ package com.sorune.gttapiserver.lolAPI.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -30,6 +31,8 @@ public class ServerPlayer {
     @Column
     private Integer age;
     private LocalDate birthDate;
+    @ColumnDefault("0.0")
+    private double gpa;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
