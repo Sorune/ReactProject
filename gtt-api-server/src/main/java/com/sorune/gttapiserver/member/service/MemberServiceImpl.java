@@ -86,6 +86,20 @@ public class MemberServiceImpl implements MemberService {
         return null;
     }
 
+    @Override // 회원 일부정보 수정 (닉네임, 생년월일, 우편번호, 주소, 나머지주소)
+    public void partModifyMember(MemberDTO memberDTO) {
+
+        Member member = memberRepository.getReferenceById(memberDTO.getNum());
+
+        member.editMemNick(memberDTO.getNick());        // 닉네임 수정
+        member.editMemBirth(memberDTO.getBirth());      // 생년월일 수정
+        member.editMemAddrNum(memberDTO.getZoneCode()); // 우편번호 수정
+        member.editMemAddr(memberDTO.getAddress());     // 주소 수정
+        member.editMemAddr2(memberDTO.getAddrSub());    // 나머지 주소 수정
+
+        memberRepository.save(member);                  // 엔티티를 통해 DB에 저장
+    }
+
     @Override // 회원 탈퇴
     public void cencelMember(Long num) {
         // 주어진 번호의 회원 정보를 데이터베이스에서 삭제

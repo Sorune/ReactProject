@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Typography } from "@material-tailwind/react";
-import { memberList, getMember, removeMember, updateMember } from "../../api/memberApi";
+import {memberList, getMember, removeMember, updateMember, list} from "../../api/memberApi";
 import { ConfirmDeleteDialog, EditMemberDialog, MemberDetailsDialog } from "../admin/AdminUserModal";
 import {useRecoilState} from "recoil";
 import {userState} from "../../atoms/userState";
