@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, Typography } from "@material-tailwind/react";
 import {useNavigate} from "react-router-dom";
+import {pay} from "../../api/cartApi";
+import {useRecoilValue} from "recoil";
+import {userState} from "../../atoms/userState";
 
 const TABLE_HEAD = ["", "상품명", "경기일", "장소", "수량", "합계금액", ""];
 
@@ -10,6 +13,7 @@ const CartListComponent = ({ cartData, setCartData }) => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const navigate = useNavigate()
+    const userInfo = useRecoilValue(userState)
 
     const handleRemoveItem = (indexToRemove) => {
         // 선택한 인덱스를 제외한 새로운 배열 생성
@@ -60,8 +64,10 @@ const CartListComponent = ({ cartData, setCartData }) => {
             return;
         }
         const selectedProducts = selectedItems.map(index => cartData[index])
-        console.log("선택된 상품들:", selectedProducts);
-        navigate("/cart/payment", {state:{selectedProducts}})
+        console.log("선택된 상품들:", selectedProducts,userInfo);
+        selectedProducts.forEach(cart =>pay(cart).then(data=>{
+        }))
+        alert("결제 완료")
         navigate("/")
     }
 
