@@ -8,4 +8,8 @@ public interface ServerTeamService {
     List<ServerTeamDTO> getServerTeams();
 
     ServerTeamDTO getServerTeamById(Long id);
+
+    ServerTeamDTO getLatestWinnerTeam();
+
+    List<ServerTeamDTO> getTeamsWithOutPlayers();
 }

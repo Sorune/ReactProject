@@ -84,90 +84,52 @@ const PlayerAddComponent = () => {
              <Card className="p-2 m-2 min-h-[10rem]">
                 <form>
                     <div className="grid grid-cols-auto gap-4 grid-rows-auto flex items-stretch flex items-center flex flex-box mt-2 mb-2 ml-2 ">
-                        <div className="col-start-1 col-end-3 p-1">
+                        <div className="col-start-1 p-1">
                             <DropDownInput name="nickName" buttonRef={buttonRef} inputRef={inputRef} onChange={handleDropDownChange} value={player.nickName}/>
+                        </div>
+                        <div className="col-start-2 p-1">
+                            <div className="w-full">
+                                <Input label="이름" placeholder="name" name="name" defaultValue={player.name} type="text" onClick={handleChangePlayer} />
+                            </div>
                         </div>
                         <div className="col-start-3 p-1">
                             <div className="w-full">
-                                <Input label="이름" placeholder="RealName" name="realName" defaultValue={player.realName} type="text" onClick={handleChangePlayer} />
+                                <Input label="이름" placeholder="nameFull" name="nameFull" defaultValue={player.nameFull} type="text" onClick={handleChangePlayer} />
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center p-3 w-100">
-                        <Input label="나이" name="age" type={'number'} value={player.age} onChange={handleChangePlayer} min={0}></Input>
+                    <div className="flex justify-between items-center p-3 w-100">
                         <div className="ml-4">
-                            <Input label="출생일" name="birthDate" type={'date'} value={player.birthDate} onChange={handleChangePlayer}></Input>
+                            <Input label="나이" name="age" type={'number'} value={player.age} onChange={handleChangePlayer} min={0}></Input>
                         </div>
                         <div className="ml-4">
-                            <Input label="포지션" name="position" value={player.position} onChange={handleChangePlayer}/>
+                            <Input label="출생일" name="birthdate" type={'date'} value={player.birthdate} onChange={handleChangePlayer}></Input>
+                        </div>
+                        <div className="ml-4">
+                            <Input label="포지션" name="roles" value={player.roles} onChange={handleChangePlayer}/>
                         </div>
                     </div>
-
-
-
-                    <div className="p-3 justify-self-end flex justify-center">
-                  {/*      {path==="write"?<Button onClick={handleSave}>Save</Button>:
-                            <Button onClick={handleModify}>Modify</Button>
-                        }*/}
+                    <div className="flex justify-around items-center p-3 w-100">
+                        <div className="ml-4">
+                            <Input label="지역" name="country" value={player.country} onChange={handleChangePlayer}/>
+                        </div>
+                        <div className="ml-4">
+                            <Input label="선호 챔피언" name="favChamps" value={player.favChamps} onChange={handleChangePlayer}/>
+                        </div>
                     </div>
                 </form>
-            </Card>
-
-     {/*<div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">NickName</div>
-                    <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="nickName" type={'text'} value={player.nickName} onChange={handleChangePlayer}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">RealName</div>
-                    <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="realName" type={'text'} value={player.realName} onChange={handleChangePlayer}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">Age</div>
-                    <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="age" type={'number'} value={player.age} onChange={handleChangePlayer} min={0}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">TeamName</div>
-                    <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="teamName" type={'text'} value={player.teamName} onChange={handleChangePlayer}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">Position</div>
-                    <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="position" type={'text'} value={player.position} onChange={handleChangePlayer}></input>
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">BirthDate</div>
-                    <input className="w-4/5 p-6 rounded-r border border-soild border-neutral-300 shadow-md"
-                           name="birthDate" type={'date'} value={player.birthDate}
-                           onChange={handleChangePlayer}></input>
-                    {/*<DatePicker value={player.birthDate} onChange={handleChangePlayer}/>
-                </div>
-            </div>*/}
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="w-1/5 p-6 text-right font-bold">PlayerImage</div>
-                    <td>
-                        <DropFiles value={player.playerImage} name="playerImage" imageDiv={imageDiv}/>
-                    </td>
-                </div>
-            </div>
+             </Card>
+            {/*<div className="flex justify-center">*/}
+            {/*    <div className="relative mb-4 flex w-full flex-wrap items-stretch">*/}
+            {/*    <div className="w-1/5 p-6 text-right font-bold">PlayerImage</div>*/}
+            {/*        <td>*/}
+            {/*            <DropFiles value={player.playerImage} name="playerImage" imageDiv={imageDiv}/>*/}
+            {/*        </td>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
             <div className="flex justify-end">
                 <div className="relative md-4 flex p-4 flex-wrap items-stretch">
-                    <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.pno}
+                    <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={player.id}
                                    player={player} moveToRead={moveToRead} imageDiv={imageDiv} setResultCallback={handleResult}/>
                 </div>
                 {result ?<DialogResult

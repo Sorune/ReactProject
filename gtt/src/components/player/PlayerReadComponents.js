@@ -19,6 +19,7 @@ import {
 import PCommentList from "../playerComment/PlayerCommentListComponent"
 import PCommentAdd from "../playerComment/PlayerCommentAddComponent"
 import {API_SERVER_HOST} from "../../api/filesApi";
+import { useParams } from 'react-router-dom';
 
 const initState1 = {
     id : 0,
@@ -29,8 +30,8 @@ const initState1 = {
     country : '',
     roles : '',
     birthdate : null,
-    favChamps : []
-    // gpa : 0.0
+    favChamps : [],
+    gpa : 0
 }
 
 const initState2 = {
@@ -49,8 +50,8 @@ const ReadComponent = ({pno}) => {
     const { moveToModify,moveToList } = useCustomMove();
     const [refresh,setRefresh] = useState(false)
 
-
     useEffect(() => {
+        console.log(pno)
         getOnePlayer(pno).then(data => {
             console.log(data)
             setPlayer(data)
@@ -64,7 +65,7 @@ const ReadComponent = ({pno}) => {
 
     return (
         <div>
-            <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} pno={pno} moveToModify={moveToModify}/>
+            <PlayerButtons page={page} pathName={'/player/'} moveTo={moveToList} id={pno} moveToModify={moveToModify}/>
 
             <div className="mt-100 m-2 p-4">
                 <Card className="w-full max-w-[100rem] shadow-lg p-10">
@@ -135,7 +136,7 @@ const ReadComponent = ({pno}) => {
                         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
                             <Tooltip content={player.roles}>
                                 <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                                    <img src= "../../public/img/position-mid.png" />
+                                    <img src= "/img/position-mid.png" />
                                 </span>
                             </Tooltip>
                         </div>

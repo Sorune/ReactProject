@@ -16,7 +16,7 @@ const noticeRouter =() =>
             element: <Suspense fallback={Loading}><List/></Suspense>
         },
         {
-          path:"list",
+          path:"",
             element: <Navigate replace to="list"/>
         },
         {

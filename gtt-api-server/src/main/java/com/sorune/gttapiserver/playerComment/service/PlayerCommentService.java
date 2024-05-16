@@ -21,4 +21,6 @@ public interface PlayerCommentService {
     List<PlayerCommentDTO> getPlayerCommentList2(Long pno);
 
     Double getPlayerCommentRecomNo(Long pno);
+
+    boolean checkCommentduplicate(Long pno, String comWriter);
 }

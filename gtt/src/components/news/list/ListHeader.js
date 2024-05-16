@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
-const ListHeader = ({TABS,moveTo,pathName})=>{
+const ListHeader = ({TABS,moveTo,pathName, path})=>{
     // 페이지 이름 추출 및 첫 글자 대문자로 변환
     let pageName = pathName.split('/')[1].charAt(0).toUpperCase() + pathName.split('/')[1].slice(1);
 
@@ -13,14 +13,12 @@ const ListHeader = ({TABS,moveTo,pathName})=>{
     if (pageName === "Free") {
         pageName += "Board";
     }
-
-
     return(
         <CardHeader floated={false} shadow={false} className="rounded-none">
             <div className="mb-8 flex items-center justify-between gap-8">
                 <div>
                     <Typography variant="h5" color="blue-gray">
-                        {pageName} list
+                        {path} list
                     </Typography>
                 </div>
                 <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -35,21 +33,12 @@ const ListHeader = ({TABS,moveTo,pathName})=>{
                     </Button>
                 </div>
             </div>
-            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                <Tabs value="all" className="w-full md:w-max">
-                    <TabsHeader>
-                        {TABS.map(({label, value}) => (
-                            <Tab key={value} value={value}>
-                                &nbsp;&nbsp;<Avatar src={img} alt="{dto.theTeam}" size="sm"/>&nbsp;&nbsp;
-                            </Tab>
-                        ))}
-                    </TabsHeader>
-                </Tabs>
-                <div className="flex flex-cols-2">
-                    <DatePicker name="regDate"/>
-                    <DatePicker name="modDate"/>
-                </div>
-            </div>
+            {/*<div className="flex flex-col items-center justify-end gap-4 md:flex-row">*/}
+            {/*    <div className="flex flex-cols-2">*/}
+            {/*        <DatePicker name="regDate"/>*/}
+            {/*        <DatePicker name="modDate"/>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </CardHeader>
     )
 }

@@ -35,7 +35,7 @@ const CartList = () => {
         }
     }, [data, matchData, totalPrice, stadium]); // cartData, setCartData를 의존성 배열에서 제외
 
-
+    console.log(cartData)
     return (
         <div className="p-4 w-full bg-white">
             <CartListComponent cartData={cartData} setCartData={setCartData} />

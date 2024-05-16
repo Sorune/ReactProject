@@ -32,6 +32,15 @@ public class LolAPIController {
         return playerService.getPlayers(pageRequestDTO);
     }
 
+    @GetMapping("teams")
+    public List<ServerTeamDTO> getTeams() {
+        return teamService.getTeamsWithOutPlayers();
+    }
+    @GetMapping("player/list/{teamImg}")
+    public PageResponseDTO<ServerPlayerDTO> listWithTeam(PageRequestDTO pageRequestDTO,@PathVariable String teamImg) {
+        return playerService.getPlayersWithTeam(pageRequestDTO, teamImg);
+    }
+
     @GetMapping("team/list")
     public List<ServerTeamDTO> list() {
         return teamService.getServerTeams();
@@ -45,5 +54,10 @@ public class LolAPIController {
     @GetMapping("team/{id}")
     public ServerTeamDTO getTeam(@PathVariable Long id) {
         return teamService.getServerTeamById(id);
+    }
+
+    @GetMapping("team/winner")
+    public ServerTeamDTO getWinner() {
+        return teamService.getLatestWinnerTeam();
     }
 }

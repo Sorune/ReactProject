@@ -52,8 +52,8 @@ const ListPage = ()=>{
 
     return(
         <Card className="h-full w-full">
-            <ListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/free/write'} />
-            <CardBody className="px-0">
+            <ListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/free/write'} path={"FreeBoard"} />
+            <CardBody className="overflow-scroll px-0">
                 <ListTable TABLE_HEAD={TABLE_HEAD} serverData={serverData} path={"free"} />
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">

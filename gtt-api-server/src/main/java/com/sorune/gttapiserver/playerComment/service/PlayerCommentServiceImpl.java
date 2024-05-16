@@ -94,4 +94,9 @@ public class PlayerCommentServiceImpl implements PlayerCommentService {
 
         return result;
     }
+
+    @Override
+    public boolean checkCommentduplicate(Long pno, String comWriter) {
+        return playerCommentRepository.existsByPnoAndComWriter(pno, comWriter);
+    }
 }

@@ -83,6 +83,7 @@ def getTeamWithPlayers():
                 country=player.country,
                 age=player.age,
                 birth_date=player.birth_date,
+                team_img=team.image,
             )
             session.add(server_player)
             session.commit()  # 선수 정보를 데이터베이스에 저장합니다.
@@ -146,44 +147,51 @@ def get_matches_with_team(tournament_name):
 
 
 def get_tournament_with_matches():
-    Leagues = site.cargo_client.query(
-        tables="Tournaments=T",
-        fields="T.OverviewPage=LeagueName,T.Name,T.DateStart,T.Date,T.League,T.Region,T.Prizepool,T.Country,T.EventType",
-        where="T.Region='Korea' AND T.Date IS NOT NULL AND T.Region IS NOT NULL",
-        order_by="T.Date ASC"
+    return
+
+
+
+Leagues = site.cargo_client.query(
+    tables="Tournaments=T, TournamentResults=TS",
+    join_on="T.OverviewPage=TS.OverviewPage",
+    group_by="T.OverviewPage",
+    fields="T.OverviewPage=LeagueName,T.Name,T.DateStart,T.Date,T.League,T.Region,T.Prizepool,T.Country,T.EventType,T.TournamentLevel, TS.Team=Challenger",
+    where="T.Region='Korea' AND T.Date IS NOT NULL AND T.Region IS NOT NULL AND TS.Place=1",
+    order_by="T.Date ASC"
+)
+for league in Leagues:
+    print(league)
+    # 서버 토너먼트 객체 생성
+    start_date = None
+    end_date = None
+    if league['DateStart']:
+        start_date = dt.datetime.strptime(league['DateStart'], '%Y-%m-%d')
+    if league['Date']:
+        end_date = dt.datetime.strptime(league['Date'], '%Y-%m-%d')
+    get_matches_with_team(league["LeagueName"])
+    matches = session.query(ServerMatch).filter_by(league=league["LeagueName"]).all()
+    tournament = ServerTournament(
+        league=league['League'],
+        name=league['Name'],
+        country=league['Country'],
+        region=league['Region'],
+        start_date=start_date,
+        end_date=end_date,
+        challenger=league['Challenger'],
+        matches=matches
     )
-    for league in Leagues:
-        print(league)
-        # 서버 토너먼트 객체 생성
-        start_date = None
-        end_date = None
-        if league['DateStart']:
-            start_date = dt.datetime.strptime(league['DateStart'], '%Y-%m-%d')
-        if league['Date']:
-            end_date = dt.datetime.strptime(league['Date'], '%Y-%m-%d')
-        get_matches_with_team(league["LeagueName"])
-        matches = session.query(ServerMatch).filter_by(league=league["LeagueName"]).all()
-        tournament = ServerTournament(
-            league=league['League'],
-            name=league['Name'],
-            country=league['Country'],
-            region=league['Region'],
-            start_date=start_date,
-            end_date=end_date,
-            matches=matches
-        )
 
-        # 서버 토너먼트 객체와 관련된 매치 가져오기
-        # 여기서는 LeagueName으로 매치를 찾지 않고, LeagueName이 토너먼트의 이름인지 확인하고 있습니다.
-        matches = session.query(ServerMatch).filter_by(league=league['LeagueName']).all()
+    # 서버 토너먼트 객체와 관련된 매치 가져오기
+    # 여기서는 LeagueName으로 매치를 찾지 않고, LeagueName이 토너먼트의 이름인지 확인하고 있습니다.
+    matches = session.query(ServerMatch).filter_by(league=league['LeagueName']).all()
 
-        # 매치와 토너먼트 연결
-        for match in matches:
-            tournament.matches.append(match)
+    # 매치와 토너먼트 연결
+    for match in matches:
+        tournament.matches.append(match)
 
-        # 서버 토너먼트 객체를 데이터베이스에 추가
-        session.add(tournament)
-        session.commit()
+    # 서버 토너먼트 객체를 데이터베이스에 추가
+    session.add(tournament)
+    session.commit()
 
 # date = "2024-01-25"
 # date = dt.datetime.strptime(date, "%Y-%m-%d").date()

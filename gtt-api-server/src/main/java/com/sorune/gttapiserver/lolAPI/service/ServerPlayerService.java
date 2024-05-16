@@ -11,5 +11,10 @@ public interface ServerPlayerService {
 
     PageResponseDTO<ServerPlayerDTO> getPlayers(PageRequestDTO pageRequestDTO);
 
+    PageResponseDTO<ServerPlayerDTO> getPlayersWithTeam(PageRequestDTO pageRequestDTO, String teamImg);
+
     ServerPlayerDTO getPlayer(Long id);
+
+    void updateGpa(Long pno, Double gpa);
+
 }
