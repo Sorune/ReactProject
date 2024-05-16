@@ -13,5 +13,6 @@ public interface ServerTeamRepository extends JpaRepository<ServerTeam, Long> {
 
     public ServerTeam findByServerPlayersId(Long id);
 
-    public ServerTeam findByTeamName(String teamName);
+    public ServerTeam findTopByTeamName(String teamName);
+
 }

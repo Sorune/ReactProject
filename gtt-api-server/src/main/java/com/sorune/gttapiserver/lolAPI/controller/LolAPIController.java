@@ -9,6 +9,7 @@ import com.sorune.gttapiserver.lolAPI.service.ServerTeamService;
 import com.sorune.gttapiserver.lolAPI.service.TournamentService;
 import com.sorune.gttapiserver.player.DTO.PlayerDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/lol/")
+@Log4j2
 public class LolAPIController {
     private final TournamentService tournamentService;
     private final ServerPlayerService playerService;
@@ -59,5 +61,11 @@ public class LolAPIController {
     @GetMapping("team/winner")
     public ServerTeamDTO getWinner() {
         return teamService.getLatestWinnerTeam();
+    }
+
+    @GetMapping("teamByName/{teamName}")
+    public ServerTeamDTO getTeamByName(@PathVariable String teamName) {
+        log.info(teamName);
+        return teamService.getOneTeamByName(teamName);
     }
 }

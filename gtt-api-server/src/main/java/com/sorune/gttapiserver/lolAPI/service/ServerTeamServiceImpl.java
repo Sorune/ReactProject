@@ -46,7 +46,7 @@ public class ServerTeamServiceImpl implements ServerTeamService {
     @Override
     public ServerTeamDTO getLatestWinnerTeam() {
         ServerTournament serverTournament = tournamentRepository.findTopByChallengerNotNullOrderByStartDateDesc();
-        return modelMapper.map(serverTeamRepository.findByTeamName(serverTournament.getChallenger()), ServerTeamDTO.class);
+        return modelMapper.map(serverTeamRepository.findTopByTeamName(serverTournament.getChallenger()), ServerTeamDTO.class);
     }
 
     @Override
@@ -60,5 +60,17 @@ public class ServerTeamServiceImpl implements ServerTeamService {
                 .rosterPhoto(team.getRosterPhoto())
                 .build()
         ).toList();
+    }
+
+    @Override
+    public ServerTeamDTO getOneTeamByName(String teamName) {
+        ServerTeam serverTeam = serverTeamRepository.findTopByTeamName(teamName);
+        return ServerTeamDTO.builder()
+                .id(serverTeam.getId())
+                .teamName(serverTeam.getTeamName())
+                .image(serverTeam.getImage())
+                .location(serverTeam.getLocation())
+                .rosterPhoto(serverTeam.getRosterPhoto())
+                .build();
     }
 }

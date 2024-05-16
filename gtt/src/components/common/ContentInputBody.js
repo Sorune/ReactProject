@@ -54,7 +54,13 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
             setSelectedTeam(buttonInstance.innerText)
         }
         insert(title,stringContent,selectedTeam,writer).then(message => {
-            alert(message.newsNo + "번 등록 완료")
+            if (pathName==="news"){
+                alert(message.newsNo + "번 등록 완료")
+            } else if (pathName === "free"){
+                alert(message.fno + "번 등록 완료")
+            } else if (pathName ==="board"){
+                alert(message.bno + "번 등록 완료")
+            }
             moveToList({pathName: `/${pathName}/list`,pageState:{ page:page.page, size : page.size}})
         })
     };

@@ -23,3 +23,9 @@ export const getWinnerTeam = async ()=>{
     const response = await axios.get(`${prefix}/team/winner`);
     return response.data
 }
+
+export const getOneTeam = async (teamName)=>{
+    console.log(teamName)
+    const response = await axios.get(`${prefix}/teamByName/${teamName}`);
+    return response.data
+}

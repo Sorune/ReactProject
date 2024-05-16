@@ -12,4 +12,6 @@ public interface ServerTeamService {
     ServerTeamDTO getLatestWinnerTeam();
 
     List<ServerTeamDTO> getTeamsWithOutPlayers();
+
+    ServerTeamDTO getOneTeamByName(String teamName);
 }
