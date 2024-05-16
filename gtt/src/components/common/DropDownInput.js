@@ -20,15 +20,12 @@ export const DropDownInput = forwardRef(({onChange,title,  buttonRef, inputRef})
 
     useEffect(() => {
         getTeamsWithOutPlayers().then((teams)=>{
-            console.log(teams)
             setTeams(teams);
         })
     }, []);
     const handleChange = (e) => {
         onChange(e); // 상위 컴포넌트로 선택된 팀 전달
     };
-
-    console.log(teamNo,teamName,teamImage,teams[teamIndex],teamIndex)
     return (
         <div className="relative flex w-full ">
             <Menu placement="bottom-start" ref={buttonRef}>

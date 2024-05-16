@@ -3,13 +3,12 @@ import {
     Button,
     Card,
     CardBody,
-    CardHeader,
     Dialog,
     DialogBody,
     DialogHeader, Spinner,
     Typography
 } from "@material-tailwind/react";
-import { getTournament } from "../../api/matchAPI";
+import { getTournament } from "../../api/lolAPI";
 import KSPO from "../../components/ticketing/KSPO";
 import Stadium from "../../components/ticketing/Stadium"
 
