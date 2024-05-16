@@ -96,17 +96,18 @@ const ListComponent = () => {
     const [page, setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
     const [dataFromChild, setDataFromChild] = useState("");
+    const [team, setTeam] = useState(initState2)
 
     useEffect(() => {
         getPlayerList({page: page.page, size: page.size}).then(data => {
             console.log(data)
             setServerData(data)
         })
-        // getTeamList().then(data => {
-        //     console.log(data)
-        //     setTeam(data)
-        //     console.log(data[0].serverPlayers)
-        // })
+        getTeamList().then(data => {
+            console.log(data)
+            setTeam(data.serverPlayers)
+            console.log(data[1].serverPlayers)
+        })
         setDataFromChild("all")
     }, [refresh])
 
@@ -131,6 +132,9 @@ const ListComponent = () => {
         <section className="min-h-screen">
             <div className="container mx-auto">
                 <PlayerListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/player/add'} onData={handleDataFromChild}/>
+                {/*{team.map((player) => {*/}
+                {/*    <p>{player.name}</p>*/}
+                {/*})}*/}
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4">
                     {serverData.dtoList.map((player) => (
                         <div>

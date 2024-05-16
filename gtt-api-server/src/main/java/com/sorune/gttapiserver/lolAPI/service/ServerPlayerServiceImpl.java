@@ -5,6 +5,7 @@ import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerPlayerDTO;
 import com.sorune.gttapiserver.lolAPI.entity.ServerPlayer;
 import com.sorune.gttapiserver.lolAPI.repository.ServerPlayerRepository;
+import com.sorune.gttapiserver.lolAPI.repository.ServerTeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ServerPlayerServiceImpl implements ServerPlayerService {
 
     private final ServerPlayerRepository playerRepository;
+    private final ServerTeamRepository teamRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -46,7 +48,7 @@ public class ServerPlayerServiceImpl implements ServerPlayerService {
 
     @Override
     public PageResponseDTO<ServerPlayerDTO> getPlayersWithTeam(PageRequestDTO pageRequestDTO, String teamImg) {
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("id").descending(), pageRequestDTO.getKeyword());
         Page<ServerPlayer> result = playerRepository.getAllPlayerWithTeam(pageable, teamImg);
         List<ServerPlayerDTO> dtoList = result.stream().map(serverPlayer -> modelMapper.map(serverPlayer, ServerPlayerDTO.class)).toList();
 
