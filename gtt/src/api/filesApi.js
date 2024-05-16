@@ -5,7 +5,6 @@ import axios from "axios";
 export const SERVER = 'http://localhost'
 export const API_SERVER_HOST = `${SERVER}:8080`
 
-
 export const SERVER_HOST = `${SERVER}:3000`
 const prefix = `${API_SERVER_HOST}/api/files`;
 export const insertFiles = async(file)=>{

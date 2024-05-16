@@ -12,6 +12,7 @@ import {userState} from "../../atoms/userState";
 import {deleteNews} from "../../api/newsApi";
 import {removeBoard} from "../../api/boardApi";
 import {removeFreeBoard} from "../../api/freeBoardApi";
+import {DialogResult} from "./DialogResult";
 
 const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
     const [userInfo,setUserInfo] = useRecoilState(userState)
@@ -22,6 +23,9 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
     const quillEditorRef = useRef()
     const buttonRef = useRef()
     const inputRef = useRef()
+    // 모달 상태 관리를 위한 state 추가
+    const [result, setResult] = useState(null); // 삭제 완료 메시지
+    const [open, setOpen] = useState(false);    // 모달 열기/닫기 상태
     const [title,setTitle] = useState("");
     const [writer, setWriter]=useState(userInfo[0]&&userInfo[0].nick!==undefined?userInfo[0].nick:"Anonymous");
     const [num,setNum] = useState(0);
@@ -44,7 +48,6 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
             QuillInstance.setContents(serverData.content!==""?JSON.parse(serverData.content,new Delta()):new Delta());
         }
     }, [serverData,userInfo]);
-    console.log(pathName,num)
     const handleSave = () => {
         if(buttonRef.current){
             const buttonInstance = buttonRef.current
@@ -65,13 +68,8 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
             navigate(-1)
         })
     }
+
     const handleRemove = () => {
-        // 삭제할 게시물 번호를 확인
-        console.log("삭제할 게시물의 번호:", num);
-
-        // 삭제를 요청받은 경로를 받음
-        console.log("삭제를 요청한 게시판 경로 : " + pathName);
-
         switch(pathName) {
             case "news":
                 deleteToNews();
@@ -83,39 +81,44 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
                 deleteToFreeBoard();
                 break;
             default:
-                console.error("잘못된 경로입니다.");
+                alert("잘못된 경로입니다.");
         }
     }
 
     const deleteToNews = () => {
-        // 삭제 API 호출
         deleteNews(num).then(response => {
-            // 삭제 후 리스트 페이지로 이동하거나 다른 작업 수행
-            moveToList({ pathName: `/${pathName}/list`, pageState: { page: page.page, size: page.size }});
+            setOpen(true);
+            setResult("뉴스게시판 게시물이 삭제되었습니다.");
         }).catch(error => {
-            // 오류 처리
             console.error("삭제 API 호출 실패 :", error);
         });
     }
 
     const deleteToBoard = () => {
-        // 게시판 삭제 API 호출
         removeBoard(num).then(response => {
-            moveToList({ pathName: `/${pathName}/list`, pageState: { page: page.page, size: page.size }});
+            setOpen(true);
+            setResult("일반게시판 게시물이 삭제되었습니다.");
         }).catch(error => {
             console.error("삭제 API 호출 실패 :", error);
         });
     }
 
     const deleteToFreeBoard = () => {
-        // 자유게시판 삭제 API 호출
         removeFreeBoard(num).then(response => {
-            moveToList({ pathName: `/${pathName}/list`, pageState: { page: page.page, size: page.size }});
+            setOpen(true);
+            setResult("자유게시판 게시물이 삭제되었습니다.");
         }).catch(error => {
             console.error("삭제 API 호출 실패 :", error);
         });
     }
 
+    // 모달 닫기 함수
+    const closeDialog = () => {
+        // 모달 닫기
+        setOpen(false);
+        // 해당 게시판 리스트로 이동
+        moveToList({ pathName: `/${pathName}/list`, pageState: { page: page.page, size: page.size } }); // 리스트 페이지로 이동
+    }
 
     const handleDropDownChange = (e) => {
         if(buttonRef.current){
@@ -151,9 +154,15 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
                 <div className="p-3 justify-self-end flex justify-center">
                     {path==="write"?<Button onClick={handleSave}>Save</Button>:
                         <Button onClick={handleModify}>Modify</Button>
-                }{
-                    path==="write"?<></>:
-                    <Button onClick={handleRemove} color={"red"}>Remove</Button>
+                }{path==="write"?<></>:
+                <Button onClick={handleRemove} color={"red"}>
+                    {result ?<DialogResult
+                        title={'삭제완료'}
+                        content={`${result}`}
+                        callbackFn={closeDialog}
+                        open={result !== null}
+                        setOpen={setOpen}
+                    />:<></>}Remove</Button>
                 }
                 </div>
             </form>

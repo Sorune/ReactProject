@@ -1,32 +1,26 @@
-
-// 초기값 세팅
 import useCustomMove from "../../hooks/useCustomMove";
-import {useCallback, useEffect, useState} from "react";
-import {getNoticeList} from "../../api/noticeApi";
+import { useEffect, useState } from "react";
+import { getNoticeList } from "../../api/noticeApi";
 import PageComponent from "../common/PageComponent";
-import {useRecoilState} from "recoil";
-import {pageState} from "../../atoms/pageState";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { pageState } from "../../atoms/pageState";
+import { useLocation } from "react-router-dom";
 import {
-    Avatar,
     Button,
     Card,
     CardBody,
     CardHeader,
-    Chip,
-    IconButton,
     Input,
-    Tooltip,
     Typography
 } from "@material-tailwind/react";
-import {ArrowDownTrayIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline";
-import {PencilIcon} from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-const TABLE_HEAD = ["게시번호", "제목", "작성자", "date", "조회수"];
+
+const TABLE_HEAD = ["게시번호", "제목", "작성자", "작성일", "조회수"];
 
 const initState = {
-    dtoList:[],
-    pageNumList:[],
+    dtoList: [],
+    pageNumList: [],
     pageRequestDTO: null,
     prev: false,
     next: false,
@@ -35,21 +29,24 @@ const initState = {
     nextPage: 0,
     totalPage: 0,
     current: 0
-}
-
+};
 
 const ListComponent = () => {
-    const { moveToList, refresh, moveToRead, moveToAdd, moveToModify} = useCustomMove()
-    const pathName = useLocation().pathname
-    const [page,setPage] = useRecoilState(pageState)
-    const [serverData, setServerData] = useState(initState)
+    const { moveToList, refresh, moveToRead, moveToAdd, moveToModify } = useCustomMove();
+    const pathName = useLocation().pathname;
+    const [page, setPage] = useRecoilState(pageState);
+    const [serverData, setServerData] = useState(initState);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
-        getNoticeList({page:page.page, size:page.size}).then(data =>{
-            console.log(data)
-            setServerData(data)
-        })
-    }, [refresh]
+        getNoticeList({ page: page.page, size: page.size }).then(data => {
+            console.log(data);
+            setServerData(data);
+        });
+    }, [refresh]);
+
+    const filteredData = serverData.dtoList.filter(notice =>
+        notice.title.toLowerCase().includes(search.toLowerCase())
     )
 
     return (
@@ -69,13 +66,14 @@ const ListComponent = () => {
                             <Input
                                 label="Search"
                                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
                             />
                         </div>
-                        <Button className="flex items-center gap-3" size="sm" onClick={() => moveToAdd({pathName:'/notice/add'})} >
+                        <Button className="flex items-center gap-3" size="sm" onClick={() => moveToAdd({ pathName: '/notice/add' })}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                             </svg>
-
                             글작성
                         </Button>
                     </div>
@@ -102,73 +100,73 @@ const ListComponent = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {serverData.dtoList.map(notice  =>
-                                <tr key={notice.notiNo} className="p-4 border-b border-blue-gray-50"  onClick={() => moveToRead({pathName:'/notice/read', num:notice.notiNo, totalPage:serverData.totalCount})}>
-                                    <td>
-                                        <div className="flex items-center gap-3 p-4">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-bold"
-                                            >
-                                                {notice.notiNo}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="flex items-center gap-3 p-4">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {notice.title}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td >
-                                        <div className="flex items-center gap-3 p-4">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {notice.writer}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td >
-                                        <div className="flex items-center gap-3 p-4">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {notice.regDate}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="flex items-center gap-3 p-4">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {notice.hits}
-                                            </Typography>
-                                        </div>
-                                    </td>
-                                </tr>
+                    {filteredData.map(notice =>
+                        <tr key={notice.notiNo} className="p-4 border-b border-blue-gray-50" onClick={() => moveToRead({ pathName: '/notice/read', num: notice.notiNo, totalPage: serverData.totalCount })}>
+                            <td>
+                                <div className="flex items-center gap-3 p-4">
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-bold"
+                                    >
+                                        {notice.notiNo}
+                                    </Typography>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="flex items-center gap-3 p-4">
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal"
+                                    >
+                                        {notice.title}
+                                    </Typography>
+                                </div>
+                            </td>
+                            <td >
+                                <div className="flex items-center gap-3 p-4">
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal"
+                                    >
+                                        {notice.writer}
+                                    </Typography>
+                                </div>
+                            </td>
+                            <td >
+                                <div className="flex items-center gap-3 p-4">
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal"
+                                    >
+                                        {notice.regDate}
+                                    </Typography>
+                                </div>
+                            </td>
+                            <td>
+                                <div className="flex items-center gap-3 p-4">
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal"
+                                    >
+                                        {notice.hits}
+                                    </Typography>
+                                </div>
+                            </td>
+                        </tr>
                     )}
                     </tbody>
                 </table>
-                 <div>
-                    <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName}/>
+                <div>
+                    <PageComponent serverData={serverData} movePage={moveToList} pathName={pathName} />
                 </div>
             </CardBody>
 
         </Card>
-    )
-}
+    );
+};
 export default ListComponent;

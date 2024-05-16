@@ -36,7 +36,7 @@ const MyPage = lazy(() => import("../pages/loginAuth/MyPage"))
 const MyPost = lazy(()=>import("../pages/loginAuth/MyPost"))
 const KakaoRedirect = lazy(()=>import("../pages/loginAuth/KakaoRedirectPage"))
 const AdminIndexPage = lazy(() => import("../pages/admin/AdminIndexPage"));
-const Stadium = lazy(()=>import("../test/pages/Stadium"))
+const Stadium = lazy(()=>import("../components/ticketing/Stadium"))
 const CartMain = lazy(()=> import("../pages/cart/CartMain"))
 
 const root = createBrowserRouter([

@@ -20,14 +20,16 @@ public class NoticeServiceTests {
     @Test
     public void testRegister(){
 
-        NoticeDTO noticeDTO = NoticeDTO.builder()
-                .title("서비스 테스트")
-                .content("테스트 내용")
-                .writer("tester")
-                .build();
-        Long notiNo = noticeService.register(noticeDTO);
+        for (int i = 0; i < 30; i++) {
+            NoticeDTO noticeDTO = NoticeDTO.builder()
+                    .title("서비스 테스트")
+                    .content("테스트 내용")
+                    .writer("tester")
+                    .build();
+            Long notiNo = noticeService.register(noticeDTO);
 
-        log.info("notiNo : " + notiNo);
+            log.info("notiNo : " + notiNo);
+        }
     }
 
     @Test

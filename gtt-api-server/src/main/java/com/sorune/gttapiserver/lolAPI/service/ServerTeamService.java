@@ -15,4 +15,6 @@ public interface ServerTeamService {
     ServerTeamDTO getLatestWinnerTeam();
 
     PageResponseDTO<ServerPlayerDTO> getPlayersWithTeam(PageRequestDTO pageRequestDTO, String teamName);
+  
+    List<ServerTeamDTO> getTeamsWithOutPlayers();
 }

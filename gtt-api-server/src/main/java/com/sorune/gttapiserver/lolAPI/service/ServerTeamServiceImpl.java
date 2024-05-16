@@ -75,4 +75,17 @@ public class ServerTeamServiceImpl implements ServerTeamService {
         ServerTournament serverTournament = tournamentRepository.findTopByChallengerNotNullOrderByStartDateDesc();
         return modelMapper.map(serverTeamRepository.findByTeamName(serverTournament.getChallenger()), ServerTeamDTO.class);
     }
+
+    @Override
+    public List<ServerTeamDTO> getTeamsWithOutPlayers() {
+        List<ServerTeam> teams = serverTeamRepository.findAll();
+        return teams.stream().map(team -> ServerTeamDTO.builder()
+                .id(team.getId())
+                .teamName(team.getTeamName())
+                .image(team.getImage())
+                .location(team.getLocation())
+                .rosterPhoto(team.getRosterPhoto())
+                .build()
+        ).toList();
+    }
 }

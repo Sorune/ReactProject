@@ -7,9 +7,9 @@ const TicketingNav = ({ onLeagueSelect }) => {
 
     // 팀 데이터 배열 정의
     const league = [
-        { name: "LCK", img: "/img/league/LCK.png", leagueNo: 818 },
-        { name: "LCK CL", img: "/img/league/LCK_CL.png", leagueNo: 815 },
-        { name: "LCK Academy Series", img: "/img/league/LCK_AS.png", leagueNo: 801 },
+        { name: "LCK", img: "/img/league/LCK.png", leagueNo: 183 },
+        { name: "LCK CL", img: "/img/league/LCK_CL.png", leagueNo: 184 },
+        { name: "LCK Academy Series", img: "/img/league/LCK_AS.png", leagueNo: 185 },
     ];
 
     // 팀을 선택할 때 호출되는 함수입니다.

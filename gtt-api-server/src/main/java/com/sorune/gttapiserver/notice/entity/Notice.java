@@ -1,5 +1,6 @@
 package com.sorune.gttapiserver.notice.entity;
 
+import com.sorune.gttapiserver.common.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
