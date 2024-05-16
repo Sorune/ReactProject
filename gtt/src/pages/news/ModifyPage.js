@@ -53,7 +53,7 @@ const ModifyPage = forwardRef(() => {
 
     return (
         <section className="bg-white w-full h-full p-2 py-2">
-            <ContentHeader pathName={"/news/"} moveToModify={moveToModify} serverData={serverData} page={page} moveTo={moveToList} />
+            <ContentHeader pathName={"/news/"} moveToModify={moveToModify} serverData={serverData} page={page} moveTo={moveToList} text={"news"} location={"modify"}/>
             <Card className="flex flex-auto p-1">
                 <CardBody>
                     <ContentInputBody

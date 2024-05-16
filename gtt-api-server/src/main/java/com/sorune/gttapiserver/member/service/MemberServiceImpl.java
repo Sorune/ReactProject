@@ -90,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
     public void partModifyMember(MemberDTO memberDTO) {
 
         Member member = memberRepository.getReferenceById(memberDTO.getNum());
-
+        log.info("member : "+member);
         member.editMemNick(memberDTO.getNick());        // 닉네임 수정
         member.editMemBirth(memberDTO.getBirth());      // 생년월일 수정
         member.editMemAddrNum(memberDTO.getZoneCode()); // 우편번호 수정

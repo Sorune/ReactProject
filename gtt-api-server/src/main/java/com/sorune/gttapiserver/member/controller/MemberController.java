@@ -66,7 +66,7 @@ public class MemberController {
     // 회원수정( 일부 : nick, birth, zonCode, address, addrSub)
     @PutMapping("/partModify/{num}")
     public Map<String, String> modify(@PathVariable("num") Long num, @RequestBody MemberDTO memberDTO) {
-
+        log.info("member : " + memberDTO);
         memberDTO.setNum(num);
 
         memberService.partModifyMember(memberDTO);

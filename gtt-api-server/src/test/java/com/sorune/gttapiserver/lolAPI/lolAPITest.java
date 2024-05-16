@@ -139,7 +139,7 @@ public class lolAPITest {
     @Test
     @Transactional
     public void getPlayer(){
-        ServerTeamDTO p = modelMapper.map(teamRepository.findByServerPlayersId(110L), ServerTeamDTO.class);
+        ServerTeamDTO p = modelMapper.map(teamRepository.findByServerPlayersId(269L), ServerTeamDTO.class);
         log.info(p.toString());
     }
 
