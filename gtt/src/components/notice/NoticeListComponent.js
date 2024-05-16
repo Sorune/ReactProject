@@ -1,24 +1,20 @@
 import useCustomMove from "../../hooks/useCustomMove";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getNoticeList } from "../../api/noticeApi";
 import PageComponent from "../common/PageComponent";
 import { useRecoilState } from "recoil";
 import { pageState } from "../../atoms/pageState";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
-    Avatar,
     Button,
     Card,
     CardBody,
     CardHeader,
-    Chip,
-    IconButton,
     Input,
-    Tooltip,
     Typography
 } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon } from "@heroicons/react/24/solid";
+
 
 const TABLE_HEAD = ["게시번호", "제목", "작성자", "작성일", "조회수"];
 
