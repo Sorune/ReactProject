@@ -95,20 +95,25 @@ const ListComponent = () => {
     const {refresh, moveToList, moveToAdd, moveToRead, setRefresh} = useCustomMove()
     const [page, setPage] = useRecoilState(pageState)
     const [serverData, setServerData] = useState(initState)
-    const [dataFromChild, setDataFromChild] = useState("");
-    const [team, setTeam] = useState(initState2)
+    const [dataFromChild, setDataFromChild] = useState("all");
 
     useEffect(() => {
-        getPlayerList({page: page.page, size: page.size}).then(data => {
-            console.log(data)
-            setServerData(data)
-        })
-        getTeamList().then(data => {
-            console.log(data)
-            setTeam(data.serverPlayers)
-            console.log(data[1].serverPlayers)
-        })
-        setDataFromChild("all")
+        if (dataFromChild === "all") { // TABS 에서 전체보기를 눌렀을 때
+            getPlayerList({page: page.page, size: page.size}).then(data1 => {
+                console.log(data1)
+                setServerData(data1)
+            })
+        } else { // 전체보기가 아니면
+            getPlayerListWithTeam({page: page.page, size: page.size, keyword: dataFromChild}).then(data2 => {
+                console.log(data2)
+                setServerData(data2)
+            })
+        }
+        // getPlayerList({page: page.page, size: page.size}).then(data => {
+        //     console.log(data)
+        //     setServerData(data)
+        // })
+
     }, [refresh])
 
     const handleDataFromChild = (data) => {
@@ -116,12 +121,12 @@ const ListComponent = () => {
         console.log(data)
 
         if (data === "all") { // TABS 에서 전체보기를 눌렀을 때
-            getPlayerList({page: page.page, size: page.size}).then(data => {
-                console.log(data)
-                setServerData(data)
+            getPlayerList({page: 1, size: page.size}).then(data1 => {
+                console.log(data1)
+                setServerData(data1)
             })
         } else { // 전체보기가 아니면
-            getPlayerListWithTeam({page: page.page, size: page.size}, data).then(data2 => {
+            getPlayerListWithTeam({page: 1, size: page.size, keyword: data}).then(data2 => {
                 console.log(data2)
                 setServerData(data2)
             })
@@ -199,7 +204,7 @@ const ListComponent = () => {
                                     </CardBody>
                                 </Card>
                             ) : (
-                                player.team === dataFromChild ?
+                                player.teamImg === dataFromChild ?
                                     (
                                         <Card
                                             className="relative grid h-[20rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center transition duration-300 ease-in-out transform hover:scale-105 hover:bg-gradient-to-t from-black/80 via-black/50"
