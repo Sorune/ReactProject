@@ -51,4 +51,9 @@ public class ServerPlayerServiceImpl implements ServerPlayerService {
 
         return dto;
     }
+
+    @Override
+    public void updateGpa(Long id, Double gpa) {
+        playerRepository.setGpa(id, gpa);
+    }
 }

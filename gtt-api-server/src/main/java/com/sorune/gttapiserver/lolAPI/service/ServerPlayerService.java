@@ -12,4 +12,7 @@ public interface ServerPlayerService {
     PageResponseDTO<ServerPlayerDTO> getPlayers(PageRequestDTO pageRequestDTO);
 
     ServerPlayerDTO getPlayer(Long id);
+
+    void updateGpa(Long pno, Double gpa);
+
 }
