@@ -3,6 +3,7 @@ package com.sorune.gttapiserver.member.service;
 import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.member.DTO.MemberDTO;
+import com.sorune.gttapiserver.member.entity.Member;
 
 import java.util.List;
 
@@ -12,8 +13,10 @@ public interface MemberService {
     List<MemberDTO> getAllMembers();
     // 회원 가입
     Long joinMember(MemberDTO memberDTO);
-    // 회원 수정
+    // 회원 수정(전체)
     Long editMember(MemberDTO memberDTO);
+    // 회원 수정( 일부 : nick, birth, zonCode, address, addrSub)
+    void partModifyMember(MemberDTO memberDTO);
     // 회원 탈퇴
     void cencelMember(Long num);
     // 회원 한명 조회

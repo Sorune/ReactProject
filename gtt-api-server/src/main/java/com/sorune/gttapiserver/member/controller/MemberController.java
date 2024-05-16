@@ -26,16 +26,19 @@ public class MemberController {
     private final CustomFileUtil fileUtil;
 
     // 회원 전체 리스트
-//    @GetMapping("/list")
-//    public PageResponseDTO<MemberDTO> list(PageRequestDTO pageRequestDTO) {
-//        log.info(pageRequestDTO);
-//        return memberService.memberList(pageRequestDTO);
-//    }
+    // @GetMapping("/list")
+    // public PageResponseDTO<MemberDTO> list(PageRequestDTO pageRequestDTO) {
+    //     log.info(pageRequestDTO);
+    //     return memberService.memberList(pageRequestDTO);
+    // }
+
+     //pageRequest 없는 회원 리스트
+    @GetMapping("/members")
+    public List<MemberDTO> getAllMembers() { return memberService.getAllMembers(); }
 
     // 한명의 회원 조회 ㅇ
     @GetMapping("/{num}")
     public MemberDTO search(@PathVariable("num") Long num) {
-
         return memberService.searchMember(num);
     }
 
@@ -43,10 +46,6 @@ public class MemberController {
     @PostMapping("/register")
     public Map<String, Long> join(@RequestBody MemberDTO memberDTO) {
         log.info(memberDTO);
-//        List<MultipartFile> files = memberDTO.getFiles();
-//        List<String> uploadFileNames = fileUtil.saveFiles(files);
-//        memberDTO.setFileDTOList(uploadFileNames);
-
         log.info("member : " + memberDTO);
         memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
         Long num = memberService.joinMember(memberDTO);
@@ -64,9 +63,20 @@ public class MemberController {
         return Map.of("result", "SUCCESS");
     }
 
+    // 회원수정( 일부 : nick, birth, zonCode, address, addrSub)
+    @PutMapping("/partModify/{num}")
+    public Map<String, String> modify(@PathVariable("num") Long num, @RequestBody MemberDTO memberDTO) {
+
+        memberDTO.setNum(num);
+
+        memberService.partModifyMember(memberDTO);
+
+        return Map.of("result", "SUCCESS");
+    }
+
     // 회원 삭제
-    @DeleteMapping("/{memBno}")
-    public Map<String, String > remove(@PathVariable("memBno") Long num) {
+    @DeleteMapping("/{num}")
+    public Map<String, String > remove(@PathVariable("num") Long num) {
 
         memberService.cencelMember(num);
 
@@ -110,7 +120,4 @@ public class MemberController {
         return Map.of("message",memberService.checkEmail(email));
     }
 
-    // pageRequest 없는 회원 리스트
-    @GetMapping("/members")
-    public List<MemberDTO> getAllMembers() { return memberService.getAllMembers(); }
 }
