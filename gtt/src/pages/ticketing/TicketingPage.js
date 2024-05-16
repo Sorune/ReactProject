@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Button } from "@material-tailwind/react";
-import MatchCard from "../../test/pages/MatchCard";
+import MatchCard from "./MatchCard";
 import TicketingNav from "./TicketingNav";
 
 const teams = [
