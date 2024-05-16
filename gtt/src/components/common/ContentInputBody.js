@@ -9,6 +9,9 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {useLocation, useNavigate} from "react-router-dom";
 import {userState} from "../../atoms/userState";
+import {deleteNews} from "../../api/newsApi";
+import {removeBoard} from "../../api/boardApi";
+import {removeFreeBoard} from "../../api/freeBoardApi";
 
 const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
     const [userInfo,setUserInfo] = useRecoilState(userState)
@@ -62,9 +65,58 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
             navigate(-1)
         })
     }
-    const handleRemove=()=>{
-        
+    const handleRemove = () => {
+        // 삭제할 게시물 번호를 확인
+        console.log("삭제할 게시물의 번호:", num);
+
+        // 삭제를 요청받은 경로를 받음
+        console.log("삭제를 요청한 게시판 경로 : " + pathName);
+
+        switch(pathName) {
+            case "news":
+                deleteToNews();
+                break;
+            case "board":
+                deleteToBoard();
+                break;
+            case "free":
+                deleteToFreeBoard();
+                break;
+            default:
+                console.error("잘못된 경로입니다.");
+        }
     }
+
+    const deleteToNews = () => {
+        // 삭제 API 호출
+        deleteNews(num).then(response => {
+            // 삭제 후 리스트 페이지로 이동하거나 다른 작업 수행
+            moveToList({ pathName: `/${pathName}/list`, pageState: { page: page.page, size: page.size }});
+        }).catch(error => {
+            // 오류 처리
+            console.error("삭제 API 호출 실패 :", error);
+        });
+    }
+
+    const deleteToBoard = () => {
+        // 게시판 삭제 API 호출
+        removeBoard(num).then(response => {
+            moveToList({ pathName: `/${pathName}/list`, pageState: { page: page.page, size: page.size }});
+        }).catch(error => {
+            console.error("삭제 API 호출 실패 :", error);
+        });
+    }
+
+    const deleteToFreeBoard = () => {
+        // 자유게시판 삭제 API 호출
+        removeFreeBoard(num).then(response => {
+            moveToList({ pathName: `/${pathName}/list`, pageState: { page: page.page, size: page.size }});
+        }).catch(error => {
+            console.error("삭제 API 호출 실패 :", error);
+        });
+    }
+
+
     const handleDropDownChange = (e) => {
         if(buttonRef.current){
             const buttonInstance = buttonRef.current
