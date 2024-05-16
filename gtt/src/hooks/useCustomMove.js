@@ -49,6 +49,7 @@ const useCustomMove = () => {
 
     const moveToRead = ({ pathName, num, totalPage }) => {
         console.log(page.page,page.size)
+        console.log(num)
         setPage((page)=>({...page,currentPage:parseInt(num),totalPage:parseInt(totalPage)}))
         navigate({
             pathname: `${pathName}/${num}`,

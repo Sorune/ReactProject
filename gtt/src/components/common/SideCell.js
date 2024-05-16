@@ -1,20 +1,11 @@
 import SidebarLayout from "../../layouts/SidebarLayout";
 import {
-    Button,
-    Card, Checkbox,
-    Chip,
-    List,
-    ListItem,
-    ListItemPrefix,
-    ListItemSuffix,
-    Menu,
-    MenuHandler, MenuItem, MenuList,
+    Card,
     Typography
 } from "@material-tailwind/react";
 
 import {useRecoilState, useResetRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
-import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import useCustomMove from "../../hooks/useCustomMove";
 import {hotFreePost} from "../../api/freeBoardApi";
@@ -22,7 +13,7 @@ import {hotFreePost} from "../../api/freeBoardApi";
 const TABLE_HEAD = ["제목", "조회수"];
 
 
-const Sidebar = ()=>{
+const SideCell = ()=>{
     const [page,setPage] = useRecoilState(pageState)
     const [freeData, setFreeData] = useState([])
     const {moveToRead} = useCustomMove()
@@ -33,8 +24,7 @@ const Sidebar = ()=>{
                 setFreeData(data)
             })
             .catch(error => {
-
-
+                console.log(error)
             })
     }, [page])
 
@@ -49,26 +39,26 @@ const Sidebar = ()=>{
             <div>
                 <table className="w-full min-w-max table-auto text-center">
                     <thead>
-                        {TABLE_HEAD.map((head, index) => (
-                            <th
-                                key={index}
-                                className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-1"
+                    {TABLE_HEAD.map((head, index) => (
+                        <th
+                            key={index}
+                            className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-1"
+                        >
+                            <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal leading-none opacity-70"
                             >
-                                <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-normal leading-none opacity-70"
-                                >
-                                    {head}
-                                </Typography>
-                            </th>
-                        ))}
+                                {head}
+                            </Typography>
+                        </th>
+                    ))}
                     </thead>
 
                     <tbody>
-                    {freeData.length > 0 ? (
-                        freeData.map((data, index) => (
-                            <tr className="p-4 border-b border-blue-gray-50" key={index} onClick={()=> moveToRead({pathName:`/free/read`,num:index,totalPage:freeData.totalCount})}>
+                    {freeData.dtoList && freeData.dtoList.length > 0 ? (
+                        freeData.dtoList.map((data) => (
+                            <tr className="p-4 border-b border-blue-gray-50" key={data.fno} onClick={()=> moveToRead({pathName:`/free/read`,num:data.fno,totalPage:freeData.totalCount})}>
                                 <td >
                                     <div className="flex items-center gap-3 justify-center p-4">
                                         <Typography
@@ -99,8 +89,7 @@ const Sidebar = ()=>{
                                 게시물이 없습니다.
                             </td>
                         </tr>
-                    )
-                    }
+                    )}
                     </tbody>
 
                 </table>
@@ -108,4 +97,4 @@ const Sidebar = ()=>{
         </Card>
     )
 }
-export default Sidebar;
+export default SideCell;
