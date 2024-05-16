@@ -1,4 +1,4 @@
-import {Typography} from "@material-tailwind/react";
+import {Avatar, CardBody, CardHeader, Typography,Card} from "@material-tailwind/react";
 import React, {useEffect, useState} from "react";
 import {getList} from "../api/newsApi";
 import SidebarLayout from "../layouts/SidebarLayout";
@@ -10,6 +10,7 @@ import {tokenState} from "../atoms/tokenState";
 import {getNoticeList} from "../api/noticeApi";
 import {getBoardList} from "../api/boardApi";
 import {getFreeList} from "../api/freeBoardApi";
+import {PlayerCardSection} from "../components/player/PlayerCardSection";
 
 const initState = {
     dtoList:[],
@@ -55,21 +56,14 @@ const MainPage= () =>{
             <SidebarLayout>
                 <section className="px-8 py-8 lg:py-18 ">
                     <div className="container mx-auto">
-                        <Typography
-                            variant="h2"
-                            color="blue-gray"
-                            className="mb-4 !text-2xl lg:!text-4xl"
-                        >
-                            The heartfelt testimonials of our community
-                        </Typography>
-                        <Typography
-                            variant="lead"
-                            className="max-w-3xl !text-gray-500 mb-10 lg:mb-20"
-                        >
-                            From life-enhancing gadgets to unparalleled customer support, and
-                            transformative learning opportunities.
-                        </Typography>
-                        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+                        <div className="grid grid-cols-5 gap-2">
+                            <PlayerCardSection/>
+                            <PlayerCardSection/>
+                            <PlayerCardSection/>
+                            <PlayerCardSection/>
+                            <PlayerCardSection/>
+                        </div>
+                        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 pt-8">
                             <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"} path={"notice"}/>
                             <MainSectionCard serverData={newsServerData} sectionTitle={"News"} path={"news"}/>
                             <MainSectionCard serverData={boardServerData} sectionTitle={"Board"} path={"board"}/>

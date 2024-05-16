@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @ToString
 @AllArgsConstructor
@@ -21,5 +22,6 @@ public class ServerTournamentDTO {
     private String region;
     private String country;
     private String league;
+    private String challenger;
     private List<ServerMatchDTO> matches;
 }

@@ -2,7 +2,7 @@ import {Breadcrumbs, Button} from "@material-tailwind/react";
 import {Link, useLocation} from "react-router-dom";
 import React from "react";
 
-const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData, numValue})=>{
+const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData, numValue,text,location})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
 
@@ -20,10 +20,10 @@ const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData, numValue
                             d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
                     </svg>
                 </Link>
-                <Link to={'/news'} className="opacity-60">
-                    <span>Components</span>
+                <Link to={`/${text}`} className="opacity-60">
+                    <span>{text}</span>
                 </Link>
-                <a href="#">Breadcrumbs</a>
+                <a href="#">{location}</a>
             </Breadcrumbs>
             <div className="flex p-2">
                 <Button className="rounded-full" onClick={() => moveTo({

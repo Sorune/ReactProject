@@ -46,4 +46,9 @@ public class LolAPIController {
     public ServerTeamDTO getTeam(@PathVariable Long id) {
         return teamService.getServerTeamById(id);
     }
+
+    @GetMapping("team/winner")
+    public ServerTeamDTO getWinner() {
+        return teamService.getLatestWinnerTeam();
+    }
 }

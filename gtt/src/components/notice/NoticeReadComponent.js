@@ -38,7 +38,7 @@ const NoticeReadComponent = ({notiNo, page, size}) => {
     return(
 
         <Card className="p-2 m-2 min-h-[25rem]">
-            <ContentHeader pathName={"/notice/"} moveToModify={moveToModify} numValue={notiNo} serverData={serverData} page={page} moveTo={moveToList} />
+            <ContentHeader pathName={"/notice/"} moveToModify={moveToModify} numValue={notiNo} serverData={serverData} page={page} moveTo={moveToList} text={"notice"} location={"read"} />
             <div className="grid grid-cols-auto gap-4 grid-rows-auto flex items-stretch flex items-center flex flex-box mt-2 mb-2 ml-4 ">
                 <div className="col-start-1 col-end-5 self-center">
                     <strong>{notice.title}</strong>

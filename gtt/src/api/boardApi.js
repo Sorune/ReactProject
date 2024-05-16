@@ -6,7 +6,7 @@ const prefix = `${API_SERVER_HOST}/api/board`
 
 export const getBoardList = async(pageParam)=>{
     const {page,size} = pageParam
-    const res = await jwtAxios.get(`${prefix}/list`,{params:{page:page,size:size}})
+    const res = await axios.get(`${prefix}/list`,{params:{page:page,size:size}})
     return res.data
 }
 export const getMyBoard = async (pageParam, userId) => {
@@ -20,7 +20,7 @@ export const getMyBoard = async (pageParam, userId) => {
 
 export const getOne = async(bno)=>{
     console.log(bno)
-    const res = await jwtAxios.get(`${prefix}/${bno}`)
+    const res = await axios.get(`${prefix}/${bno}`)
     return res.data
 }
 

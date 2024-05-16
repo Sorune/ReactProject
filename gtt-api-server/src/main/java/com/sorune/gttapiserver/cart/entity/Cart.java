@@ -1,11 +1,9 @@
 package com.sorune.gttapiserver.cart.entity;
 
 import com.sorune.gttapiserver.common.entity.BaseEntity;
+import com.sorune.gttapiserver.lolAPI.entity.ServerMatch;
 import com.sorune.gttapiserver.member.entity.Member;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -28,28 +26,19 @@ public class Cart extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cno;
 
-    private String productName;
+    @OneToOne
+    private ServerMatch matchInfo;
 
     private String stadium;
 
     @ColumnDefault("1")
     private int quantity;
-
+    @ColumnDefault("0")
     private int totalPrice;
-
-    private String anonymousId;
 
     private Long userNo;
 
-    private String address;
-
-    private String phoneNum;
-
-    private LocalDate matchDate;
-
-
-
-
+    private String phone;
 
 
 }
