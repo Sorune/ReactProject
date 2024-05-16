@@ -42,3 +42,9 @@ export const modifyNews = async (title,content,theTeam,writer,newsNo)=>{
     })
     return res.data
 }
+
+// 뉴스 게시물 삭제
+export const deleteNews = async (newsNo) => {
+    const res = await axios.delete(`${prefix}/${newsNo}`)
+    return res.data;
+}
