@@ -21,5 +21,6 @@ public class ServerTournamentDTO {
     private String region;
     private String country;
     private String league;
+    private String challenger;
     private List<ServerMatchDTO> matches;
 }

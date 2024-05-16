@@ -27,6 +27,7 @@ public class ServerPlayer {
     private String name;
     private String nameFull;
     private String country;
+    private String teamImg;
     @Column
     private Integer age;
     private LocalDate birthDate;
