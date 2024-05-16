@@ -20,7 +20,6 @@ export const DropDownInput = forwardRef(({onChange,title,  buttonRef, inputRef})
 
     useEffect(() => {
         getTeamsWithOutPlayers().then((teams)=>{
-            console.log(teams)
             setTeams(teams);
         })
     }, []);
