@@ -48,7 +48,7 @@ public class ServerPlayerServiceImpl implements ServerPlayerService {
 
     @Override
     public PageResponseDTO<ServerPlayerDTO> getPlayersWithTeam(PageRequestDTO pageRequestDTO, String teamImg) {
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("id").descending(), pageRequestDTO.getKeyword());
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("id").descending());
         Page<ServerPlayer> result = playerRepository.getAllPlayerWithTeam(pageable, teamImg);
         List<ServerPlayerDTO> dtoList = result.stream().map(serverPlayer -> modelMapper.map(serverPlayer, ServerPlayerDTO.class)).toList();
 
