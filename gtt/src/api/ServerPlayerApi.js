@@ -22,9 +22,10 @@ export const getPlayerList = async (pageParam) => {
     return res.data
 }
 
-export const getPlayerListWithTeam = async (pageParam, teamImg) => {
+export const getPlayerListWithTeam = async (pageParam) => {
     const {page, size} = pageParam
-    const res = await axios.get(`${prefix}/player/list/${teamImg}`, {params:{page:page, size:size}})
+    const {keyword} = pageParam
+    const res = await axios.get(`${prefix}/player/list/${keyword}`, {params:{page:page, size:size, keyword:keyword}})
 
     return res.data
 }
