@@ -69,19 +69,7 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
         })
     }
 
-    const handleRemoveConfirm = () => {
-        if (window.confirm("게시물을 삭제하시겠습니까?")) {
-            handleRemove();
-        }
-    }
-
     const handleRemove = () => {
-        // 삭제할 게시물 번호를 확인
-        console.log("삭제할 게시물의 번호:", num);
-
-        // 삭제를 요청받은 경로를 받음
-        console.log("삭제를 요청한 게시판 경로 : " + pathName);
-
         switch(pathName) {
             case "news":
                 deleteToNews();
@@ -93,15 +81,14 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
                 deleteToFreeBoard();
                 break;
             default:
-                console.error("잘못된 경로입니다.");
+                alert("잘못된 경로입니다.");
         }
     }
 
     const deleteToNews = () => {
         deleteNews(num).then(response => {
-            // 삭제 성공 시 모달 열기 및 삭제 완료 메시지 설정
             setOpen(true);
-            setResult("뉴스 게시물이 삭제되었습니다.");
+            setResult("뉴스게시판 게시물이 삭제되었습니다.");
         }).catch(error => {
             console.error("삭제 API 호출 실패 :", error);
         });
@@ -109,9 +96,8 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
 
     const deleteToBoard = () => {
         removeBoard(num).then(response => {
-            // 삭제 성공 시 모달 열기 및 삭제 완료 메시지 설정
             setOpen(true);
-            setResult("게시판 게시물이 삭제되었습니다.");
+            setResult("일반게시판 게시물이 삭제되었습니다.");
         }).catch(error => {
             console.error("삭제 API 호출 실패 :", error);
         });
@@ -119,7 +105,6 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
 
     const deleteToFreeBoard = () => {
         removeFreeBoard(num).then(response => {
-            // 삭제 성공 시 모달 열기 및 삭제 완료 메시지 설정
             setOpen(true);
             setResult("자유게시판 게시물이 삭제되었습니다.");
         }).catch(error => {
@@ -170,14 +155,14 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
                     {path==="write"?<Button onClick={handleSave}>Save</Button>:
                         <Button onClick={handleModify}>Modify</Button>
                 }{path==="write"?<></>:
-                    <Button onClick={handleRemoveConfirm} color={"red"}>
-                        {result ?<DialogResult
-                            title={'삭제완료'}
-                            content={`${result}`}
-                            callbackFn={closeDialog}
-                            open={result !== null}
-                            setOpen={setOpen}
-                        />:<></>}Remove</Button>
+                <Button onClick={handleRemove} color={"red"}>
+                    {result ?<DialogResult
+                        title={'삭제완료'}
+                        content={`${result}`}
+                        callbackFn={closeDialog}
+                        open={result !== null}
+                        setOpen={setOpen}
+                    />:<></>}Remove</Button>
                 }
                 </div>
             </form>
