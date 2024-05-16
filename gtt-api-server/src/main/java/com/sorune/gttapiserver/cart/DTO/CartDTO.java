@@ -1,6 +1,8 @@
 package com.sorune.gttapiserver.cart.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sorune.gttapiserver.lolAPI.DTO.ServerMatchDTO;
+import com.sorune.gttapiserver.lolAPI.entity.ServerMatch;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,7 +21,7 @@ public class CartDTO {
 
     private Long cno;
 
-    private String productName;
+    private ServerMatchDTO matchData;
 
     private String stadium;
 
@@ -26,16 +29,11 @@ public class CartDTO {
 
     private int totalPrice;
 
-    private String anonymousId;
-
     private Long userNo;
 
-    private String address;
+    private String phone;
 
-    private String phoneNum;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDate matchDate;
+    private List<String> data;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime regDate;

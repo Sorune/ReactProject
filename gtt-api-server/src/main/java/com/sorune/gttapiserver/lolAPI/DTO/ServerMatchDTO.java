@@ -18,6 +18,6 @@ public class ServerMatchDTO {
     private String league;
     private Long team1Score;
     private Long team2Score;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:MM:SS", timezone = "Asia/Seoul")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime matchDate;
 }

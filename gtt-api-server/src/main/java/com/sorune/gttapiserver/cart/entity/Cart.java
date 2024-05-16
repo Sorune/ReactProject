@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString
+@ToString(exclude = "data")
 @DynamicInsert
 @DynamicUpdate
 public class Cart extends BaseEntity {
@@ -27,7 +27,7 @@ public class Cart extends BaseEntity {
     private Long cno;
 
     @OneToOne
-    private ServerMatch matchInfo;
+    private ServerMatch matchData;
 
     private String stadium;
 
@@ -40,5 +40,7 @@ public class Cart extends BaseEntity {
 
     private String phone;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> data;
 
 }
