@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import BasicMenu from "../components/menus/BasicMenu";
-import Sidebar from "../test/pages/Sidebar";
+import Sidebar from "../components/common/Sidebar";
 import ReadPage from "../pages/news/ReadPage";
-import SideCell from "../test/pages/SideCell";
+import SideCell from "../components/common/SideCell";
 import {Button, Drawer} from "@material-tailwind/react";
 import ChatComponent from "../components/common/chat/ChatComponent";
 

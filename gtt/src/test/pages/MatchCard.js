@@ -10,8 +10,8 @@ import {
     Typography
 } from "@material-tailwind/react";
 import { getTournament } from "../../api/matchAPI";
-import TestStadium from "./TestStadium";
-import Stadium from "./Stadium"
+import KSPO from "../../components/ticketing/KSPO";
+import Stadium from "../../components/ticketing/Stadium"
 
 const MatchCard = ({selectedLeague}) => {
     const [tournament, setTournament] = useState(null);
@@ -186,7 +186,7 @@ const MatchCard = ({selectedLeague}) => {
                 </DialogHeader>
                 <DialogBody className="overflow-hidden ">
                     <div className="max-w-full max-h-full h-[34.5rem]">
-                        {tournament.stadium === "LOL PARK" ? <Stadium matchData={matchData} stadium={tournament.stadium} /> : <TestStadium matchData={matchData} stadium={tournament.stadium}/>}
+                        {tournament.stadium === "LOL PARK" ? <Stadium matchData={matchData} stadium={tournament.stadium} /> : <KSPO matchData={matchData} stadium={tournament.stadium}/>}
                         {/* 예매 정보 추가 */}
                     </div>
                 </DialogBody>
