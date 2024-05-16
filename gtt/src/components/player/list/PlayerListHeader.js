@@ -6,8 +6,12 @@ import React from "react";
 const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
 
-const PlayerListHeader = ({TABS,moveTo,pathName, page})=>{
+const PlayerListHeader = ({TABS,moveTo,pathName, page, onData})=>{
     const path = useLocation().pathname.split("/")[2];
+
+    const handleTabClick = (value) => {
+        onData(value);
+    };
 
     return(
         <div>
@@ -32,8 +36,22 @@ const PlayerListHeader = ({TABS,moveTo,pathName, page})=>{
                         <Tabs value="all" className="w-full md:w-max">
                             <TabsHeader>
                                 {TABS.map(({label, value}) => (
-                                    <Tab key={value} value={value}>
-                                        &nbsp;&nbsp;<Avatar src={img} alt="{player.teamName}" size="sm"/>&nbsp;&nbsp;
+                                    <Tab key={value} value={value} onClick={() => handleTabClick(value)}>
+                                        {value === "all" ? (
+                                            <div style={{
+                                                width: '37px',
+                                                height: '37px',
+                                                backgroundColor: 'black',
+                                                borderRadius: '50%',
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center'
+                                            }}>
+                                                <Avatar src={"https://i.namu.wiki/i/A2m4odgcf4QVA233qL4q3Zq70ljqs2gLvAo8-kRRWQO0-yw4jImntYYP9Fol1ZChTgJMJhnRJo4G2bOdfgeq5FQFXkaHoqubFi1J2tlslVRJRqZVABGSTQAYwl5UnMTUyOHrb_twR1yJOikjLjhllQ.svg"} alt="{player.teamName}" size="sm"/>
+                                            </div>
+                                        ) : (
+                                            <Avatar src={`/img/teams/${value}`} alt="{player.teamName}" size="sm"/>
+                                        )}
                                     </Tab>
                                 ))}
                             </TabsHeader>

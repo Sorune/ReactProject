@@ -3,8 +3,8 @@ import {API_SERVER_HOST} from "./filesApi";
 
 const prefix = `${API_SERVER_HOST}/api/playercomment`
 
-export const getOnePComment = async (playerComNo) => {
-    const res = await axios.get(`${prefix}/${playerComNo}`)
+export const checkPComment = async (pno, comWriter) => {
+    const res = await axios.get(`${prefix}/${pno}/${comWriter}`)
 
     return res.data
 }

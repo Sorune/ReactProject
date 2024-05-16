@@ -4,7 +4,7 @@ import {createSearchParams, useLocation, useNavigate, useSearchParams} from "rea
 import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {Button, Rating, Textarea} from "@material-tailwind/react";
-import {postPCommentAdd} from "../../api/playerCommentApi";
+import {checkPComment, postPCommentAdd} from "../../api/playerCommentApi";
 import {userState} from "../../atoms/userState";
 import {focus} from "@testing-library/user-event/dist/focus";
 
@@ -54,12 +54,10 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const pno = useLocation().pathname.split("/")[3]
     const [userInfo,setUserInfo] = useRecoilState(userState)
     const textareaRef = useRef(null);
-    const navigate = useNavigate();
 
-
-    const page = useRecoilValue(pageState)
     const {moveToList, moveToRead} = useCustomMove();
 
+    console.log(userInfo.nick)
     const handleChangePComment= (e) => {
         if (e.target && e.target.name) {
             const { name, value } = e.target;
@@ -87,7 +85,10 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
                 return;
 
             } else { // 댓글, 평점이 있으면 작성
-                console.log(userInfo.nick)
+                checkPComment(pno, userInfo.nick).then(data => {
+                    console.log(data)
+                })
+
                 formData.append("comment", playerComment.comment)
                 formData.append("comWriter", userInfo.nick)
                 formData.append("pno", pno)

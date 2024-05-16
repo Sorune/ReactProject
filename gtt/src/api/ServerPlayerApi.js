@@ -22,6 +22,13 @@ export const getPlayerList = async (pageParam) => {
     return res.data
 }
 
+export const getPlayerListWithTeam = async (pageParam, teamImg) => {
+    const {page, size} = pageParam
+    const res = await axios.get(`${prefix}/player/list/${teamImg}`, {params:{page:page, size:size}})
+
+    return res.data
+}
+
 export const getTeamList = async () => {
     const res = await axios.get(`${prefix}/team/list`)
 
