@@ -36,6 +36,10 @@ public class LolAPIController {
     public List<ServerTeamDTO> getTeams() {
         return teamService.getTeamsWithOutPlayers();
     }
+    @GetMapping("player/list/{teamImg}")
+    public PageResponseDTO<ServerPlayerDTO> listWithTeam(PageRequestDTO pageRequestDTO,@PathVariable String teamImg) {
+        return playerService.getPlayersWithTeam(pageRequestDTO, teamImg);
+    }
 
     @GetMapping("team/list")
     public List<ServerTeamDTO> list() {
