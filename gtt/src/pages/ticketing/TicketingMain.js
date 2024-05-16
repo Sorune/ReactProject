@@ -11,10 +11,7 @@ const TicketingMain = () => {
     return (
         <SidebarLayout>
             <div>
-                <div>
-                    {/* 티켓팅 페이지 상단 */}
-                    <TicketingNav onTeamSelect={setSelectedTeam} ></TicketingNav>
-                </div>
+
                 <div className="grid col-auto gap-5 mt-6 p-6">
                 {/*    <div className="col-start-1 col-end-2">
                          티켓팅 메인 사이드

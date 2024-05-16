@@ -1,12 +1,7 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Card, CardBody, Typography, Button, Dialog, DialogHeader, DialogBody} from "@material-tailwind/react";
-import { format, addWeeks } from 'date-fns';
-import { ko } from 'date-fns/locale';
-import {getMember} from "../../api/memberApi";
-import Stadium from "../../test/pages/Stadium";
-import TestStadium from "../../test/pages/TestStadium";
-import {getTournament} from "../../api/matchAPI";
+import React, { useState, useMemo } from 'react';
+import { Button } from "@material-tailwind/react";
 import MatchCard from "../../test/pages/MatchCard";
+import TicketingNav from "./TicketingNav";
 
 const teams = [
     "Gen.G", "SKT1", "Hanwha Life Esports", "kt Rolster", "Dplus KIA",
@@ -20,10 +15,10 @@ const generateGames = () => {
     for (let i = 0; i < teams.length; i++) {
         for (let j = 0; j < 10; j++) {
             let opponent = teams[(i + j + 1) % teams.length];
-            let matchDate = addWeeks(startDate, j);
+            let matchDate = new Date(startDate.getTime() + j * 7 * 24 * 60 * 60 * 1000);
             games.push({
                 team: teams[i],
-                matchDay: format(matchDate, 'M월 d일 EEEE, yyyy', { locale: ko }),
+                matchDate: matchDate.toLocaleDateString('ko-KR'),
                 matchHour: "17:00",
                 matchName: "LCK 스프링",
                 matchRound: `${j + 1}라운드`,
@@ -36,78 +31,50 @@ const generateGames = () => {
 
 const games = generateGames();
 
+const TicketingPage = () => {
+    // 선택된 리그 상태를 관리합니다.
+    const [selectedLeague, setSelectedLeague] = useState(null);
 
-const formatDate = (dateString) => {
-    const parts = dateString.split(' ');
-    return { dayPart: parts.slice(0, -1).join(' '), timePart: parts.pop() };
-};
+    // 선택된 리그에 해당하는 경기를 필터링합니다.
+    const filteredGames = useMemo(() => games.filter(game => game.team === selectedLeague), [selectedLeague]);
 
-const GameCard = React.memo(({ game, onOpenModal }) => {
-    const { dayPart, timePart } = formatDate(game.matchDay);
-
-    return (
-        <Card className="mt-6 w-full">
-            <CardBody>
-                <div className={`text-center ${game.isSelected ? 'bg-blue-500' : ''}`}>
-                    <Typography className="text-black">
-                        {timePart} {game.matchName} / {game.matchRound}
-                    </Typography>
-                </div>
-                <div className="grid grid-cols-3 gap-3 text-center mt-2">
-                    <Typography>{dayPart}<br/>{game.matchHour}</Typography>
-                    <Typography>{game.matchOpponent}</Typography>
-                    <Button onClick={() => onOpenModal(game)}
-                            className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl">
-                        예매
-                    </Button>
-                </div>
-            </CardBody>
-        </Card>
-    );
-});
-
-// function usePagination(data, itemsPerPage) {
-//     const [currentPage, setCurrentPage] = useState(1);
-//     const totalPages = Math.ceil(data.length / itemsPerPage);
-//
-//     const currentData = useMemo(() => {
-//         const start = (currentPage - 1) * itemsPerPage;
-//         const end = start + itemsPerPage;
-//         return data.slice(start, end);
-//     }, [currentPage, itemsPerPage, data]);
-//
-//     return { currentData, currentPage, setCurrentPage, totalPages };
-// }
-
-
-const TicketingPage = ({ selectedTeam }) => {
-
-    const [currentGame, setCurrentGame] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
+    // 페이지당 보여질 게임 수입니다.
     const gamesPerPage = 4;
+    // 현재 페이지 상태를 관리합니다.
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const filteredGames = useMemo(() => games.filter(game => game.team === selectedTeam), [selectedTeam]);
+    // 현재 페이지에 보여질 게임 목록을 계산합니다.
     const paginatedGames = useMemo(() => {
         const startIndex = (currentPage - 1) * gamesPerPage;
         const endIndex = startIndex + gamesPerPage;
         return filteredGames.slice(startIndex, endIndex);
-    }, [filteredGames, currentPage, gamesPerPage]);
+    }, [currentPage, filteredGames]);
 
+    // 전체 페이지 수를 계산합니다.
     const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
+
+    // 페이지 변경 함수입니다.
     const changePage = (newPage) => {
         if (newPage < 1 || newPage > totalPages) return;
         setCurrentPage(newPage);
     };
 
+    // 선택된 리그를 업데이트하는 함수입니다.
+    const handleLeagueSelect = (leagueNo) => {
+        setSelectedLeague(leagueNo)
+    }
+
     return (
-        <div >
-            <MatchCard />
+        <div>
+            {/* TicketingNav 컴포넌트에 선택된 리그를 전달합니다. */}
+            <TicketingNav onLeagueSelect={handleLeagueSelect} />
+            {/* MatchCard 컴포넌트에 선택된 리그를 전달합니다. */}
+            <MatchCard selectedLeague={selectedLeague} />
             {/* Pagination */}
             <div className="flex justify-center space-x-2 mt-4">
                 <Button onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>이전</Button>
                 {Array.from({ length: totalPages }, (_, index) => (
-                    <Button key={index} onClick={() => setCurrentPage(index + 1)}
-                            className={index + 1 === currentPage ? 'bg-blue-700' : ''}>
+                    <Button key={index} onClick={() => setCurrentPage(index + 1)} className={index + 1 === currentPage ? 'bg-blue-700' : ''}>
                         {index + 1}
                     </Button>
                 ))}
