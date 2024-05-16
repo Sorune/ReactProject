@@ -11,6 +11,10 @@ const cartRouter = () =>
             path: "list",
             element: <Suspense fallback={Loading}><CartList/></Suspense>
         },
+        {
+            path: "payment",
+            element: <Suspense fallback={Loading}></Suspense>
+        }
     ]
 }
 export default cartRouter
