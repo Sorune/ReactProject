@@ -124,6 +124,7 @@ const ListComponent = () => {
             getPlayerList({page: 1, size: page.size}).then(data1 => {
                 console.log(data1)
                 setServerData(data1)
+
             })
         } else { // 전체보기가 아니면
             getPlayerListWithTeam({page: 1, size: page.size, keyword: data}).then(data2 => {
