@@ -18,4 +18,6 @@ public interface FreeBoardService {
 
     PageResponseDTO<FreeBoardDTO> getMyBoard(PageRequestDTO pageRequestDTO, String userId);
 
+    PageResponseDTO<FreeBoardDTO> hotPost(PageRequestDTO pageRequestDTO);
+
 }

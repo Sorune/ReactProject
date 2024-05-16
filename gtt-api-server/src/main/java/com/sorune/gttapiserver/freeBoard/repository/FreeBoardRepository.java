@@ -17,4 +17,5 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
     Long countByBno();
 
     Page<FreeBoard> findAllByWriter(Pageable pageable, String userId);
+
 }
