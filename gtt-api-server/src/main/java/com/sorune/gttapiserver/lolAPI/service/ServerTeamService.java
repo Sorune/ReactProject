@@ -10,4 +10,6 @@ public interface ServerTeamService {
     ServerTeamDTO getServerTeamById(Long id);
 
     ServerTeamDTO getLatestWinnerTeam();
+
+    List<ServerTeamDTO> getTeamsWithOutPlayers();
 }

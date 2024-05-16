@@ -32,6 +32,11 @@ public class LolAPIController {
         return playerService.getPlayers(pageRequestDTO);
     }
 
+    @GetMapping("teams")
+    public List<ServerTeamDTO> getTeams() {
+        return teamService.getTeamsWithOutPlayers();
+    }
+
     @GetMapping("team/list")
     public List<ServerTeamDTO> list() {
         return teamService.getServerTeams();

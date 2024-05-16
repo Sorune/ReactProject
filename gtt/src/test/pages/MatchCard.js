@@ -9,7 +9,7 @@ import {
     DialogHeader, Spinner,
     Typography
 } from "@material-tailwind/react";
-import { getTournament } from "../../api/matchAPI";
+import { getTournament } from "../../api/lolAPI";
 import TestStadium from "./TestStadium";
 import Stadium from "./Stadium"
 
