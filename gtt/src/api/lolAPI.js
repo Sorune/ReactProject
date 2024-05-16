@@ -18,3 +18,8 @@ export const getTeamsWithOutPlayers = async ()=>{
     console.log(response)
     return response.data
 }
+
+export const getWinnerTeam = async ()=>{
+    const response = await axios.get(`${prefix}/team/winner`);
+    return response.data
+}

@@ -1,7 +1,4 @@
-import TicketingNav from "./TicketingNav";
 import TicketingPage from "./TicketingPage";
-import TicketingSide from "./TicketingSide";
-import BasicLayout from "../../layouts/BasicLayout";
 import SidebarLayout from "../../layouts/SidebarLayout";
 import {useState} from "react";
 

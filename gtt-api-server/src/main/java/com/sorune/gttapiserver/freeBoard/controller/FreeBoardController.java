@@ -31,6 +31,11 @@ public class FreeBoardController {
         return  boardService.getMyBoard(pageRequestDTO, userId);
     }
 
+    @GetMapping("/hotPost")
+    public PageResponseDTO<FreeBoardDTO> hotPost(PageRequestDTO pageRequestDTO){
+        return boardService.hotPost(pageRequestDTO);
+    }
+
     @GetMapping("/{fno}")
     public FreeBoardDTO getBoard(@PathVariable("fno") Long fno) {
         return boardService.getById(fno);

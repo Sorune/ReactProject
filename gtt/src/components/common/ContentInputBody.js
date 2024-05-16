@@ -48,7 +48,6 @@ const ContentInputBody = memo(({serverData,insert,modify,pathName,remove})=>{
             QuillInstance.setContents(serverData.content!==""?JSON.parse(serverData.content,new Delta()):new Delta());
         }
     }, [serverData,userInfo]);
-    console.log(pathName,num)
     const handleSave = () => {
         if(buttonRef.current){
             const buttonInstance = buttonRef.current

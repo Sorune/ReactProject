@@ -14,7 +14,7 @@ const sitList = {
     C3: {states:[5, 7, 8, 8, 9, 10, 11, 12],price:115000},
 };
 
-const TestStadium = ({matchData, stadium}) => {
+const KSPO = ({matchData, stadium}) => {
     const [section, setSection] = useState("");
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [resultList, setResultList] = useState([]);
@@ -214,4 +214,4 @@ const TestStadium = ({matchData, stadium}) => {
     );
 };
 
-export default TestStadium;
+export default KSPO;

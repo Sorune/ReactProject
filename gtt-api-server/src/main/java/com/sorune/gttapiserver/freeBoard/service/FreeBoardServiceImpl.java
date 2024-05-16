@@ -79,4 +79,19 @@ public class FreeBoardServiceImpl implements FreeBoardService {
                 .pageRequestDTO(pageRequestDTO)
                 .build();
     }
+
+    @Override
+    public PageResponseDTO<FreeBoardDTO> hotPost(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage()-1, pageRequestDTO.getSize(), Sort.by("hits").descending());
+        Page<FreeBoard> freeBoards = freeBoardRepository.findAll(pageable);
+        List<FreeBoardDTO> dtoList = freeBoards.stream().map(dto -> modelMapper.map(dto, FreeBoardDTO.class)).toList();
+        dtoList.forEach(dto->log.info(dto.toString()));
+        long total = freeBoards.getTotalElements();
+        return PageResponseDTO.<FreeBoardDTO>withAll()
+                .totalCount(total)
+                .dtoList(dtoList)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
 }
