@@ -35,6 +35,12 @@ export const getTeamList = async () => {
     return res.data
 }
 
+export const getWinnerList = async () => {
+    const res = await axios.get(`${prefix}/team/winner`)
+
+    return res.data
+}
+
 export const postAdd = async (player) => {
     const header =     {headers: {'Content-Type': 'application/json'}}
     const res = await axios.post(`${prefix}/`, player, header)

@@ -5,6 +5,7 @@ import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerPlayerDTO;
 import com.sorune.gttapiserver.lolAPI.entity.ServerPlayer;
 import com.sorune.gttapiserver.lolAPI.repository.ServerPlayerRepository;
+import com.sorune.gttapiserver.lolAPI.repository.ServerTeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ServerPlayerServiceImpl implements ServerPlayerService {
 
     private final ServerPlayerRepository playerRepository;
+    private final ServerTeamRepository teamRepository;
     private final ModelMapper modelMapper;
 
     @Override
