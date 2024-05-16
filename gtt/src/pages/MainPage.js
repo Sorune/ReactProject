@@ -53,25 +53,25 @@ const MainPage= () =>{
         })
     },[refresh]);
     return (
-            <SidebarLayout>
-                <section className="px-8 py-8 lg:py-18 ">
-                    <div className="container mx-auto">
-                        <div className="grid grid-cols-5 gap-2">
-                            <PlayerCardSection/>
-                            <PlayerCardSection/>
-                            <PlayerCardSection/>
-                            <PlayerCardSection/>
-                            <PlayerCardSection/>
-                        </div>
-                        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 pt-8">
-                            <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"} path={"notice"}/>
-                            <MainSectionCard serverData={newsServerData} sectionTitle={"News"} path={"news"}/>
-                            <MainSectionCard serverData={boardServerData} sectionTitle={"Board"} path={"board"}/>
-                            <MainSectionCard serverData={freeServerData}  sectionTitle={"FreeBoard"} path={"free"}/>
-                        </div>
+        <SidebarLayout>
+            <section className="px-8 py-8 lg:py-18 ">
+                <div className="container mx-auto">
+                    <div className="grid grid-cols-5 gap-2">
+                        <PlayerCardSection/>
+                        <PlayerCardSection/>
+                        <PlayerCardSection/>
+                        <PlayerCardSection/>
+                        <PlayerCardSection/>
                     </div>
-                </section>
-            </SidebarLayout>
+                    <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 pt-8">
+                        <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"} path={"notice"}/>
+                        <MainSectionCard serverData={newsServerData} sectionTitle={"News"} path={"news"}/>
+                        <MainSectionCard serverData={boardServerData} sectionTitle={"Board"} path={"board"}/>
+                        <MainSectionCard serverData={freeServerData}  sectionTitle={"FreeBoard"} path={"free"}/>
+                    </div>
+                </div>
+            </section>
+        </SidebarLayout>
 
     );
 }
