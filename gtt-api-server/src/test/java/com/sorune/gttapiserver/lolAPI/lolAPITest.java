@@ -145,6 +145,19 @@ public class lolAPITest {
     }
 
     @Test
+    public void getTeams(){
+        List<ServerTeam> teams = teamRepository.findAll();
+        List<ServerTeamDTO> teamDTOList = teams.stream().map(team -> ServerTeamDTO.builder()
+                .id(team.getId())
+                .teamName(team.getTeamName())
+                .image(team.getImage())
+                .location(team.getLocation())
+                .rosterPhoto(team.getRosterPhoto())
+                .build()
+        ).toList();
+        log.info(teamDTOList.toString());
+    }
+    @Test
     @Transactional
     public void getPlayers(){
         Pageable pageable = Pageable.ofSize(10);
