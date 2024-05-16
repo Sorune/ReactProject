@@ -22,6 +22,7 @@ class ServerPlayer(Base):
     name = Column(String)
     name_full = Column(String)
     nick_name = Column(String)
+    team_img = Column(String)
 
     roles = relationship("ServerPlayerRole", back_populates="player")
     fav_champs = relationship("ServerPlayerFavChamp", back_populates="player")
@@ -84,6 +85,7 @@ class ServerTournament(Base):
     name = Column(String)
     region = Column(String)
     start_date = Column(DateTime)
+    challenger = Column(String)
 
     matches = relationship("ServerMatch", secondary="server_tournament_server_matches", back_populates="tournament")
 

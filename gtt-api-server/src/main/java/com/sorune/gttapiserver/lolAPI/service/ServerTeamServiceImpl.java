@@ -2,7 +2,9 @@ package com.sorune.gttapiserver.lolAPI.service;
 
 import com.sorune.gttapiserver.lolAPI.DTO.ServerTeamDTO;
 import com.sorune.gttapiserver.lolAPI.entity.ServerTeam;
+import com.sorune.gttapiserver.lolAPI.entity.ServerTournament;
 import com.sorune.gttapiserver.lolAPI.repository.ServerTeamRepository;
+import com.sorune.gttapiserver.lolAPI.repository.ServerTournamentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class ServerTeamServiceImpl implements ServerTeamService {
+    private final ServerTournamentRepository tournamentRepository;
     private final ServerTeamRepository serverTeamRepository;
     private final ModelMapper modelMapper;
 
@@ -38,5 +41,11 @@ public class ServerTeamServiceImpl implements ServerTeamService {
         log.info(dto);
 
         return dto;
+    }
+
+    @Override
+    public ServerTeamDTO getLatestWinnerTeam() {
+        ServerTournament serverTournament = tournamentRepository.findTopByChallengerNotNullOrderByStartDateDesc();
+        return modelMapper.map(serverTeamRepository.findByTeamName(serverTournament.getChallenger()), ServerTeamDTO.class);
     }
 }
