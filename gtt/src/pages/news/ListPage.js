@@ -52,7 +52,7 @@ const ListPage = ()=>{
 
     return(
         <Card className="h-full w-full">
-            <ListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/news/write'} />
+            <ListHeader TABS={TABS} moveTo={moveToAdd} pathName={'/news/write'} path={"news"}/>
             <CardBody className="overflow-scroll px-0">
                 <ListTable TABLE_HEAD={TABLE_HEAD} serverData={serverData} path={"news"} />
             </CardBody>

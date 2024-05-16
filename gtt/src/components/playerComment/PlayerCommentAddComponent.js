@@ -1,10 +1,10 @@
 import React, {useCallback, useRef, useState} from "react";
 import useCustomMove from "../../hooks/useCustomMove";
-import {createSearchParams, useLocation, useSearchParams} from "react-router-dom";
+import {createSearchParams, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {Button, Rating, Textarea} from "@material-tailwind/react";
-import {postPCommentAdd} from "../../api/playerCommentApi";
+import {checkPComment, postPCommentAdd} from "../../api/playerCommentApi";
 import {userState} from "../../atoms/userState";
 import {focus} from "@testing-library/user-event/dist/focus";
 
@@ -55,9 +55,9 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const [userInfo,setUserInfo] = useRecoilState(userState)
     const textareaRef = useRef(null);
 
-    const page = useRecoilValue(pageState)
     const {moveToList, moveToRead} = useCustomMove();
 
+    console.log(userInfo.nick)
     const handleChangePComment= (e) => {
         if (e.target && e.target.name) {
             const { name, value } = e.target;
@@ -69,27 +69,37 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const handleAdd = () => {
         const formData = new FormData()
 
-        if (playerComment.comment === "" ) { // 댓글이 null 이면 작성 안되게
-            alert("응원 문구를 입력하세요.")
-            textareaRef.current.focus();
-            return;
+        if (userInfo.nick === "Anonymous"){ // 댓글 작성할 때 로그인 확인
+           if (window.confirm("로그인 후 응원 댓글을 남기실 수 있습니다. 로그인 화면으로 이동하시겠습니까?")){
+                   window.location.href = "http://localhost:3000/login"
+           }
+        } else { // 로그인이 되어 있으면 진행
+            if (playerComment.comment === "" ) { // 댓글이 null 이면 작성 안되게
+                alert("응원 문구를 입력하세요.")
 
-        } else if (playerComment.recomNo === 0) { // 평점이 0이면 작성 안되게
-            alert("평점을 입력하세요.")
-            textareaRef.current.focus();
-            return;
+                return;
 
-        } else { // 댓글, 평점이 있으면 작성
-            formData.append("comment", playerComment.comment)
-            formData.append("comWriter", userInfo.nick)
-            formData.append("pno", pno)
-            formData.append("recomNo", playerComment.recomNo)
+            } else if (playerComment.recomNo === 0) { // 평점이 0이면 작성 안되게
+                alert("평점을 입력하세요.")
 
-            postPCommentAdd(formData).then(data => {
-                alert("SUCCESS")
-                window.location.reload();
-                setRefresh(!refresh)
-            })
+                return;
+
+            } else { // 댓글, 평점이 있으면 작성
+                checkPComment(pno, userInfo.nick).then(data => {
+                    console.log(data)
+                })
+
+                formData.append("comment", playerComment.comment)
+                formData.append("comWriter", userInfo.nick)
+                formData.append("pno", pno)
+                formData.append("recomNo", playerComment.recomNo)
+
+                postPCommentAdd(formData).then(data => {
+                    alert("SUCCESS")
+                    window.location.reload();
+                    setRefresh(!refresh)
+                })
+            }
         }
     }
 

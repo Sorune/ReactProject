@@ -12,12 +12,6 @@ export const memberList = async () => {
     return response.data;
 };
 
-// 회원 리스트 출력
-// export const list = async () => {
-//     const response = await jwtAxios.get(`${prefix}/list`);
-//     return response.data;
-// };
-
 // 회원 한명 조회
 export const getMember = async (num) => {
         const response = await axios.get(`${prefix}/${num}`);

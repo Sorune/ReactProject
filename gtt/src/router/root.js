@@ -147,8 +147,8 @@ const root = createBrowserRouter([
     },
     {
         path:"notice",
-        children: noticeRouter(),
         element:<Suspense fallback={Loading}><NoticeIndex/></Suspense>,
+        children: noticeRouter(),
         errorElement:NotFound,
     },
     {

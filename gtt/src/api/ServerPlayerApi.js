@@ -22,6 +22,13 @@ export const getPlayerList = async (pageParam) => {
     return res.data
 }
 
+export const getPlayerListWithTeam = async (pageParam, teamImg) => {
+    const {page, size} = pageParam
+    const res = await axios.get(`${prefix}/player/list/${teamImg}`, {params:{page:page, size:size}})
+
+    return res.data
+}
+
 export const getTeamList = async () => {
     const res = await axios.get(`${prefix}/team/list`)
 
@@ -35,15 +42,15 @@ export const postAdd = async (player) => {
     return res.data
 }
 
-export const putOnePlayer = async (pno, player) => {
+export const putOnePlayer = async (id, player) => {
     const header =     {headers: {'Content-Type': 'application/json'}}
-    const res = await axios.put(`${prefix}/${pno}`, player, header)
+    const res = await axios.put(`${prefix}/${id}`, player, header)
 
     return res.data
 }
 
-export const deleteOnePlayer = async (pno) =>{
-    const res = await axios.delete(`${prefix}/${pno}`)
+export const deleteOnePlayer = async (id) =>{
+    const res = await axios.delete(`${prefix}/${id}`)
 
     return res.data
 }

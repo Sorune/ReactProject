@@ -46,3 +46,8 @@ export const modifyFreeBoard = async (title,content,selectedTeam,writer,fno)=>{
     })
     return res.data
 }
+
+export const removeFreeBoard = async (fno) => {
+    const res = await axios.delete(`${prefix}/${fno}`);
+    return res.data;
+}

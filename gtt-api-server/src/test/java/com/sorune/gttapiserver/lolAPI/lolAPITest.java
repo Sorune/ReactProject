@@ -139,10 +139,24 @@ public class lolAPITest {
     @Test
     @Transactional
     public void getPlayer(){
-        ServerTeamDTO p = modelMapper.map(teamRepository.findByServerPlayersId(110L), ServerTeamDTO.class);
-        log.info(p.toString());
+        ServerTournament serverTournament = tournamentRepository.findTopByChallengerNotNullOrderByStartDateDesc();
+        ServerTeamDTO winnerTeam = modelMapper.map(teamRepository.findByTeamName(serverTournament.getChallenger()), ServerTeamDTO.class);
+        log.info(winnerTeam.toString());
     }
 
+    @Test
+    public void getTeams(){
+        List<ServerTeam> teams = teamRepository.findAll();
+        List<ServerTeamDTO> teamDTOList = teams.stream().map(team -> ServerTeamDTO.builder()
+                .id(team.getId())
+                .teamName(team.getTeamName())
+                .image(team.getImage())
+                .location(team.getLocation())
+                .rosterPhoto(team.getRosterPhoto())
+                .build()
+        ).toList();
+        log.info(teamDTOList.toString());
+    }
     @Test
     @Transactional
     public void getPlayers(){

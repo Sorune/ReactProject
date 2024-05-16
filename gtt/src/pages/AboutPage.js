@@ -47,16 +47,22 @@ const AboutPage = ()=>{
                             color="blue-gray"
                             className="my-2 !text-2xl lg:!text-4xl"
                         >
-                            Behind the Success: Our Dedicated Team
+                            GTT 프로젝트 팀원을 소개합니다
                         </Typography>
-                        <Typography
-                            variant="lead"
-                            className="mx-auto w-full !text-gray-500 max-w-4xl"
-                        >
-                            From visionary leadership to creative talent, and technical wizards,
-                            each team member plays a pivotal role in delivering the exceptional
-                            service and innovative solutions.
-                        </Typography>
+                        <div className="text-left">
+                            <Typography variant="lead"  className="mx-auto w-full !text-gray-500 max-w-4xl">
+                                조장 남태욱 : 전체적인 프로젝트 기획 및 라이브러리 관리, 폴더 구조 관리, 스프링 시큐리티 및 JWT 사용
+                            </Typography>
+                            <Typography variant="lead"  className="mx-auto w-full !text-gray-500 max-w-4xl">
+                                부조장 이서준 : 버그리포팅 및 프로젝트의 전반적인 work-flow관리, 로그인 처리 및 검증 로직
+                            </Typography>
+                            <Typography variant="lead"  className="mx-auto w-full !text-gray-500 max-w-4xl">
+                                팀원 양지웅 : 전반적인 디자인, 화면 구성, 게시판 작성. UI 이벤트 및 예매, 결제 로직 작성
+                            </Typography>
+                            <Typography variant="lead"  className="mx-auto w-full !text-gray-500 max-w-4xl">
+                                팀원 전필우 : 게시판 작성 및 API 통신 구현, API 서버 작성 및 쿼리 작성
+                            </Typography>
+                        </div>
                     </div>
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                         {members.map((props, key) => (

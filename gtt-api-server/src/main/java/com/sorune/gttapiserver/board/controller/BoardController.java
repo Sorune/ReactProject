@@ -15,12 +15,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/board/")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_MANAGER','ROLE_ADMIN')")
 @Log4j2
 public class BoardController {
     private final BoardService boardService;
     private final CustomFileUtil fileUtil;
-    @PreAuthorize("permitAll()")
+
     @GetMapping("/list")
     public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
         log.info(pageRequestDTO);
@@ -38,6 +37,7 @@ public class BoardController {
         return boardService.getById(bno);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_MANAGER','ROLE_ADMIN')")
     @PostMapping("/")
     public Map<String,Long> registerBoard(@RequestBody BoardDTO boardDTO) {
         log.info(boardDTO);
@@ -46,6 +46,7 @@ public class BoardController {
         return Map.of("bno", bno);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_MANAGER','ROLE_ADMIN')")
     @PutMapping("/{bno}")
     public Map<String,String> updateBoard(@PathVariable("bno") Long bno, @RequestBody BoardDTO boardDTO) {
         log.info(boardDTO);
@@ -54,6 +55,7 @@ public class BoardController {
         return Map.of("result", "SUCCESS");
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_MANAGER','ROLE_ADMIN')")
     @DeleteMapping("/{bno}")
     public Map<String,String> deleteBoard(@PathVariable("bno") Long bno) {
         log.info(bno);

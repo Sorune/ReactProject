@@ -9,6 +9,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,8 +22,9 @@ public class ServerPlayerDTO {
     private Integer age;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate birthdate;
-    private String team;
+    private String teamImg;
     private List<Role> roles;
     private List<String> favChamps;               // 선택 ( 조금 더 자세한 선수의 정보를 표시 )
     private String birthdatePrecision;      // 불필요
+    private double gpa;
 }

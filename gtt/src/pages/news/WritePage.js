@@ -14,7 +14,7 @@ const WritePage =forwardRef(()=>{
 
     return (
         <section className="bg-white w-full h-full p-2 py-2">
-            <ContentHeader page={page} pathName={'/news/'} moveTo={moveToList}/>
+            <ContentHeader page={page} pathName={'/news/'} moveTo={moveToList} text={"news"} location={"write"}/>
             <Card className="flex flex-auto p-1">
                 <CardBody>
                     <ContentInputBody insert={insertNews} modify={modifyNews} pathName={"news"}/>

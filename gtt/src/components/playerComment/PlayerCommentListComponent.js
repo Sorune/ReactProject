@@ -60,7 +60,7 @@ const PlayerCommentListComponent = ({refresh, setRefresh}) => {
     useEffect(() => {
         getPCommentList({ pno }).then((data) => {
             setServerData(data);
-            console.log(serverData)
+            console.log(data)
         });
     }, [refresh]);
 

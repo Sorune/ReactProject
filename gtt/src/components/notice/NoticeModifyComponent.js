@@ -114,7 +114,7 @@ const NoticeModifyComponent = forwardRef(({notiNo, page}) => {
 
     return(
         <div className="m-2 p-4">
-            <ContentHeader pathName={"/notice/"} serverData={serverData} page={page} moveTo={moveToList} />
+            <ContentHeader pathName={"/notice/"} serverData={serverData} page={page} moveTo={moveToList} text={"notice"} location={"modify"}/>
             <Card className="p-2 m-2 min-h-[10rem]">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
