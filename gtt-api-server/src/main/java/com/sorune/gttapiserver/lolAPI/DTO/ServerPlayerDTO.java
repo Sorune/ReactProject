@@ -26,4 +26,5 @@ public class ServerPlayerDTO {
     private List<String> favChamps;               // 선택 ( 조금 더 자세한 선수의 정보를 표시 )
     private String birthdatePrecision;      // 불필요
     private double gpa;
+    private String teamImg;
 }
