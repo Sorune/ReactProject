@@ -38,7 +38,7 @@ const CartListComponent = ({ cartData, setCartData }) => {
             // 선택되지 않은 항목일 경우 선택
             setSelectedItems([...selectedItems, index]);
         }
-        console.log(selectedItems)
+        //console.log(selectedItems)
     };
 
 
@@ -61,10 +61,9 @@ const CartListComponent = ({ cartData, setCartData }) => {
         }
         const selectedProducts = selectedItems.map(index => cartData[index])
         console.log("선택된 상품들:", selectedProducts);
-        navigate("/cart/payment", {state:{selectedProducts}
-    })
+        navigate("/cart/payment", {state:{selectedProducts}})
+        navigate("/")
     }
-
 
 
     return (

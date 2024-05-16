@@ -1,6 +1,10 @@
 package com.sorune.gttapiserver.lolAPI.service;
 
+import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
+import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
+import com.sorune.gttapiserver.lolAPI.DTO.ServerPlayerDTO;
 import com.sorune.gttapiserver.lolAPI.DTO.ServerTeamDTO;
+import com.sorune.gttapiserver.lolAPI.entity.ServerPlayer;
 import com.sorune.gttapiserver.lolAPI.entity.ServerTeam;
 import com.sorune.gttapiserver.lolAPI.entity.ServerTournament;
 import com.sorune.gttapiserver.lolAPI.repository.ServerTeamRepository;
@@ -8,6 +12,10 @@ import com.sorune.gttapiserver.lolAPI.repository.ServerTournamentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +36,25 @@ public class ServerTeamServiceImpl implements ServerTeamService {
         List<ServerTeamDTO> dtoList = serverTeams.stream().map(serverTeam -> modelMapper.map(serverTeam, ServerTeamDTO.class)).toList();
 
         return dtoList;
+    }
+
+    @Override
+    public PageResponseDTO<ServerPlayerDTO> getPlayersWithTeam(PageRequestDTO pageRequestDTO, String teamName) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize() -1, Sort.by("id").descending());
+        Page<ServerTeam> result = serverTeamRepository.findByTeamName(teamName, pageable);
+        List<ServerTeamDTO> dtoList = result.stream().map(serverTeam -> modelMapper.map(serverTeam, ServerTeamDTO.class)).toList();
+
+        long totalCount = result.getTotalElements();
+
+        PageResponseDTO pageResponseDTO = PageResponseDTO.<ServerTeamDTO>withAll()
+                .dtoList(dtoList)
+                .pageRequestDTO(pageRequestDTO)
+                .totalCount(totalCount)
+                .build();
+
+        System.out.println(pageResponseDTO);
+
+        return pageResponseDTO;
     }
 
     @Override

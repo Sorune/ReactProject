@@ -3,7 +3,7 @@ import React from "react";
 
 const TABLE_HEAD = ["상품명", "경기일", "장소", "수량", "결제금액"];
 
-const PaymentComponent = ({userInfo, selectedProducts}) => {
+const PaymentComponent = () => {
 
     return(
         <div className="w-full h-full p-10">

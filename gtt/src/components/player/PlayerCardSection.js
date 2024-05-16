@@ -32,9 +32,9 @@ export const PlayerCardSection = ({player,moveToRead})=>{
             <CardBody className="relative py-14 px-6 md:px-12 opacity-0 hover:opacity-100">
 
                 <Typography
-                    variant="h5"
+                    variant="h4"
                     color="white"
-                    className="mb-6 font-medium leading-[1.5]"
+                    className="mb-0 font-extrabold leading-[4.0]"
                 >
                     {player.nickName}
                 </Typography>

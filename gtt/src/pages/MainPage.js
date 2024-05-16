@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import {getList} from "../api/newsApi";
 import SidebarLayout from "../layouts/SidebarLayout";
 import {MainSectionCard} from "../components/common/MainSectionCard";
-import {getPlayerList} from "../api/playerApi";
 import {useRecoilState} from "recoil";
 import {userState} from "../atoms/userState";
 import {tokenState} from "../atoms/tokenState";
@@ -11,8 +10,8 @@ import {getNoticeList} from "../api/noticeApi";
 import {getBoardList} from "../api/boardApi";
 import {getFreeList} from "../api/freeBoardApi";
 import {PlayerCardSection} from "../components/player/PlayerCardSection";
-import {getWinnerTeam} from "../api/lolAPI";
 import useCustomMove from "../hooks/useCustomMove";
+import {getWinnerList} from "../api/ServerPlayerApi";
 
 const initState = {
     dtoList:[],
@@ -42,7 +41,7 @@ const MainPage= () =>{
         getList({page: 1, size: 5}).then(data => {
             setNewsServerData(data)
         })
-        getWinnerTeam().then(data => {
+        getWinnerList().then(data => {
             setPlayerServerData(data.serverPlayers.slice(0,5))
         })
         getNoticeList({page:1, size:5}).then(data =>{
@@ -57,25 +56,25 @@ const MainPage= () =>{
     },[refresh]);
     console.log(playerServerData)
     return (
-            <SidebarLayout>
-                <section className="px-8 py-8 lg:py-18 ">
-                    <div className="container mx-auto">
-                        <div className="grid grid-cols-5 gap-2">
-                            {playerServerData.map((player)=>{
-                                return(
-                                    <PlayerCardSection player={player} moveToRead={moveToRead}/>
-                                    )
-                            })}
-                        </div>
-                        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 pt-8">
-                            <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"} path={"notice"}/>
-                            <MainSectionCard serverData={newsServerData} sectionTitle={"News"} path={"news"}/>
-                            <MainSectionCard serverData={boardServerData} sectionTitle={"Board"} path={"board"}/>
-                            <MainSectionCard serverData={freeServerData}  sectionTitle={"FreeBoard"} path={"free"}/>
-                        </div>
+        <SidebarLayout>
+            <section className="px-8 py-8 lg:py-18 ">
+                <div className="container mx-auto">
+                    <div className="grid grid-cols-5 gap-2">
+                        {playerServerData.map((player)=>{
+                            return(
+                                <PlayerCardSection player={player} moveToRead={moveToRead}/>
+                            )
+                        })}
                     </div>
-                </section>
-            </SidebarLayout>
+                    <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 pt-8">
+                        <MainSectionCard serverData={noticeServerData} sectionTitle={"Notice"} path={"notice"}/>
+                        <MainSectionCard serverData={newsServerData} sectionTitle={"News"} path={"news"}/>
+                        <MainSectionCard serverData={boardServerData} sectionTitle={"Board"} path={"board"}/>
+                        <MainSectionCard serverData={freeServerData}  sectionTitle={"FreeBoard"} path={"free"}/>
+                    </div>
+                </div>
+            </section>
+        </SidebarLayout>
 
     );
 }
