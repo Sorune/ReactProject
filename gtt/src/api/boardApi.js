@@ -1,6 +1,7 @@
 import axios from "axios";
 import {API_SERVER_HOST} from "./filesApi";
 import jwtAxios from "../utill/jwtUtill";
+import {removeNews} from "./newsApi";
 
 const prefix = `${API_SERVER_HOST}/api/board`
 

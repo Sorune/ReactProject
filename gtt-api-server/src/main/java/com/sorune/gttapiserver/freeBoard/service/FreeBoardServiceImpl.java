@@ -49,6 +49,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     @Override
     public FreeBoardDTO getById(Long no) {
         FreeBoard freeBoard = freeBoardRepository.getOne(no);
+
+        FreeBoardDTO freeBoardDTO = modelMapper.map(freeBoard,FreeBoardDTO.class);
+        freeBoardDTO.setHits(freeBoard.getHits()+1);
+        log.info("조회수는? : " + freeBoard.getHits());
         return modelMapper.map(freeBoard, FreeBoardDTO.class);
     }
 
