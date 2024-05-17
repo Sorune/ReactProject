@@ -3,7 +3,7 @@ import { Card, CardBody, CardFooter,} from "@material-tailwind/react";
 import PageComponent from "../../components/common/PageComponent";
 import {getComList} from "../../api/freeBoardCommentApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState} from "react";
 import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import ContentBody from "../../components/common/ContentBody";

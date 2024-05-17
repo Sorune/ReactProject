@@ -1,10 +1,10 @@
 import {useEffect,useState} from "react";
-import {MagnifyingGlassIcon,ChevronUpDownIcon} from "@heroicons/react/24/outline";
-import {Card,CardHeader,Input,Typography,Button,CardBody,Chip,CardFooter,Tabs,TabsHeader,Tab,Avatar,IconButton,Tooltip} from "@material-tailwind/react";
+import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
+import {Card,Input,Typography,CardBody,CardFooter} from "@material-tailwind/react";
 import useCustomMove from "../../hooks/useCustomMove";
 import PageComponent from "../../components/common/PageComponent";
 import {getFreeList} from "../../api/freeBoardApi";
-import {useLocation, useSearchParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import ListHeader from "../../components/news/list/ListHeader";
