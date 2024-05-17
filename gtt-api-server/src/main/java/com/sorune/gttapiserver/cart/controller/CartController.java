@@ -26,9 +26,9 @@ public class CartController {
         return cartService.findAll();
     }
 
-    @GetMapping("/{cno}")
-    public CartDTO get(@PathVariable("cno") Long cno){
-        return cartService.findById(cno);
+    @GetMapping("/{userNo}")
+    public List<CartDTO> get(@PathVariable("userNo") Long userNo){
+        return cartService.findById(userNo);
     }
 
     @PostMapping("/")

@@ -18,8 +18,14 @@ public class CartServiceImpl implements CartService{
     private final ModelMapper modelMapper;
 
     @Override
-    public CartDTO findById(Long id) {
-        return modelMapper.map(cartRepository.findById(id),CartDTO.class);
+    public List<CartDTO> findById(Long userNo) {
+        List<Cart> cartList = cartRepository.findAllByUserNo(userNo);
+
+        List<CartDTO> dtoList = cartList.stream()
+                .map(cart -> modelMapper.map(cart, CartDTO.class)).toList();
+
+        dtoList.forEach(dto -> log.info(dto.toString()));
+        return dtoList;
     }
 
     @Override

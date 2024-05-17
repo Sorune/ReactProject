@@ -1,9 +1,40 @@
 import {Button, Card, CardBody, CardHeader, Checkbox, Input, Typography} from "@material-tailwind/react";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import {userState} from "../../atoms/userState";
+import {getMyOrder, getOrderList} from "../../api/cartApi";
+import {useRecoilState} from "recoil";
+import useCustomMove from "../../hooks/useCustomMove";
 
-const TABLE_HEAD = ["상품명", "경기일", "장소", "수량", "결제금액"];
+const TABLE_HEAD = ["상품명", "경기일", "장소", "결제일", "결제금액"];
 
 const PaymentComponent = () => {
+    const [userInfo] = useRecoilState(userState);
+    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const {refresh} = useCustomMove()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!userInfo) return; // userInfo가 없으면 fetchData를 실행하지 않음
+
+            try {
+                const userNo = userInfo.num;
+                const orders = await getOrderList(userNo);
+                console.log("Orders fetched: ", orders);
+                setSelectedProducts(orders);
+            } catch (error) {
+                console.error("결제 내역을 불러오는 중 오류 발생:", error);
+            } finally {
+                setLoading(false); // 로딩 상태를 해제
+            }
+        };
+
+        fetchData();
+    }, [userInfo, refresh]);
+
+    if (loading) {
+        return <div>Loading...</div>; // 로딩 중일 때 표시
+    }
 
     return(
         <div className="w-full h-full p-10">
@@ -42,30 +73,30 @@ const PaymentComponent = () => {
                         </thead>
 
                         <tbody>
-                       {/* {selectedProducts.length > 0 ? (
-                            selectedProducts.map((item, index) => (*/}
+                        { selectedProducts && selectedProducts.length > 0 ? (
+                            selectedProducts.map((item, index) => (
                                 <tr className="p-4 border-b border-blue-gray-50" >{/* key={index} tr로 */}
                                     <td className="p-4">
-                           {/*             <div className="flex items-center gap-3 justify-center mt-3">
+                                        <div className="flex items-center gap-3 justify-center mt-3">
                                             <Typography
                                                 variant="h6"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                    1
+                                                {item.matchData.league}
                                             </Typography>
-                                        </div>*/}
+                                        </div>
                                         <div className="flex items-center gap-3 justify-center">
                                             <Typography
                                                 variant="h5"
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                          상품명
+                                                {item.matchData.serverTeam1.teamName} vs {item.matchData.serverTeam1.teamName}
                                             </Typography>
                                         </div>
                                         <div className="flex items-center gap-3 justify-center p-1 mb-3">
-                                            <small>좌석</small>
+                                            <small>{item.data}</small>
                                         </div>
                                     </td>
                                     <td >
@@ -75,7 +106,7 @@ const PaymentComponent = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                2024-05-16
+                                                {item.matchData.matchDate}
                                             </Typography>
                                         </div>
                                     </td>
@@ -86,7 +117,7 @@ const PaymentComponent = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                              롤파크
+                                                {item.stadium}
                                             </Typography>
                                         </div>
                                     </td>
@@ -97,7 +128,7 @@ const PaymentComponent = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                1
+                                                {item.regDate}
                                             </Typography>
                                         </div>
                                     </td>
@@ -108,19 +139,19 @@ const PaymentComponent = () => {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                              1원
+                                                {item.totalPrice}원
                                             </Typography>
                                         </div>
                                     </td>
                                 </tr>
                             ))
-                        ) {/*: (
+                        ) : (
                             <tr>
                                 <td className="p-6 text-center" colSpan="7">
                                     결제하신 품목이 없습니다.
                                 </td>
                             </tr>
-                        )*/}
+                        )
                         }
                         </tbody>
                     </table>
@@ -128,6 +159,5 @@ const PaymentComponent = () => {
             </Card>
 
         </div>
-    )
-}
-export default PaymentComponent
+    )}
+export default PaymentComponent;
