@@ -7,11 +7,12 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import ContentBody from "../../components/common/ContentBody";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {getOne} from "../../api/boardApi";
 import ContentHeader from "../../components/common/ContentHeader";
 import useUtils from "../../hooks/utils";
+import {userState} from "../../atoms/userState";
 
 const initState = {
     dtoList: [],
@@ -58,6 +59,8 @@ const ReadPage = () => {
     const ReadQuillRef = useRef(null);
     const {parseDeltaOrString} = useUtils();
     const content = ""
+    const userInfo = useRecoilValue(userState)
+
     useEffect(() => {
         getOne(newsNo).then(data=>{
             setServerData(data)
@@ -74,7 +77,7 @@ const ReadPage = () => {
 
     return (
         <section className="bg-white w-full h-full p-2 py-2">
-            <ContentHeader page={page} pathName={'/board/'} moveTo={moveToList} numValue={newsNo} moveToModify={ moveToModify } text={"board"} location={"read"} />
+            <ContentHeader page={page} pathName={'/board/'} moveTo={moveToList} numValue={newsNo} moveToModify={ moveToModify } text={"board"} location={"read"} writer={serverData.writer} />
             <Card className="flex flex-auto p-1">
                 <CardBody>
                     <ContentBody
@@ -87,9 +90,11 @@ const ReadPage = () => {
                         viewCount={serverData.hits}
                         writer={serverData.writer}
                     />
-                    <Card className="m-2 row-start-3 mt-10">
-                        <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
-                    </Card>
+                    {userInfo.nick !== "Anonymous" ? (
+                        <Card className="m-2 row-start-3 mt-10">
+                            <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                        </Card>
+                    ) : <></>}
                 </CardBody>
                 <CardFooter>
                     {comServerData.dtoList.map((dto) => {
