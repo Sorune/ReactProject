@@ -61,7 +61,12 @@ const ReadComponent = ({pno}) => {
             })
             console.log(data.gpa)
         })
+
     }, [pno])
+
+    // 평점 소수점 반올림해서 표시
+    const number = Number(player.gpa.toFixed(1));
+    console.log(number);
 
     return (
         <div>
@@ -110,7 +115,7 @@ const ReadComponent = ({pno}) => {
                                         clipRule="evenodd"
                                     />
                                 </svg>
-                                {player.gpa}
+                                {number}
                             </Typography>
                         </div>
                         <div className="grid grid-cols-3">
@@ -135,8 +140,28 @@ const ReadComponent = ({pno}) => {
 
                         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
                             <Tooltip content={player.roles}>
-                                <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                                    <img src= "/img/position-mid.png" />
+                                {/* 포지션 별 이미지 추가 */}
+                                <span
+                                    className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                                    {player.roles[0] === "Top" ? (
+                                        <img src="https://i.namu.wiki/i/vTyaLcH8pcz7ShHzJMRJ5BbmkcbPmTx68q0RIarcYAQsXQ-z92uL3fKIwq66Ntz9SM6uHjGIDcagPa3UYBCATg.svg"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Jungle" ? (
+                                        <img
+                                            src="https://i.namu.wiki/i/kr494GovCk0CjqhqK4LYICn53zmvlqaUC8XgEB15Z_TZFsxOP_a-HjYUvHczDrsH8J0Y2f0PKNxaMyxFzKtbpQ.svg"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Mid" ? (
+                                        <img
+                                            src="https://i.namu.wiki/i/kRDRG0ykjeKKXOFEZ3_lc1bmcICxszkkbUAdqFMtjytECCnASARE0ulGaSAfspAfdm0RHNU1y7s6GYZ1Xgt43w.svg"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Bot" ? (
+                                        <img
+                                            src="https://i.namu.wiki/i/vJF0KOOw7oOwj1VDxMXn-Dor3zXa7WCyBUQvEA9dobFjHu1Rtt2gCehJp37da2VdR-WVW0RctoFC227zRXLVeg.webp"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Support" ? (
+                                        <img
+                                            src="https://i.namu.wiki/i/HW8xX91KapdIibmchgriOZBrNCJ23qHvufQwR_AkVu7mKMRAb8OY19Wc8spQUSd_PvQBZ42vob4NNDYOU3tCOA.svg"/>
+                                    ) : <></>}
                                 </span>
                             </Tooltip>
                         </div>
