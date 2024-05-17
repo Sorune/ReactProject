@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,8 +33,8 @@ public class FreeBoardController {
     }
 
     @GetMapping("/hotPost")
-    public PageResponseDTO<FreeBoardDTO> hotPost(PageRequestDTO pageRequestDTO){
-        return boardService.hotPost(pageRequestDTO);
+    public List<FreeBoardDTO> hotPost() {
+        return boardService.hotPost();
     }
 
     @GetMapping("/{fno}")

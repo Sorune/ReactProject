@@ -4,8 +4,6 @@ import {
     Typography
 } from "@material-tailwind/react";
 
-import {useRecoilState, useResetRecoilState} from "recoil";
-import {pageState} from "../../atoms/pageState";
 import React, {useEffect, useState} from "react";
 import useCustomMove from "../../hooks/useCustomMove";
 import {hotFreePost} from "../../api/freeBoardApi";
@@ -14,20 +12,22 @@ const TABLE_HEAD = ["제목", "조회수"];
 
 
 const SideCell = ()=>{
-    const [page,setPage] = useRecoilState(pageState)
+
     const [freeData, setFreeData] = useState([])
     const {moveToRead} = useCustomMove()
 
     useEffect(() => {
-        hotFreePost({page: page.page, size: page.size})
+        hotFreePost()
             .then(data => {
                 setFreeData(data)
             })
             .catch(error => {
                 console.log(error)
             })
-    }, [page])
-
+    }, [])
+    const handleClick = () => {
+        window.location.reload(); // 클릭 이벤트 발생 시 페이지를 리로드합니다.
+    };
 
     return(
         <Card className="w-full shadow-xl shadow-blue-gray-900/5">
@@ -56,9 +56,9 @@ const SideCell = ()=>{
                     </thead>
 
                     <tbody>
-                    {freeData.dtoList && freeData.dtoList.length > 0 ? (
-                        freeData.dtoList.map((data) => (
-                            <tr className="p-4 border-b border-blue-gray-50" key={data.fno} onClick={()=> moveToRead({pathName:`/free/read`,num:data.fno,totalPage:freeData.totalCount})}>
+                    {freeData && freeData.length > 0 ? (
+                        freeData.map((data) => (
+                            <tr className="p-4 border-b border-blue-gray-50" key={data.fno} onClick={() => { moveToRead({ pathName: `/free/read`, num: data.fno, totalPage: freeData.totalCount }); handleClick(); }}>
                                 <td >
                                     <div className="flex items-center gap-3 justify-center p-4">
                                         <Typography

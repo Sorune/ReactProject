@@ -17,11 +17,9 @@ export const getMyFreeBoard = async (pageParam, userId) => {
     })
     return res.data
 }
-export const hotFreePost = async (pageParam) => {
-    const {page, size} = pageParam
-
-    const res = await axios.get(`${prefix}/hotPost`,{params:{page:page,size:size}})
-    return res.data
+export const hotFreePost = async () => {
+        const res = await axios.get(`${prefix}/hotPost`);
+        return res.data;
 }
 
 export const getOne = async(fno)=>{

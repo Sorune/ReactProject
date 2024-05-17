@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,17 +86,22 @@ public class FreeBoardServiceImpl implements FreeBoardService {
     }
 
     @Override
-    public PageResponseDTO<FreeBoardDTO> hotPost(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage()-1, pageRequestDTO.getSize(), Sort.by("hits").descending());
-        Page<FreeBoard> freeBoards = freeBoardRepository.findAll(pageable);
-        List<FreeBoardDTO> dtoList = freeBoards.stream().map(dto -> modelMapper.map(dto, FreeBoardDTO.class)).toList();
-        dtoList.forEach(dto->log.info(dto.toString()));
-        long total = freeBoards.getTotalElements();
-        return PageResponseDTO.<FreeBoardDTO>withAll()
-                .totalCount(total)
-                .dtoList(dtoList)
-                .pageRequestDTO(pageRequestDTO)
-                .build();
+    public List<FreeBoardDTO> hotPost() {
+        log.info("Starting findHotPosts method");
+
+        // hits가 높은 순으로 정렬된 게시물을 가져옵니다.
+        List<FreeBoard> hotFreeBoards = freeBoardRepository.findTop10ByOrderByHitsDesc();
+
+        log.info("Retrieved hotFreeBoards: {}", hotFreeBoards.size());
+
+        List<FreeBoardDTO> dtoList = hotFreeBoards.stream()
+                .map(freeBoard -> modelMapper.map(freeBoard, FreeBoardDTO.class))
+                .collect(Collectors.toList());
+
+        dtoList.forEach(dto -> log.info(dto.toString()));
+
+        log.info("Ending findHotPosts method");
+        return dtoList;
     }
 
 }
