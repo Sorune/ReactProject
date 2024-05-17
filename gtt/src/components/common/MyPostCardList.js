@@ -1,9 +1,7 @@
-import {Avatar, Button, Tooltip, Typography} from "@material-tailwind/react";
+import {Button, Tooltip, Typography} from "@material-tailwind/react";
 import useCustomMove from "../../hooks/useCustomMove";
-import {useLocation} from "react-router-dom";
 import {startTransition, useEffect, useState} from "react";
-import {deleteOne, getMyPost} from "../../api/noticeApi";
-import {getMyNews} from "../../api/newsApi";
+import {deleteOne} from "../../api/noticeApi";
 
 const MyPostCardList = ({pathName, serverData,page,size}) =>{
     const {moveToRead, moveToModify} = useCustomMove()

@@ -1,6 +1,6 @@
 import {Avatar, Button, CardHeader, Tab, Tabs, TabsHeader, Typography} from "@material-tailwind/react";
 import {UserPlusIcon} from "@heroicons/react/24/solid";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import React from "react";
 import {useRecoilState} from "recoil";
 import {userState} from "../../../atoms/userState";

@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import FetchingModal from "../common/FetchingModal"
 import ResultModal from "../common/ResultModal"
 import useCustomMove from "../../hooks/useCustomMove";
@@ -6,12 +6,9 @@ import {createSearchParams, useLocation, useSearchParams} from "react-router-dom
 import {useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import ContentHeader from "../common/ContentHeader";
-import DropFiles from "../../components/common/DropFiles";
 import PlayerButtons from "./list/PlayerButtons";
-import {Button, Card, Input} from "@material-tailwind/react";
+import {Card, Input} from "@material-tailwind/react";
 import {DropDownInput} from "../common/DropDownInput";
-import QuilEditor from "../common/quill/QuilEditor";
-import DatePicker from "../common/DatePicker";
 import {DialogResult} from "../common/DialogResult";
 
 const initState = {

@@ -2,7 +2,7 @@ import {Avatar, Card, CardBody, IconButton, Typography} from "@material-tailwind
 
 import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faDribbble, faGithub, faLinkedin, faTwitter} from "@fortawesome/free-brands-svg-icons";
+import {faDribbble, faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
 
 
 export const TeamCard =({ img, name, title, git }) => {

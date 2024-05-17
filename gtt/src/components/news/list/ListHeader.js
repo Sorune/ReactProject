@@ -1,7 +1,4 @@
-import {Avatar, Button, CardHeader, Tab, Tabs, TabsHeader, Typography} from "@material-tailwind/react";
-import {UserPlusIcon} from "@heroicons/react/24/solid";
-import DatePicker from "../../common/DatePicker";
-import {useNavigate} from "react-router-dom";
+import {Button, CardHeader, Typography} from "@material-tailwind/react";
 import {useRecoilState} from "recoil";
 import {userState} from "../../../atoms/userState";
 

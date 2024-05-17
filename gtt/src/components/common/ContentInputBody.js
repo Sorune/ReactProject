@@ -1,18 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Button, Card, Input } from "@material-tailwind/react";
+import React, {memo, useEffect, useRef, useState} from "react";
+import {Button, Card, Input} from "@material-tailwind/react";
 import QuilEditor from "./quill/QuilEditor";
-import { DropDownInput } from "./DropDownInput";
-import { Delta } from "quill/core";
-import { memo } from "react";
+import {DropDownInput} from "./DropDownInput";
+import {Delta} from "quill/core";
 import useCustomMove from "../../hooks/useCustomMove";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { pageState } from "../../atoms/pageState";
-import { useLocation, useNavigate } from "react-router-dom";
-import { userState } from "../../atoms/userState";
-import { deleteNews, removeNews } from "../../api/newsApi";
-import { removeBoard } from "../../api/boardApi";
-import { removeFreeBoard } from "../../api/freeBoardApi";
-import { DialogResult } from "./DialogResult";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {pageState} from "../../atoms/pageState";
+import {useLocation, useNavigate} from "react-router-dom";
+import {userState} from "../../atoms/userState";
+import {removeNews} from "../../api/newsApi";
+import {removeBoard} from "../../api/boardApi";
+import {removeFreeBoard} from "../../api/freeBoardApi";
+import {DialogResult} from "./DialogResult";
 
 const ContentInputBody = memo(({ serverData, insert, modify, pathName, remove }) => {
     const [userInfo, setUserInfo] = useRecoilState(userState);

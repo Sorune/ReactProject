@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {Button, Card, CardBody, CardFooter, CardHeader, Input, Textarea, Typography} from "@material-tailwind/react";
+import {Button, Card, CardBody, CardFooter, CardHeader, Input, Typography} from "@material-tailwind/react";
 import {postAdd} from "../../api/noticeApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import {DialogResult} from "../common/DialogResult";

@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {getOne} from "../../api/noticeApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import {Avatar, Button, Card, CardHeader, Chip, Input, Typography} from "@material-tailwind/react";
-import {createSearchParams, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {Card} from "@material-tailwind/react";
 import QuilEditorReadOnly from "../common/quill/QuillEditorReadOnly";
 import ContentHeader from "../common/ContentHeader";
 import useUtils from "../../hooks/utils";
-
 
 
 const initStaste = {

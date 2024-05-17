@@ -1,14 +1,9 @@
-import {
-    IconButton,
-    Popover,
-    PopoverContent,
-    PopoverHandler,
-} from "@material-tailwind/react";
+import {IconButton, Popover, PopoverContent, PopoverHandler,} from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowLeft, faComments} from "@fortawesome/free-solid-svg-icons";
-import {memo, useEffect, useRef, useState} from "react";
+import {faComments} from "@fortawesome/free-solid-svg-icons";
+import {memo, useState} from "react";
 import {useRecoilState, useResetRecoilState} from "recoil";
-import {chatListState, chatRoomState, chatState, messagesState} from "../../../atoms/chatData";
+import {chatListState, chatRoomState, messagesState} from "../../../atoms/chatData";
 import ChatRoomComponent from "./ChatRoomComponent";
 import ChatListComponent from "./ChatListComponent";
 

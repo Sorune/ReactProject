@@ -1,6 +1,5 @@
 import axios from "axios";
 import {API_SERVER_HOST} from "./filesApi";
-import {removeFreeBoard} from "./freeBoardApi";
 
 const prefix = `${API_SERVER_HOST}/api/news`
 

@@ -1,11 +1,10 @@
-import React, {forwardRef, memo, useEffect, useRef, useState} from "react";
-import {Button, Card, CardBody, CardFooter, CardHeader, Input, Textarea, Typography} from "@material-tailwind/react";
+import React, {forwardRef, useEffect, useRef, useState} from "react";
+import {Button, Card, CardBody, CardFooter, CardHeader, Input, Typography} from "@material-tailwind/react";
 import {deleteOne, getOne, putOne} from "../../api/noticeApi";
 
 import useCustomMove from "../../hooks/useCustomMove";
 import {DialogResult} from "../common/DialogResult";
 import QuilEditor from "../common/quill/QuilEditor";
-import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import ContentHeader from "../common/ContentHeader";
 import {Delta} from "quill/core";
 

@@ -1,16 +1,6 @@
 import React, {forwardRef, useEffect, useState} from "react";
-import { useCountries } from "use-react-countries";
-import {
-    Input,
-    Menu,
-    MenuHandler,
-    MenuList,
-    MenuItem,
-    Button,
-} from "@material-tailwind/react";
+import {Button, Input, Menu, MenuHandler, MenuItem, MenuList,} from "@material-tailwind/react";
 import {getTeamsWithOutPlayers} from "../../api/lolAPI";
-import {API_SERVER_HOST} from "../../api/filesApi";
-
 
 
 export const DropDownInput = forwardRef(({onChange,title,  buttonRef, inputRef}) => {

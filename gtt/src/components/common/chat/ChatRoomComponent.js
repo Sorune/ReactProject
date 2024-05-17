@@ -1,11 +1,11 @@
-import {Card, IconButton, Textarea, Typography } from "@material-tailwind/react";
+import {Card, IconButton, Textarea, Typography} from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import ChatCell from "./ChatCell";
 import MyChatCell from "./MyChatCell";
 import React, {useEffect, useRef, useState} from "react";
-import {useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
-import {chatRoomState, chatState, messagesState} from "../../../atoms/chatData";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {chatRoomState, messagesState} from "../../../atoms/chatData";
 import chatApi from "../../../api/chatApi";
 import {useStomp} from "../../../hooks/useStomp";
 import {userState} from "../../../atoms/userState";

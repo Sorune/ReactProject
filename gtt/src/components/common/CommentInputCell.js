@@ -1,8 +1,7 @@
-import {Button, Card, IconButton, Textarea} from "@material-tailwind/react";
-import {useEffect, useRef, useState} from "react";
+import {Button, Card, Textarea} from "@material-tailwind/react";
+import {useRef, useState} from "react";
 import {insertComment} from "../../api/commentApi";
 import {useLocation} from "react-router-dom";
-import useCustomMove from "../../hooks/useCustomMove";
 import {useRecoilState} from "recoil";
 import {userState} from "../../atoms/userState";
 

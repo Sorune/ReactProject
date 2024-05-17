@@ -1,8 +1,4 @@
-import SidebarLayout from "../../layouts/SidebarLayout";
-import {
-    Card,
-    Typography
-} from "@material-tailwind/react";
+import {Card, Typography} from "@material-tailwind/react";
 
 import React, {useEffect, useState} from "react";
 import useCustomMove from "../../hooks/useCustomMove";

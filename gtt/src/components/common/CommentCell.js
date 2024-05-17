@@ -1,13 +1,6 @@
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    Typography,
-    Avatar, CardFooter, Button, Textarea,
-} from "@material-tailwind/react";
+import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Textarea, Typography,} from "@material-tailwind/react";
 import {modifyComment, removeComment} from "../../api/commentApi";
 import {useState} from "react";
-import {useLocation} from "react-router-dom";
 import {useRecoilValue} from "recoil";
 import {userState} from "../../atoms/userState";
 
