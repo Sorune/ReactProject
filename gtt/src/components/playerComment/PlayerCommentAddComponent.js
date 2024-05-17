@@ -50,7 +50,6 @@ function UnratedIcon() {
 
 const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const [playerComment, setPlayerComment] = useState({...initState})
-    const writer = 'user100'
     const pno = useLocation().pathname.split("/")[3]
     const [userInfo,setUserInfo] = useRecoilState(userState)
     const textareaRef = useRef(null);
