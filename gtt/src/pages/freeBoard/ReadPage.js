@@ -74,7 +74,7 @@ const ReadPage = () => {
 
     return (
         <section className="bg-white w-full h-full p-2 py-2">
-            <ContentHeader page={page} pathName={'/free/'} moveTo={moveToList} numValue={newsNo} moveToModify={ moveToModify } text={"free"} location={"read"} />
+            <ContentHeader page={page} pathName={'/free/'} moveTo={moveToList} numValue={newsNo} moveToModify={ moveToModify } text={"free"} location={"read"} writer={serverData.writer} />
             <Card className="flex flex-auto p-1">
                 <CardBody>
                     <ContentBody
