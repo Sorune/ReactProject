@@ -1,7 +1,7 @@
 import {createSearchParams, Link, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import { Card, CardBody, CardFooter,} from "@material-tailwind/react";
 import PageComponent from "../../components/common/PageComponent";
-import {getComList, insertComment} from "../../api/commentApi";
+import {getComList, insertComment, modifyComment, removeComment} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {CommentCell} from "../../components/common/CommentCell";
@@ -100,7 +100,9 @@ const ReadPage = () => {
                     {comServerData.dtoList.map((dto) => {
                         console.log(dto)
                         return (
-                            <CommentCell key={dto.comNo} newsNo={newsNo} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                            <CommentCell key={dto.comNo} newsNo={newsNo} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}
+                                modifyComment={modifyComment} removeComment={removeComment}
+                            />
                         )
                     })}
                     <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>

@@ -3,7 +3,7 @@ import {useCallback, useEffect, useState} from "react";
 import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import {CommentCell} from "../../components/common/CommentCell";
-import {getComList, getNoticeComments, insertComment} from "../../api/commentApi";
+import {getComList, getNoticeComments, insertComment, modifyComment, removeComment} from "../../api/commentApi";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {userState} from "../../atoms/userState";
@@ -52,7 +52,9 @@ const initState = {
                     {comServerData.dtoList.map((dto) => {
                         console.log(dto)
                         return(
-                            <CommentCell key={dto.comNo} notiNo={notiNo} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                            <CommentCell key={dto.comNo} notiNo={notiNo} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}
+                                modifyComment={modifyComment} removeComment={removeComment}
+                            />
                         )
                     })}
                 </div>

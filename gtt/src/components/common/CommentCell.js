@@ -1,11 +1,10 @@
 import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Textarea, Typography,} from "@material-tailwind/react";
-import {modifyComment, removeComment} from "../../api/commentApi";
 import {useState} from "react";
 import {useRecoilValue} from "recoil";
 import {userState} from "../../atoms/userState";
 
 
-export const CommentCell=({comno,writer, position, content, newsNo, notiNo, modDate, recomNo,refresh,setRefresh}) => {
+export const CommentCell=({comno,writer, position, content, newsNo, notiNo, modDate, recomNo,refresh,setRefresh,modifyComment, removeComment}) => {
     const [isModify,setIsModify] =useState(true)
     const [comment,setComment] = useState(content)
     const userInfo = useRecoilValue(userState)
