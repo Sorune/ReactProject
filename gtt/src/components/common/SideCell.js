@@ -25,9 +25,6 @@ const SideCell = ()=>{
                 console.log(error)
             })
     }, [])
-    const handleClick = () => {
-        window.location.reload(); // 클릭 이벤트 발생 시 페이지를 리로드합니다.
-    };
 
     return(
         <Card className="w-full shadow-xl shadow-blue-gray-900/5">
@@ -58,7 +55,7 @@ const SideCell = ()=>{
                     <tbody>
                     {freeData && freeData.length > 0 ? (
                         freeData.map((data) => (
-                            <tr className="p-4 border-b border-blue-gray-50" key={data.fno} onClick={() => { moveToRead({ pathName: `/free/read`, num: data.fno, totalPage: freeData.totalCount }); handleClick(); }}>
+                            <tr className="p-4 border-b border-blue-gray-50" key={data.fno} onClick={() => { moveToRead({ pathName: `/free/read`, num: data.fno, totalPage: freeData.totalCount }) }}>
                                 <td >
                                     <div className="flex items-center gap-3 justify-center p-4">
                                         <Typography

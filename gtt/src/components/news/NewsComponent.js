@@ -30,7 +30,7 @@ const ListComponent = memo(({ serverData, page, size, path }) => {
                     console.error("Error fetching teams:", error);
                 });
         }
-    }, []);
+    }, [serverData]);
 
     return (
         <tbody>
