@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,12 +49,13 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
     @Override
     public FreeBoardDTO getById(Long no) {
-        FreeBoard freeBoard = freeBoardRepository.getOne(no);
-
+        Optional <FreeBoard> result = freeBoardRepository.findById(no);
+        FreeBoard freeBoard = result.orElseThrow();
         FreeBoardDTO freeBoardDTO = modelMapper.map(freeBoard,FreeBoardDTO.class);
         freeBoardDTO.setHits(freeBoard.getHits()+1);
         log.info("조회수는? : " + freeBoard.getHits());
-        return modelMapper.map(freeBoard, FreeBoardDTO.class);
+        freeBoardRepository.save(modelMapper.map(freeBoardDTO, FreeBoard.class));
+        return freeBoardDTO;
     }
 
     @Override
