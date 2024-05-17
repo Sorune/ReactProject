@@ -1,10 +1,10 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import useCustomMove from "../../hooks/useCustomMove";
 import {createSearchParams, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {Button, Rating, Textarea} from "@material-tailwind/react";
-import {checkPComment, postPCommentAdd} from "../../api/playerCommentApi";
+import {checkPComment, getPCommentList, postPCommentAdd} from "../../api/playerCommentApi";
 import {userState} from "../../atoms/userState";
 import {focus} from "@testing-library/user-event/dist/focus";
 
@@ -54,6 +54,8 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
     const pno = useLocation().pathname.split("/")[3]
     const [userInfo,setUserInfo] = useRecoilState(userState)
     const textareaRef = useRef(null);
+    const [check, setCheck] = useState(null)
+
 
     const {moveToList, moveToRead} = useCustomMove();
 
@@ -65,6 +67,13 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
             setPlayerComment({...playerComment});
         }
     }
+
+    useEffect(() => {
+        checkPComment(pno, userInfo.nick).then(data => {
+            console.log(data)
+            setCheck(data)
+        })
+    }, [refresh]);
 
     const handleAdd = () => {
         const formData = new FormData()
@@ -85,20 +94,23 @@ const PlayerCommentAddComponent = ({refresh,setRefresh}) => {
                 return;
 
             } else { // 댓글, 평점이 있으면 작성
-                checkPComment(pno, userInfo.nick).then(data => {
-                    console.log(data)
-                })
+                console.log(check)
 
-                formData.append("comment", playerComment.comment)
-                formData.append("comWriter", userInfo.nick)
-                formData.append("pno", pno)
-                formData.append("recomNo", playerComment.recomNo)
+                if (check !== null && check === true) {
+                    alert("이미 응원글을 작성하셨습니다.")
 
-                postPCommentAdd(formData).then(data => {
-                    alert("SUCCESS")
-                    window.location.reload();
-                    setRefresh(!refresh)
-                })
+                } else if (check !== null && check === false) {
+                    formData.append("comment", playerComment.comment)
+                    formData.append("comWriter", userInfo.nick)
+                    formData.append("pno", pno)
+                    formData.append("recomNo", playerComment.recomNo)
+
+                    postPCommentAdd(formData).then(data => {
+                        alert("SUCCESS")
+                        window.location.reload();
+                        setRefresh(!refresh)
+                    })
+                }
             }
         }
     }
