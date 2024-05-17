@@ -58,61 +58,65 @@ const CartListComponent = ({ cartData, setCartData }) => {
         localStorage.setItem("cartData", JSON.stringify(newCartData));
         setSelectedItems([]);
     };
-
-    const handlePayment = () => {
+    const isSameCartItem = (item1, item2) => {
+        return item1.data === item2.data && item1.totalPrice === item2.totalPrice;
+    };
+    const handlePayment = async () => {
         if (selectedItems.length === 0) {
             alert("결제할 상품을 선택하세요.");
             return;
         }
 
-        const selectedProducts = selectedItems.map(index => {
-            const cart = cartData[index];
-            return {
-                ...cart,
-                userNo: userInfo[0].num,
-                phone: userInfo[0].phone
-            };
-        });
+        try {
+            const selectedProducts = selectedItems.map(index => {
+                const cart = cartData[index];
+                return {
+                    ...cart,
+                    userNo: userInfo[0].num,
+                    phone: userInfo[0].phone
+                };
+            });
 
-        console.log("선택된 상품들:", selectedProducts, userInfo);
+            console.log("선택된 상품들:", selectedProducts, userInfo);
 
-        // 결제 결과를 저장할 배열
-        const paymentPromises = selectedProducts.map(cart =>
-            pay(cart).then(response => {
-                console.log(response)
-                if (response.result === "SUCCESS") {
-                    return cart;
-                } else {
-                    throw new Error(response.message || "결제 실패");
+            // 결제 결과를 저장할 배열
+            // 결제 결과를 저장할 배열
+            // 결제가 완료된 항목과 동일한 장바구니 항목을 찾음
+            const completedPaymentProducts = [];
+
+            for (const cart of selectedProducts) {
+                try {
+                    const response = await pay(cart);
+                    console.log(response);
+                    if (response.result === "SUCCESS") {
+                        completedPaymentProducts.push(cart); // 결제가 성공한 항목을 저장
+                    } else {
+                        console.error("결제 실패:", response.message);
+                        alert("일부 결제에 실패했습니다. 다시 시도해주세요.");
+                    }
+                } catch (error) {
+                    console.error("결제 실패:", error);
+                    alert("일부 결제에 실패했습니다. 다시 시도해주세요.");
+                    return;
                 }
-            }).catch(error => {
-                console.error("결제 실패:", error);
-                return null; // 실패한 경우 null 반환
-            })
-        );
+            }
 
-        Promise.all(paymentPromises).then(results => {
-            const successfulPayments = results.filter(result => result !== null);
-            const failedPaymentsCount = results.length - successfulPayments.length;
+            // 모든 결제가 성공한 경우
+            alert("결제 완료");
 
             // 성공적으로 결제된 상품을 장바구니에서 제거
-            const newCartData = cartData.filter(item => !successfulPayments.includes(item));
+            const newCartData = cartData.filter(item => !completedPaymentProducts.some(completedItem => isSameCartItem(completedItem, item)));
             setCartData(newCartData);
             localStorage.setItem("cartData", JSON.stringify(newCartData));
             setSelectedItems([]);
-
-            if (failedPaymentsCount > 0) {
-                alert("일부 결제에 실패했습니다. 다시 시도해주세요.");
-            } else {
-                alert("결제 완료");
-            }
-
             navigate("/");
-        }).catch(error => {
+        } catch (error) {
             console.error("결제 중 오류 발생:", error);
             alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
-        });
+        }
     };
+
+
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
