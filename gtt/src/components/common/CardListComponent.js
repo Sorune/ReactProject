@@ -1,4 +1,4 @@
-import {Avatar, Typography} from "@material-tailwind/react";
+import {Typography} from "@material-tailwind/react";
 import useCustomMove from "../../hooks/useCustomMove";
 import {useEffect, useState} from "react";
 

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, Typography } from "@material-tailwind/react";
+import React, {useState} from "react";
+import {Button, Card, CardBody, CardFooter, CardHeader, Checkbox, Typography} from "@material-tailwind/react";
 import {useNavigate} from "react-router-dom";
 import {pay} from "../../api/cartApi";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {userState} from "../../atoms/userState";
 
 const TABLE_HEAD = ["", "상품명", "경기일", "장소", "수량", "합계금액", ""];

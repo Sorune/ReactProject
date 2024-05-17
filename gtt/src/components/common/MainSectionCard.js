@@ -1,7 +1,6 @@
 import {Card, CardBody, CardHeader, Typography} from "@material-tailwind/react";
 import CardListComponent from "./CardListComponent";
 import React from "react";
-import PlayerListComponent from "../player/PlayerListComponent";
 
 export const MainSectionCard =({serverData,sectionTitle,path}) =>{
     return (

@@ -1,9 +1,9 @@
 import {createSearchParams, Link, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import { Card, CardBody, CardFooter,} from "@material-tailwind/react";
 import PageComponent from "../../components/common/PageComponent";
-import {getComList} from "../../api/freeBoardCommentApi";
+import {getFreeComList, insertFreeComment} from "../../api/freeBoardCommentApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState} from "react";
 import {CommentCell} from "../../components/common/CommentCell";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import ContentBody from "../../components/common/ContentBody";
@@ -63,7 +63,7 @@ const ReadPage = () => {
             setServerData(data)
         })
         let pathName = isFirst===true?`${newsNo+"?" + createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}` : `${newsNo}?page=1&size=10`; setIsFirst(true);
-        getComList({pathName}).then(data => {
+        getFreeComList({pathName}).then(data => {
             setComServerData(data)
         })
         if(ReadQuillRef.current){
@@ -88,14 +88,14 @@ const ReadPage = () => {
                         writer={serverData.writer}
                     />
                     <Card className="m-2 row-start-3 mt-10">
-                        <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                        <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)} insertComment={insertFreeComment}/>
                     </Card>
                 </CardBody>
                 <CardFooter>
                     {comServerData.dtoList.map((dto) => {
                         console.log(dto)
                         return (
-                            <CommentCell key={dto.comNo} newsNo={newsNo} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                            <CommentCell key={dto.comNo} newsNo={dto.fno} comno={dto.comNo} writer={dto.writer} content={dto.content} modDate={dto.modDate} recomNo={dto.recomNo} refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
                         )
                     })}
                     <PageComponent serverData={comServerData} movePage={loadToList} pathName={pathName}/>

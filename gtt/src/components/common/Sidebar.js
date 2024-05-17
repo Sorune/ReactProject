@@ -1,27 +1,18 @@
-import SidebarLayout from "../../layouts/SidebarLayout";
 import {
     Card,
-    Chip,
     List,
     ListItem,
     ListItemPrefix,
-    ListItemSuffix,
     Menu,
-    MenuHandler, MenuItem, MenuList,
+    MenuHandler,
+    MenuItem,
+    MenuList,
     Typography
 } from "@material-tailwind/react";
-import {
-    Cog6ToothIcon,
-    InboxIcon, PowerIcon,
-    PresentationChartBarIcon,
-    ShoppingBagIcon,
-    UserCircleIcon
-} from "@heroicons/react/16/solid";
 import {useResetRecoilState} from "recoil";
 import {pageState} from "../../atoms/pageState";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import React from "react";
-import useCustomMove from "../../hooks/useCustomMove";
 
 const Sidebar = ()=>{
 

@@ -7,7 +7,6 @@ import useCustomMove from "../../hooks/useCustomMove";
 import { pageState } from "../../atoms/pageState";
 import { getOne,insertFreeBoard,modifyFreeBoard } from "../../api/freeBoardApi";
 import {useLocation} from "react-router-dom";
-import useUtils from "../../hooks/utils";
 
 const testTeam = {
     teamName: "Gen.G",

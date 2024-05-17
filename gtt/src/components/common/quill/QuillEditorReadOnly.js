@@ -1,8 +1,6 @@
-import React, {forwardRef, useMemo, useState} from "react";
-import ReactQuill, {Quill} from "react-quill";
+import React, {forwardRef, useMemo} from "react";
+import ReactQuill from "react-quill";
 import {Card} from "@material-tailwind/react";
-import {ImageHandler} from "./handler/imageHandler";
-import {isDisabled} from "@testing-library/user-event/dist/utils";
 
 
 const formats = [

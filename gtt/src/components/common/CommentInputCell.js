@@ -1,12 +1,10 @@
-import {Button, Card, IconButton, Textarea} from "@material-tailwind/react";
-import {useEffect, useRef, useState} from "react";
-import {insertComment} from "../../api/commentApi";
+import {Button, Card, Textarea} from "@material-tailwind/react";
+import {useRef, useState} from "react";
 import {useLocation} from "react-router-dom";
-import useCustomMove from "../../hooks/useCustomMove";
 import {useRecoilState} from "recoil";
 import {userState} from "../../atoms/userState";
 
-const CommentInputCell = ({refresh, setRefresh})=>{
+const CommentInputCell = ({refresh, setRefresh, insertComment})=>{
     const [userInfo] = useRecoilState(userState)
     const commnetInput = useRef()
     const writerInput = useRef()
@@ -19,6 +17,7 @@ const CommentInputCell = ({refresh, setRefresh})=>{
 
     const notiNo = pathname.startsWith("/notice/") ? pathname.split("/")[3] : null;
     const newsNo = pathname.startsWith("/news/") ? pathname.split("/")[3] : null;
+    const bno = pathname.split("/")[3]
 
     const handleOnChange = (e)=>{
         console.log(e.target.value)
@@ -44,7 +43,12 @@ const CommentInputCell = ({refresh, setRefresh})=>{
                 setRefresh(!refresh);
             }).catch(err => console.log(err));
         } else {
-            console.log("Error: newsNo or notiNo is required");
+            insertComment(writer, comment, bno).then((message) => {
+                alert(message.comNo);
+                setComment("");
+                commnetInput.current.children[0].value = "";
+                setRefresh(!refresh);
+            }).catch(err => console.log(err));
         }
     }
 

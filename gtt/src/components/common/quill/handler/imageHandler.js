@@ -1,5 +1,4 @@
-import {insertFiles} from "../../../../api/filesApi";
-import {useState} from "react";
+
 
 export function ImageHandler   (ref){
 
