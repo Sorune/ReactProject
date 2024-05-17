@@ -17,4 +17,6 @@ public interface ServerTeamService {
     PageResponseDTO<ServerPlayerDTO> getPlayersWithTeam(PageRequestDTO pageRequestDTO, String teamName);
   
     List<ServerTeamDTO> getTeamsWithOutPlayers();
+
+    ServerTeamDTO getOneTeamByName(String teamName);
 }

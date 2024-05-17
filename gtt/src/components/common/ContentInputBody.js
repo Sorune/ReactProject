@@ -54,10 +54,16 @@ const ContentInputBody = memo(({ serverData, insert, modify, pathName, remove })
             const buttonInstance = buttonRef.current;
             setSelectedTeam(buttonInstance.innerText);
         }
-        insert(title, stringContent, writer).then(message => {
-            setOpen(true);
-            setResult(`${pathName}게시판 게시물이 등록되었습니다.`);
-        });
+        insert(title,stringContent,selectedTeam,writer).then(message => {
+            if (pathName==="news"){
+                alert(message.newsNo + "번 등록 완료")
+            } else if (pathName === "free"){
+                alert(message.fno + "번 등록 완료")
+            } else if (pathName ==="board"){
+                alert(message.bno + "번 등록 완료")
+            }
+            moveToList({pathName: `/${pathName}/list`,pageState:{ page:page.page, size : page.size}})
+        })
     };
 
     const handleModify = () => {

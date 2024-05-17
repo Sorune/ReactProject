@@ -43,6 +43,7 @@ const BasicMenu = () =>{
     const moveToLogout = ()=>{
         if(window.confirm("로그아웃 하시겠습니까?")){
             logout()
+            window.location.reload()
             setRefresh(!refresh)
             console.log(pathName)
             if(pathName&&pathName==="/myPage"){

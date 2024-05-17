@@ -1,11 +1,10 @@
-import {CardBody, Typography} from "@material-tailwind/react";
+import {Typography} from "@material-tailwind/react";
 import {ChevronUpDownIcon} from "@heroicons/react/24/outline";
 import ListComponent from "../NewsComponent";
 import {memo} from "react";
 
 
 const ListTable = memo(({TABLE_HEAD,serverData, page, size, path}) =>{
-
     return(
             <table className="mt-4 w-full min-w-max table-auto text-left">
                 <thead>
