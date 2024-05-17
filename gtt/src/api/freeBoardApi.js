@@ -30,7 +30,7 @@ export const getOne = async(fno)=>{
     return res.data
 }
 
-export const insertFreeBoard = async (title,content,writer)=>{
+export const insertFreeBoard = async (title,content,theTeam,writer)=>{
     const res = await axios.post(`${prefix}/`,{
         title:title,
         content:content,
