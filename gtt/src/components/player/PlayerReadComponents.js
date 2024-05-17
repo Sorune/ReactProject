@@ -144,23 +144,23 @@ const ReadComponent = ({pno}) => {
                                 <span
                                     className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
                                     {player.roles[0] === "Top" ? (
-                                        <img src="https://i.namu.wiki/i/vTyaLcH8pcz7ShHzJMRJ5BbmkcbPmTx68q0RIarcYAQsXQ-z92uL3fKIwq66Ntz9SM6uHjGIDcagPa3UYBCATg.svg"/>
+                                        <img src="/img/top.png"/>
                                     ) : <></>}
                                     {player.roles[0] === "Jungle" ? (
                                         <img
-                                            src="https://i.namu.wiki/i/kr494GovCk0CjqhqK4LYICn53zmvlqaUC8XgEB15Z_TZFsxOP_a-HjYUvHczDrsH8J0Y2f0PKNxaMyxFzKtbpQ.svg"/>
+                                            src="/img/jungle.png"/>
                                     ) : <></>}
                                     {player.roles[0] === "Mid" ? (
                                         <img
-                                            src="https://i.namu.wiki/i/kRDRG0ykjeKKXOFEZ3_lc1bmcICxszkkbUAdqFMtjytECCnASARE0ulGaSAfspAfdm0RHNU1y7s6GYZ1Xgt43w.svg"/>
+                                            src="/img/mid.png"/>
                                     ) : <></>}
                                     {player.roles[0] === "Bot" ? (
                                         <img
-                                            src="https://i.namu.wiki/i/vJF0KOOw7oOwj1VDxMXn-Dor3zXa7WCyBUQvEA9dobFjHu1Rtt2gCehJp37da2VdR-WVW0RctoFC227zRXLVeg.webp"/>
+                                            src="/img/bot.png"/>
                                     ) : <></>}
                                     {player.roles[0] === "Support" ? (
                                         <img
-                                            src="https://i.namu.wiki/i/HW8xX91KapdIibmchgriOZBrNCJ23qHvufQwR_AkVu7mKMRAb8OY19Wc8spQUSd_PvQBZ42vob4NNDYOU3tCOA.svg"/>
+                                            src="/img/support.png"/>
                                     ) : <></>}
                                 </span>
                             </Tooltip>
