@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faDribbble, faGithub, faLinkedin} from "@fortawesome/free-brands-svg-icons";
 
 
-export const TeamCard =({ img, name, title, git }) => {
+export const TeamCard =({ img, name, title, git, review }) => {
 
     return (
         <Card className="rounded-lg bg-[#FAFAFA]" shadow={false}>
@@ -36,6 +36,14 @@ export const TeamCard =({ img, name, title, git }) => {
                     <IconButton variant="text" color="gray">
                         <FontAwesomeIcon icon={faDribbble} className={"text-lg"}/>
                     </IconButton>
+                </div>
+                <div>
+                    <Typography className="mb-3 mt-3">
+                        프로젝트 후기
+                    </Typography>
+                    <Typography>
+                        {review}
+                    </Typography>
                 </div>
             </CardBody>
         </Card>
