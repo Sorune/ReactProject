@@ -2,7 +2,6 @@ import {Button, CardHeader, Typography} from "@material-tailwind/react";
 import {useRecoilState} from "recoil";
 import {userState} from "../../../atoms/userState";
 
-const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
 const ListHeader = ({TABS,moveTo,pathName, path})=>{
     // 페이지 이름 추출 및 첫 글자 대문자로 변환

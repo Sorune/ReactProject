@@ -1,7 +1,7 @@
 import {createSearchParams, Link, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import { Card, CardBody, CardFooter,} from "@material-tailwind/react";
 import PageComponent from "../../components/common/PageComponent";
-import {getComList} from "../../api/commentApi";
+import {getComList, insertComment} from "../../api/commentApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {CommentCell} from "../../components/common/CommentCell";
@@ -92,7 +92,7 @@ const ReadPage = () => {
                     />
                     {userInfo.nick !== "Anonymous" ? (
                         <Card className="m-2 row-start-3 mt-10">
-                            <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)}/>
+                            <CommentInputCell refresh={refresh} setRefresh={()=>setRefresh(!refresh)} insertComment={insertComment}/>
                         </Card>
                     ) : <></>}
                 </CardBody>

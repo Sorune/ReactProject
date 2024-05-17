@@ -3,7 +3,7 @@ import {useCallback, useEffect, useState} from "react";
 import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import {CommentCell} from "../../components/common/CommentCell";
-import {getComList, getNoticeComments} from "../../api/commentApi";
+import {getComList, getNoticeComments, insertComment} from "../../api/commentApi";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
 import {userState} from "../../atoms/userState";
@@ -45,7 +45,7 @@ const initState = {
                 <NoticeReadComponent notiNo={notiNo} page={page} size={page.size}></NoticeReadComponent>
                 {userInfo.nick !== "Anonymous" ? (
                     <div className="p-0 m-2 mt-10">
-                        <CommentInputCell refresh={refresh} setRefresh={setRefresh}/>
+                        <CommentInputCell refresh={refresh} setRefresh={setRefresh} insertComment={insertComment}/>
                     </div>
                 ) : <></>}
                 <div className="p-0 m-2 mt-10">
