@@ -2,12 +2,16 @@ import {Avatar, Button, CardHeader, Tab, Tabs, TabsHeader, Typography} from "@ma
 import {UserPlusIcon} from "@heroicons/react/24/solid";
 import {useLocation, useNavigate} from "react-router-dom";
 import React from "react";
+import {useRecoilState} from "recoil";
+import {userState} from "../../../atoms/userState";
 
 const img = "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
 
 
 const PlayerListHeader = ({TABS,moveTo,pathName, page, onData})=>{
     const path = useLocation().pathname.split("/")[2];
+    const [userInfo,setUserInfo] = useRecoilState(userState)
+
 
     const handleTabClick = (value) => {
         onData(value);
@@ -27,9 +31,11 @@ const PlayerListHeader = ({TABS,moveTo,pathName, page, onData})=>{
                             <Button variant="outlined" size="sm">
                                 view all
                             </Button>
-                            <Button className="flex items-center gap-3" size="sm" onClick={()=>{moveTo({pathName:pathName})}}>
-                                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Player
-                            </Button>
+                            {userInfo.nick !== "Anonymous" ? (
+                                <Button className="flex items-center gap-3" size="sm" onClick={()=>{moveTo({pathName:pathName})}}>
+                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Player
+                                </Button>
+                            ) : <></>}
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-between gap-4 md:flex-row">

@@ -2,12 +2,16 @@ import {Breadcrumbs, Button} from "@material-tailwind/react";
 import {Link, useLocation} from "react-router-dom";
 import React, {useState} from "react";
 import {deleteOnePlayer, postAdd, putOnePlayer} from "../../../api/playerApi";
+import {useRecoilState} from "recoil";
+import {userState} from "../../../atoms/userState";
 
 
 const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverData, id, player, imageDiv, setResultCallback})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
     const [result, setResult] = useState(null)
+    const [userInfo,setUserInfo] = useRecoilState(userState)
+
 
 
     const handleClickDelete = () => {
@@ -132,8 +136,13 @@ const PlayerButtons = ({moveTo,pathName,page, moveToModify, moveToRead, serverDa
                     })}>List</Button> : <></>}
 
                 {path==="read"?
-                    <Button className="rounded-full"
-                         onClick={() => moveToModify({pathName: pathName+"modify", num: id})}>Modify</Button>:<></>}
+                    <div>
+                        {userInfo.nick !== "Anonymous" ? (
+                            <Button className="rounded-full"
+                                    onClick={() => moveToModify({pathName: pathName+"modify", num: id})}>Modify</Button>
+                        ) : <></>}
+                    </div>
+                    :<></>}
 
                 {path==="modify"?
                     <div className="justify-between">

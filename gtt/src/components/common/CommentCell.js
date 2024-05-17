@@ -8,12 +8,17 @@ import {
 import {modifyComment, removeComment} from "../../api/commentApi";
 import {useState} from "react";
 import {useLocation} from "react-router-dom";
+import {useRecoilValue} from "recoil";
+import {userState} from "../../atoms/userState";
 
 
 export const CommentCell=({comno,writer, position, content, newsNo, notiNo, modDate, recomNo,refresh,setRefresh}) => {
     const [isModify,setIsModify] =useState(true)
     const [comment,setComment] = useState(content)
+    const userInfo = useRecoilValue(userState)
+
     const toggleRecommend = () => {
+
 
     };
     const handleChange=(e)=>{
@@ -54,13 +59,18 @@ export const CommentCell=({comno,writer, position, content, newsNo, notiNo, modD
                         </Typography>
                         <div className="5 flex items-center gap-0 mr-3">
                             {/* 본인일 경우 보이는 수정, 삭제 버튼 */}
-                            <Button size="sm" color="blue" variant="text" className="rounded-md" onClick={handleModify} disabled={!isModify}>
-                                modify
-                            </Button>
-                            {isModify?<Button size="sm" color="red" variant="text" className="rounded-md"
-                                     onClick={handleDelete}>delete</Button>:<Button size="sm" color="red" variant="text" className="rounded-md"
-                                                                                    onClick={handleConfirm}>Confirm</Button>
-                            }
+                            {userInfo.nick === writer ? (
+                                <div>
+                                    <Button size="sm" color="blue" variant="text" className="rounded-md" onClick={handleModify} disabled={!isModify}>
+                                        modify
+                                    </Button>
+                                {isModify?<Button size="sm" color="red" variant="text" className="rounded-md"
+                                                  onClick={handleDelete}>delete</Button>:<Button size="sm" color="red" variant="text" className="rounded-md"
+                                                                                                 onClick={handleConfirm}>Confirm</Button>
+                                }
+
+                                </div>
+                            ) : <></>}
                             <Button size="sm" color="red" variant="text" className="rounded-md">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 recommend">
                                     <path

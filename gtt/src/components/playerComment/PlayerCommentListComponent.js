@@ -14,6 +14,7 @@ import useCustomMove from "../../hooks/useCustomMove";
 import { useRecoilState } from "recoil";
 import { pageState } from "../../atoms/pageState";
 import { deleteOnePComment, getPCommentList, putOnePComment } from "../../api/playerCommentApi";
+import {userState} from "../../atoms/userState";
 
 function RatedIcon() {
     return (
@@ -51,6 +52,7 @@ const PlayerCommentListComponent = ({refresh, setRefresh}) => {
     const [isModify, setIsModify] = useState("");
     const [modifiedComment, setModifiedComment] = useState("");
     const [modifiedRecomNo, setModifiedRecomNo] = useState(0);
+    const [userInfo,setUserInfo] = useRecoilState(userState)
 
     const location = useLocation();
     const [queryParams] = useSearchParams();
@@ -140,36 +142,40 @@ const PlayerCommentListComponent = ({refresh, setRefresh}) => {
                             <Typography>{playerComment.comment}</Typography>
                         )}
                         <div>
-                            {isModify === playerComment.playerComNo ? (
-                                <Button variant="text" className="flex items-center gap-2" onClick={() => handleConfirmModify(playerComment)}>
-                                    Confirm{" "}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                                    </svg>
-                                </Button>
-                            ) : (
-                                <Button variant="text" className="flex items-center gap-2" onClick={() => handleModify(playerComment)}>
-                                    Modify{" "}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                                    </svg>
-                                </Button>
-                            )}
-                            {isModify ? (
-                                <Button variant="text" className="flex items-center gap-2" onClick={() => handleCancel()}>
-                                    Cancel{" "}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                                    </svg>
-                                </Button>
-                            ) : (
-                                <Button variant="text" className="flex items-center gap-2" onClick={() => handleCommentDelete(playerComment.playerComNo)}>
-                                    Remove{" "}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                                    </svg>
-                                </Button>
-                            )}
+                            {userInfo.nick === playerComment.comWriter ? (
+                                <div>
+                                    {isModify === playerComment.playerComNo ? (
+                                        <Button variant="text" className="flex items-center gap-2" onClick={() => handleConfirmModify(playerComment)}>
+                                            Confirm{" "}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                            </svg>
+                                        </Button>
+                                    ) : (
+                                        <Button variant="text" className="flex items-center gap-2" onClick={() => handleModify(playerComment)}>
+                                            Modify{" "}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                            </svg>
+                                        </Button>
+                                    )}
+                                    {isModify ? (
+                                        <Button variant="text" className="flex items-center gap-2" onClick={() => handleCancel()}>
+                                            Cancel{" "}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                            </svg>
+                                        </Button>
+                                    ) : (
+                                        <Button variant="text" className="flex items-center gap-2" onClick={() => handleCommentDelete(playerComment.playerComNo)}>
+                                            Remove{" "}
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                            </svg>
+                                        </Button>
+                                    )}
+                                </div>
+                            ) : <></>}
                         </div>
                     </CardBody>
                 </Card>

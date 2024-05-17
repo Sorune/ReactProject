@@ -1,10 +1,14 @@
 import {Breadcrumbs, Button} from "@material-tailwind/react";
 import {Link, useLocation} from "react-router-dom";
 import React from "react";
+import {useRecoilValue} from "recoil";
+import {userState} from "../../atoms/userState";
 
-const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData, numValue,text,location})=>{
+const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData, numValue,text,location, writer})=>{
     const path = useLocation().pathname.split("/")[2];
     const pathNum = useLocation().pathname.split("/")[3];
+    const userInfo = useRecoilValue(userState)
+
 
     return (
         <div className="flex flex-box justify-between items-center">
@@ -31,8 +35,13 @@ const ContentHeader = ({moveTo,pathName,page, moveToModify, serverData, numValue
                     pageParam: {page: `${page.page}`, size: `${page.size}`}
                 })}>List</Button>
                 {path==="read"?
-                    <Button className="rounded-full"
-                         onClick={() => moveToModify({pathName: pathName+"modify", num: numValue})}>Modify</Button>:<></>}
+                    <div>
+                        {userInfo.nick === writer ? (
+                            <Button className="rounded-full"
+                                    onClick={() => moveToModify({pathName: pathName+"modify", num: numValue})}>Modify</Button>
+                        ) : <></> }
+                    </div>
+                    :<></>}
             </div>
         </div>
     )

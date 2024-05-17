@@ -4,8 +4,9 @@ import NoticeReadComponent from "../../components/notice/NoticeReadComponent";
 import CommentInputCell from "../../components/common/CommentInputCell";
 import {CommentCell} from "../../components/common/CommentCell";
 import {getComList, getNoticeComments} from "../../api/commentApi";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {pageState} from "../../atoms/pageState";
+import {userState} from "../../atoms/userState";
 
 const initState = {
     dtoList: [],
@@ -29,6 +30,8 @@ const initState = {
         const size = queryParams.get("size") ? parseInt(queryParams.get("size")) : 10*/
         const [comServerData, setComServerData] = useState(initState)
         const [isFirst,setIsFirst] =useState(false)
+        const userInfo = useRecoilValue(userState)
+
 
         useEffect(() => {
             let pathName = isFirst===true?`${notiNo+"?" + createSearchParams({page:queryParams.get('page'),size:queryParams.get('size')}).toString()}` : `${notiNo}?page=1&size=10`; setIsFirst(true);
@@ -40,9 +43,11 @@ const initState = {
         return(
             <div className=" w-full bg-white mt-6">
                 <NoticeReadComponent notiNo={notiNo} page={page} size={page.size}></NoticeReadComponent>
-                <div className="p-0 m-2 mt-10">
-                    <CommentInputCell refresh={refresh} setRefresh={setRefresh}/>
-                </div>
+                {userInfo.nick !== "Anonymous" ? (
+                    <div className="p-0 m-2 mt-10">
+                        <CommentInputCell refresh={refresh} setRefresh={setRefresh}/>
+                    </div>
+                ) : <></>}
                 <div className="p-0 m-2 mt-10">
                     {comServerData.dtoList.map((dto) => {
                         console.log(dto)
