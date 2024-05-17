@@ -5,6 +5,8 @@ import com.sorune.gttapiserver.common.DTO.PageRequestDTO;
 import com.sorune.gttapiserver.common.DTO.PageResponseDTO;
 import com.sorune.gttapiserver.freeBoard.DTO.FreeBoardDTO;
 
+import java.util.List;
+
 public interface FreeBoardService {
     Long registerFreeBoard(FreeBoardDTO freeBoardDTO);
 
@@ -18,6 +20,5 @@ public interface FreeBoardService {
 
     PageResponseDTO<FreeBoardDTO> getMyBoard(PageRequestDTO pageRequestDTO, String userId);
 
-    PageResponseDTO<FreeBoardDTO> hotPost(PageRequestDTO pageRequestDTO);
-
+    List<FreeBoardDTO> hotPost();
 }
