@@ -34,88 +34,91 @@ def get_players(team_name):
 
 
 def getTeamWithPlayers():
-    teams = []
-    results = site.cargo_client.query(
-        tables="Teams=T",
-        fields="T.Name=TeamName,T.Image,T.Location,T.RosterPhoto",
-        where="T.Region='Korea'"
+    return
+
+
+teams = []
+results = site.cargo_client.query(
+    tables="Teams=T",
+    fields="T.Name=TeamName,T.Image,T.Location,T.RosterPhoto",
+    where="T.Region='Korea'"
+)
+
+for result in results:
+    response = site.cargo_client.query(
+        tables="Players=P",
+        fields="P.ID=NickName,P.Name,P.NameFull,P.Country,P.Age,P.Birthdate,P.Team,P.Role,P.FavChamps",
+        where='P.TeamLast="%s" AND P.Team IS NOT NULL AND (P.Role="Top" OR P.Role="Mid" OR P.Role="Bot" OR P.Role="Jungle" OR P.Role="Support")' % (
+        result["TeamName"])
+        #  AND P.Team IS NOT NULL AND (P.Role="Top" OR P.Role="Mid" OR P.Role="Bot" OR P.Role="Jungle" OR P.Role="Support")
     )
+    players = []
+    for player in response:
+        players.append(
+            Player(player.get("NickName"), player.get("Name"), player.get("NameFull"), player.get("Country"),
+                   player.get("Age"), player.get("Birthdate"), player.get("Role"), player.get("FavChamps")))
+    teams.append(Team(result["TeamName"], result["Location"], result["Image"], result["RosterPhoto"],
+                      players)) if players != [] else None
+# 팀과 선수 정보를 데이터베이스에 저장합니다.
+print(session)
+for team in teams:
+    print(team)
+    for player in team.players:
+        print(player)
+    # 팀 정보를 데이터베이스에 저장합니다.
+    server_team = ServerTeam(
+        id=None,
+        team_name=team.team_name,
+        location=team.location,
+        image=team.image,
+        roster_photo=team.roster_photo
+    )
+    session.add(server_team)
+    session.commit()  # 팀 정보를 데이터베이스에 저장합니다.
 
-    for result in results:
-        response = site.cargo_client.query(
-            tables="Players=P",
-            fields="P.ID=NickName,P.Name,P.NameFull,P.Country,P.Age,P.Birthdate,P.Team,P.Role,P.FavChamps",
-            where='P.TeamLast="%s" AND P.Team IS NOT NULL AND (P.Role="Top" OR P.Role="Mid" OR P.Role="Bot" OR P.Role="Jungle" OR P.Role="Support")' % (
-            result["TeamName"])
-            #  AND P.Team IS NOT NULL AND (P.Role="Top" OR P.Role="Mid" OR P.Role="Bot" OR P.Role="Jungle" OR P.Role="Support")
-        )
-        players = []
-        for player in response:
-            players.append(
-                Player(player.get("NickName"), player.get("Name"), player.get("NameFull"), player.get("Country"),
-                       player.get("Age"), player.get("Birthdate"), player.get("Role"), player.get("FavChamps")))
-        teams.append(Team(result["TeamName"], result["Location"], result["Image"], result["RosterPhoto"],
-                          players)) if players != [] else None
-    # 팀과 선수 정보를 데이터베이스에 저장합니다.
-    print(session)
-    for team in teams:
-        print(team)
-        for player in team.players:
-            print(player)
-        # 팀 정보를 데이터베이스에 저장합니다.
-        server_team = ServerTeam(
+    for player in team.players:
+        # 선수 정보를 데이터베이스에 저장합니다.
+        server_player = ServerPlayer(
             id=None,
-            team_name=team.team_name,
-            location=team.location,
-            image=team.image,
-            roster_photo=team.roster_photo
+            nick_name=player.nick_name,
+            name=player.name,
+            name_full=player.name_full,
+            country=player.country,
+            age=player.age,
+            birth_date=player.birth_date,
+            team_img=team.image,
         )
-        session.add(server_team)
-        session.commit()  # 팀 정보를 데이터베이스에 저장합니다.
+        session.add(server_player)
+        session.commit()  # 선수 정보를 데이터베이스에 저장합니다.
 
-        for player in team.players:
-            # 선수 정보를 데이터베이스에 저장합니다.
-            server_player = ServerPlayer(
-                id=None,
-                nick_name=player.nick_name,
-                name=player.name,
-                name_full=player.name_full,
-                country=player.country,
-                age=player.age,
-                birth_date=player.birth_date,
-                team_img=team.image,
+        # 선수의 역할을 데이터베이스에 저장합니다.
+        roles = player.roles.split(",")  # 쉼표로 구분된 문자열을 리스트로 변환합니다.
+        for role in roles:
+            server_player_role = ServerPlayerRole(
+                server_player_id=server_player.id,
+                roles=role
             )
-            session.add(server_player)
-            session.commit()  # 선수 정보를 데이터베이스에 저장합니다.
+            session.add(server_player_role)
+            session.commit()  # 선수의 역할을 데이터베이스에 저장합니다.
 
-            # 선수의 역할을 데이터베이스에 저장합니다.
-            roles = player.roles.split(",")  # 쉼표로 구분된 문자열을 리스트로 변환합니다.
-            for role in roles:
-                server_player_role = ServerPlayerRole(
+        # 선수의 선호 챔피언을 데이터베이스에 저장합니다.
+        if player.fav_champs != None:
+            fav_champs = player.fav_champs.split(",")  # 쉼표로 구분된 문자열을 리스트로 변환합니다.
+            for fav_champ in fav_champs:
+                server_player_fav_champ = ServerPlayerFavChamp(
                     server_player_id=server_player.id,
-                    roles=role
+                    fav_champs=fav_champ
                 )
-                session.add(server_player_role)
-                session.commit()  # 선수의 역할을 데이터베이스에 저장합니다.
+                session.add(server_player_fav_champ)
+                session.commit()  # 선수의 선호 챔피언을 데이터베이스에 저장합니다.
 
-            # 선수의 선호 챔피언을 데이터베이스에 저장합니다.
-            if player.fav_champs != None:
-                fav_champs = player.fav_champs.split(",")  # 쉼표로 구분된 문자열을 리스트로 변환합니다.
-                for fav_champ in fav_champs:
-                    server_player_fav_champ = ServerPlayerFavChamp(
-                        server_player_id=server_player.id,
-                        fav_champs=fav_champ
-                    )
-                    session.add(server_player_fav_champ)
-                    session.commit()  # 선수의 선호 챔피언을 데이터베이스에 저장합니다.
-
-            # 팀과 선수의 관계를 데이터베이스에 저장합니다.
-            server_team_server_player = ServerTeamServerPlayer(
-                server_team_id=server_team.id,
-                server_players_id=server_player.id
-            )
-            session.add(server_team_server_player)
-            session.commit()  # 팀과 선수의 관계를 데이터베이스에 저장합니다.
+        # 팀과 선수의 관계를 데이터베이스에 저장합니다.
+        server_team_server_player = ServerTeamServerPlayer(
+            server_team_id=server_team.id,
+            server_players_id=server_player.id
+        )
+        session.add(server_team_server_player)
+        session.commit()  # 팀과 선수의 관계를 데이터베이스에 저장합니다.
 
 
 def get_matches_with_team(tournament_name):

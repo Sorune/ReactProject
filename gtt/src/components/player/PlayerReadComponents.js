@@ -61,7 +61,12 @@ const ReadComponent = ({pno}) => {
             })
             console.log(data.gpa)
         })
+
     }, [pno])
+
+    // 평점 소수점 반올림해서 표시
+    const number = Number(player.gpa.toFixed(1));
+    console.log(number);
 
     return (
         <div>
@@ -110,7 +115,7 @@ const ReadComponent = ({pno}) => {
                                         clipRule="evenodd"
                                     />
                                 </svg>
-                                {player.gpa}
+                                {number}
                             </Typography>
                         </div>
                         <div className="grid grid-cols-3">
@@ -135,8 +140,28 @@ const ReadComponent = ({pno}) => {
 
                         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
                             <Tooltip content={player.roles}>
-                                <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                                    <img src= "/img/position-mid.png" />
+                                {/* 포지션 별 이미지 추가 */}
+                                <span
+                                    className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                                    {player.roles[0] === "Top" ? (
+                                        <img src="/img/top.png"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Jungle" ? (
+                                        <img
+                                            src="/img/jungle.png"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Mid" ? (
+                                        <img
+                                            src="/img/mid.png"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Bot" ? (
+                                        <img
+                                            src="/img/bot.png"/>
+                                    ) : <></>}
+                                    {player.roles[0] === "Support" ? (
+                                        <img
+                                            src="/img/support.png"/>
+                                    ) : <></>}
                                 </span>
                             </Tooltip>
                         </div>

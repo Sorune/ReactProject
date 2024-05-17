@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface CartService {
 
-    public CartDTO findById(Long id);
+    public List<CartDTO> findById(Long id);
     public List<CartDTO> findAll();
     public Long save(CartDTO cartDTO);
 
