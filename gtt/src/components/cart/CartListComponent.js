@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Button, Card, CardBody, CardFooter, CardHeader, Checkbox, Typography } from "@material-tailwind/react";
 import {useNavigate} from "react-router-dom";
 import {pay} from "../../api/cartApi";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {userState} from "../../atoms/userState";
 
 const TABLE_HEAD = ["", "상품명", "경기일", "장소", "수량", "합계금액", ""];
+
 
 const CartListComponent = ({ cartData, setCartData }) => {
 
@@ -13,7 +14,7 @@ const CartListComponent = ({ cartData, setCartData }) => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const navigate = useNavigate()
-    const userInfo = useRecoilValue(userState)
+    const [userInfo,setUserInfo] = useRecoilState(userState)
 
     const handleRemoveItem = (indexToRemove) => {
         // 선택한 인덱스를 제외한 새로운 배열 생성
@@ -59,19 +60,59 @@ const CartListComponent = ({ cartData, setCartData }) => {
     };
 
     const handlePayment = () => {
-        if(selectedItems.length === 0) {
-            alert("결제할 상품을 선택하세요.")
+        if (selectedItems.length === 0) {
+            alert("결제할 상품을 선택하세요.");
             return;
         }
-        const selectedProducts = selectedItems.map(index => cartData[index])
-        console.log("선택된 상품들:", selectedProducts,userInfo);
-        selectedProducts.forEach(cart =>pay(cart).then(data=>{
-        }))
-        alert("결제 완료")
-        navigate("/")
-    }
 
+        const selectedProducts = selectedItems.map(index => {
+            const cart = cartData[index];
+            return {
+                ...cart,
+                userNo: userInfo[0].num,
+                phone: userInfo[0].phone
+            };
+        });
 
+        console.log("선택된 상품들:", selectedProducts, userInfo);
+
+        // 결제 결과를 저장할 배열
+        const paymentPromises = selectedProducts.map(cart =>
+            pay(cart).then(response => {
+                console.log(response)
+                if (response.result === "SUCCESS") {
+                    return cart;
+                } else {
+                    throw new Error(response.message || "결제 실패");
+                }
+            }).catch(error => {
+                console.error("결제 실패:", error);
+                return null; // 실패한 경우 null 반환
+            })
+        );
+
+        Promise.all(paymentPromises).then(results => {
+            const successfulPayments = results.filter(result => result !== null);
+            const failedPaymentsCount = results.length - successfulPayments.length;
+
+            // 성공적으로 결제된 상품을 장바구니에서 제거
+            const newCartData = cartData.filter(item => !successfulPayments.includes(item));
+            setCartData(newCartData);
+            localStorage.setItem("cartData", JSON.stringify(newCartData));
+            setSelectedItems([]);
+
+            if (failedPaymentsCount > 0) {
+                alert("일부 결제에 실패했습니다. 다시 시도해주세요.");
+            } else {
+                alert("결제 완료");
+            }
+
+            navigate("/");
+        }).catch(error => {
+            console.error("결제 중 오류 발생:", error);
+            alert("결제 중 오류가 발생했습니다. 다시 시도해주세요.");
+        });
+    };
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">

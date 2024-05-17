@@ -26,13 +26,12 @@ public class Cart extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cno;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "server_match_id")
     private ServerMatch matchData;
 
     private String stadium;
 
-    @ColumnDefault("1")
-    private int quantity;
     @ColumnDefault("0")
     private int totalPrice;
 

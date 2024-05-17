@@ -25,7 +25,6 @@ public class CartDTO {
 
     private String stadium;
 
-    private int quantity;
 
     private int totalPrice;
 
