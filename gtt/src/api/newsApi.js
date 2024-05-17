@@ -1,5 +1,6 @@
 import axios from "axios";
 import {API_SERVER_HOST} from "./filesApi";
+import {removeFreeBoard} from "./freeBoardApi";
 
 const prefix = `${API_SERVER_HOST}/api/news`
 
@@ -44,7 +45,7 @@ export const modifyNews = async (title,content,theTeam,writer,newsNo)=>{
 }
 
 // 뉴스 게시물 삭제
-export const deleteNews = async (newsNo) => {
+export const removeNews = async (newsNo) => {
     const res = await axios.delete(`${prefix}/${newsNo}`)
     return res.data;
 }
