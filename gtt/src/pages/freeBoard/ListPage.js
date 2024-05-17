@@ -35,7 +35,7 @@ const TABS = [
         value: "unmonitored",
     },
 ];
-const TABLE_HEAD = ["Teams", "Title", "Writer", "hits", "Recommend", "RegDate"];
+const TABLE_HEAD = ["Title", "Writer", "hits", "Recommend", "RegDate"];
 
 const ListPage = ()=>{
     const pathName = useLocation().pathname

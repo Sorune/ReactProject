@@ -21,15 +21,15 @@ const ListComponent = memo(({ serverData, page, size, path }) => {
         } else if (path === "board") {
             setNum(serverData.dtoList.map((dto) => dto.bno));
         }
-
-        // Promise.all을 사용하여 모든 getOneTeam 호출이 완료될 때까지 기다림
-        Promise.all(serverData.dtoList.map(dto => getOneTeam(dto.theTeam)))
-            .then(data => {
-                setTeam(data);
-            })
-            .catch(error => {
-                console.error("Error fetching teams:", error);
-            });
+        if(serverData.dtoList[0].theTeam) {// Promise.all을 사용하여 모든 getOneTeam 호출이 완료될 때까지 기다림
+            Promise.all(serverData.dtoList.map(dto => getOneTeam(dto.theTeam)))
+                .then(data => {
+                    setTeam(data);
+                })
+                .catch(error => {
+                    console.error("Error fetching teams:", error);
+                });
+        }
     }, []);
 
     return (
@@ -40,18 +40,18 @@ const ListComponent = memo(({ serverData, page, size, path }) => {
             console.log(team);
             return (
                 <tr key={num[index]} onClick={() => moveToRead({ pathName: `/${path}/read`, num: num[index], totalPage: serverData.totalCount })}>
-                    <td className={classes}>
-                        {team[index] ? (
+                        {team[index]&&team ? (
+                        <td className={classes}>
                             <div className="flex items-center gap-3">
                                 <Avatar src={`/img/teams/${team[index].image}`} alt={team[index].teamName} size="sm" />
                                 <div className="flex flex-col">
                                     <Typography variant="small" color="blue-gray" className="font-normal">{team[index].teamName}</Typography>
                                 </div>
                             </div>
+                        </td>
                         ) : (
-                            <div></div>
+                            <></>
                         )}
-                    </td>
                     <td>
                         <div className="flex flex-col">
                             <Typography variant="small" color="blue-gray" className="font-normal">{dto.title}</Typography>
