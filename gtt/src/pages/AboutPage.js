@@ -32,7 +32,7 @@ const members = [
             "Java를 배우면서 왜 SpringBoot를 배우기 위해 그간의 과정들을 겪었는지도 조금은 이해 할 수 있었습니다 "
     },
     {
-        img: `/img/뽀빠이.gif`,
+        img: `/img/poppy.gif`,
         name: "양지웅",
         title: "Team Member",
         git:"https://github.com/Yangjiwung",

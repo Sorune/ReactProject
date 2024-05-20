@@ -1,0 +1,15 @@
+digraph G {
+  rankdir=LR;
+  node [shape=folder];
+  "gtt-python-server";
+  "gtt-python-server" -> "gtt-python-server/model";
+  "gtt-python-server" -> "gtt-python-server/templates";
+  "gtt-python-server" -> "gtt-python-server/__pycache__";
+  "gtt-python-server/model";
+  "gtt-python-server/model" -> "gtt-python-server/model/dot_files";
+  "gtt-python-server/model" -> "gtt-python-server/model/__pycache__";
+  "gtt-python-server/model/dot_files";
+  "gtt-python-server/model/__pycache__";
+  "gtt-python-server/templates";
+  "gtt-python-server/__pycache__";
+}

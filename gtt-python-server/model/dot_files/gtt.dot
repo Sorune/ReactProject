@@ -1,0 +1,25 @@
+digraph G {
+  rankdir=LR;
+  node [shape=folder];
+  "gtt";
+  "gtt" -> "gtt/src";
+  "gtt/src";
+  "gtt/src" -> "gtt/src/api";
+  "gtt/src" -> "gtt/src/atoms";
+  "gtt/src" -> "gtt/src/components";
+  "gtt/src" -> "gtt/src/hooks";
+  "gtt/src" -> "gtt/src/layouts";
+  "gtt/src" -> "gtt/src/pages";
+  "gtt/src" -> "gtt/src/router";
+  "gtt/src" -> "gtt/src/test";
+  "gtt/src" -> "gtt/src/utill";
+  "gtt/src/api";
+  "gtt/src/atoms";
+  "gtt/src/components";
+  "gtt/src/hooks";
+  "gtt/src/layouts";
+  "gtt/src/pages";
+  "gtt/src/router";
+  "gtt/src/test";
+  "gtt/src/utill";
+}

@@ -18,7 +18,7 @@ const PaymentComponent = () => {
             if (!userInfo) return; // userInfo가 없으면 fetchData를 실행하지 않음
 
             try {
-                const userNo = userInfo.num;
+                const userNo = userInfo[0].num;
                 const orders = await getOrderList(userNo);
                 console.log("Orders fetched: ", orders);
                 setSelectedProducts(orders);
@@ -35,7 +35,7 @@ const PaymentComponent = () => {
     if (loading) {
         return <div>Loading...</div>; // 로딩 중일 때 표시
     }
-
+    console.log(selectedProducts)
     return(
         <div className="w-full h-full p-10">
             <Card>
