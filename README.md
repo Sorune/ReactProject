@@ -1,4 +1,4 @@
-# 🎮🏆GTT: 그래서 그 팀 티어가?
+# 🎮GTT: 그래서 그 팀 티어가?🏆
 종합 게임 커뮤니티 플랫폼으로, 인기 e스포츠 게임인 리그 오브 레전드(LoL) 팬들을 위한 최신 뉴스, 티켓 예매, 챔피언 정보, 게임 대회 관련 커뮤니티를 제공합니다.
 - **server1** : http://mbc-webcloud.iptime.org:3000
 - **server2** : http://sorune.asuscomm.com:3000
